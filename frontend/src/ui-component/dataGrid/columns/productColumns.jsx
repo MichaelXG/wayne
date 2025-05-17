@@ -58,7 +58,7 @@ const createProductColumns = (handleDelete) => {
                 }}
               >
                 <Link
-                  href={`/f-store/products/detail/${productId ?? 1}`}
+                  href={`/wayne/products/detail/${productId ?? 1}`}
                   style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}
                 >
                   {title}

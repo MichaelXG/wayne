@@ -23,7 +23,7 @@ const createAddressColumns = (handleDelete) => {
         return (
           <Box>
             <Typography variant="body2" fontWeight="bold">
-              <Link href={`/f-store/address/detail/${id}`} underline="hover" color="inherit">
+              <Link href={`/wayne/address/detail/${id}`} underline="hover" color="inherit">
                 {street}, {number}, {complement}
               </Link>
             </Typography>

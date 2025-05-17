@@ -20,7 +20,7 @@ const createCarrierColumns = (handleDelete) => {
           <Box display="flex" alignItems="flex-start" gap={2}>
             <Box sx={{ minWidth: 0 }}>
               <Typography variant="body2" fontWeight="bold">
-                <Link href={`/f-store/carrier/detail/${carrierId ?? 1}`} underline="hover" color="inherit">
+                <Link href={`/wayne/carrier/detail/${carrierId ?? 1}`} underline="hover" color="inherit">
                   {name}
                 </Link>
               </Typography>

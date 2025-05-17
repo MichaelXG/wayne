@@ -15,7 +15,7 @@ export default function OrderStatusDonutChart() {
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
 
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const checkingAuth = useAuthGuard();
   const token = userData?.authToken || null;
 

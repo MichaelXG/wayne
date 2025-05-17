@@ -16,7 +16,7 @@ export default function EditPage({ carrierEditRef }) {
   const { id } = useParams();
   const carrierId = id ? Number(id) : 1;
 
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { setCarrierId } = useCarrierIDContext();
 
   const [openModal, setOpenModal] = useState(false);

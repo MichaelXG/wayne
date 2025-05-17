@@ -37,7 +37,7 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv(
 CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="http://localhost:3000", cast=Csv())
 
 # 🔥 Adicionando a configuração do ROOT_URLCONF (corrige erro!)
-ROOT_URLCONF = "fake_store_backend.urls"  # Ajuste conforme o nome correto do seu projeto
+ROOT_URLCONF = "wayne_backend.urls"  # Ajuste conforme o nome correto do seu projeto
 
 # Configuração dos arquivos estáticos
 STATIC_URL = "/static/"
@@ -188,7 +188,7 @@ INSTALLED_APPS = [
 ]
 
 # Configuração da WSGI
-WSGI_APPLICATION = "fake_store_backend.wsgi.application"
+WSGI_APPLICATION = "wayne_backend.wsgi.application"
 
 # Configuração do idioma e localização
 LANGUAGES = [

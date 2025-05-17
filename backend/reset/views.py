@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from fake_store_backend.core.tokens import expiring_token_generator
+from wayne_backend.core.tokens import expiring_token_generator
 import logging
 import re
 

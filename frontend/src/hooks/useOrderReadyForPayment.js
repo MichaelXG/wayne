@@ -5,7 +5,7 @@ import { API_ROUTES } from '../routes/ApiRoutes';
 import useLocalStorage from './useLocalStorage';
 
 export default function useOrderReadyForPayment(orderId) {
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken;
 
   const [ready, setReady] = useState(false);

@@ -16,7 +16,7 @@ export default function EditPage({ productEditRef }) {
   const { id } = useParams();
   const productId = id ? Number(id) : 1;
 
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { setProductId } = useProductIDContext();
 
   const [openModal, setOpenModal] = useState(false);

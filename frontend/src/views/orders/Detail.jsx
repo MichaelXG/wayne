@@ -23,7 +23,7 @@ import useOrderLockStatus from '../../hooks/useOrderLockStatus';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 export default function OrderDetail() {
-  const [userData] = useLocalStorage('fake-store-user-data', {}); // Adicione isso
+  const [userData] = useLocalStorage('wayne-user-data', {}); // Adicione isso
 
   isDebug && console.log('OrderDetail renderizado');
 

@@ -47,7 +47,7 @@ export default function ProfileSection() {
   const [notification, setNotification] = useState(false);
   const [selectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  const [userData, setUserData] = useLocalStorage('fake-store-user-data', {});
+  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
   const token = userData?.authToken || null;

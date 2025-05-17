@@ -31,7 +31,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
   const [timeValue, setTimeValue] = useState(false); // false = year, true = month
   const [orderTotal, setOrderTotal] = useState(0);
 
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   const checkingAuth = useAuthGuard();
   const token = userData?.authToken || null;

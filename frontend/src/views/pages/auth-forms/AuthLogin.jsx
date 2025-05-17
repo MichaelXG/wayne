@@ -34,7 +34,7 @@ export default function AuthLogin() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useLocalStorage('fake-store-user-data', {});
+  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
 
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);

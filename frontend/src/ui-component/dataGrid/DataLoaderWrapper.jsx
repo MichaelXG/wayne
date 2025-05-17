@@ -8,7 +8,7 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 const isDebug = true;
 
 const DataLoaderWrapper = ({ endpoint, options = {}, children, emptyMessage }) => {
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken;
 
   // Inclui o token no header da requisição se existir

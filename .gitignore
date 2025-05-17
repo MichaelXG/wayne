@@ -9,7 +9,7 @@
 /backend/store/__pycache__/models.cpython-313.pyc
 /backend/store/__pycache__/__init__.cpython-313.pyc
 /backend/accounts/migrations/__init__.py
-/backend/fake_store_backend/__pycache__
+/backend/wayne_backend/__pycache__
 /backend/accounts/migrations
 /backend/accounts/__pycache__
 /backend/address/migrations
@@ -20,7 +20,7 @@
 /backend/carrier/migrations
 /backend/carrier/__pycache__
 /backend/carrier/__pycache__/admin.cpython-311.pyc
-/backend/fake_store_backend/core/__pycache__
+/backend/wayne_backend/core/__pycache__
 /backend/health/__pycache__
 /backend/media/users/avatars
 /backend/orders/migrations

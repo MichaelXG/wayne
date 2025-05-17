@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const rawUserData = localStorage.getItem('fake-store-user-data');
+  const rawUserData = localStorage.getItem('wayne-user-data');
   const parsed = rawUserData ? JSON.parse(rawUserData) : null;
   const token = parsed?.authToken;
 

@@ -16,7 +16,7 @@ import useOrderLockStatus from '../../../hooks/useOrderLockStatus';
 
 export default function Shipping({ onSelectShipping }) {
   const checkingAuth = useAuthGuard();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { orderId } = useOrderIDContext();
 
   const [addresses, setAddresses] = useState([]);

@@ -25,7 +25,7 @@ import useOrderReadyForPayment from '../../../hooks/useOrderReadyForPayment';
 
 export default function Payment() {
   const checkingAuth = useAuthGuard();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { orderId } = useOrderIDContext();
   const { data: order } = useFetchData(`${API_ROUTES.ORDERS}${orderId}/`);
   const user_id = order?.user?.id || '';

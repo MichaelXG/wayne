@@ -17,7 +17,7 @@ const ListPage = () => {
   const [selectionModel, setSelectionModel] = useState([]);
   const [filterModel, setFilterModel] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   const token = userData?.authToken || null;
   const hasFilters = filterModel.items.length > 0;

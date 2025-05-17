@@ -54,7 +54,7 @@ def send_confirmation_aftership(order):
             "order_code": order.code,
             "tracking_number": tracking_number,
             "tracking_url": tracking_url,
-            "company_name": "Fake Store",
+            "company_name": "Wayne Industries",
             "current_year": datetime.now().year
         }
 

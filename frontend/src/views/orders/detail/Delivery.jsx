@@ -15,7 +15,7 @@ import useOrderLockStatus from '../../../hooks/useOrderLockStatus';
 
 export default function Delivery({ onSelectCarrier }) {
   const checkingAuth = useAuthGuard();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { orderId } = useOrderIDContext();
 
   const [carriers, setCarriers] = useState([]);

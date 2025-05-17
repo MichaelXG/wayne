@@ -6,7 +6,7 @@ import { API_ROUTES } from '../routes/ApiRoutes';
 import axios from 'axios';
 
 export default function ProtectedRoute() {
-  const [userData, setUserData] = useLocalStorage('fake-store-user-data', {});
+  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

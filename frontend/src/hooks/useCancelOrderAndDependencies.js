@@ -4,7 +4,7 @@ import { API_ROUTES } from '../routes/ApiRoutes';
 import useLocalStorage from './useLocalStorage';
 
 export default function useCancelOrderAndDependencies() {
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

@@ -11,7 +11,7 @@ import AppContextProvider from './contexts/AppContextProvider';
 
 // ==============================|| APP ||============================== //
 
-export const BaseDir = import.meta.env.VITE_APP_BASE_NAME || '/f-store';
+export const BaseDir = import.meta.env.VITE_APP_BASE_NAME || '/wayne';
 export const isDebug = true;
 
 export const customSvgEditIcon = (

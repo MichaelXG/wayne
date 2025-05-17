@@ -54,7 +54,7 @@ export default function TotalIncomeDarkCard({ isLoading }) {
   const theme = useTheme();
   const [income, setIncome] = useState(0);
 
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const checkingAuth = useAuthGuard();
   const token = userData?.authToken || null;
 

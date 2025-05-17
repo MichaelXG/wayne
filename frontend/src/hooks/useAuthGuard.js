@@ -7,7 +7,7 @@ import { isTokenValid } from '../utils/auth';
 
 export const useAuthGuard = () => {
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const [userData] = useLocalStorage('fake-store-user-data', {}); // ✅ só leitura
+  const [userData] = useLocalStorage('wayne-user-data', {}); // ✅ só leitura
   const navigate = useNavigate();
 
   useEffect(() => {

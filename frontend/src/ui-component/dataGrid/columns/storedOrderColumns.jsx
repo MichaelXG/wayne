@@ -57,7 +57,7 @@ const createStoredOrderColumns = (onDelete, onDeleteItem, onEdit, showStock = fa
                   mb: 0.5
                 }}
               >
-                <Link href={`/f-store/products/detail/${id ?? 1}`} style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>
+                <Link href={`/wayne/products/detail/${id ?? 1}`} style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>
                   {title}
                 </Link>
               </Typography>

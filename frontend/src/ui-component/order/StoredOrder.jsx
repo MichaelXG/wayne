@@ -14,7 +14,7 @@ import { API_ROUTES } from '../../routes/ApiRoutes';
 export default function StoredOrder() {
   isDebug && console.log('📄 StoredOrder renderizado');
   const navigate = useNavigate();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
 
   const checkingAuth = useAuthGuard();

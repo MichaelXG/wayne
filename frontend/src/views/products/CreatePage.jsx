@@ -11,7 +11,7 @@ export default function ProductCreatePage({ productEditRef }) {
   const [openModal, setOpenModal] = useState(false);
   const [pendingFormData, setPendingFormData] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const navigate = useNavigate();
 
   const token = userData?.authToken || null;

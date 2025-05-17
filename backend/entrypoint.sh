@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # IMPORT DJANGO SETTINGS
-export DJANGO_SETTINGS_MODULE=fake_store_backend.settings
+export DJANGO_SETTINGS_MODULE=wayne_backend.settings
 
 echo "✅ Starting entry script..."
 
