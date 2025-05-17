@@ -1,0 +1,47 @@
+# 🏗️ Use Node.js Alpine to keep the image lightweight and optimized
+FROM node:20-alpine AS dev
+
+# 🔹 Startup message for the build process
+RUN echo "✅ Starting Vite.js container setup..."
+
+# 📂 Set the working directory where the source code will reside
+WORKDIR /app
+RUN echo "📂 Working directory set to /app"
+
+# 📦 Copy essential files first to optimize Docker cache
+RUN echo "📦 Copying essential files to optimize Docker cache..."
+COPY package.json yarn.lock ./
+
+# 🧹 Clean Yarn cache before installing dependencies to ensure a clean environment
+RUN echo "🧹 Cleaning old Yarn cache..."
+RUN yarn cache clean && echo "✅ Yarn cache cleaned successfully!"
+
+# 📦 Install dependencies with optimizations, ignoring engine restrictions
+RUN echo "🔄 Installing dependencies with cache optimizations and ignoring engine constraints..."
+RUN yarn install --ignore-engines --prefer-offline --frozen-lockfile
+RUN echo "✅ All dependencies installed successfully!"
+
+# 📂 Copy the entire project source into the container
+RUN echo "📂 Copying source code into the container..."
+COPY . .
+RUN echo "✅ Source code copied successfully!"
+
+# 🗑️ Remove unnecessary files to keep the image small
+RUN echo "🗑️  Removing unnecessary files before build..."
+RUN rm -rf /app/dist /app/node_modules
+RUN echo "✅ Unnecessary files removed successfully!"
+
+# 🌐 Set environment variables and configure the Vite.js port
+ARG VITE_PORT=3000
+ENV VITE_PORT=${VITE_PORT}
+
+# 🌐 Expose the port for Vite.js dev server
+RUN echo "🌐 Exposing port ${VITE_PORT} for frontend access..."
+EXPOSE ${VITE_PORT}
+RUN echo "✅ Port ${VITE_PORT} configured successfully!"
+
+# 🚀 Final message before launching the server
+RUN echo "🚀 Development environment is ready! Launching Vite.js with Hot Reload..."
+
+# 🏁 Default command to run in development mode with Hot Reload
+CMD ["yarn", "dev"]

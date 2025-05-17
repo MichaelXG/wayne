@@ -1,0 +1,250 @@
+import React, { forwardRef, useImperativeHandle, useEffect, useState } from 'react';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
+import {
+  Box,
+  Card,
+  CardHeader,
+  CardContent,
+  Stack,
+  Typography,
+  Divider,
+  TextField,
+  Chip,
+  FormControlLabel,
+  Switch,
+  Grid
+} from '@mui/material';
+import DynamicModal from '../../ui-component/modal/DynamicModal';
+import { isDebug } from '../../App';
+
+const EditCard = forwardRef(({ carrier, onSubmit }, ref) => {
+  if (isDebug) console.log('🛠️ EditCard received carrier:', carrier);
+
+  const { id, name = '', slug = '', prefix = '', is_default = false, is_active = false } = carrier || {};
+
+  const methods = useForm({
+    defaultValues: {
+      name,
+      slug,
+      prefix,
+      is_default,
+      is_active
+    }
+  });
+
+  const [initialData, setInitialData] = useState({});
+  const [noChangesModal, setNoChangesModal] = useState(false);
+  const { control, watch, getValues, reset } = methods;
+  const isActive = watch('is_active');
+
+  useEffect(() => {
+    const original = { name, slug, prefix, is_default, is_active };
+    reset(original);
+    setInitialData(original);
+  }, [name, slug, prefix, is_default, is_active, reset]);
+
+  useImperativeHandle(ref, () => ({
+    submitForm: () => {
+      const current = getValues();
+      const comparableCurrent = { ...current, prefix: current.prefix.toUpperCase() };
+      const comparableInitial = { ...initialData, prefix: initialData.prefix.toUpperCase() };
+
+      const hasChanges = Object.keys(comparableCurrent).some((key) => String(comparableCurrent[key]) !== String(comparableInitial[key]));
+
+      if (hasChanges) {
+        methods.handleSubmit((formValues) => {
+          formValues.prefix = formValues.prefix.toUpperCase();
+          onSubmit(formValues);
+        })();
+      } else {
+        isDebug && console.log('🚫 No changes detected, will not be saved.');
+        setNoChangesModal(true);
+      }
+    },
+    isActive
+  }));
+
+  return (
+    <FormProvider {...methods}>
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', px: 4, py: 6, backgroundColor: 'background.default' }}>
+        <Box sx={{ width: '100%', maxWidth: 1000 }}>
+          <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {id && (
+              <Chip
+                label={`ID: ${id}`}
+                size="small"
+                sx={{
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                  color: '#FFFFFF',
+                  backgroundColor: '#8E33FF'
+                }}
+              />
+            )}
+
+            <Stack direction="row" gap={2}>
+              <Controller
+                name="is_default"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        {...field}
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        sx={{
+                          '& .MuiSwitch-thumb': { color: field.value ? 'primary.main' : 'grey.500' },
+                          '& .MuiSwitch-track': { backgroundColor: field.value ? 'primary.light' : 'grey.300' }
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography fontWeight="bold" color={field.value ? 'primary.main' : 'text.secondary'}>
+                        {field.value ? 'Default' : 'Not Default'}
+                      </Typography>
+                    }
+                  />
+                )}
+              />
+              <Controller
+                name="is_active"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        {...field}
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        sx={{
+                          '& .MuiSwitch-thumb': { color: field.value ? 'success.main' : 'error.main' },
+                          '& .MuiSwitch-track': { backgroundColor: field.value ? 'success.light' : 'error.light' }
+                        }}
+                      />
+                    }
+                    label={
+                      <Typography fontWeight="bold" color={field.value ? 'success.main' : 'error.main'}>
+                        {field.value ? 'Active' : 'Inactive'}
+                      </Typography>
+                    }
+                  />
+                )}
+              />
+            </Stack>
+          </Box>
+
+          <Card elevation={0} sx={{ mt: 3, borderRadius: 2, boxShadow: 3, bgcolor: '#FFFFFF', border: '1px solid #DFE3E8', p: 3 }}>
+            <CardHeader
+              title="Details"
+              subheader="Basic information of the carrier..."
+              titleTypographyProps={{ variant: 'h6' }}
+              sx={{ px: 0 }}
+            />
+            <Divider />
+            <Grid container spacing={2} mt={2}>
+              <Grid item xs={6}>
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Name"
+                      fullWidth
+                      disabled={!isActive}
+                      variant="outlined"
+                      sx={{
+                        '& label.Mui-focused': { color: 'secondary.main' },
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': { transition: 'border-color 0.3s ease' },
+                          '&:hover fieldset': { borderColor: 'secondary.light' },
+                          '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                        }
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={4}>
+                <Controller
+                  name="slug"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Slug"
+                      fullWidth
+                      disabled={!isActive}
+                      variant="outlined"
+                      value={(field.value || '').toLowerCase()}
+                      onChange={(e) => {
+                        const val = e.target.value.toLowerCase().slice(0, 30);
+                        field.onChange(val);
+                      }}
+                      sx={{
+                        '& label.Mui-focused': { color: 'secondary.main' },
+                        '& .MuiInputBase-input.Mui-disabled': { WebkitTextFillColor: '#000' },
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': { transition: 'border-color 0.3s ease' },
+                          '&:hover fieldset': { borderColor: 'secondary.light' },
+                          '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                        }
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={2}>
+                <Controller
+                  name="prefix"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Prefix"
+                      fullWidth
+                      disabled={!isActive}
+                      variant="outlined"
+                      value={(field.value || '').toUpperCase()}
+                      onChange={(e) => {
+                        const val = e.target.value.toUpperCase().slice(0, 3);
+                        field.onChange(val);
+                      }}
+                      inputProps={{ maxLength: 3 }}
+                      sx={{
+                        '& label.Mui-focused': { color: 'secondary.main' },
+                        '& .MuiInputBase-input.Mui-disabled': { WebkitTextFillColor: '#000' },
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': { transition: 'border-color 0.3s ease' },
+                          '&:hover fieldset': { borderColor: 'secondary.light' },
+                          '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                        }
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+          </Card>
+        </Box>
+      </Box>
+
+      <DynamicModal
+        open={noChangesModal}
+        onClose={() => setNoChangesModal(false)}
+        onSubmit={() => setNoChangesModal(false)}
+        title="No Changes Detected"
+        description="You haven’t changed anything. There’s nothing to save."
+        type="warning"
+        mode="confirm"
+        submitLabel="OK"
+      />
+    </FormProvider>
+  );
+});
+
+export default EditCard;
+EditCard.displayName = 'EditCard';

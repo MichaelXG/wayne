@@ -1,0 +1,139 @@
+import React, { useMemo, useState } from 'react';
+import { Box, Dialog, Typography, Chip, useTheme, Grid, FormControl, Stack } from '@mui/material';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { Navigation } from 'swiper/modules';
+import { useAuthGuard } from '../../../hooks/useAuthGuard';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DefaultMinimalLayout from '../../../layout/DefaultMinimalLayout';
+
+export default function DeliveryModal({ open, onClose, carriers = [], selectedCarrierId, onSelect, onConfirm }) {
+  const theme = useTheme();
+  const checkingAuth = useAuthGuard();
+  const [localSelectedId, setLocalSelectedId] = useState(selectedCarrierId);
+
+  const handleSelect = (carrier) => {
+    setLocalSelectedId(carrier.id);
+    onSelect?.(carrier);
+  };
+
+  const handleSave = () => {
+    const selected = carriers.find((c) => c.id === localSelectedId);
+    if (selected) {
+      onConfirm?.(selected);
+    }
+  };
+
+  const actionbutton = {
+    label: 'Save',
+    icon: <CheckIcon />,
+    onClick: handleSave,
+    disabled: !localSelectedId
+  };
+
+  const actionClose = useMemo(
+    () => ({
+      label: 'Cancel',
+      icon: <CloseRoundedIcon />,
+      onClick: onClose
+    }),
+    [onClose]
+  );
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DefaultMinimalLayout
+        mainCardTitle="Delivery"
+        subCardTitle={selectedCarrierId ? 'Edit Carrier' : 'Add Carrier'}
+        actionbutton={actionbutton}
+        actionClose={actionClose}
+        checkingAuth={!checkingAuth}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <FormControl
+                sx={{
+                  flex: 1,
+                  // mr: 2,
+                  '& label.Mui-focused': { color: 'secondary.main' },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'secondary.main'
+                  }
+                }}
+              >
+                {carriers.length > 0 ? (
+                  <Box
+                    sx={{
+                      padding: 2,
+                      position: 'relative', // necessário para alinhar corretamente
+                      overflow: 'visible', // permite os botões ultrapassarem os limites do swiper
+                      zIndex: 10, // traz para frente
+                      '.swiper-button-prev': {
+                        left: '-1px' // mova mais para fora/dentro conforme desejar
+                      },
+                      '.swiper-button-next': {
+                        right: '-1px' // idem
+                      }
+                    }}
+                  >
+                    <Swiper modules={[Navigation]} navigation spaceBetween={8} slidesPerView={1} style={{ padding: 2, width: '100%' }}>
+                      {carriers.map((carrier) => (
+                        <SwiperSlide key={carrier.id}>
+                          <Box
+                            onClick={() => handleSelect(carrier)}
+                            sx={{
+                              border: localSelectedId === carrier.id ? `2px solid ${theme.palette.secondary.main}` : '1px solid',
+                              borderColor: localSelectedId === carrier.id ? 'secondary.main' : 'divider',
+                              borderRadius: 2,
+                              boxShadow: localSelectedId === carrier.id ? 4 : 1,
+                              p: 1,
+                              justifyContent: 'space-between',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': {
+                                borderColor: 'secondary.main',
+                                boxShadow: 4
+                              },
+                              margin: '30px'
+                            }}
+                          >
+                            <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                              <Typography variant="h6">{carrier.name}</Typography>
+                              <Stack direction="row" spacing={1}>
+                                {carrier.is_default && (
+                                  <Chip
+                                    label={carrier.is_default ? 'Default' : 'Not Default'}
+                                    size="small"
+                                    color={carrier.is_default ? 'primary' : 'default'}
+                                  />
+                                )}
+                                <Chip
+                                  label={carrier.is_active ? 'Active' : 'Inactive'}
+                                  size="small"
+                                  color={carrier.is_active ? 'success' : 'error'}
+                                />
+                              </Stack>
+                            </Box>
+                            <Typography variant="body2" color="text.secondary">
+                              Prefix: <strong>{carrier.prefix || 'N/A'}</strong>
+                            </Typography>
+                          </Box>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                  </Box>
+                ) : (
+                  <Typography color="text.secondary" textAlign="center" py={4}>
+                    No carriers available.
+                  </Typography>
+                )}
+              </FormControl>
+            </Box>
+          </Grid>
+        </Grid>
+      </DefaultMinimalLayout>
+    </Dialog>
+  );
+}

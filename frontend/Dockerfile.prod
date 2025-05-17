@@ -1,0 +1,42 @@
+# 🔹 Usa Node.js Alpine para build otimizada
+FROM node:18-alpine AS builder
+
+# Define o diretório de trabalho
+WORKDIR /app
+
+# Copia apenas arquivos essenciais primeiro para cache eficiente
+COPY package.json yarn.lock ./
+
+# Instala dependências no modo produção
+RUN yarn install --frozen-lockfile --prefer-offline
+
+# Copia os arquivos restantes
+COPY . .
+
+# Faz o build do Next.js
+RUN yarn build
+
+# 🔹 Cria a imagem final otimizada para produção
+FROM node:18-alpine
+
+# Define diretório de trabalho
+WORKDIR /app
+
+# Cria um usuário seguro
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Copia apenas os arquivos necessários para rodar em produção
+COPY --from=builder /app/package.json /app/yarn.lock ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/public ./public
+
+# Define a variável de ambiente para produção
+ENV NODE_ENV=production
+
+# Expõe a porta padrão do Next.js
+EXPOSE 3000
+
+# Inicia o servidor Next.js em produção
+CMD ["yarn", "start"]

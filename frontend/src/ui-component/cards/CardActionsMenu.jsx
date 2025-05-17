@@ -1,0 +1,95 @@
+import { useState } from 'react';
+import { IconButton, Menu, MenuItem, ListItemIcon, Tooltip, Typography } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Icon } from '@iconify/react';
+
+export default function CardActionsMenu({ onEdit, onDelete }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
+  const handleCloseMenu = () => setAnchorEl(null);
+
+  const handleEditClick = () => {
+    handleCloseMenu();
+    if (onEdit) onEdit();
+  };
+
+  const handleDeleteClick = () => {
+    handleCloseMenu();
+    if (onDelete) onDelete();
+  };
+
+  return (
+    <>
+      <Tooltip
+        title="Actions"
+        placement="top"
+        componentsProps={{
+          tooltip: {
+            sx: {
+              backgroundColor: '#8E33FF',
+              color: '#fff',
+              fontSize: 12,
+              px: 1.5,
+              py: 0.5,
+              borderRadius: 1,
+              boxShadow: 2
+            }
+          }
+        }}
+      >
+        <IconButton
+          onClick={handleOpenMenu}
+          size="small"
+          sx={{
+            bgcolor: 'secondary.light',
+            color: 'secondary.main',
+            '&:hover': {
+              bgcolor: 'secondary.main',
+              color: 'common.white'
+            }
+          }}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleCloseMenu}
+        PaperProps={{
+          sx: {
+            minWidth: 140,
+            borderRadius: 2,
+            p: 1,
+            boxShadow: (theme) => theme.shadows[8]
+          }
+        }}
+      >
+        <MenuItem onClick={handleEditClick} sx={{ typography: 'body2', borderRadius: 1 }}>
+          <ListItemIcon sx={{ minWidth: 28 }}>
+            <Icon icon="solar:pen-bold" width={20} height={20} />
+          </ListItemIcon>
+          Edit
+        </MenuItem>
+
+        <MenuItem
+          onClick={handleDeleteClick}
+          sx={{
+            typography: 'body2',
+            borderRadius: 1,
+            color: 'error.main',
+            '&:hover': { bgcolor: 'error.lighter' }
+          }}
+        >
+          <ListItemIcon sx={{ minWidth: 28, color: 'error.main' }}>
+            <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
+          </ListItemIcon>
+          Delete
+        </MenuItem>
+      </Menu>
+    </>
+  );
+}

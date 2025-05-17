@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #ede7f6;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        background-color: #ffffff;
+        max-width: 600px;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #b39ddb;
+        padding: 30px;
+        border: 1px solid #ede7f6;
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .logo img {
+        max-width: 160px;
+        height: auto;
+      }
+      h2 {
+        color: #673ab7;
+        font-weight: 600;
+      }
+      p {
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .button {
+        display: inline-block;
+        margin: 20px 0;
+        padding: 12px 24px;
+        background-color: #673ab7;
+        color: #ffffff !important;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .button:hover {
+        color: #673ab7 !important;
+        background-color: #ede7f6;
+      }
+
+      .footer {
+        font-size: 12px;
+        color: #999;
+        text-align: center;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img
+          src="https://raw.githubusercontent.com/MichaelXG/assets/refs/heads/main/images/F-STORE.png"
+          alt="F-Store Logo"
+        />
+      </div>
+      <h2>Hi {{ customer_name }},</h2>
+      <p>
+        Your order <strong>#{{ order_code }}</strong> has been confirmed and is
+        on its way!
+      </p>
+      <p><strong>Tracking Number:</strong> {{ tracking_number }}</p>
+      <p style="text-align: center">
+        <a href="{{ tracking_url }}" class="button" target="_blank"
+          >Track Your Order</a
+        >
+      </p>
+      <p>Thank you for shopping with {{ company_name }}.</p>
+      <div class="footer">
+        &copy; {{ current_year}} {{ company_name }} — All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>

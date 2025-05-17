@@ -1,0 +1,36 @@
+# Usa Python 3.11 como base
+FROM python:3.11-slim
+
+# Define o diretório de trabalho no container
+WORKDIR /app
+
+# Garante que dependências globais são instaladas
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# **Cria a virtualenv dentro do projeto**
+RUN python -m venv /app/venv
+
+# Ativa a virtualenv automaticamente
+ENV VIRTUAL_ENV=/app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Copia apenas os arquivos essenciais para instalar dependências
+COPY requirements.txt .
+
+# **Instala dependências dentro da virtualenv**
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia o restante do código do projeto
+COPY . .
+
+# Garante permissões de execução ao entrypoint
+RUN chmod +x /app/entrypoint.sh
+
+# Remove arquivos desnecessários para reduzir a imagem
+RUN rm -rf /root/.cache/pip
+
+# Expõe a porta 8000
+EXPOSE 8000
+
+# Define o comando de inicialização para produção (usando Gunicorn)
+CMD ["/app/venv/bin/gunicorn", "-b", "0.0.0.0:8000", "fake_store_backend.wsgi:application", "--workers=3", "--timeout=120"]
