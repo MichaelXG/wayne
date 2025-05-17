@@ -3,8 +3,8 @@ import componentsOverrides from './overrides';
 
 export default function componentStyleOverrides(theme, borderRadius, outlinedFilled) {
   const bgColor = theme.palette.grey[50];
-  const menuSelectedBack = theme.palette.grey[200];
-  const menuSelected = theme.palette.grey[900];
+  const menuSelectedBack = theme.palette.secondary.light;
+  const menuSelected = theme.palette.secondary.dark;
 
   return {
     MuiButton: {
@@ -14,22 +14,22 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
           borderRadius: `${borderRadius}px`,
           textTransform: 'none',
           transition: 'all 0.2s ease',
-          backgroundColor: theme.palette.grey[600],
+          backgroundColor: theme.palette.secondary.main,
           color: theme.palette.common.white,
           '&:hover': {
-            backgroundColor: theme.palette.grey[200],
-            color: theme.palette.grey[900]
+            backgroundColor: theme.palette.secondary.light,
+            color: theme.palette.secondary.dark
           },
           '&:focus': {
-            outline: `2px solid ${theme.palette.grey[600]}`
+            outline: `2px solid ${theme.palette.secondary.main}`
           }
         },
         textSecondary: {
-          backgroundColor: theme.palette.grey[600],
+          backgroundColor: theme.palette.secondary.main,
           color: theme.palette.common.white,
           '&:hover': {
-            backgroundColor: theme.palette.grey[200],
-            color: theme.palette.grey[900]
+            backgroundColor: theme.palette.secondary.light,
+            color: theme.palette.secondary.dark
           }
         },
         sizeSmall: {
@@ -41,22 +41,22 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiCssBaseline: {
       styleOverrides: {
         '.swiper-button-next::after, .swiper-button-prev::after': {
-          color: theme.palette.grey[600]
+          color: theme.palette.secondary.main
         }
       }
     },
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: theme.palette.grey[600],
+          color: theme.palette.secondary.main,
           '&.Mui-checked': {
-            color: theme.palette.grey[600]
+            color: theme.palette.secondary.main
           },
           '&:hover': {
-            backgroundColor: `${theme.palette.grey[200]}`
+            backgroundColor: `${theme.palette.secondary.light}`
           },
           '&:focus-visible': {
-            outline: `2px solid ${theme.palette.grey[600]}`
+            outline: `2px solid ${theme.palette.secondary.main}`
           },
           '& + .MuiFormControlLabel-label': {
             marginTop: 2
@@ -68,16 +68,16 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          backgroundColor: theme.palette.grey[200],
+          backgroundColor: theme.palette.secondary.light,
           color: theme.palette.common.white,
           transition: 'background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease',
           '&:hover': {
-            backgroundColor: theme.palette.grey[900], // um tom mais escuro porém ainda elegante
+            backgroundColor: theme.palette.secondary[800], // um tom mais escuro porém ainda elegante
             boxShadow: theme.shadows[4],
             color: theme.palette.common.white
           },
           '&:focus-visible': {
-            outline: `2px solid ${theme.palette.grey[600]}`,
+            outline: `2px solid ${theme.palette.secondary.main}`,
 
             outlineOffset: 2
           },
@@ -139,7 +139,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          color: theme.palette.text.grey[700],
+          color: theme.palette.text.secondary,
           paddingTop: '10px',
           paddingBottom: '10px',
           '&.Mui-selected': {
@@ -165,7 +165,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: theme.palette.text.grey[700],
+          color: theme.palette.text.secondary,
           minWidth: '36px'
         }
       }
@@ -193,20 +193,20 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
                 fontSize: '0.875rem'
               },
               '&:hover:not(.Mui-disabled):before': {
-                borderBottom: `2px solid ${theme.palette.grey[200]}`
+                borderBottom: `2px solid ${theme.palette.secondary.light}`
               },
               '&:after': {
-                borderBottomColor: theme.palette.grey[600]
+                borderBottomColor: theme.palette.secondary.main
               }
             },
             '& .MuiSvgIcon-root': {
-              color: theme.palette.grey[600],
+              color: theme.palette.secondary.main,
               fontSize: '1.1rem'
             },
             '& .MuiIconButton-root': {
-              color: theme.palette.grey[900],
+              color: theme.palette.secondary.dark,
               '&:hover': {
-                backgroundColor: theme.palette.grey[200]
+                backgroundColor: theme.palette.secondary.light
               }
             }
           }
@@ -224,11 +224,11 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
             border: `1px solid ${theme.palette.grey[300]}`,
 
             '&:hover': {
-              borderColor: theme.palette.grey[200]
+              borderColor: theme.palette.secondary.light
             },
             '&.Mui-focused': {
-              borderColor: theme.palette.grey[600],
-              boxShadow: `0 0 0 2px ${theme.palette.grey[600]}33`
+              borderColor: theme.palette.secondary.main,
+              boxShadow: `0 0 0 2px ${theme.palette.secondary.main}33`
             },
             '& input::placeholder': {
               color: theme.palette.grey[500],
@@ -238,10 +238,10 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
         },
         underline: {
           '&:hover:not(.Mui-disabled):before': {
-            borderBottom: `2px solid ${theme.palette.grey[200]}`
+            borderBottom: `2px solid ${theme.palette.secondary.light}`
           },
           '&:after': {
-            borderBottom: `2px solid ${theme.palette.grey[600]}`
+            borderBottom: `2px solid ${theme.palette.secondary.main}`
           }
         }
       }
@@ -251,7 +251,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
         input: {
           color: theme.palette.text.dark,
           '&::placeholder': {
-            color: theme.palette.text.grey[700],
+            color: theme.palette.text.secondary,
             fontSize: '0.875rem'
           }
         }
@@ -266,10 +266,10 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
             borderColor: theme.palette.grey[400]
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.grey[200]
+            borderColor: theme.palette.secondary.light
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.grey[600]
+            borderColor: theme.palette.secondary.main
           },
           '&.MuiInputBase-multiline': {
             padding: 1
@@ -281,7 +281,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
           padding: '15.5px 14px',
           borderRadius: `${borderRadius}px`,
           '&::placeholder': {
-            color: theme.palette.text.grey[700],
+            color: theme.palette.text.secondary,
             fontSize: '0.875rem'
           },
           '&.MuiInputBase-inputSizeSmall': {
@@ -302,9 +302,9 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: theme.palette.text.grey[700],
+          color: theme.palette.text.secondary,
           '&.Mui-focused': {
-            color: theme.palette.grey[600]
+            color: theme.palette.secondary.main
           },
           '&.Mui-error': {
             color: theme.palette.error.main
@@ -315,14 +315,14 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: theme.palette.grey[600],
+          color: theme.palette.secondary.main,
           transition: 'color 0.3s ease, background-color 0.3s ease',
           '&:hover': {
-            backgroundColor: theme.palette.grey[600],
+            backgroundColor: theme.palette.secondary.main,
             color: theme.palette.common.white
           },
           '&:focus': {
-            outline: `2px solid ${theme.palette.grey[600]}`
+            outline: `2px solid ${theme.palette.secondary.main}`
           }
         }
       }
@@ -339,7 +339,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
           width: '4px'
         },
         valueLabel: {
-          color: theme.palette.grey[200]
+          color: theme.palette.secondary.light
         }
       }
     },
@@ -347,7 +347,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
       styleOverrides: {
         root: {
           '& .MuiAutocomplete-tag': {
-            background: theme.palette.grey[200],
+            background: theme.palette.secondary.light,
             borderRadius: `${borderRadius}px`,
             color: theme.palette.text.dark,
             '.MuiChip-deleteIcon': {
@@ -380,7 +380,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiAvatar: {
       styleOverrides: {
         root: {
-          color: theme.palette.grey[900],
+          color: theme.palette.secondary.dark,
           background: theme.palette.secondary[200]
         }
       }
@@ -411,7 +411,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
     MuiInternalDateTimePickerTabs: {
       styleOverrides: {
         tabs: {
-          backgroundColor: theme.palette.grey[200],
+          backgroundColor: theme.palette.secondary.light,
           '& .MuiTabs-flexContainer': {
             borderColor: theme.palette.secondary[200]
           },
@@ -419,10 +419,10 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
             color: theme.palette.text.dark
           },
           '& .MuiTabs-indicator': {
-            backgroundColor: theme.palette.grey[900]
+            backgroundColor: theme.palette.secondary.dark
           },
           '& .Mui-selected': {
-            color: theme.palette.grey[900]
+            color: theme.palette.secondary.dark
           }
         }
       }
@@ -467,7 +467,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
           margin: 0,
           lineHeight: 1.4,
           color: theme.palette.background.paper,
-          background: theme.palette.text.grey[700]
+          background: theme.palette.text.secondary
         }
       }
     },
