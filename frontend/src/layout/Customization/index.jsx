@@ -70,15 +70,28 @@ export default function Customization() {
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
                 bgcolor: theme.palette.grey[600],
-                color: theme.palette.secondary.contrastText,
+                color: theme.palette.common.white,
                 '&:hover': {
-                  bgcolor: theme.palette.grey[900]
+                  bgcolor: theme.palette.grey[300],
+                  color: theme.palette.text.secondary
                 },
                 boxShadow: theme.customShadows?.secondary || theme.shadows[6]
               })}
             >
               <AnimateButton type="rotate">
-                <IconButton color="inherit" size="large" disableRipple aria-label="live customize">
+                <IconButton
+                  size="large"
+                  disableRipple
+                  aria-label="live customize"
+                  sx={(theme) => ({
+                    color: theme.palette.common.white,
+                    '&:hover': {
+                      backgroundColor: theme.palette.action.hover,
+                      color: theme.palette.text.secondary
+                    }
+                  })}
+                >
+                  {' '}
                   <IconSettings />
                 </IconButton>
               </AnimateButton>

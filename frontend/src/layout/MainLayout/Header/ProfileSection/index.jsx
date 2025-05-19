@@ -113,22 +113,28 @@ export default function ProfileSection() {
   return (
     <>
       <Chip
-        sx={{
+        sx={(theme) => ({
           ml: 2,
-          height: '48px',
+          height: 48,
           alignItems: 'center',
           borderRadius: '27px',
-          '& .MuiChip-label': { lineHeight: 0 }
-        }}
+          backgroundColor: theme.palette.grey[300],
+          '& .MuiChip-label': { lineHeight: 0 },
+          cursor: 'pointer',
+          '&:hover': {
+            backgroundColor: theme.palette.grey[600],
+            color: theme.palette.common.white
+          }
+        })}
         icon={
           <Avatar
             src={userData.avatar || User1}
             alt="user-images"
-            sx={{
+            sx={(theme) => ({
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
               cursor: 'pointer'
-            }}
+            })}
             ref={anchorRef}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
@@ -140,9 +146,10 @@ export default function ProfileSection() {
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        color="primary"
+        color={theme.palette.grey[600]}
         aria-label="user-account"
       />
+
       <Popper
         placement="bottom"
         open={open}
@@ -286,8 +293,13 @@ export default function ProfileSection() {
                                     label="02"
                                     variant="filled"
                                     size="small"
-                                    color="warning"
-                                    sx={{ '& .MuiChip-label': { mt: 0.25 } }}
+                                    sx={(theme) => ({
+                                      backgroundColor: theme.palette.grey[900],
+                                      color: theme.palette.common.white,
+                                      '& .MuiChip-label': {
+                                        marginTop: theme.spacing(0.25)
+                                      }
+                                    })}
                                   />
                                 </Grid>
                               </Grid>

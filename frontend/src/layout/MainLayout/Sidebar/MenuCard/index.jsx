@@ -30,7 +30,7 @@ function LinearProgressWithLabel({ value, ...others }) {
             <Typography
               variant="h6"
               sx={(theme) => ({
-                color: theme.palette.grey[900]
+                color: theme.palette.text.primary
               })}
             >
               Progress
@@ -72,7 +72,7 @@ function MenuCard() {
   return (
     <Card
       sx={{
-        bgcolor: 'primary.light',
+        bgcolor: theme.palette.grey[300],
         mb: 2.75,
         overflow: 'hidden',
         position: 'relative',
@@ -81,7 +81,7 @@ function MenuCard() {
           position: 'absolute',
           width: 157,
           height: 157,
-          bgcolor: 'primary.200',
+          bgcolor: theme.palette.grey[200],
           borderRadius: '50%',
           top: -105,
           right: -96
@@ -97,10 +97,9 @@ function MenuCard() {
                 sx={{
                   ...theme.typography.commonAvatar,
                   ...theme.typography.largeAvatar,
-                  color: 'primary.main',
+                  color: theme.palette.grey[600],
                   border: 'none',
-                  borderColor: 'primary.main',
-                  bgcolor: 'background.paper'
+                  bgcolor: theme.palette.background.paper
                 }}
               >
                 <TableChartOutlinedIcon fontSize="inherit" />
@@ -109,11 +108,11 @@ function MenuCard() {
             <ListItemText
               sx={{ mt: 0 }}
               primary={
-                <Typography variant="subtitle1" sx={{ color: 'primary.800' }}>
+                <Typography variant="subtitle1" sx={{ color: theme.palette.grey[900] }}>
                   Get Extra Space
                 </Typography>
               }
-              secondary={<Typography variant="caption"> 28/23 GB</Typography>}
+              secondary={<Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>28/23 GB</Typography>}
             />
           </ListItem>
         </List>
