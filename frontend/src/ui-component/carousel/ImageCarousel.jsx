@@ -1,11 +1,12 @@
 import Slider from 'react-slick';
 import { useState, useRef } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 export default function ImageCarousel({ images = [] }) {
+  const theme = useTheme();
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
 
@@ -19,13 +20,8 @@ export default function ImageCarousel({ images = [] }) {
     afterChange: (index) => setCurrentSlide(index)
   };
 
-  const handlePrev = () => {
-    sliderRef.current?.slickPrev();
-  };
-
-  const handleNext = () => {
-    sliderRef.current?.slickNext();
-  };
+  const handlePrev = () => sliderRef.current?.slickPrev();
+  const handleNext = () => sliderRef.current?.slickNext();
 
   return (
     <Box>
@@ -40,7 +36,7 @@ export default function ImageCarousel({ images = [] }) {
           borderRadius: 2,
           boxShadow: 4,
           overflow: 'hidden',
-          backgroundColor: 'background.paper'
+          backgroundColor: theme.palette.background.paper
         }}
       >
         {/* Arrows */}
@@ -53,7 +49,7 @@ export default function ImageCarousel({ images = [] }) {
             zIndex: 1
           }}
         >
-          <IconButton onClick={handlePrev}>
+          <IconButton onClick={handlePrev} size="small" sx={{ color: theme.palette.text.primary }}>
             <ChevronLeft />
           </IconButton>
         </Box>
@@ -66,7 +62,7 @@ export default function ImageCarousel({ images = [] }) {
             zIndex: 1
           }}
         >
-          <IconButton onClick={handleNext}>
+          <IconButton onClick={handleNext} size="small" sx={{ color: theme.palette.text.primary }}>
             <ChevronRight />
           </IconButton>
         </Box>
@@ -78,11 +74,10 @@ export default function ImageCarousel({ images = [] }) {
               <img
                 src={img}
                 alt={`image-${index}`}
-                className="minimal__image__img"
                 style={{
                   width: '100%',
                   height: 'auto',
-                  borderRadius: 8,
+                  borderRadius: theme.shape.borderRadius,
                   objectFit: 'cover'
                 }}
               />
@@ -92,17 +87,21 @@ export default function ImageCarousel({ images = [] }) {
 
         {/* Slide Count */}
         <Box
-          sx={{
+          sx={(theme) => ({
             position: 'absolute',
-            bottom: 8,
-            right: 16,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            color: 'white',
+            bottom: theme.spacing(1),
+            right: theme.spacing(2),
+            backgroundColor:
+              theme.palette.mode === 'dark'
+                ? theme.palette.common.black // fundo preto no dark mode
+                : 'rgba(0, 0, 0, 0.6)', // fundo semitransparente no light mode
+            color: theme.palette.common.white,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            fontSize: 12
-          }}
+            fontSize: 12,
+            boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)'
+          })}
         >
           {`${currentSlide + 1} / ${images.length}`}
         </Box>
@@ -114,7 +113,7 @@ export default function ImageCarousel({ images = [] }) {
           <Box
             key={index}
             sx={{
-              border: index === currentSlide ? '2px solid #1976d2' : '1px solid #ccc',
+              border: index === currentSlide ? `2px solid ${theme.palette.grey[600]}` : `1px solid ${theme.palette.divider}`,
               borderRadius: 1,
               cursor: 'pointer',
               overflow: 'hidden',

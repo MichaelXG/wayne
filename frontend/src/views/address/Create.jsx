@@ -24,7 +24,7 @@ export default function AddressEdit() {
     [addressId]
   );
 
-  const isActive = addressEditRef.current?.isActive ?? true; // fallback true na primeira renderização
+  const isActive = addressEditRef.current?.isActive ?? true; 
 
   const actionbutton = useMemo(
     () => ({

@@ -89,7 +89,15 @@ export default function NavGroup({ item, lastItem, remItems, lastItemId, setSele
         return <NavItem key={menu.id} item={menu} level={1} />;
       default:
         return (
-          <Typography key={menu?.id} variant="h6" color="error" align="center">
+          <Typography
+            key={menu?.id}
+            variant="h6"
+            align="center"
+            sx={(theme) => ({
+              color: theme.palette.error.main
+            })}
+          >
+            {' '}
             Menu Items Error
           </Typography>
         );

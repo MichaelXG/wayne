@@ -16,7 +16,7 @@ const icons = {
 const carrier = {
   id: 'carrier',
   title: 'Carriers',
-  icon: icons.IconTruckDelivery, // <- Ícone principal ajustado
+  icon: icons.IconTruckDelivery,
   type: 'group',
   children: [
     {

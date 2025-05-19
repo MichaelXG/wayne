@@ -1,4 +1,8 @@
+import { useTheme } from '@mui/material/styles';
+
 // ==============================|| DASHBOARD - TOTAL GROWTH BAR CHART ||============================== //
+
+const theme = useTheme();
 
 const chartData = {
   height: 480,
@@ -38,7 +42,7 @@ const chartData = {
     },
     legend: {
       show: true,
-      fontFamily: `'Roboto', sans-serif`,
+      fontFamily: theme.typography.fontFamily, // usa a fonte padrão do tema (ex: Roboto)
       position: 'bottom',
       offsetX: 20,
       labels: {
@@ -63,7 +67,7 @@ const chartData = {
     grid: {
       show: true
     }
-  },
+  }
   // series: [
   //   {
   //     name: 'pending',

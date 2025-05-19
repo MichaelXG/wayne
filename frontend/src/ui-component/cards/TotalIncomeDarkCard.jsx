@@ -24,8 +24,8 @@ import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
-  color: theme.palette.primary.light,
+  backgroundColor: theme.palette.grey[600],
+  color: theme.palette.grey[300],
   overflow: 'hidden',
   position: 'relative',
   '&:after': {
@@ -33,7 +33,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: `linear-gradient(210.04deg, ${theme.palette.primary[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    background: `linear-gradient(210.04deg, ${theme.palette.grey[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
     borderRadius: '50%',
     top: -30,
     right: -180
@@ -43,7 +43,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: `linear-gradient(140.9deg, ${theme.palette.primary[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
+    background: `linear-gradient(140.9deg, ${theme.palette.grey[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
     borderRadius: '50%',
     top: -160,
     right: -130
@@ -87,12 +87,12 @@ export default function TotalIncomeDarkCard({ isLoading }) {
                 <ListItemAvatar>
                   <Avatar
                     variant="rounded"
-                    sx={{
+                    sx={(theme) => ({
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
-                      bgcolor: 'primary.800',
-                      color: '#fff'
-                    }}
+                      bgcolor: theme.palette.grey[900],
+                      color: theme.palette.common.white
+                    })}
                   >
                     <TableChartOutlinedIcon fontSize="inherit" />
                   </Avatar>
@@ -108,7 +108,13 @@ export default function TotalIncomeDarkCard({ isLoading }) {
                     </Typography>
                   }
                   secondary={
-                    <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={(theme) => ({
+                        color: theme.palette.grey[300],
+                        mt: 0.25
+                      })}
+                    >
                       Total Income
                     </Typography>
                   }

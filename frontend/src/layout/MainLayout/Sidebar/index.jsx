@@ -78,16 +78,16 @@ function Sidebar() {
           anchor="left"
           open={drawerOpen}
           onClose={() => handlerDrawerOpen(!drawerOpen)}
-          sx={{
+          sx={(theme) => ({
             '& .MuiDrawer-paper': {
               mt: downMD ? 0 : 11,
               zIndex: 1099,
               width: drawerWidth,
-              bgcolor: 'background.default',
-              color: 'text.primary',
+              bgcolor: theme.palette.background.default,
+              color: theme.palette.text.primary,
               borderRight: 'none'
             }
-          }}
+          })}
           ModalProps={{ keepMounted: true }}
           color="inherit"
         >

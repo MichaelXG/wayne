@@ -18,7 +18,18 @@ export default function Footer() {
     >
       <Typography variant="caption">
         &copy; All rights reserved{' '}
-        <Typography component={Link} href="/" underline="hover" target="_blank" color="secondary.main">
+        <Typography
+          component={Link}
+          href="/"
+          target="_blank"
+          sx={(theme) => ({
+            color: theme.palette.grey[600],
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline'
+            }
+          })}
+        >
           M-Tech
         </Typography>
       </Typography>
@@ -26,10 +37,15 @@ export default function Footer() {
         <Link
           component={RouterLink}
           to="https://discord.gg/TVHHuKvc65"
-          underline="hover"
           target="_blank"
           variant="caption"
-          color="text.primary"
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline'
+            }
+          })}
         >
           Discord
         </Link>

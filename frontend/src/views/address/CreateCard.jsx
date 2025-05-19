@@ -78,14 +78,28 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
 
   return (
     <FormProvider {...methods}>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', px: 4, py: 6, backgroundColor: 'background.default' }}>
+      <Box
+        sx={(theme) => ({
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          px: 4,
+          py: 6,
+          backgroundColor: theme.palette.background.default
+        })}
+      >
         <Box sx={{ width: '100%', maxWidth: 1000 }}>
           <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             {id && (
               <Chip
                 label={`ID: ${id}`}
                 size="small"
-                sx={{ fontWeight: 600, fontSize: '0.75rem', color: '#FFFFFF', backgroundColor: '#8E33FF' }}
+                sx={(theme) => ({
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                  color: theme.palette.common.white,
+                  backgroundColor: theme.palette.primary.main
+                })}
               />
             )}
 
@@ -100,14 +114,24 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
                         {...field}
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
-                        sx={{
-                          '& .MuiSwitch-thumb': { color: field.value ? 'primary.main' : 'grey.500' },
-                          '& .MuiSwitch-track': { backgroundColor: field.value ? 'primary.light' : 'grey.300' }
-                        }}
+                        sx={(theme) => ({
+                          '& .MuiSwitch-thumb': {
+                            color: field.value ? theme.palette.primary.main : theme.palette.grey[300]
+                          },
+                          '& .MuiSwitch-track': {
+                            backgroundColor: field.value ? theme.palette.primary.light : theme.palette.grey[300]
+                          }
+                        })}
                       />
                     }
                     label={
-                      <Typography fontWeight="bold" color={field.value ? 'primary.main' : 'text.secondary'}>
+                      <Typography
+                        fontWeight="bold"
+                        sx={(theme) => ({
+                          color: field.value ? theme.palette.primary.main : theme.palette.text.secondary
+                        })}
+                      >
+                        {' '}
                         {field.value ? 'Default' : 'Not Default'}
                       </Typography>
                     }
@@ -124,14 +148,24 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
                         {...field}
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
-                        sx={{
-                          '& .MuiSwitch-thumb': { color: field.value ? 'success.main' : 'error.main' },
-                          '& .MuiSwitch-track': { backgroundColor: field.value ? 'success.light' : 'error.light' }
-                        }}
+                        sx={(theme) => ({
+                          '& .MuiSwitch-thumb': {
+                            color: field.value ? theme.palette.success.main : theme.palette.error.main
+                          },
+                          '& .MuiSwitch-track': {
+                            backgroundColor: field.value ? theme.palette.success.light : theme.palette.error.light
+                          }
+                        })}
                       />
                     }
                     label={
-                      <Typography fontWeight="bold" color={field.value ? 'success.main' : 'error.main'}>
+                      <Typography
+                        fontWeight="bold"
+                        sx={(theme) => ({
+                          color: field.value ? theme.palette.success.main : theme.palette.error.main
+                        })}
+                      >
+                        {' '}
                         {field.value ? 'Active' : 'Inactive'}
                       </Typography>
                     }
@@ -141,7 +175,17 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
             </Stack>
           </Box>
 
-          <Card elevation={0} sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8', p: 3 }}>
+          <Card
+            elevation={0}
+            sx={(theme) => ({
+              mt: 3,
+              borderRadius: 2,
+              boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+              bgcolor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
+              p: 3
+            })}
+          >
             <CardHeader title="Details" subheader="Basic address information" titleTypographyProps={{ variant: 'h6' }} sx={{ px: 0 }} />
             <Divider />
             <CardContent sx={{ p: 0 }}>
@@ -175,10 +219,18 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
                   </Grid>
 
                   <Grid item xs={6}>
-                    <Controller name="complement" control={control} render={({ field }) => <TextField {...field} label="Complement" fullWidth />} />
+                    <Controller
+                      name="complement"
+                      control={control}
+                      render={({ field }) => <TextField {...field} label="Complement" fullWidth />}
+                    />
                   </Grid>
                   <Grid item xs={6}>
-                    <Controller name="neighborhood" control={control} render={({ field }) => <TextField {...field} label="Neighborhood" fullWidth />} />
+                    <Controller
+                      name="neighborhood"
+                      control={control}
+                      render={({ field }) => <TextField {...field} label="Neighborhood" fullWidth />}
+                    />
                   </Grid>
 
                   <Grid item xs={12} sm={8}>
@@ -188,11 +240,19 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
                     <Controller name="state" control={control} render={({ field }) => <TextField {...field} label="State" fullWidth />} />
                   </Grid>
                   <Grid item xs={12} sm={2}>
-                    <Controller name="country" control={control} render={({ field }) => <TextField {...field} label="Country" fullWidth />} />
+                    <Controller
+                      name="country"
+                      control={control}
+                      render={({ field }) => <TextField {...field} label="Country" fullWidth />}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Controller name="reference" control={control} render={({ field }) => <TextField {...field} label="Reference" fullWidth />} />
+                    <Controller
+                      name="reference"
+                      control={control}
+                      render={({ field }) => <TextField {...field} label="Reference" fullWidth />}
+                    />
                   </Grid>
                 </Grid>
 

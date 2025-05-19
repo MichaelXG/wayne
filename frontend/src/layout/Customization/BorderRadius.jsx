@@ -1,4 +1,5 @@
 // material-ui
+import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
@@ -13,6 +14,7 @@ function valueText(value) {
 }
 
 export default function BorderRadius() {
+  const theme = useTheme();
   const { mode, borderRadius, onChangeBorderRadius } = useConfig();
 
   return (
@@ -32,12 +34,21 @@ export default function BorderRadius() {
             aria-labelledby="discrete-slider-small-steps"
             min={4}
             max={24}
-            color="primary"
-            sx={{
+            sx={(theme) => ({
+              color: theme.palette.grey[600],
+              '& .MuiSlider-thumb': {
+                backgroundColor: theme.palette.grey[600]
+              },
+              '& .MuiSlider-track': {
+                backgroundColor: theme.palette.grey[600]
+              },
+              '& .MuiSlider-rail': {
+                backgroundColor: theme.palette.grey[300]
+              },
               '& .MuiSlider-valueLabel': {
-                color: 'primary.light'
+                color: theme.palette.grey[300]
               }
-            }}
+            })}
           />
         </Grid>
         <Grid>

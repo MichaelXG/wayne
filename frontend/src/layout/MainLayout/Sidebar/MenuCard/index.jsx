@@ -27,7 +27,12 @@ function LinearProgressWithLabel({ value, ...others }) {
       <Grid>
         <Grid container sx={{ justifyContent: 'space-between' }}>
           <Grid>
-            <Typography variant="h6" sx={{ color: 'primary.800' }}>
+            <Typography
+              variant="h6"
+              sx={(theme) => ({
+                color: theme.palette.grey[900]
+              })}
+            >
               Progress
             </Typography>
           </Grid>
@@ -42,17 +47,17 @@ function LinearProgressWithLabel({ value, ...others }) {
           variant="determinate"
           value={value}
           {...others}
-          sx={{
+          sx={(theme) => ({
             height: 10,
             borderRadius: 30,
             [`&.${linearProgressClasses.colorPrimary}`]: {
-              bgcolor: 'background.paper'
+              bgcolor: theme.palette.background.paper
             },
             [`& .${linearProgressClasses.bar}`]: {
               borderRadius: 5,
-              bgcolor: 'primary.dark'
+              bgcolor: theme.palette.grey[600]
             }
-          }}
+          })}
         />
       </Grid>
     </Grid>

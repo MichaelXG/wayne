@@ -42,15 +42,15 @@ export default function Customization() {
             placement="top"
             componentsProps={{
               tooltip: {
-                sx: {
-                  backgroundColor: '#8E33FF',
-                  color: '#fff',
+                sx: (theme) => ({
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white,
                   fontSize: 12,
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: 2
-                }
+                  boxShadow: theme.shadows[2]
+                })
               }
             }}
           >
@@ -59,19 +59,23 @@ export default function Customization() {
               onClick={handleToggle}
               size="medium"
               variant="circular"
-              color="secondary"
-              sx={{
+              sx={(theme) => ({
+                position: 'fixed',
+                top: '20%',
+                right: 10,
+                zIndex: 1200,
                 borderRadius: 0,
                 borderTopLeftRadius: '50%',
                 borderBottomLeftRadius: '50%',
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
-                top: '20%',
-                position: 'fixed',
-                right: 10,
-                zIndex: 1200,
-                boxShadow: theme.customShadows.secondary
-              }}
+                bgcolor: theme.palette.grey[600],
+                color: theme.palette.secondary.contrastText,
+                '&:hover': {
+                  bgcolor: theme.palette.grey[900]
+                },
+                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
+              })}
             >
               <AnimateButton type="rotate">
                 <IconButton color="inherit" size="large" disableRipple aria-label="live customize">

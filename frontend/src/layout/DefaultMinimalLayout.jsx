@@ -1,29 +1,32 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+// MUI - Hooks
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-import SubCard from 'ui-component/cards/SubCard';
-import MainCard from 'ui-component/cards/MainCard';
+// MUI - Componentes
+import { Box, Breadcrumbs, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+
+// MUI - Constantes
 import { gridSpacing } from 'store/constant';
-import { Box, IconButton, Breadcrumbs, Tooltip } from '@mui/material';
-import {
-  IconBan,
-  IconCheck,
-  IconClockHour4,
-  IconPackage,
-  IconShieldCheck,
-  IconShieldX,
-  IconTrash,
-  IconTruckDelivery
-} from '@tabler/icons-react';
 
-import React from 'react';
+// MUI - Cartões personalizados
+import MainCard from 'ui-component/cards/MainCard';
+import SubCard from 'ui-component/cards/SubCard';
+
+// Ícones
+import { IconShieldCheck, IconShieldX, IconTrash } from '@tabler/icons-react';
+
+// Componentes internos
 import AnimateButton from '../ui-component/extended/AnimateButton';
+
+// Contexto
 import { useOrder } from '../contexts/StoredOrderIDContext';
+
+// Utils
+import { statusColors, statusIcons } from '../utils/statusUtils';
 
 export default function DefaultMinimalLayout({
   mainCardTitle,
@@ -39,41 +42,25 @@ export default function DefaultMinimalLayout({
   const navigate = useNavigate();
   const { clearOrder } = useOrder();
 
-  const statusColors = {
-    pending: 'warning',
-    paid: 'success',
-    processing: 'info',
-    shipped: 'primary',
-    canceled: 'error'
-  };
-
-  const statusIcons = {
-    pending: <IconClockHour4 size={16} />,
-    paid: <IconCheck size={16} />,
-    processing: <IconPackage size={16} />,
-    shipped: <IconTruckDelivery size={16} />,
-    canceled: <IconBan size={16} />
-  };
-
   const authIcon = checkingAuth ? (
     <Tooltip
       title="User authenticated"
       placement="top"
       componentsProps={{
         tooltip: {
-          sx: {
-            backgroundColor: 'green',
-            color: '#fff',
+          sx: (theme) => ({
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.common.white,
             fontSize: 12,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            boxShadow: 2
-          }
+            boxShadow: theme.shadows[2]
+          })
         }
       }}
     >
-      <IconShieldCheck color="green" size={20} />
+      <IconShieldCheck color={theme.palette.success.main} size={20} />{' '}
     </Tooltip>
   ) : (
     <Tooltip
@@ -81,19 +68,19 @@ export default function DefaultMinimalLayout({
       placement="top"
       componentsProps={{
         tooltip: {
-          sx: {
-            backgroundColor: 'red',
-            color: '#fff',
+          sx: (theme) => ({
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.common.white,
             fontSize: 12,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            boxShadow: 2
-          }
+            boxShadow: theme.shadows[2]
+          })
         }
       }}
     >
-      <IconShieldX color="red" size={20} />
+      <IconShieldX color={theme.palette.error.main} size={20} />
     </Tooltip>
   );
 
@@ -125,15 +112,15 @@ export default function DefaultMinimalLayout({
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: (theme) => theme.palette.error.main,
-                              color: (theme) => theme.palette.common.white,
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
@@ -166,28 +153,28 @@ export default function DefaultMinimalLayout({
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: '#8E33FF',
-                              color: '#fff',
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.grey[600],
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
                         <IconButton
-                          color={actionbutton.color || 'secondary'}
+                          color={actionbutton.color || theme.palette.grey[600]}
                           size="medium"
                           href={actionbutton.href}
                           onClick={actionbutton.onClick}
                           type={actionbutton.type || 'button'}
                           sx={{
-                            backgroundColor: 'secondary.light',
+                            backgroundColor: theme.palette.grey[300],
                             '&:hover': {
-                              backgroundColor: 'secondary.main',
+                              backgroundColor: theme.palette.grey[600],
                               color: 'white'
                             }
                           }}
@@ -242,7 +229,7 @@ export default function DefaultMinimalLayout({
                           variant="body2"
                           fontWeight={500}
                           sx={{
-                            color: 'secondary.main',
+                            color: theme.palette.grey[600],
                             textDecoration: 'none',
                             '&:hover': { textDecoration: 'underline' }
                           }}
@@ -263,15 +250,15 @@ export default function DefaultMinimalLayout({
                       placement="top"
                       componentsProps={{
                         tooltip: {
-                          sx: {
-                            backgroundColor: (theme) => theme.palette.error.main,
-                            color: (theme) => theme.palette.common.white,
+                          sx: (theme) => ({
+                            backgroundColor: theme.palette.error.main,
+                            color: theme.palette.common.white,
                             fontSize: 12,
                             px: 1.5,
                             py: 0.5,
                             borderRadius: 1,
-                            boxShadow: 2
-                          }
+                            boxShadow: theme.shadows[2]
+                          })
                         }
                       }}
                     >

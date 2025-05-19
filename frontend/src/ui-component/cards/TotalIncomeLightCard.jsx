@@ -55,12 +55,12 @@ export default function TotalIncomeLightCard({ isLoading, total, icon, label }) 
                 <ListItemAvatar>
                   <Avatar
                     variant="rounded"
-                    sx={{
+                    sx={(theme) => ({
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
-                      bgcolor: label === 'Meeting attends' ? alpha(theme.palette.error.light, 0.25) : 'warning.light',
-                      color: label === 'Meeting attends' ? 'error.dark' : 'warning.dark'
-                    }}
+                      bgcolor: label === 'Meeting attends' ? alpha(theme.palette.error.light, 0.25) : theme.palette.warning.light,
+                      color: label === 'Meeting attends' ? theme.palette.error.dark : theme.palette.warning.dark
+                    })}
                   >
                     {icon}
                   </Avatar>
@@ -69,7 +69,13 @@ export default function TotalIncomeLightCard({ isLoading, total, icon, label }) 
                   sx={{ py: 0, mt: 0.45, mb: 0.45 }}
                   primary={<Typography variant="h4">${total}k</Typography>}
                   secondary={
-                    <Typography variant="subtitle2" sx={{ color: 'grey.500', mt: 0.5 }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={(theme) => ({
+                        color: theme.palette.grey[500],
+                        mt: 0.5
+                      })}
+                    >
                       {label}
                     </Typography>
                   }

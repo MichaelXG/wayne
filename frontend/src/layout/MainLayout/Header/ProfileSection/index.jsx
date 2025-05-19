@@ -197,7 +197,12 @@ export default function ProfileSection() {
                       }}
                     >
                       <Divider />
-                      <Card sx={{ bgcolor: 'secondary.light', my: 2 }}>
+                      <Card
+                        sx={(theme) => ({
+                          bgcolor: theme.palette.grey[300],
+                          my: 2
+                        })}
+                      >
                         <CardContent>
                           <Grid container spacing={3} direction="column">
                             <Grid>
@@ -207,11 +212,18 @@ export default function ProfileSection() {
                                 </Grid>
                                 <Grid>
                                   <Switch
-                                    color="secondary"
                                     checked={sdm}
                                     onChange={(e) => setSdm(e.target.checked)}
                                     name="sdm"
                                     size="small"
+                                    sx={(theme) => ({
+                                      '& .MuiSwitch-switchBase.Mui-checked': {
+                                        color: theme.palette.grey[600],
+                                        '& + .MuiSwitch-track': {
+                                          backgroundColor: theme.palette.grey[600]
+                                        }
+                                      }
+                                    })}
                                   />
                                 </Grid>
                               </Grid>
@@ -227,6 +239,14 @@ export default function ProfileSection() {
                                     onChange={(e) => setNotification(e.target.checked)}
                                     name="sdm"
                                     size="small"
+                                    sx={(theme) => ({
+                                      '& .MuiSwitch-switchBase.Mui-checked': {
+                                        color: theme.palette.grey[600],
+                                        '& + .MuiSwitch-track': {
+                                          backgroundColor: theme.palette.grey[600]
+                                        }
+                                      }
+                                    })}
                                   />
                                 </Grid>
                               </Grid>

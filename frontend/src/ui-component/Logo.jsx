@@ -1,9 +1,9 @@
 import { useTheme } from '@mui/material/styles';
-import { Box, Link } from '@mui/material';
+import { Box } from '@mui/material';
 import logo from '../assets/images/Logo.png';
 import logoDark from '../assets/images/logo-dark.png';
 
-export default function Logo() {
+export default function Logo({ containerWidth = 200, containerHeight = 100 }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -11,33 +11,31 @@ export default function Logo() {
     <Box
       sx={{
         display: 'flex',
-        alignItems: 'flex-start',
-        width: 194,
-        height: 36.28,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: containerWidth,
+        height: containerHeight,
         overflow: 'hidden',
         lineHeight: 0
       }}
     >
       <img
         src={isDark ? logoDark : logo}
-        alt="F-Store"
-        width="92"
-        height="32"
+        alt="Wayne"
         style={{
           display: 'block',
-          width: '100%',
-          height: '100%',
-          objectFit: 'contain',
+          width: '100%', // ocupa toda a largura do container
+          height: '100%', // ocupa toda a altura do container
+          objectFit: 'contain', // mantém proporção e "encaixa" a imagem
           WebkitFontSmoothing: 'antialiased',
           textSizeAdjust: '100%',
-          fontFamily: 'Roboto, sans-serif',
+          fontFamily: theme.typography.fontFamily,
           fontSize: '0.875rem',
           fontWeight: 400,
           lineHeight: '1.334em',
           color: 'rgb(54, 65, 82)',
           WebkitTapHighlightColor: 'transparent',
-          WebkitBoxFlex: 1,
-          flexGrow: 1
+          flexShrink: 0
         }}
       />
     </Box>

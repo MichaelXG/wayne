@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Stack, Typography, styled, alpha } from '@mui/
 import { Icon } from '@iconify/react';
 
 const UploadBox = styled(Box)(({ theme }) => ({
-  border: `2px dashed ${alpha(theme.palette.secondary[200], 0.4)}`,
+  border: `2px dashed ${alpha(theme.palette.grey[200], 0.4)}`,
   borderRadius: '16px',
   padding: theme.spacing(1, 3),
   backgroundColor: theme.palette.grey[100],
@@ -14,7 +14,7 @@ const UploadBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   '&:hover': {
-    borderColor: theme.palette.secondary.main,
+    borderColor: theme.palette.grey[600],
     backgroundColor: theme.palette.grey[300]
   }
 }));
@@ -173,10 +173,10 @@ export default function ImageUpload({ initialImages = [], value, onChange, disab
               py: 1,
               gap: 1,
               fontSize: '0.875rem',
-              backgroundColor: theme.palette.secondary[200],
+              backgroundColor: theme.palette.grey[200],
               color: theme.palette.secondary.contrastText,
               '&:hover': {
-                backgroundColor: theme.palette.secondary.main
+                backgroundColor: theme.palette.grey[600]
               }
             })}
           >

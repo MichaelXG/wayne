@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export default function AddressBlock({ address }) {
   if (!address) return null;
@@ -15,11 +16,21 @@ export default function AddressBlock({ address }) {
       <Typography variant="body2" fontWeight="bold">
         {line1}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography
+        variant="body2"
+        sx={(theme) => ({
+          color: theme.palette.text.secondary
+        })}
+      >
         {line2}
       </Typography>
       {line3 && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={(theme) => ({
+            color: theme.palette.text.secondary
+          })}
+        >
           {line3}
         </Typography>
       )}

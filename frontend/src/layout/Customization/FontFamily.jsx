@@ -1,10 +1,7 @@
 // material-ui
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid2';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Box, FormControlLabel, Grid, Radio, RadioGroup, Stack, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useEffect } from 'react';
 
 // project imports
 import useConfig from 'hooks/useConfig';
@@ -13,11 +10,17 @@ import MainCard from 'ui-component/cards/MainCard';
 // ==============================|| CUSTOMIZATION - FONT FAMILY ||============================== //
 
 export default function FontFamilyPage() {
+  const theme = useTheme();
   const { fontFamily, onChangeFontFamily } = useConfig();
 
   const handleFontChange = (event) => {
     onChangeFontFamily(event.target.value);
   };
+
+  // Aplica a fonte globalmente ao <body>
+  useEffect(() => {
+    document.body.style.fontFamily = fontFamily;
+  }, [fontFamily]);
 
   const fonts = [
     {
@@ -77,39 +80,45 @@ export default function FontFamilyPage() {
     }
   ];
 
-  const bgColor = 'grey.50';
-  const bgActiveColor = 'primary.light';
-
   return (
     <Stack spacing={2.5} sx={{ p: 2, width: '100%' }}>
       <Typography variant="h5">FONT STYLE</Typography>
-      <RadioGroup aria-label="payment-card" name="payment-card" value={fontFamily} onChange={handleFontChange}>
+      <RadioGroup name="font-family" value={fontFamily} onChange={handleFontChange}>
         <Grid container spacing={1.25}>
-          {fonts.map((item, index) => (
-            <Grid key={index} size={12}>
-              <MainCard content={false} sx={{ p: 0.75, bgcolor: fontFamily === item.value ? bgActiveColor : bgColor }}>
-                <MainCard
-                  content={false}
-                  border
+          {fonts.map((item) => {
+            const isSelected = fontFamily === item.value;
+
+            return (
+              <Grid key={item.id} item xs={12}>
+                <Box
                   sx={{
-                    p: 1.75,
-                    borderWidth: 1,
-                    ...(fontFamily === item.value && { borderColor: 'primary.main' })
+                    bgcolor: isSelected ? theme.palette.primary.light : theme.palette.grey[50],
+                    borderRadius: 1
                   }}
                 >
-                  <FormControlLabel
-                    sx={{ width: 1 }}
-                    control={<Radio value={item.value} sx={{ display: 'none' }} />}
-                    label={
-                      <Typography variant="h5" sx={{ pl: 2, fontFamily: item.value }}>
-                        {item.label}
-                      </Typography>
-                    }
-                  />
-                </MainCard>
-              </MainCard>
-            </Grid>
-          ))}
+                  <MainCard
+                    content={false}
+                    border
+                    sx={{
+                      p: 1.75,
+                      borderWidth: 1,
+                      borderColor: isSelected ? theme.palette.primary.main : theme.palette.divider
+                    }}
+                  >
+                    <FormControlLabel
+                      sx={{ width: '100%' }}
+                      control={<Radio value={item.value} sx={{ display: 'none' }} />}
+                      label={
+                        <Typography variant="h5" sx={{ pl: 2, fontFamily: item.value }}>
+                          {item.label}
+                        </Typography>
+                      }
+                    />
+                  </MainCard>
+                </Box>
+              </Grid>
+            );
+          })}
         </Grid>
       </RadioGroup>
     </Stack>

@@ -126,7 +126,15 @@ export default function NavCollapse({ menu, level, parentId }) {
         return <NavItem key={item.id} item={item} level={level + 1} />;
       default:
         return (
-          <Typography key={item.id} variant="h6" color="error" align="center">
+          <Typography
+            key={item.id}
+            variant="h6"
+            align="center"
+            sx={(theme) => ({
+              color: theme.palette.error.main
+            })}
+          >
+            {' '}
             Menu Items Error
           </Typography>
         );
@@ -154,41 +162,66 @@ export default function NavCollapse({ menu, level, parentId }) {
     <IconChevronRight stroke={1.5} size="16px" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
   );
 
-  const iconSelectedColor = 'secondary.main';
+  const iconSelectedColor = theme.palette.grey[600];
 
   return (
     <>
       <ListItemButton
-        sx={{
+        sx={(theme) => ({
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
           mb: 0.5,
-          ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
-          ...(!drawerOpen && { pl: 1.25 }),
+
+          ...(drawerOpen &&
+            level !== 1 && {
+              ml: `${level * 18}px`
+            }),
+
+          ...(!drawerOpen && {
+            pl: 1.25
+          }),
+
           ...(drawerOpen &&
             level === 1 && {
-              '&:hover': { bgcolor: 'secondary.light' },
+              '&:hover': {
+                bgcolor: theme.palette.grey[300]
+              },
               '&.Mui-selected': {
-                bgcolor: 'secondary.light',
-                color: iconSelectedColor,
-                '&:hover': { color: iconSelectedColor, bgcolor: 'secondary.light' }
+                bgcolor: theme.palette.grey[300],
+                color: theme.palette.grey[600],
+                '&:hover': {
+                  color: theme.palette.grey[600],
+                  bgcolor: theme.palette.grey[300]
+                }
               }
             }),
+
           ...((!drawerOpen || level !== 1) && {
             py: level === 1 ? 0 : 1,
-            '&:hover': { bgcolor: 'transparent' },
-            '&.Mui-selected': { '&:hover': { bgcolor: 'transparent' }, bgcolor: 'transparent' }
+            '&:hover': {
+              bgcolor: 'transparent'
+            },
+            '&.Mui-selected': {
+              bgcolor: 'transparent',
+              '&:hover': {
+                bgcolor: 'transparent'
+              }
+            }
           })
-        }}
+        })}
         selected={isSelected}
-        {...(!drawerOpen && { onMouseEnter: handleClickMini, onMouseLeave: handleClosePopper })}
+        {...(!drawerOpen && {
+          onMouseEnter: handleClickMini,
+          onMouseLeave: handleClosePopper
+        })}
         onClick={handleClickMini}
       >
         {menuIcon && (
           <ListItemIcon
-            sx={{
+            sx={(theme) => ({
               minWidth: level === 1 ? 36 : 18,
-              color: isSelected ? iconSelectedColor : 'text.primary',
+              color: isSelected ? theme.palette.grey[600] : theme.palette.text.primary,
+
               ...(!drawerOpen &&
                 level === 1 && {
                   borderRadius: `${borderRadius}px`,
@@ -197,16 +230,16 @@ export default function NavCollapse({ menu, level, parentId }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   '&:hover': {
-                    bgcolor: 'secondary.light'
+                    bgcolor: theme.palette.grey[300]
                   },
                   ...(isSelected && {
-                    bgcolor: 'secondary.light',
+                    bgcolor: theme.palette.grey[300],
                     '&:hover': {
-                      bgcolor: 'secondary.light'
+                      bgcolor: theme.palette.grey[300]
                     }
                   })
                 })
-            }}
+            })}
           >
             {menuIcon}
           </ListItemIcon>
@@ -255,20 +288,20 @@ export default function NavCollapse({ menu, level, parentId }) {
                 }
               }
             ]}
-            sx={{
+            sx={(theme) => ({
               overflow: 'visible',
               zIndex: 2001,
               minWidth: 180,
               '&:before': {
                 content: '""',
-                bgcolor: 'background.paper',
+                bgcolor: theme.palette.background.paper,
                 transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 120,
-                borderLeft: `1px solid`,
-                borderBottom: `1px solid`,
-                borderColor: 'divider'
+                borderLeft: '1px solid',
+                borderBottom: '1px solid',
+                borderColor: theme.palette.divider
               }
-            }}
+            })}
           >
             {({ TransitionProps }) => (
               <Transitions in={openMini} {...TransitionProps}>
@@ -294,7 +327,7 @@ export default function NavCollapse({ menu, level, parentId }) {
           {open && (
             <List
               disablePadding
-              sx={{
+              sx={(theme) => ({
                 position: 'relative',
                 '&:after': {
                   content: "''",
@@ -304,9 +337,9 @@ export default function NavCollapse({ menu, level, parentId }) {
                   height: '100%',
                   width: '1px',
                   opacity: 1,
-                  bgcolor: 'primary.light'
+                  bgcolor: theme.palette.primary.light
                 }
-              }}
+              })}
             >
               {menus}
             </List>

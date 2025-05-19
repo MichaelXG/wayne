@@ -9,7 +9,7 @@ export default function AuthFooter() {
   return (
     <Stack direction="row" sx={{ justifyContent: 'center' }}>
       <Typography variant="subtitle2" component={Link} href="" target="_blank" underline="hover">
-        &copy; M-Tech {new Date().getFullYear()}
+        &copy; Wayne Industries {new Date().getFullYear()}
       </Typography>
     </Stack>
   );

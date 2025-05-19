@@ -66,7 +66,7 @@ export default function Typography(theme, borderRadius, fontFamily) {
       '& > label': {
         top: 23,
         left: 0,
-        color: theme.palette.grey[500],
+        color: theme.palette.grey[300],
         '&[data-shrink="false"]': {
           top: 5
         }

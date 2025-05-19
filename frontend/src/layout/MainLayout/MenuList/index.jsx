@@ -10,10 +10,12 @@ import NavGroup from './NavGroup';
 import menuItems from 'menu-items';
 
 import { useGetMenuMaster } from 'api/menu';
+import { useTheme } from '@mui/material/styles';
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
 function MenuList() {
+  const theme = useTheme();
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
@@ -63,7 +65,15 @@ function MenuList() {
         );
       default:
         return (
-          <Typography key={item.id} variant="h6" color="error" align="center">
+          <Typography
+            key={item.id}
+            variant="h6"
+            align="center"
+            sx={(theme) => ({
+              color: theme.palette.error.main
+            })}
+          >
+            {' '}
             Menu Items Error
           </Typography>
         );

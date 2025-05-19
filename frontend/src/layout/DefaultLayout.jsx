@@ -27,19 +27,19 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
       placement="top"
       componentsProps={{
         tooltip: {
-          sx: {
-            backgroundColor: 'green',
-            color: '#fff',
+          sx: (theme) => ({
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.common.white,
             fontSize: 12,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            boxShadow: 2
-          }
+            boxShadow: theme.shadows[2]
+          })
         }
       }}
     >
-      <IconShieldCheck color="green" size={20} />
+      <IconShieldCheck color={theme.palette.success.main} size={20} />{' '}
     </Tooltip>
   ) : (
     <Tooltip
@@ -47,36 +47,35 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
       placement="top"
       componentsProps={{
         tooltip: {
-          sx: {
-            backgroundColor: 'red',
-            color: '#fff',
+          sx: (theme) => ({
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.common.white,
             fontSize: 12,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            boxShadow: 2
-          }
+            boxShadow: theme.shadows[2]
+          })
         }
       }}
     >
-      <IconShieldX color="red" size={20} />
+      <IconShieldX color={theme.palette.error.main} size={20} />
     </Tooltip>
   );
-
   const renderBackButton = () => {
-    const iconButtonStyles = {
+    const iconButtonStyles = (theme) => ({
       mt: 1,
       mb: 2,
-      width: 24, // define tamanho fixo
+      width: 24,
       height: 24,
-      padding: '3px', // padding reduzido
-      backgroundColor: 'secondary.light',
-      color: 'secondary.contrastText',
+      padding: '3px',
+      backgroundColor: theme.palette.grey[300],
+      color: theme.palette.secondary.contrastText,
       borderRadius: '50%',
       '&:hover': {
-        backgroundColor: 'secondary.main'
+        backgroundColor: theme.palette.grey[600]
       }
-    };
+    });
 
     const handleBackClick = () => {
       if (backButton?.type === 'link' && backButton.link) {
@@ -92,15 +91,15 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
         placement="top"
         componentsProps={{
           tooltip: {
-            sx: {
-              backgroundColor: '#8E33FF',
-              color: '#fff',
+            sx: (theme) => ({
+              backgroundColor: theme.palette.grey[600],
+              color: theme.palette.common.white,
               fontSize: 12,
               px: 1.5,
               py: 0.5,
               borderRadius: 1,
-              boxShadow: 2
-            }
+              boxShadow: theme.shadows[2]
+            })
           }
         }}
       >
@@ -141,28 +140,28 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
                       placement="top"
                       componentsProps={{
                         tooltip: {
-                          sx: {
-                            backgroundColor: '#8E33FF',
-                            color: '#fff',
+                          sx: (theme) => ({
+                            backgroundColor: theme.palette.grey[600],
+                            color: theme.palette.common.white,
                             fontSize: 12,
                             px: 1.5,
                             py: 0.5,
                             borderRadius: 1,
-                            boxShadow: 2
-                          }
+                            boxShadow: theme.shadows[2]
+                          })
                         }
                       }}
                     >
                       <IconButton
-                        color={actionbutton.color || 'secondary'}
+                        color={actionbutton.color || theme.palette.grey[600]}
                         size="medium"
                         href={actionbutton.href}
                         onClick={actionbutton.onClick}
                         type={actionbutton.type || 'button'}
                         sx={{
-                          backgroundColor: 'secondary.light',
+                          backgroundColor: theme.palette.grey[300],
                           '&:hover': {
-                            backgroundColor: 'secondary.main',
+                            backgroundColor: theme.palette.grey[600],
                             color: 'white'
                           }
                         }}
@@ -186,16 +185,25 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
                           href={item.href}
                           variant="body2"
                           fontWeight={500}
-                          sx={{
-                            color: 'secondary.main',
+                          sx={(theme) => ({
+                            color: theme.palette.grey[600],
                             textDecoration: 'none',
-                            '&:hover': { textDecoration: 'underline' }
-                          }}
+                            '&:hover': {
+                              textDecoration: 'underline'
+                            }
+                          })}
                         >
                           {item.label}
                         </Typography>
                       ) : (
-                        <Typography key={index} variant="body2" fontWeight={500} color="text.primary">
+                        <Typography
+                          key={index}
+                          variant="body2"
+                          fontWeight={500}
+                          sx={(theme) => ({
+                            color: theme.palette.text.primary
+                          })}
+                        >
                           {item.label}
                         </Typography>
                       )
