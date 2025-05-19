@@ -98,7 +98,7 @@ const CreateCard = forwardRef(({ initialData = {}, onSubmit }, ref) => {
                   fontWeight: 600,
                   fontSize: '0.75rem',
                   color: theme.palette.common.white,
-                  backgroundColor: theme.palette.primary.main
+                  backgroundColor: theme.palette.grey[600],
                 })}
               />
             )}

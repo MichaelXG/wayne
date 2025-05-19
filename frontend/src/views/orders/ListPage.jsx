@@ -128,15 +128,15 @@ const ListPage = () => {
       getRowId={(row) => row.id}
       getDetailPanelContent={({ row }) => (
         <Box
-          sx={{
+          sx={(theme) => ({
             mt: -1,
             p: 2,
             pl: 7,
-            borderLeft: '2px solid #e0e0e0',
-            bgcolor: '#fafafa',
+            borderLeft: `2px solid ${theme.palette.divider}`,
+            bgcolor: theme.palette.background.default,
             borderRadius: 1,
             overflow: 'hidden'
-          }}
+          })}
         >
           <ExpandItem items={row.items || []} />
         </Box>

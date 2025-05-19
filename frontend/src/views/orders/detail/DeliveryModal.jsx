@@ -7,6 +7,7 @@ import { useAuthGuard } from '../../../hooks/useAuthGuard';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DefaultMinimalLayout from '../../../layout/DefaultMinimalLayout';
+import { useTheme } from '@mui/material/styles';
 
 export default function DeliveryModal({ open, onClose, carriers = [], selectedCarrierId, onSelect, onConfirm }) {
   const theme = useTheme();
@@ -54,14 +55,14 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
           <Grid item xs={12}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <FormControl
-                sx={{
+                sx={(theme) => ({
                   flex: 1,
                   // mr: 2,
-                  '& label.Mui-focused': { color: 'secondary.main' },
+                  '& label.Mui-focused': { color: theme.palette.grey[600] },
                   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'secondary.main'
+                    borderColor: theme.palette.grey[600]
                   }
-                }}
+                })}
               >
                 {carriers.length > 0 ? (
                   <Box
@@ -83,9 +84,9 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
                         <SwiperSlide key={carrier.id}>
                           <Box
                             onClick={() => handleSelect(carrier)}
-                            sx={{
-                              border: localSelectedId === carrier.id ? `2px solid ${theme.palette.secondary.main}` : '1px solid',
-                              borderColor: localSelectedId === carrier.id ? 'secondary.main' : 'divider',
+                            sx={(theme) => ({
+                              border: localSelectedId === carrier.id ? `2px solid ${theme.palette.grey[600]}` : '1px solid',
+                              borderColor: localSelectedId === carrier.id ? theme.palette.grey[600] : theme.palette.divider,
                               borderRadius: 2,
                               boxShadow: localSelectedId === carrier.id ? 4 : 1,
                               p: 1,
@@ -93,26 +94,35 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
                               cursor: 'pointer',
                               transition: 'all 0.2s ease-in-out',
                               '&:hover': {
-                                borderColor: 'secondary.main',
+                                borderColor: theme.palette.grey[600],
                                 boxShadow: 4
                               },
                               margin: '30px'
-                            }}
+                            })}
                           >
                             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                               <Typography variant="h6">{carrier.name}</Typography>
                               <Stack direction="row" spacing={1}>
                                 {carrier.is_default && (
                                   <Chip
-                                    label={carrier.is_default ? 'Default' : 'Not Default'}
+                                    label="Default"
                                     size="small"
-                                    color={carrier.is_default ? 'primary' : 'default'}
+                                    color="primary"
+                                    sx={(theme) => ({
+                                      fontWeight: 600,
+                                      color: theme.palette.primary.contrastText
+                                    })}
                                   />
                                 )}
+
                                 <Chip
                                   label={carrier.is_active ? 'Active' : 'Inactive'}
                                   size="small"
                                   color={carrier.is_active ? 'success' : 'error'}
+                                  sx={(theme) => ({
+                                    fontWeight: 'bold',
+                                    color: carrier.is_active ? theme.palette.success.contrastText : theme.palette.error.contrastText
+                                  })}
                                 />
                               </Stack>
                             </Box>

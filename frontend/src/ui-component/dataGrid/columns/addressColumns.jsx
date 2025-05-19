@@ -2,8 +2,10 @@ import React from 'react';
 import { Box, Typography, Link, Tooltip } from '@mui/material';
 import ActionsCell from '../ActionsCell';
 import { formatCep } from '../../../utils/validator';
+import { useTheme } from '@mui/material/styles';
 
 const createAddressColumns = (handleDelete) => {
+  const theme = useTheme();
   const baseColumns = [
     {
       field: 'street',
@@ -45,7 +47,14 @@ const createAddressColumns = (handleDelete) => {
       headerName: 'Default',
       width: 100,
       renderCell: (params) => (
-        <Typography variant="body2" color={params.row?.is_default ? 'success.main' : 'text.secondary'} fontWeight={600}>
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          sx={(theme) => ({
+            color: params.row?.is_default ? theme.palette.success.main : theme.palette.text.secondary
+          })}
+        >
+          {' '}
           {params.row?.is_default ? 'Yes' : 'No'}
         </Typography>
       )
@@ -55,7 +64,14 @@ const createAddressColumns = (handleDelete) => {
       headerName: 'Status',
       width: 100,
       renderCell: (params) => (
-        <Typography variant="body2" color={params.row?.is_active ? 'success.main' : 'error.main'} fontWeight={600}>
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          sx={(theme) => ({
+            color: params.row?.is_active ? theme.palette.success.main : theme.palette.error.main
+          })}
+        >
+          {' '}
           {params.row?.is_active ? 'Active' : 'Inactive'}
         </Typography>
       )
@@ -72,15 +88,15 @@ const createAddressColumns = (handleDelete) => {
           placement="top"
           componentsProps={{
             tooltip: {
-              sx: {
-                backgroundColor: '#8E33FF',
-                color: '#fff',
+              sx: (theme) => ({
+                backgroundColor: theme.palette.grey[600],
+                color: theme.palette.common.white,
                 fontSize: 12,
                 px: 1.5,
                 py: 0.5,
                 borderRadius: 1,
-                boxShadow: 2
-              }
+                boxShadow: theme.shadows[2]
+              })
             }
           }}
         >

@@ -13,12 +13,12 @@ const ActionsCellOrderLocalStorage = ({ params, onDelete, onDeleteItem, onEdit }
 
   const handleDelete = () => {
     handleCloseMenu();
-    if (onDeleteItem) onDeleteItem(params.row.id); // ✅ usa o product_id corretamente
+    if (onDeleteItem) onDeleteItem(params.row.id); 
   };
 
   const handleEdit = () => {
     handleCloseMenu();
-    if (onEdit) onEdit(params.row); // ✅ passa o item completo para o modal
+    if (onEdit) onEdit(params.row); 
   };
 
   return (
@@ -28,15 +28,15 @@ const ActionsCellOrderLocalStorage = ({ params, onDelete, onDeleteItem, onEdit }
         placement="top"
         componentsProps={{
           tooltip: {
-            sx: {
-              backgroundColor: '#8E33FF', // fundo
-              color: '#fff', // texto
+            sx: (theme) => ({
+              backgroundColor: theme.palette.grey[600], 
+              color: theme.palette.common.white,
               fontSize: 12,
               px: 1.5,
               py: 0.5,
               borderRadius: 1,
-              boxShadow: 2
-            }
+              boxShadow: theme.shadows[2]
+            })
           }
         }}
       >
@@ -50,17 +50,17 @@ const ActionsCellOrderLocalStorage = ({ params, onDelete, onDeleteItem, onEdit }
         open={open}
         onClose={handleCloseMenu}
         PaperProps={{
-          sx: {
+          sx: (theme) => ({
             minWidth: 160,
             borderRadius: 1.5,
-            boxShadow: (theme) => theme.shadows[8],
+            boxShadow: theme.shadows[8],
             p: 1
-          }
+          })
         }}
       >
         <MenuItem
           component={Link}
-          href={`${BaseDir}/products/detail/${params.row.product_id}`} // ✅ usa o product_id
+          href={`${BaseDir}/products/detail/${params.row.product_id}`}
           sx={{ typography: 'body2', borderRadius: 1 }}
         >
           <ListItemIcon sx={{ minWidth: 28 }}>
@@ -78,17 +78,17 @@ const ActionsCellOrderLocalStorage = ({ params, onDelete, onDeleteItem, onEdit }
 
         <MenuItem
           onClick={handleDelete}
-          sx={{
+          sx={(theme) => ({
             typography: 'body2',
             borderRadius: 1,
-            color: 'error.main',
-            '&:hover': { bgcolor: 'error.lighter' }
-          }}
+            color: theme.palette.error.main,
+            '&:hover': { bgcolor: theme.palette.error.light }
+          })}
         >
-          <ListItemIcon sx={{ minWidth: 28, color: 'error.main' }}>
+          <ListItemIcon sx={(theme) => ({ minWidth: 28, color: theme.palette.error.main })}>
             <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
           </ListItemIcon>
-          <Typography variant="body2" sx={{ color: 'error.main' }}>
+          <Typography variant="body2" sx={(theme) => ({ color: theme.palette.error.main })}>
             Delete
           </Typography>
         </MenuItem>

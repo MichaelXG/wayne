@@ -64,15 +64,15 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
         placement="top"
         componentsProps={{
           tooltip: {
-            sx: {
-              backgroundColor: '#8E33FF',
-              color: '#fff',
+            sx: (theme) => ({
+              backgroundColor: theme.palette.grey[600],
+              color: theme.palette.common.white,
               fontSize: 12,
               px: 1.5,
               py: 0.5,
               borderRadius: 1,
-              boxShadow: 2
-            }
+              boxShadow: theme.shadows[2]
+            })
           }
         }}
       >
@@ -124,17 +124,20 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
         {/* Delete */}
         <MenuItem
           onClick={handleDelete}
-          sx={{
+          sx={(theme) => ({
             typography: 'body2',
             borderRadius: 1,
-            color: 'error.main',
-            '&:hover': { bgcolor: 'error.lighter' }
-          }}
+            color: theme.palette.error.main,
+            '&:hover': {
+              bgcolor: theme.palette.error.light
+            }
+          })}
         >
-          <ListItemIcon sx={{ minWidth: 28, color: 'error.main' }}>
+          <ListItemIcon sx={{ minWidth: 28, color: theme.palette.error.main }}>
             <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
           </ListItemIcon>
-          <Typography variant="body2" sx={{ color: 'error.main' }}>
+          <Typography variant="body2" sx={{ color: theme.palette.error.main }}>
+            {' '}
             Delete
           </Typography>
         </MenuItem>

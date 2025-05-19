@@ -337,7 +337,7 @@ export default function NavCollapse({ menu, level, parentId }) {
                   height: '100%',
                   width: '1px',
                   opacity: 1,
-                  bgcolor: theme.palette.primary.light
+                  bgcolor: theme.palette.grey[300]
                 }
               })}
             >

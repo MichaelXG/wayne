@@ -66,7 +66,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
     }
   };
 
-  const iconSelectedColor = 'secondary.main';
+  const iconSelectedColor = theme.palette.grey[600];
 
   return (
     <>
@@ -76,7 +76,7 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
         target={itemTarget}
         disabled={item.disabled}
         disableRipple={!drawerOpen}
-        sx={{
+        sx={(theme) => ({
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
           mb: 0.5,
@@ -85,14 +85,14 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
           ...(drawerOpen &&
             level === 1 && {
               '&:hover': {
-                bgcolor: 'secondary.light'
+                bgcolor: theme.palette.grey[300]
               },
               '&.Mui-selected': {
-                bgcolor: 'secondary.light',
-                color: iconSelectedColor,
+                bgcolor: theme.palette.grey[300],
+                color: iconSelectedColor, // se iconSelectedColor for string do tema, tudo certo
                 '&:hover': {
                   color: iconSelectedColor,
-                  bgcolor: 'secondary.light'
+                  bgcolor: theme.palette.grey[300]
                 }
               }
             }),
@@ -108,32 +108,35 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
               bgcolor: 'transparent'
             }
           })
-        }}
+        })}
         selected={isSelected}
         onClick={() => itemHandler()}
       >
         <ButtonBase aria-label="theme-icon" sx={{ borderRadius: `${borderRadius}px` }} disableRipple={drawerOpen}>
           <ListItemIcon
-            sx={{
-              minWidth: level === 1 ? 36 : 18,
-              color: isSelected ? iconSelectedColor : 'text.primary',
-              ...(!drawerOpen &&
-                level === 1 && {
-                  borderRadius: `${borderRadius}px`,
-                  width: 46,
-                  height: 46,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  '&:hover': {
-                    bgcolor: 'secondary.light'
-                  },
-                  ...(isSelected && {
-                    bgcolor: 'secondary.light',
+            sx={(theme) => {
+              const iconSelectedColor = theme.palette.grey[600];
+              return {
+                minWidth: level === 1 ? 36 : 18,
+                color: isSelected ? iconSelectedColor : theme.palette.text.primary,
+                ...(!drawerOpen &&
+                  level === 1 && {
+                    borderRadius: `${borderRadius}px`,
+                    width: 46,
+                    height: 46,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     '&:hover': {
-                      bgcolor: 'secondary.light'
-                    }
+                      bgcolor: theme.palette.grey[300]
+                    },
+                    ...(isSelected && {
+                      bgcolor: theme.palette.grey[300],
+                      '&:hover': {
+                        bgcolor: theme.palette.grey[300]
+                      }
+                    })
                   })
-                })
+              };
             }}
           >
             {itemIcon}

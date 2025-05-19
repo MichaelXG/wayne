@@ -1,13 +1,21 @@
 import React from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import { Box, Typography, Avatar, useTheme } from '@mui/material';
 
 const ExpandItem = ({ items }) => {
+  const theme = useTheme();
+
   if (!items || items.length === 0) {
-    return <Typography sx={{ p: 2, color: 'text.secondary' }}>No items in this order.</Typography>;
+    return <Typography sx={{ p: 2, color: theme.palette.text.secondary }}>No items in this order.</Typography>;
   }
 
   return (
-    <Box sx={{ p: 2, bgcolor: '#f9f9f9', borderTop: '1px solid #ddd' }}>
+    <Box
+      sx={{
+        p: 2,
+        bgcolor: theme.palette.background.default,
+        borderTop: `1px solid ${theme.palette.divider}`
+      }}
+    >
       <Typography variant="subtitle2" gutterBottom>
         Order Items:
       </Typography>
@@ -21,7 +29,7 @@ const ExpandItem = ({ items }) => {
             justifyContent: 'space-between',
             gap: 2,
             py: 1,
-            borderBottom: '1px solid #eee'
+            borderBottom: `1px solid ${theme.palette.divider}`
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
@@ -29,7 +37,12 @@ const ExpandItem = ({ items }) => {
               variant="rounded"
               src={item.image}
               alt={item.title}
-              sx={{ width: 48, height: 48, borderRadius: 2 }}
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: 2,
+                bgcolor: theme.palette.grey[200]
+              }}
               imgProps={{ onError: (e) => (e.target.style.display = 'none') }}
             />
             <Box sx={{ flexGrow: 1 }}>

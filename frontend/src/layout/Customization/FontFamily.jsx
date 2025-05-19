@@ -92,7 +92,7 @@ export default function FontFamilyPage() {
               <Grid key={item.id} item xs={12}>
                 <Box
                   sx={{
-                    bgcolor: isSelected ? theme.palette.primary.light : theme.palette.grey[50],
+                    bgcolor: isSelected ? theme.palette.grey[300] : theme.palette.grey[50],
                     borderRadius: 1
                   }}
                 >
@@ -102,7 +102,7 @@ export default function FontFamilyPage() {
                     sx={{
                       p: 1.75,
                       borderWidth: 1,
-                      borderColor: isSelected ? theme.palette.primary.main : theme.palette.divider
+                      borderColor: isSelected ? theme.palette.grey[600] : theme.palette.divider
                     }}
                   >
                     <FormControlLabel

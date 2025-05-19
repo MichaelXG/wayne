@@ -15,8 +15,10 @@ import {
 } from '@mui/icons-material';
 import AnimateButton from '../../ui-component/extended/AnimateButton';
 import Decimal from 'decimal.js';
+import { useTheme } from '@mui/material/styles';
 
 export default function SummaryFooter({ data = [] }) {
+  const theme = useTheme();
   const [showSummary, setShowSummary] = useState(true);
 
   const summary = useMemo(() => {
@@ -66,15 +68,15 @@ export default function SummaryFooter({ data = [] }) {
             placement="top"
             componentsProps={{
               tooltip: {
-                sx: {
-                  backgroundColor: '#8E33FF',
-                  color: '#fff',
+                sx: (theme) => ({
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white,
                   fontSize: 12,
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: 2
-                }
+                  boxShadow: theme.shadows[2]
+                })
               }
             }}
           >
@@ -83,10 +85,10 @@ export default function SummaryFooter({ data = [] }) {
               size="medium"
               onClick={() => setShowSummary((prev) => !prev)}
               sx={{
-                backgroundColor: 'secondary.light',
+                backgroundColor: theme.palette.grey[300],
                 '&:hover': {
-                  backgroundColor: 'secondary.main',
-                  color: 'white'
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white
                 }
               }}
             >

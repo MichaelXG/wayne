@@ -173,7 +173,17 @@ export default function AuthLogin() {
             />
           </Grid>
           <Grid>
-            <Typography component={Link} to={`/pages/recover`} color="secondary" sx={{ textDecoration: 'none' }}>
+            <Typography
+              component={Link}
+              to="/pages/recover"
+              sx={(theme) => ({
+                textDecoration: 'none',
+                color: theme.palette.grey[600],
+                '&:hover': {
+                  textDecoration: 'underline'
+                }
+              })}
+            >
               Forgot Password?
             </Typography>
           </Grid>

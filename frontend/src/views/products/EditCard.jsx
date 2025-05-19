@@ -122,14 +122,14 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
   return (
     <FormProvider {...methods}>
       <Box
-        sx={{
+        sx={(theme) => ({
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
           px: { xs: 2, md: 4 },
           py: { xs: 4, md: 6 },
-          backgroundColor: 'background.default'
-        }}
+          backgroundColor: theme.palette.background.default
+        })}
       >
         <Box sx={{ width: '100%', maxWidth: 1000 }}>
           {(id || true) && (
@@ -145,13 +145,13 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                 <Chip
                   label={`ID: ${id}`}
                   size="small"
-                  sx={{
+                  sx={(theme) => ({
                     fontWeight: 600,
                     fontSize: '0.75rem',
-                    color: '#FFFFFF',
-                    backgroundColor: '#8E33FF',
+                    color: theme.palette.common.white,
+                    backgroundColor: theme.palette.grey[600],
                     width: 'fit-content'
-                  }}
+                  })}
                 />
               )}
 
@@ -166,18 +166,24 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                         {...field}
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
-                        sx={{
+                        sx={(theme) => ({
                           '& .MuiSwitch-thumb': {
-                            color: field.value ? 'success.main' : 'error.main'
+                            color: field.value ? theme.palette.success.main : theme.palette.error.main
                           },
                           '& .MuiSwitch-track': {
-                            backgroundColor: field.value ? 'success.light' : 'error.light'
+                            backgroundColor: field.value ? theme.palette.success.light : theme.palette.error.light
                           }
-                        }}
+                        })}
                       />
                     }
                     label={
-                      <Typography variant="body2" sx={{ color: field.value ? 'success.main' : 'error.main', fontWeight: 'bold' }}>
+                      <Typography
+                        variant="body2"
+                        sx={(theme) => ({
+                          color: field.value ? theme.palette.success.main : theme.palette.error.main,
+                          fontWeight: 'bold'
+                        })}
+                      >
                         {field.value ? 'Active' : 'Inactive'}
                       </Typography>
                     }
@@ -189,7 +195,14 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
 
           <Card
             elevation={0}
-            sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8', p: 3 }}
+            sx={(theme) => ({
+              mt: 3,
+              borderRadius: 2,
+              boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+              bgcolor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
+              p: 3
+            })}
           >
             <CardHeader
               title="Details"
@@ -202,7 +215,13 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
             <Stack spacing={2} mt={2}>
               <Card
                 elevation={0}
-                sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8' }}
+                sx={(theme) => ({
+                  mt: 3,
+                  borderRadius: 2,
+                  boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+                  bgcolor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`
+                })}
               >
                 <CardHeader title="Images" subheader="Image upload" titleTypographyProps={{ variant: 'h6' }} />
                 <Divider />
@@ -223,14 +242,22 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                       variant="outlined"
                       multiline={fieldName === 'description'}
                       minRows={fieldName === 'description' ? 4 : undefined}
-                      sx={{
-                        '& label.Mui-focused': { color: 'secondary.main' },
+                      sx={(theme) => ({
+                        '& label.Mui-focused': {
+                          color: theme.palette.grey[600]
+                        },
                         '& .MuiOutlinedInput-root': {
-                          '& fieldset': { transition: 'border-color 0.3s ease' },
-                          '&:hover fieldset': { borderColor: 'secondary.light' },
-                          '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                          '& fieldset': {
+                            transition: 'border-color 0.3s ease'
+                          },
+                          '&:hover fieldset': {
+                            borderColor: theme.palette.grey[300]
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: theme.palette.grey[600]
+                          }
                         }
-                      }}
+                      })}
                     />
                   )}
                 />
@@ -240,16 +267,16 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
 
           <Card
             elevation={0}
-            sx={{
+            sx={(theme) => ({
               mt: 3,
               borderRadius: 2,
-              boxShadow: 'rgba(145, 158, 171, 0.2)',
-              bgcolor: '#FFFFFF',
-              border: '1px solid #DFE3E8',
+              boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+              bgcolor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
               p: 3,
               display: 'flex',
               flexDirection: 'column'
-            }}
+            })}
           >
             <CardHeader
               title="Properties"
@@ -274,14 +301,22 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                         fullWidth
                         disabled={!isActive}
                         variant="outlined"
-                        sx={{
-                          '& label.Mui-focused': { color: 'secondary.main' },
+                        sx={(theme) => ({
+                          '& label.Mui-focused': {
+                            color: theme.palette.grey[600]
+                          },
                           '& .MuiOutlinedInput-root': {
-                            '& fieldset': { transition: 'border-color 0.3s ease' },
-                            '&:hover fieldset': { borderColor: 'secondary.light' },
-                            '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                            '& fieldset': {
+                              transition: 'border-color 0.3s ease'
+                            },
+                            '&:hover fieldset': {
+                              borderColor: theme.palette.grey[300]
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: theme.palette.grey[600]
+                            }
                           }
-                        }}
+                        })}
                       />
                     )}
                   />
@@ -300,14 +335,22 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                       fullWidth
                       disabled={!isActive}
                       variant="outlined"
-                      sx={{
-                        '& label.Mui-focused': { color: 'secondary.main' },
+                      sx={(theme) => ({
+                        '& label.Mui-focused': {
+                          color: theme.palette.grey[600]
+                        },
                         '& .MuiOutlinedInput-root': {
-                          '& fieldset': { transition: 'border-color 0.3s ease' },
-                          '&:hover fieldset': { borderColor: 'secondary.light' },
-                          '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                          '& fieldset': {
+                            transition: 'border-color 0.3s ease'
+                          },
+                          '&:hover fieldset': {
+                            borderColor: theme.palette.grey[300]
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: theme.palette.grey[600]
+                          }
                         }
-                      }}
+                      })}
                     />
                   )}
                 />
@@ -329,13 +372,13 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                 defaultValue=""
                 render={({ field }) => (
                   <Box
-                    sx={{
-                      border: '1px solid #DFE3E8',
+                    sx={(theme) => ({
+                      border: `1px solid ${theme.palette.divider}`,
                       borderRadius: 2,
                       px: 2,
                       py: 2,
                       mt: 1
-                    }}
+                    })}
                   >
                     <Typography variant="subtitle2" sx={{ mb: 1 }}>
                       Gender
@@ -345,7 +388,20 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                         <FormControlLabel
                           key={option}
                           value={option}
-                          control={<Radio color="secondary" disabled={!isActive} />}
+                          control={
+                            <Radio
+                              disabled={!isActive}
+                              sx={(theme) => ({
+                                color: theme.palette.grey[600],
+                                '&.Mui-checked': {
+                                  color: theme.palette.grey[600]
+                                },
+                                ...(!isActive && {
+                                  color: theme.palette.action.disabled
+                                })
+                              })}
+                            />
+                          }
                           label={option.charAt(0).toUpperCase() + option.slice(1)}
                         />
                       ))}
@@ -358,7 +414,13 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
 
           <Card
             elevation={0}
-            sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8' }}
+            sx={(theme) => ({
+              mt: 3,
+              borderRadius: 2,
+              boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+              bgcolor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`
+            })}
           >
             <CardHeader title="Pricing" subheader="Price related inputs" titleTypographyProps={{ variant: 'h6' }} />
             <Divider />
@@ -396,14 +458,22 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                           inputMode: 'decimal',
                           pattern: '[0-9]*\\.?[0-9]*'
                         }}
-                        sx={{
-                          '& label.Mui-focused': { color: 'secondary.main' },
+                        sx={(theme) => ({
+                          '& label.Mui-focused': {
+                            color: theme.palette.grey[600]
+                          },
                           '& .MuiOutlinedInput-root': {
-                            '& fieldset': { transition: 'border-color 0.3s ease' },
-                            '&:hover fieldset': { borderColor: 'secondary.light' },
-                            '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                            '& fieldset': {
+                              transition: 'border-color 0.3s ease'
+                            },
+                            '&:hover fieldset': {
+                              borderColor: theme.palette.grey[300]
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: theme.palette.grey[600]
+                            }
                           }
-                        }}
+                        })}
                       />
                     );
                   }}
@@ -414,7 +484,13 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
 
           <Card
             elevation={0}
-            sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8' }}
+            sx={(theme) => ({
+              mt: 3,
+              borderRadius: 2,
+              boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+              bgcolor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`
+            })}
           >
             <CardHeader title="Rating" subheader="Average rating" titleTypographyProps={{ variant: 'h6' }} />
             <Divider />
@@ -422,7 +498,13 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
               <Stack alignItems="center" spacing={1}>
                 <Typography variant="h2">{rating?.rate?.toFixed(1) ?? '0.0'}/5</Typography>
                 <Rating value={rating?.rate ?? 0} precision={0.1} readOnly size="large" />
-                <Typography variant="caption" color="text.secondary">
+                <Typography
+                  variant="caption"
+                  sx={(theme) => ({
+                    color: theme.palette.text.secondary
+                  })}
+                >
+                  {' '}
                   ({rating?.count ?? 0} reviews)
                 </Typography>
               </Stack>

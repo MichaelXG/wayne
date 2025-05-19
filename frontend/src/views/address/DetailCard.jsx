@@ -26,42 +26,60 @@ export default function DetailCard({
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
         px: { xs: 2, md: 4 },
         py: { xs: 4, md: 6 },
-        backgroundColor: 'background.default'
-      }}
+        backgroundColor: theme.palette.background.default
+      })}
     >
       <Box sx={{ width: '100%', maxWidth: 1000 }}>
         <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Chip
             label={`ID: ${id}`}
             size="small"
-            sx={{
+            sx={(theme) => ({
               fontWeight: 600,
               fontSize: '0.75rem',
-              color: '#FFFFFF',
-              backgroundColor: '#8E33FF',
+              color: theme.palette.common.white,
+              backgroundColor: theme.palette.grey[600],
               width: 'fit-content'
-            }}
+            })}
           />
           <Stack direction="row" gap={2}>
-            <Chip label={is_default ? 'Default' : 'Not Default'} color={is_default ? 'primary' : 'default'} size="small" />
+            <Chip
+              label={is_default ? 'Default' : 'Not Default'}
+              size="small"
+              sx={(theme) => ({
+                color: is_default ? theme.palette.primary.contrastText : theme.palette.text.primary,
+                backgroundColor: is_default ? theme.palette.primary.main : theme.palette.grey[300],
+                fontWeight: 500
+              })}
+            />
             <Chip
               label={is_active ? 'Active' : 'Inactive'}
-              color={is_active ? 'success' : 'error'}
               size="small"
-              sx={{ fontWeight: 'bold' }}
+              sx={(theme) => ({
+                fontWeight: 'bold',
+                color: theme.palette.common.white,
+                backgroundColor: is_active ? theme.palette.success.main : theme.palette.error.main
+              })}
             />
           </Stack>
         </Box>
 
         <Card
           elevation={0}
-          sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8', p: 3 }}
+          sx={(theme) => ({
+            mt: 3,
+            borderRadius: 2,
+            boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+            bgcolor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.divider}`,
+            p: 3
+          })}
         >
           {' '}
           <CardHeader title="Details" subheader="Basic address information" titleTypographyProps={{ variant: 'h6' }} sx={{ px: 0 }} />

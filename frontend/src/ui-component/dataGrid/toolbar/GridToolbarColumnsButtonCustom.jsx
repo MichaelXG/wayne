@@ -13,18 +13,18 @@ const GridToolbarColumnsButtonCustom = () => {
     <Button
       variant="text"
       size="small"
-      color="secondary" 
+      color="secondary"
       disableElevation
       startIcon={<ViewColumnIcon fontSize="small" />}
       onClick={handleClick}
       aria-label="Open Columns Panel"
       aria-haspopup="true"
-      sx={{
+      sx={(theme) => ({
         '&:hover': {
-          backgroundColor: 'secondary.light',
-          color: 'secondary.darker'
+          backgroundColor: theme.palette.grey[300],
+          color: theme.palette.grey[900] || theme.palette.grey[600]
         }
-      }}
+      })}
     >
       Columns
     </Button>

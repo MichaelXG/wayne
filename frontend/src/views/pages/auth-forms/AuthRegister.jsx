@@ -55,7 +55,7 @@ export default function AuthRegister() {
   const [avatarImage, setAvatarImage] = useState(null);
 
   const handleImageChange = (file) => {
-    console.log('📥 Imagem recebida:', file);
+    isDebug && console.log('📥 Imagem recebida:', file);
     setAvatarImage(file); // ✅ salvar a imagem recebida
   };
 

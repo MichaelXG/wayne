@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GridToolbarContainer, GridToolbarQuickFilter, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
-import { Box, Typography, Button, Divider, Chip } from '@mui/material';
+import {
+  GridToolbarContainer,
+  GridToolbarQuickFilter,
+  GridToolbarExport,
+  GridToolbarFilterButton
+} from '@mui/x-data-grid';
+import { Box, Button, Divider } from '@mui/material';
 import Clear from '@mui/icons-material/Clear';
 import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
 import GridToolbarColumnsButtonCustom from '../toolbar/GridToolbarColumnsButtonCustom';
@@ -18,7 +23,7 @@ const CustomToolbarProduct = ({
     <GridToolbarContainer>
       {/* Top bar with quick filter and actions */}
       <Box
-        sx={{
+        sx={(theme) => ({
           width: '100%',
           display: 'flex',
           flexWrap: 'wrap',
@@ -27,18 +32,18 @@ const CustomToolbarProduct = ({
           gap: 1,
           px: 1,
           py: 1,
-          backgroundColor: '#f9fafb',
+          backgroundColor: theme.palette.background.paper,
           borderRadius: 1
-        }}
+        })}
       >
         <GridToolbarQuickFilter
-          sx={{
+          sx={(theme) => ({
             width: 250,
-            color: 'secondary.main',
+            color: theme.palette.grey[300],
             '&:hover': {
-              backgroundColor: 'secondary.light'
+              backgroundColor: theme.palette.grey[600]
             }
-          }}
+          })}
         />
 
         <Box display="flex" gap={1} flexWrap="wrap">
@@ -54,7 +59,18 @@ const CustomToolbarProduct = ({
         <Box display="flex" alignItems="center" gap={2} mt={2} flexWrap="wrap">
           <ActiveFiltersBadge filterModel={filterModel} />
 
-          <Button variant="text" color="error" startIcon={<Clear />} onClick={onClearFilters}>
+          <Button
+            variant="text"
+            color="error"
+            startIcon={<Clear />}
+            onClick={onClearFilters}
+            sx={(theme) => ({
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: theme.palette.error.light
+              }
+            })}
+          >
             Clear All
           </Button>
         </Box>

@@ -127,7 +127,13 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
               <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
                 <Box display="flex" alignItems="center" gap={1}>
                   {renderBackButton()}
-                  <Typography variant={downMD ? 'h5' : 'h4'} sx={{ color: 'secondary.main', fontWeight: 600 }}>
+                  <Typography
+                    variant={downMD ? 'h5' : 'h4'}
+                    sx={(theme) => ({
+                      color: theme.palette.grey[600],
+                      fontWeight: 600
+                    })}
+                  >
                     {subCardTitle}
                   </Typography>
                 </Box>

@@ -22,8 +22,11 @@ import OtpModal from '../../../ui-component/modal/OtpModal';
 import NotificationList from '../../../layout/MainLayout/Header/NotificationSection/NotificationList';
 import { useCsc } from '../../../contexts/CscContext';
 import useOrderReadyForPayment from '../../../hooks/useOrderReadyForPayment';
+import { useTheme } from '@mui/material/styles';
 
 export default function Payment() {
+  const theme = useTheme();
+
   const checkingAuth = useAuthGuard();
   const [userData] = useLocalStorage('wayne-user-data', {});
   const { orderId } = useOrderIDContext();
@@ -242,7 +245,7 @@ export default function Payment() {
       }
     >
       <Box
-        sx={{
+        sx={(theme) => ({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -250,13 +253,13 @@ export default function Payment() {
           justifyContent: 'center',
           width: '100%',
           '& .swiper-button-prev, & .swiper-button-next': {
-            color: '#b39ddb',
+            color: theme.palette.grey[600],
             fontWeight: 'bold',
             transition: '0.3s',
-            '&:hover': { color: 'secondary.main' },
+            '&:hover': { color: theme.palette.grey[900] },
             '&.swiper-button-disabled': { opacity: 0.3 }
           }
-        }}
+        })}
       >
         <Swiper
           modules={[Navigation]}
@@ -285,27 +288,39 @@ export default function Payment() {
                   >
                     {card.is_primary && !locked && (
                       <Box sx={{ position: 'absolute', top: 12, left: 65 }}>
-                        <Chip label="Primary" size="small" color="success" variant="outlined" />
+                        <Chip
+                          label="Primary"
+                          size="small"
+                          color="success"
+                          variant="outlined"
+                          sx={{
+                            borderColor: (theme) => theme.palette.success.main,
+                            color: (theme) => theme.palette.success.main,
+                            '&.MuiChip-outlined': {
+                              borderWidth: 1.5
+                            }
+                          }}
+                        />
                       </Box>
                     )}
                     {card.status && !locked && (
                       <Box sx={{ position: 'absolute', top: 15, right: 65 }}>
                         <Tooltip title={card.status.charAt(0).toUpperCase() + card.status.slice(1)} arrow placement="top">
                           <Box
-                            sx={{
+                            sx={(theme) => ({
                               width: 12,
                               height: 12,
                               borderRadius: '50%',
                               bgcolor:
                                 card.status === 'active'
-                                  ? 'success.main'
+                                  ? theme.palette.success.main
                                   : card.status === 'inactive'
-                                    ? 'error.main'
+                                    ? theme.palette.error.main
                                     : card.status === 'expired'
-                                      ? 'warning.main'
-                                      : 'grey.500',
+                                      ? theme.palette.warning.main
+                                      : theme.palette.grey[500],
                               cursor: 'pointer'
-                            }}
+                            })}
                           />
                         </Tooltip>
                       </Box>
@@ -317,14 +332,14 @@ export default function Payment() {
                           onEdit={() => handleEdit(card)}
                           onDelete={() => handleDelete(card.id)}
                           buttonProps={{
-                            sx: {
-                              bgcolor: 'secondary.light',
-                              color: 'secondary.main',
+                            sx: (theme) => ({
+                              bgcolor: theme.palette.grey[300],
+                              color: theme.palette.grey[600],
                               '&:hover': {
-                                bgcolor: 'secondary.main',
-                                color: 'common.white'
+                                bgcolor: theme.palette.grey[600],
+                                color: theme.palette.common.white
                               }
-                            }
+                            })
                           }}
                         />
                       </Box>
@@ -365,15 +380,15 @@ export default function Payment() {
                 variant="contained"
                 onClick={handlePayment}
                 disabled={!canMakePayment}
-                sx={{
-                  bgcolor: 'secondary.light',
-                  color: 'secondary.main',
+                sx={(theme) => ({
+                  bgcolor: theme.palette.grey[300],
+                  color: theme.palette.grey[600],
                   fontWeight: 600,
                   '&:hover': {
-                    bgcolor: 'secondary.main',
-                    color: 'common.white'
+                    bgcolor: theme.palette.grey[600],
+                    color: theme.palette.common.white
                   }
-                }}
+                })}
               >
                 Make Payment
               </Button>

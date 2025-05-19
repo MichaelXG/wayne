@@ -88,17 +88,17 @@ export default function NotificationSection() {
       <Box sx={{ ml: 2 }}>
         <Avatar
           variant="rounded"
-          sx={{
+          sx={(theme) => ({
             ...theme.typography.commonAvatar,
             ...theme.typography.mediumAvatar,
             transition: 'all .2s ease-in-out',
-            bgcolor: 'secondary.light',
-            color: 'secondary.dark',
+            bgcolor: theme.palette.grey[300],
+            color: theme.palette.grey[600],
             '&[aria-controls="menu-list-grow"],&:hover': {
-              bgcolor: 'secondary.dark',
-              color: 'secondary.light'
+              bgcolor: theme.palette.grey[600],
+              color: theme.palette.grey[300]
             }
-          }}
+          })}
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
@@ -136,11 +136,26 @@ export default function NotificationSection() {
                           <Grid>
                             <Stack direction="row" spacing={2}>
                               <Typography variant="subtitle1">All Notification</Typography>
-                              <Chip size="small" label="01" sx={{ color: 'background.default', bgcolor: 'warning.dark' }} />
+                              <Chip
+                                size="small"
+                                label="01"
+                                sx={(theme) => ({
+                                  color: theme.palette.background.default,
+                                  bgcolor: theme.palette.grey[900]
+                                })}
+                              />
                             </Stack>
                           </Grid>
                           <Grid>
-                            <Typography component={Link} to="#" variant="subtitle2" color="primary">
+                            <Typography
+                              component={Link}
+                              to="#"
+                              variant="subtitle2"
+                              sx={(theme) => ({
+                                color: theme.palette.grey[600],
+                              })}
+                            >
+                              {' '}
                               Mark as all read
                             </Typography>
                           </Grid>
