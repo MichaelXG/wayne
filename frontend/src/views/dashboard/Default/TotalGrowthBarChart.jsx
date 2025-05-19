@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 
 // material-ui
@@ -73,7 +73,9 @@ export default function TotalGrowthBarChart({ isLoading }) {
   const dynamicColors = series.map((s) => {
     const colorKey = statusColors[s.name] || 'grey';
     const tone = s.name === 'paid' ? 'light' : 'main';
-    return theme.palette[colorKey]?.[tone] || '#ccc';
+
+    const color = theme.palette[colorKey];
+    return color?.[tone] || theme.palette.grey[300];
   });
 
   useEffect(() => {
@@ -93,7 +95,7 @@ export default function TotalGrowthBarChart({ isLoading }) {
       },
       grid: { borderColor: theme.palette.divider },
       tooltip: { theme: mode },
-      legend: { labels: { colors: theme.palette.grey[500] } }
+      legend: { labels: { colors: theme.palette.grey[300] } }
     };
 
     if (!isLoading && categories.length) {
@@ -132,23 +134,23 @@ export default function TotalGrowthBarChart({ isLoading }) {
         <Grid
           item
           xs={12}
-          sx={{
-            ...theme.applyStyles('light', {
+          sx={(theme) => ({
+            ...theme.applyStyles?.('light', {
               '& .apexcharts-series:nth-of-type(4) path:hover': {
-                filter: `brightness(0.95)`,
+                filter: 'brightness(0.95)',
                 transition: 'all 0.3s ease'
               }
             }),
             '& .apexcharts-menu': {
-              bgcolor: 'background.paper'
+              backgroundColor: theme.palette.background.paper
             },
             '.apexcharts-theme-light .apexcharts-menu-item:hover': {
-              bgcolor: 'dark.main'
+              backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100]
             },
             '& .apexcharts-theme-light .apexcharts-menu-icon:hover svg, .apexcharts-reset-icon:hover svg': {
               fill: theme.palette.grey[400]
             }
-          }}
+          })}
         >
           <Chart
             id="bar-chart"
@@ -159,7 +161,7 @@ export default function TotalGrowthBarChart({ isLoading }) {
               xaxis: { categories },
               chart: { id: 'bar-chart', stacked: true },
               colors: dynamicColors,
-              legend: { labels: { colors: theme.palette.grey[500] } }
+              legend: { labels: { colors: theme.palette.grey[300] } }
             }}
             series={series}
           />

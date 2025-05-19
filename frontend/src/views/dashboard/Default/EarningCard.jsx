@@ -36,7 +36,7 @@ export default function EarningCard({ isLoading }) {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  
+
   const [userData] = useLocalStorage('wayne-user-data', {});
   const checkingAuth = useAuthGuard();
   const token = userData?.authToken || null;
@@ -69,9 +69,9 @@ export default function EarningCard({ isLoading }) {
       border={false}
       content={false}
       aria-hidden={Boolean(anchorEl)}
-      sx={{
-        bgcolor: 'secondary.dark',
-        color: '#fff',
+      sx={(theme) => ({
+        bgcolor: theme.palette.grey[900],
+        color: theme.palette.common.white,
         overflow: 'hidden',
         position: 'relative',
         '&:after': {
@@ -79,7 +79,7 @@ export default function EarningCard({ isLoading }) {
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.secondary[800],
+          background: theme.palette.grey[700],
           borderRadius: '50%',
           top: { xs: -85 },
           right: { xs: -95 }
@@ -89,13 +89,13 @@ export default function EarningCard({ isLoading }) {
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.secondary[800],
+          background: theme.palette.grey[700],
           borderRadius: '50%',
           top: { xs: -125 },
           right: { xs: -15 },
           opacity: 0.5
         }
-      }}
+      })}
     >
       <Box sx={{ p: 2.25 }}>
         <Grid container direction="column">
@@ -104,12 +104,12 @@ export default function EarningCard({ isLoading }) {
               <Grid>
                 <Avatar
                   variant="rounded"
-                  sx={{
+                  sx={(theme) => ({
                     ...theme.typography.commonAvatar,
                     ...theme.typography.largeAvatar,
-                    bgcolor: 'secondary.800',
+                    bgcolor: theme.palette.grey[700],
                     mt: 1
-                  }}
+                  })}
                 >
                   <CardMedia sx={{ width: 24, height: 24 }} component="img" src={EarningIcon} alt="Earning" />
                 </Avatar>
@@ -117,19 +117,20 @@ export default function EarningCard({ isLoading }) {
               <Grid>
                 <Avatar
                   variant="rounded"
-                  sx={{
+                  sx={(theme) => ({
                     ...theme.typography.commonAvatar,
                     ...theme.typography.mediumAvatar,
-                    bgcolor: 'secondary.dark',
-                    color: 'secondary.200',
+                    bgcolor: theme.palette.grey[900],
+                    color: theme.palette.grey[200],
                     zIndex: 1
-                  }}
+                  })}
                   aria-controls="menu-earning-card"
                   aria-haspopup="true"
                   onClick={handleClick}
                 >
                   <MoreHorizIcon fontSize="inherit" />
                 </Avatar>
+
                 <Menu
                   id="menu-earning-card"
                   anchorEl={anchorEl}
@@ -168,12 +169,12 @@ export default function EarningCard({ isLoading }) {
               </Grid>
               <Grid>
                 <Avatar
-                  sx={{
+                  sx={(theme) => ({
                     cursor: 'pointer',
                     ...theme.typography.smallAvatar,
-                    bgcolor: 'secondary.200',
-                    color: 'secondary.dark'
-                  }}
+                    bgcolor: theme.palette.grey[200],
+                    color: theme.palette.grey[900]
+                  })}
                 >
                   <ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
                 </Avatar>
@@ -183,11 +184,11 @@ export default function EarningCard({ isLoading }) {
 
           <Grid sx={{ mb: 1.25 }}>
             <Typography
-              sx={{
+              sx={(theme) => ({
                 fontSize: '1rem',
                 fontWeight: 500,
-                color: 'secondary.200'
-              }}
+                color: theme.palette.grey[200]
+              })}
             >
               Total Earning
             </Typography>

@@ -65,37 +65,40 @@ export default function TotalOrderLineChartCard({ isLoading }) {
     <MainCard
       border={false}
       content={false}
-      sx={{
-        bgcolor: 'primary.dark',
-        color: '#fff',
+      sx={(theme) => ({
+        bgcolor: theme.palette.grey[900],
+        color: theme.palette.common.white,
         overflow: 'hidden',
         position: 'relative',
-        '&>div': {
+
+        '& > div': {
           position: 'relative',
           zIndex: 5
         },
+
         '&:after': {
           content: '""',
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.primary[800],
+          background: theme.palette.grey[900],
           borderRadius: '50%',
           top: { xs: -85 },
           right: { xs: -95 }
         },
+
         '&:before': {
           content: '""',
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.primary[800],
+          background: theme.palette.grey[900],
           borderRadius: '50%',
           top: { xs: -125 },
           right: { xs: -15 },
           opacity: 0.5
         }
-      }}
+      })}
     >
       <Box sx={{ p: 2.25 }}>
         <Grid container direction="column">
@@ -104,13 +107,13 @@ export default function TotalOrderLineChartCard({ isLoading }) {
               <Grid>
                 <Avatar
                   variant="rounded"
-                  sx={{
+                  sx={(theme) => ({
                     ...theme.typography.commonAvatar,
                     ...theme.typography.largeAvatar,
-                    bgcolor: 'primary.800',
-                    color: '#fff',
+                    bgcolor: theme.palette.grey[900],
+                    color: theme.palette.common.white,
                     mt: 1
-                  }}
+                  })}
                 >
                   <LocalMallOutlinedIcon fontSize="inherit" />
                 </Avatar>
@@ -151,18 +154,26 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                   </Grid>
                   <Grid>
                     <Avatar
-                      sx={{
+                      sx={(theme) => ({
                         ...theme.typography.smallAvatar,
                         cursor: 'pointer',
-                        bgcolor: 'primary.200',
-                        color: 'primary.dark'
-                      }}
+                        bgcolor: theme.palette.grey[200],
+                        color: theme.palette.grey[900]
+                      })}
                     >
                       <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
                     </Avatar>
                   </Grid>
                   <Grid size={12}>
-                    <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: 'primary.200' }}>Total Order</Typography>
+                    <Typography
+                      sx={(theme) => ({
+                        fontSize: '1rem',
+                        fontWeight: 500,
+                        color: theme.palette.grey[200]
+                      })}
+                    >
+                      Total Order
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>

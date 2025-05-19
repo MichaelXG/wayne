@@ -6,15 +6,17 @@ import Grid from '@mui/material/Grid2';
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
-import TotalOrderLineChartCard from './TotalOrderLineChartCard';
+
 import TotalIncomeDarkCard from '../../../ui-component/cards/TotalIncomeDarkCard';
 import TotalIncomeLightCard from '../../../ui-component/cards/TotalIncomeLightCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+
 
 import { gridSpacing } from 'store/constant';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import TotalGrowthBarChart from '../../../ui-component/cards/Skeleton/TotalGrowthBarChart';
+import TotalOrderLineChartCard from './TotalOrderLineChartCard';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
