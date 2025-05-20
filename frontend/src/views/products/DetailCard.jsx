@@ -161,17 +161,18 @@ export default function DetailCard({
                           color="primary"
                           sx={(theme) => ({
                             fontWeight: theme.typography.fontWeightBold,
-                            color: theme.palette.primary.contrastText // força a cor do texto
+                            bgcolor: theme.palette.primary.main,
+                            color: theme.palette.common.white
                           })}
                         />
                       )}
                       <Chip
                         label={is_active ? 'Active' : 'Inactive'}
                         size="small"
-                        color={is_active ? 'success' : 'error'}
                         sx={(theme) => ({
                           fontWeight: theme.typography.fontWeightBold,
-                          color: theme.palette[is_active ? 'success' : 'error'].contrastText
+                          bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                          color: theme.palette.common.white
                         })}
                       />
                     </Box>

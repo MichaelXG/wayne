@@ -9,8 +9,8 @@ if [ -f "$DB_PATH" ]; then
   rm "$DB_PATH"
 fi
 
-echo "📦 Installing dependencies..."
-pip install --no-cache-dir --root-user-action=ignore -r /app/requirements.txt || exit 1
+# echo "📦 Installing dependencies..."
+# pip install --no-cache-dir --root-user-action=ignore -r /app/requirements.txt || exit 1
 
 echo "📄 Making migrations..."
 python3 manage.py makemigrations || exit 1
@@ -41,8 +41,8 @@ else:
     print("ℹ️ Superuser already exists.")
 EOF
 
-echo "🗃️ Collecting static files..."
-python3 manage.py collectstatic --noinput || exit 1
+# echo "🗃️ Collecting static files..."
+# python3 manage.py collectstatic --noinput || exit 1
 
 echo "🔍 Running system checks..."
 python3 manage.py check || exit 1
