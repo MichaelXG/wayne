@@ -30,7 +30,7 @@ export default function Footer() {
             }
           })}
         >
-          M-Tech
+          Wayne Industries
         </Typography>
       </Typography>
       <Stack direction="row" sx={{ gap: 1.5, alignItems: 'center', justifyContent: 'space-between' }}>

@@ -20,9 +20,11 @@ const GridToolbarColumnsButtonCustom = () => {
       aria-label="Open Columns Panel"
       aria-haspopup="true"
       sx={(theme) => ({
+        backgroundColor: (theme) => theme.palette.grey[300],
+        color: (theme) => theme.palette.grey[600],
         '&:hover': {
-          backgroundColor: theme.palette.grey[300],
-          color: theme.palette.grey[900] || theme.palette.grey[600]
+          backgroundColor: theme.palette.grey[600],
+          color: (theme) => theme.palette.common.white
         }
       })}
     >

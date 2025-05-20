@@ -514,7 +514,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
         },
         columnHeader: {
           color: theme.palette.grey[600],
-          // backgroundColor: theme.palette.grey[200],
+          backgroundColor: theme.palette.grey[300],
           paddingLeft: 24,
           paddingRight: 24
         },

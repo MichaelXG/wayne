@@ -61,7 +61,7 @@ export default function Customization() {
               variant="circular"
               sx={(theme) => ({
                 position: 'fixed',
-                top: '20%',
+                top: '15%',
                 right: 10,
                 zIndex: 1200,
                 borderRadius: 0,
@@ -69,11 +69,12 @@ export default function Customization() {
                 borderBottomLeftRadius: '50%',
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
-                bgcolor: theme.palette.grey[600],
-                color: theme.palette.common.white,
+                bgcolor: theme.palette.grey[300],
+                color: theme.palette.text.secondary,
+
                 '&:hover': {
-                  bgcolor: theme.palette.grey[300],
-                  color: theme.palette.text.secondary
+                  bgcolor: theme.palette.grey[600],
+                  color: theme.palette.common.white
                 },
                 boxShadow: theme.customShadows?.secondary || theme.shadows[6]
               })}
@@ -84,10 +85,10 @@ export default function Customization() {
                   disableRipple
                   aria-label="live customize"
                   sx={(theme) => ({
-                    color: theme.palette.common.white,
+                    color: theme.palette.text.secondary,
                     '&:hover': {
                       backgroundColor: theme.palette.action.hover,
-                      color: theme.palette.text.secondary
+                      color: theme.palette.common.white
                     }
                   })}
                 >

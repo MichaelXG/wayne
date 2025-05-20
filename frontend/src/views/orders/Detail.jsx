@@ -195,10 +195,11 @@ export default function OrderDetail() {
       height: 24,
       padding: '3px',
       backgroundColor: theme.palette.grey[300],
-      color: theme.palette.secondary.contrastText,
+      color: theme.palette.grey[600],
       borderRadius: '50%',
       '&:hover': {
-        backgroundColor: theme.palette.grey[600]
+        backgroundColor: theme.palette.grey[600],
+        color: theme.palette.common.white
       }
     });
 

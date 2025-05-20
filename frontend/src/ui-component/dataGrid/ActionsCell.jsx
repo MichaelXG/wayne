@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles'; // <-- importe useTheme
 import { IconButton, Menu, MenuItem, ListItemIcon, Typography, Tooltip, Link } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Icon } from '@iconify/react';
@@ -6,6 +7,8 @@ import { BaseDir } from '../../App';
 
 const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'product' }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const theme = useTheme(); // <-- chame useTheme para ter o tema
+
   const open = Boolean(anchorEl);
   const handleOpenMenu = (e) => setAnchorEl(e.currentTarget);
   const handleCloseMenu = () => setAnchorEl(null);
@@ -64,7 +67,7 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
         placement="top"
         componentsProps={{
           tooltip: {
-            sx: (theme) => ({
+            sx: {
               backgroundColor: theme.palette.grey[600],
               color: theme.palette.common.white,
               fontSize: 12,
@@ -72,7 +75,7 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
               py: 0.5,
               borderRadius: 1,
               boxShadow: theme.shadows[2]
-            })
+            }
           }
         }}
       >
@@ -89,7 +92,7 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
           sx: {
             minWidth: 160,
             borderRadius: 1.5,
-            boxShadow: (theme) => theme.shadows[8],
+            boxShadow: theme.shadows[8],
             p: 1
           }
         }}
@@ -124,20 +127,19 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
         {/* Delete */}
         <MenuItem
           onClick={handleDelete}
-          sx={(theme) => ({
+          sx={{
             typography: 'body2',
             borderRadius: 1,
             color: theme.palette.error.main,
             '&:hover': {
               bgcolor: theme.palette.error.light
             }
-          })}
+          }}
         >
           <ListItemIcon sx={{ minWidth: 28, color: theme.palette.error.main }}>
             <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
           </ListItemIcon>
           <Typography variant="body2" sx={{ color: theme.palette.error.main }}>
-            {' '}
             Delete
           </Typography>
         </MenuItem>
