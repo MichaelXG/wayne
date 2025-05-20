@@ -40,7 +40,7 @@ const ActiveFiltersBadge = ({ filterModel = { items: [] } }) => {
           return (
             <Chip
               key={index}
-              icon={<FilterAltIcon fontSize="small" sx={{ color: theme.palette.grey[600] }} />}
+              icon={<FilterAltIcon fontSize="small" sx={{ color: theme.palette.error.main }} />}
               label={label}
               variant="outlined"
               size="small"

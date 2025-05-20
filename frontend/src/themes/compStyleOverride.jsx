@@ -49,7 +49,7 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
       styleOverrides: {
         root: {
           color: theme.palette.grey[600],
-          '&.Mui-checked': {
+          '&.Mui-checked, &.MuiCheckbox-indeterminate': {
             color: theme.palette.grey[600]
           },
           '&:hover': {

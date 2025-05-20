@@ -4,7 +4,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, CircularProgress } from '@mui/material';
 import SummaryFooter from './SummaryFooter';
 import ListItems from '../../views/orders/ExpandItem';
-import createOrderColumns from './columns/orderColumns';
 
 const DynamicDataGrid = ({
   data,
