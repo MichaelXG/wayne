@@ -1,27 +1,37 @@
 import React, { useMemo, useState } from 'react';
-import { BaseDir, customSvgEditIcon, isDebug } from '../../App';
-import { IconShieldX, IconShieldCheck, IconCheck, IconBan } from '@tabler/icons-react';
-import { useAuthGuard } from '../../hooks/useAuthGuard';
-import DetailPage from './DetailPage';
-import { useOrderIDContext } from '../../contexts/OrderIDContext';
-import useFetchData from '../../hooks/useFetchData';
-import { API_ROUTES } from '../../routes/ApiRoutes';
 import { useNavigate } from 'react-router-dom';
-import Breadcrumbs from '../../ui-component/extended/Breadcrumbs';
-import AnimateButton from '../../ui-component/extended/AnimateButton';
-import { Stack, Box, Grid, IconButton, Tooltip, useMediaQuery, Typography, Chip } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import MainCard from '../../ui-component/cards/MainCard';
-import SubCard from '../../ui-component/cards/SubCard';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-import { IconClockHour4, IconPackage, IconTruckDelivery } from '@tabler/icons-react';
 import axios from 'axios';
+
+// Constants and utils
+import { BaseDir, customSvgEditIcon, isDebug } from '../../App';
+import { API_ROUTES } from '../../routes/ApiRoutes';
+import { statusColors, statusIcons } from '../../utils/statusUtils';
+
+// Hooks
+import { useAuthGuard } from '../../hooks/useAuthGuard';
+import useFetchData from '../../hooks/useFetchData';
 import useCancelOrderAndDependencies from '../../hooks/useCancelOrderAndDependencies';
-import DynamicModal from '../../ui-component/modal/DynamicModal';
 import useOrderLockStatus from '../../hooks/useOrderLockStatus';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { statusColors, statusIcons } from '../../utils/statusUtils';
+import { useOrderIDContext } from '../../contexts/OrderIDContext';
+
+// Material-UI components and hooks
+import { useTheme } from '@mui/material/styles';
+import { Stack, Box, Grid, IconButton, Tooltip, useMediaQuery, Typography, Chip } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+// Custom components
+import MainCard from '../../ui-component/cards/MainCard';
+import SubCard from '../../ui-component/cards/SubCard';
+import Breadcrumbs from '../../ui-component/extended/Breadcrumbs';
+import AnimateButton from '../../ui-component/extended/AnimateButton';
+import DynamicModal from '../../ui-component/modal/DynamicModal';
+
+// Icons
+import { IconShieldX, IconShieldCheck, IconCheck, IconBan } from '@tabler/icons-react';
+
+// Local component
+import DetailPage from './DetailPage';
 
 export default function OrderDetail() {
   const [userData] = useLocalStorage('wayne-user-data', {}); // Adicione isso

@@ -91,16 +91,25 @@ export default function ShippingModal({ open, onClose, addresses = [], selectedA
                           >
                             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                               <Stack direction="row" spacing={1}>
-                                {address.is_default && <Chip label="Default" size="small" color="primary" />}
+                                {address.is_default && (
+                                  <Chip
+                                    label="Default"
+                                    size="small"
+                                    color="primary"
+                                    sx={(theme) => ({
+                                      fontWeight: theme.typography.fontWeightBold,
+                                      bgcolor: theme.palette.primary.main,
+                                      color: theme.palette.common.white
+                                    })}
+                                  />
+                                )}
                                 <Chip
                                   label={address.is_active ? 'Active' : 'Inactive'}
                                   size="small"
                                   sx={(theme) => ({
-                                    color: address.is_active ? theme.palette.success.main : theme.palette.error.main,
-                                    borderColor: address.is_active ? theme.palette.success.main : theme.palette.error.main,
-                                    borderStyle: 'solid',
-                                    borderWidth: 1,
-                                    bgcolor: 'transparent'
+                                    fontWeight: theme.typography.fontWeightBold,
+                                    bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                                    color: theme.palette.common.white
                                   })}
                                 />
                               </Stack>

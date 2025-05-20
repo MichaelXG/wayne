@@ -200,7 +200,8 @@ export default function NavCollapse({ menu, level, parentId }) {
             py: level === 1 ? 0 : 1,
             '&:hover': {
               bgcolor: theme.palette.grey[300], // cor clara no hover fora do drawer aberto
-              color: theme.palette.text.primary // muda cor do texto no hover
+              color: theme.palette.text.primary, // muda cor do texto no hover
+              fontWeight: theme.typography.fontWeightBold
             },
             '&.Mui-selected': {
               bgcolor: 'transparent',
@@ -231,13 +232,17 @@ export default function NavCollapse({ menu, level, parentId }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   '&:hover': {
-                    bgcolor: theme.palette.grey[300], // cor clara no hover fora do drawer aberto
-                    color: theme.palette.grey[600] // muda cor do texto no hover
+                    bgcolor: theme.palette.grey[300],
+                    color: theme.palette.grey[600],
+                    fontWeight: theme.typography.fontWeightBold
                   },
+
                   ...(isSelected && {
                     bgcolor: theme.palette.grey[300],
                     '&:hover': {
-                      bgcolor: theme.palette.grey[300]
+                      bgcolor: theme.palette.grey[300],
+                      color: theme.palette.grey[600],
+                      fontWeight: theme.typography.fontWeightBold
                     }
                   })
                 })

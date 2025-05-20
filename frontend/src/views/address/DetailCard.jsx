@@ -62,9 +62,9 @@ export default function DetailCard({
               label={is_active ? 'Active' : 'Inactive'}
               size="small"
               sx={(theme) => ({
-                fontWeight: 'bold',
-                color: theme.palette.common.white,
-                backgroundColor: is_active ? theme.palette.success.main : theme.palette.error.main
+                fontWeight: theme.typography.fontWeightBold,
+                bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                color: theme.palette.common.white
               })}
             />
           </Stack>

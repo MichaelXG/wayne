@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Dialog, Typography, Chip, useTheme, Grid, FormControl, Stack } from '@mui/material';
+import { Box, Dialog, Typography, Chip, Grid, FormControl, Stack } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
@@ -109,8 +109,9 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
                                     size="small"
                                     color="primary"
                                     sx={(theme) => ({
-                                      fontWeight: 600,
-                                      color: theme.palette.primary.contrastText
+                                      fontWeight: theme.typography.fontWeightBold,
+                                      bgcolor: theme.palette.primary.main,
+                                      color: theme.palette.common.white
                                     })}
                                   />
                                 )}
@@ -120,8 +121,9 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
                                   size="small"
                                   color={carrier.is_active ? 'success' : 'error'}
                                   sx={(theme) => ({
-                                    fontWeight: 'bold',
-                                    color: carrier.is_active ? theme.palette.success.contrastText : theme.palette.error.contrastText
+                                    fontWeight: theme.typography.fontWeightBold,
+                                    bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                                    color: theme.palette.common.white
                                   })}
                                 />
                               </Stack>

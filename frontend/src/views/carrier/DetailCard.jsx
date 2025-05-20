@@ -50,10 +50,9 @@ export default function DetailCard({ id, name, prefix, slug, is_default = false,
                 label="Default"
                 size="small"
                 sx={(theme) => ({
-                  fontWeight: 600,
-                  fontSize: '0.75rem',
-                  backgroundColor: theme.palette.primary.main,
-                  color: theme.palette.primary.contrastText
+                  fontWeight: theme.typography.fontWeightBold,
+                  bgcolor: theme.palette.primary.main,
+                  color: theme.palette.common.white
                 })}
               />
             )}
@@ -87,9 +86,9 @@ export default function DetailCard({ id, name, prefix, slug, is_default = false,
                     label={is_active ? 'Active' : 'Inactive'}
                     size="small"
                     sx={(theme) => ({
-                      fontWeight: 'bold',
-                      color: theme.palette.common.white,
-                      backgroundColor: is_active ? theme.palette.success.main : theme.palette.error.main
+                      fontWeight: theme.typography.fontWeightBold,
+                      bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                      color: theme.palette.common.white
                     })}
                   />
                 </Box>
