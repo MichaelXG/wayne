@@ -4,6 +4,7 @@ import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
 import ActionsCell from '../ActionsCell';
 import { isDebug } from '../../../App';
+import { API_BASE_URL } from '../../../routes/ApiRoutes';
 
 const BASE_URL = 'http://localhost:8000'; // ajuste conforme necessário
 
@@ -23,7 +24,7 @@ const createProductColumns = (handleDelete) => {
         const skuCode = params.row?.sku || '';
 
         let rawImage = params.row?.images?.[0]?.url || params.row?.images?.image || '';
-        const image = rawImage?.startsWith('http') ? rawImage : `${BASE_URL}${rawImage}`;
+        const image = rawImage?.startsWith('http') ? rawImage : `${API_BASE_URL}${rawImage}`;
 
         return (
           <Box display="flex" alignItems="flex-start" gap={2}>

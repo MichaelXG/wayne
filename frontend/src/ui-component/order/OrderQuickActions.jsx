@@ -28,35 +28,41 @@ export default function OrderQuickActions({}) {
             placement="top"
             componentsProps={{
               tooltip: {
-                sx: {
-                  backgroundColor: '#8E33FF',
-                  color: '#fff',
+                sx: (theme) => ({
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white,
                   fontSize: 12,
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: 2
-                }
+                  boxShadow: theme.shadows[2]
+                })
               }
             }}
           >
             <Fab
+              component="div"
               onClick={handleToggle}
               size="medium"
-              color="secondary"
-              aria-label="Order Quick Actions"
-              sx={{
+              sx={(theme) => ({
+                position: 'fixed',
+                top: '25%',
+                right: 10,
+                zIndex: 1200,
                 borderRadius: 0,
                 borderTopLeftRadius: '50%',
                 borderBottomLeftRadius: '50%',
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
-                top: '30%',
-                position: 'fixed',
-                right: 10,
-                zIndex: 1200,
-                boxShadow: theme.customShadows.secondary
-              }}
+                bgcolor: theme.palette.grey[300],
+                color: theme.palette.text.secondary,
+
+                '&:hover': {
+                  bgcolor: theme.palette.grey[600],
+                  color: theme.palette.common.white
+                },
+                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
+              })}
             >
               <AnimateButton type="scale">
                 <IconButton color="inherit" size="large" disableRipple>
@@ -67,8 +73,8 @@ export default function OrderQuickActions({}) {
                         '& .MuiBadge-badge': {
                           bottom: 10,
                           left: 15,
-                          backgroundColor: theme.palette.orange.dark,
-                          color: '#fff'
+                          backgroundColor: theme.palette.grey[900],
+                          color: theme.palette.common.white
                         }
                       }}
                     >

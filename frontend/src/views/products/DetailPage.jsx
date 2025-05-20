@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box } from '@mui/material';
 
-import { API_ROUTES } from '../../routes/ApiRoutes';
+import { API_BASE_URL, API_ROUTES } from '../../routes/ApiRoutes';
 import DataLoaderWrapper from '../../ui-component/dataGrid/DataLoaderWrapper';
 import DetailCard from './DetailCard';
 import IllustrationMessage from '../../ui-component/message/IllustrationMessage';
@@ -55,7 +54,7 @@ export default function DetailPage() {
             images={
               Array.isArray(product.images) && product.images.length > 0
                 ? product.images.map((img) =>
-                    img.url?.startsWith('http') ? img.url : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${img.url}`
+                    img.url?.startsWith('http') ? img.url : `${API_BASE_URL || 'http://localhost:8000'}${img.url}`
                   )
                 : ['https://via.placeholder.com/300x300?text=No+Image']
             }

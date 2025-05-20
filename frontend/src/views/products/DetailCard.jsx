@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { saveOrderToLocalStorage } from '../../hooks/useLocalOrder';
 import { isDebug } from '../../App';
 import { useTheme } from '@mui/material/styles';
+import { API_BASE_URL } from '../../routes/ApiRoutes';
 
 export default function DetailCard({
   id,
@@ -68,7 +69,7 @@ export default function DetailCard({
 
     // ✅ Construção segura do item
     let rawImage = images?.[0]?.url || images?.image || '';
-    const image = rawImage?.startsWith('http') ? rawImage : `${BASE_URL}${rawImage}`;
+    const image = rawImage?.startsWith('http') ? rawImage : `${API_BASE_URL}${rawImage}`;
 
     const item = {
       id: id,

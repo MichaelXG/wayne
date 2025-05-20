@@ -1,14 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import React, { useMemo } from 'react';
 import axios from 'axios';
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
 
-import { BaseDir, isDebug } from '../../App';
+// Projetos / hooks / utilitários internos
+import { isDebug } from '../../App';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import { getOrderFromLocalStorage } from '../../hooks/useLocalOrder';
 import StoredOrderPage from './StoredOrderPage';
 import DefaultMinimalLayout from '../../layout/DefaultMinimalLayout';
-import { getOrderFromLocalStorage } from '../../hooks/useLocalOrder';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import { useNavigate } from 'react-router-dom';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 
 export default function StoredOrder() {
@@ -22,14 +23,8 @@ export default function StoredOrder() {
 
   const breadcrumbs = useMemo(() => {
     const orderDate = order?.created_at
-      ? new Date(order.created_at).toLocaleString('en-US', {
-          dateStyle: 'medium',
-          timeStyle: 'short'
-        })
-      : new Date().toLocaleString('en-US', {
-          dateStyle: 'medium',
-          timeStyle: 'short'
-        });
+      ? new Date(order.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
+      : new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
 
     return [
       { label: 'Order' },
@@ -45,7 +40,14 @@ export default function StoredOrder() {
       icon: <AddIcon />,
       onClick: async () => {
         try {
-          const storedOrder = JSON.parse(localStorage.getItem('order'));
+          let storedOrder = null;
+          try {
+            storedOrder = JSON.parse(localStorage.getItem('order'));
+          } catch {
+            alert('Invalid order data');
+            return;
+          }
+
           if (!storedOrder || !storedOrder.items?.length) {
             alert('No order to submit!');
             return;
@@ -70,10 +72,8 @@ export default function StoredOrder() {
             }
           });
 
-          const data = response.data;
-
           localStorage.removeItem('order');
-          navigate(`/orders/detail/${data.id}`);
+          navigate(`/orders/detail/${response.data.id}`);
         } catch (error) {
           console.error('❌ Error placing order:', error);
           alert('Error placing order. Try again.');
@@ -91,7 +91,7 @@ export default function StoredOrder() {
       subCardTitle="Details"
       breadcrumbs={breadcrumbs}
       actionbutton={actionbutton}
-      checkingAuth={!checkingAuth}
+      checkingAuth={checkingAuth} // Verifique se esta prop espera o valor original
     >
       <StoredOrderPage />
     </DefaultMinimalLayout>
