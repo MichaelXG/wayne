@@ -109,6 +109,7 @@ export default function DefaultMinimalLayout({
                 >
                   {subCardTitle}
                 </Typography>
+
                 {/* </Box> */}
                 <Box display="flex" alignItems="center" gap={1}>
                   {actionClose && (
@@ -303,5 +304,29 @@ export default function DefaultMinimalLayout({
 DefaultMinimalLayout.propTypes = {
   mainCardTitle: PropTypes.string.isRequired,
   subCardTitle: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  breadcrumbs: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      href: PropTypes.string,
+      type: PropTypes.string
+    })
+  ),
+  actionbutton: PropTypes.shape({
+    label: PropTypes.string,
+    icon: PropTypes.node,
+    href: PropTypes.string,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
+    color: PropTypes.string
+  }),
+  actionClose: PropTypes.shape({
+    label: PropTypes.string,
+    icon: PropTypes.node,
+    href: PropTypes.string,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
+    color: PropTypes.string
+  }),
+  checkingAuth: PropTypes.bool
 };

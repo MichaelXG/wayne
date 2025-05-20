@@ -56,7 +56,6 @@ export default function OrderQuickActions({}) {
                 borderBottomRightRadius: '4px',
                 bgcolor: theme.palette.grey[300],
                 color: theme.palette.text.secondary,
-
                 '&:hover': {
                   bgcolor: theme.palette.grey[600],
                   color: theme.palette.common.white

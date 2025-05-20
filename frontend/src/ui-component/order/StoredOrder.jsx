@@ -39,45 +39,45 @@ export default function StoredOrder() {
       label: 'Place Order',
       icon: <AddIcon />,
       onClick: async () => {
-        try {
-          let storedOrder = null;
           try {
-            storedOrder = JSON.parse(localStorage.getItem('order'));
-          } catch {
-            alert('Invalid order data');
-            return;
-          }
-
-          if (!storedOrder || !storedOrder.items?.length) {
-            alert('No order to submit!');
-            return;
-          }
-
-          const payload = {
-            items: storedOrder.items.map((item) => ({
-              product_id: item.id,
-              quantity: item.quantity,
-              price: item.price
-            })),
-            status: 'pending',
-            discount: 0,
-            shippingFee: 0,
-            tax: 0
-          };
-
-          const response = await axios.post(API_ROUTES.ORDERS, payload, {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
+            let storedOrder = null;
+            try {
+              storedOrder = JSON.parse(localStorage.getItem('order'));
+            } catch {
+              alert('Invalid order data');
+              return;
             }
-          });
 
-          localStorage.removeItem('order');
-          navigate(`/orders/detail/${response.data.id}`);
-        } catch (error) {
-          console.error('❌ Error placing order:', error);
-          alert('Error placing order. Try again.');
-        }
+            if (!storedOrder || !storedOrder.items?.length) {
+              alert('No order to submit!');
+              return;
+            }
+
+            const payload = {
+              items: storedOrder.items.map((item) => ({
+                product_id: item.id,
+                quantity: item.quantity,
+                price: item.price
+              })),
+              status: 'pending',
+              discount: 0,
+              shippingFee: 0,
+              tax: 0
+            };
+
+            const response = await axios.post(API_ROUTES.ORDERS, payload, {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+              }
+            });
+
+            localStorage.removeItem('order');
+            navigate(`/orders/detail/${response.data.id}`);
+          } catch (error) {
+            console.error('❌ Error placing order:', error);
+            alert('Error placing order. Try again.');
+          }
       }
     }),
     [token, navigate]
@@ -91,7 +91,7 @@ export default function StoredOrder() {
       subCardTitle="Details"
       breadcrumbs={breadcrumbs}
       actionbutton={actionbutton}
-      checkingAuth={checkingAuth} // Verifique se esta prop espera o valor original
+      checkingAuth={checkingAuth}
     >
       <StoredOrderPage />
     </DefaultMinimalLayout>

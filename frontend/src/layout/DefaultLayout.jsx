@@ -1,20 +1,27 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
 import { useNavigate } from 'react-router-dom';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Tooltip from '@mui/material/Tooltip';
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import SubCard from 'ui-component/cards/SubCard';
-import MainCard from 'ui-component/cards/MainCard';
-import { gridSpacing } from 'store/constant';
-import { Box, IconButton, Breadcrumbs, Tooltip } from '@mui/material';
 import { IconShieldCheck, IconShieldX } from '@tabler/icons-react';
 
-import React from 'react';
-import AnimateButton from '../ui-component/extended/AnimateButton';
+import AnimateButton from 'ui-component/extended/AnimateButton';
+import SubCard from 'ui-component/cards/SubCard';
+import MainCard from 'ui-component/cards/MainCard';
+
+import { gridSpacing } from 'store/constant';
 
 export default function DefaultLayout({ mainCardTitle, subCardTitle, children, backButton, breadcrumbs = [], actionbutton, checkingAuth }) {
   const theme = useTheme();
