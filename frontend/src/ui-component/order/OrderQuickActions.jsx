@@ -37,31 +37,26 @@ export default function OrderQuickActions({}) {
                   borderRadius: 1,
                   boxShadow: theme.shadows[2]
                 })
-              }
+                }
             }}
           >
             <Fab
-              component="div"
               onClick={handleToggle}
               size="medium"
-              sx={(theme) => ({
-                position: 'fixed',
-                top: '25%',
-                right: 10,
-                zIndex: 1200,
+              color="secondary"
+              aria-label="Order Quick Actions"
+              sx={{
                 borderRadius: 0,
                 borderTopLeftRadius: '50%',
                 borderBottomLeftRadius: '50%',
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
-                bgcolor: theme.palette.grey[300],
-                color: theme.palette.text.secondary,
-                '&:hover': {
-                  bgcolor: theme.palette.grey[600],
-                  color: theme.palette.common.white
-                },
-                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
-              })}
+                top: '30%',
+                position: 'fixed',
+                right: 10,
+                zIndex: 1200,
+                boxShadow: theme.customShadows.secondary
+              }}
             >
               <AnimateButton type="scale">
                 <IconButton color="inherit" size="large" disableRipple>

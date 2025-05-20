@@ -1,8 +1,8 @@
-import requests
 from django.core.management.base import BaseCommand
 from carrier.models import Carrier
 from django.conf import settings
 from django.db import IntegrityError
+import requests
 import re
 import string
 
@@ -29,6 +29,10 @@ class Command(BaseCommand):
     help = "Automatically import carriers from AfterShip"
 
     def handle(self, *args, **kwargs):
+        if not settings.AFTERSHIP_API_KEY:
+            self.stderr.write(self.style.ERROR("❌ AFTERSHIP_API_KEY is not set in settings."))
+            return
+
         headers = {
             "aftership-api-key": settings.AFTERSHIP_API_KEY,
             "Content-Type": "application/json"
