@@ -1,16 +1,12 @@
 from django.core.management.base import BaseCommand
 from carrier.models import Carrier
+from django.conf import settings
 from django.db import IntegrityError
-import json
-import os
+import requests
 import re
 import string
 
-# Caminho para o arquivo JSON local
-CARRIERS_JSON_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    '..', 'data', 'aftership_carriers_flat.json'
-)
+AFTERSHIP_API_URL = "https://api.aftership.com/v4/couriers/all"
 
 def generate_unique_prefix(slug, existing_prefixes):
     base = re.sub(r'[^a-zA-Z]', '', slug).upper()[:4] or 'CRRX'
@@ -30,22 +26,28 @@ def generate_unique_prefix(slug, existing_prefixes):
     return prefix
 
 class Command(BaseCommand):
-    help = "Import carriers from local JSON file instead of AfterShip API"
+    help = "Automatically import carriers from AfterShip"
 
     def handle(self, *args, **kwargs):
-        if not os.path.exists(CARRIERS_JSON_PATH):
-            self.stderr.write(self.style.ERROR(f"❌ File not found: {CARRIERS_JSON_PATH}"))
+        if not settings.AFTERSHIP_API_KEY:
+            self.stderr.write(self.style.ERROR("❌ AFTERSHIP_API_KEY is not set in settings."))
             return
 
+        headers = {
+            "aftership-api-key": settings.AFTERSHIP_API_KEY,
+            "Content-Type": "application/json"
+        }
+
         try:
-            with open(CARRIERS_JSON_PATH, "r", encoding="utf-8") as f:
-                carriers = json.load(f)
+            response = requests.get(AFTERSHIP_API_URL, headers=headers)
+            response.raise_for_status()
+            carriers = response.json().get('data', {}).get('couriers', [])
         except Exception as e:
-            self.stderr.write(self.style.ERROR(f"❌ Error reading JSON: {e}"))
+            self.stderr.write(self.style.ERROR(f"❌ Error searching for carriers: {e}"))
             return
 
         if not carriers:
-            self.stdout.write(self.style.WARNING("⚠️ No carriers found in JSON file."))
+            self.stdout.write(self.style.WARNING("⚠️ No carrier returned by API."))
             return
 
         Carrier.objects.update(is_default=False)
