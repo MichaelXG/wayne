@@ -11,7 +11,7 @@ const basename = import.meta.env.VITE_APP_BASE_NAME || '/';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to={`/pages/login`} replace /> // 🔹 Sempre inicia no login respeitando o basename
+    element: <Navigate to={`/pages/login`} replace /> 
   },
   AuthenticationRoutes,
   MainRoutes

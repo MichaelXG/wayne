@@ -11,8 +11,10 @@ import { isDebug } from '../../App';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 import createProductColumns from '../../ui-component/dataGrid/columns/productColumns';
+import { useTheme } from '@mui/material/styles';
 
 const ListPage = () => {
+  const theme = useTheme();
   const [products, setProducts] = useState([]); // armazena o array real
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
@@ -134,7 +136,7 @@ const ListPage = () => {
       filterModel={filterModel}
       setFilterModel={setFilterModel}
       slots={slots}
-      sx={sxColumns}
+      sx={sxColumns(theme)}
     />
   );
 };

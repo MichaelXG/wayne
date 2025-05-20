@@ -10,9 +10,11 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 import CustomToolbarCarrier from '../../ui-component/dataGrid/slots/CustomToolbarCarrier';
 import createCarrierColumns from '../../ui-component/dataGrid/columns/carrierColumns';
+import { useTheme } from '@mui/material/styles';
 
 const ListPage = () => {
-  const [carriers, setCarriers] = useState([]); 
+  const theme = useTheme();
+  const [carriers, setCarriers] = useState([]);
   const [filteredCarriers, setFilteredCarriers] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
   const [filterModel, setFilterModel] = useState({ items: [] });
@@ -133,7 +135,7 @@ const ListPage = () => {
       filterModel={filterModel}
       setFilterModel={setFilterModel}
       slots={slots}
-      sx={sxColumns}
+      sx={sxColumns(theme)}
     />
   );
 };

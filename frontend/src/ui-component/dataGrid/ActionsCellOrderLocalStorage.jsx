@@ -37,7 +37,7 @@ const ActionsCellOrderLocalStorage = ({ params, onDelete, onDeleteItem, onEdit }
               borderRadius: 1,
               boxShadow: theme.shadows[2]
             })
-          }
+            }
         }}
       >
         <IconButton onClick={handleOpenMenu} size="small">

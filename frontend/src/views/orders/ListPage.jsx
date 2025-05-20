@@ -12,8 +12,10 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 import createOrderColumns from '../../ui-component/dataGrid/columns/orderColumns';
 import ExpandItem from './ExpandItem';
+import { useTheme } from '@mui/material/styles';
 
 const ListPage = () => {
+  const theme = useTheme();
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
@@ -124,7 +126,7 @@ const ListPage = () => {
       filterModel={filterModel}
       setFilterModel={setFilterModel}
       slots={slots}
-      sx={sxColumns}
+      sx={sxColumns(theme)}
       getRowId={(row) => row.id}
       getDetailPanelContent={({ row }) => (
         <Box

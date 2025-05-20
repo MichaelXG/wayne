@@ -1,4 +1,3 @@
-// src/routes/MainRoutes.jsx
 import { lazy } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import Loadable from 'ui-component/Loadable';

@@ -1,4 +1,3 @@
-// src/components/ProtectedRoute.jsx
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
