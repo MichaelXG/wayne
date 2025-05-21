@@ -87,8 +87,8 @@ else:
     print("ℹ️ Superuser already exists.")
 EOF
 
-# 🛒 Import products from FakeStore API
-echo "📦 Importing products from FakeStore API..."
+# 🛒 Import products from Wayne Industries 
+echo "📦 Importing products from Wayne Industries..."
 python3 manage.py import_products || { echo "❌ Failed to import products!"; exit 1; }
 
 # 🛒 Import carriers from API AfterShip

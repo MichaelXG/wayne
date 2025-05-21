@@ -6,13 +6,17 @@ from .models import Product, ProductImage
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
-    fields = ['preview', 'url', 'image']  
+    fields = ['preview', 'url', 'image']
     readonly_fields = ['preview']
 
     def preview(self, obj):
-        url = obj.image.url if obj.image else obj.url
-        if url:
-            return format_html('<img src="{}" width="100" style="object-fit: contain;" />', url)
+        """
+        Exibe uma pré-visualização da imagem no Admin.
+        """
+        if obj.image and hasattr(obj.image, 'url'):
+            return format_html('<img src="{}" width="100" style="object-fit: contain;" />', obj.image.url)
+        elif obj.url:
+            return format_html('<img src="{}" width="100" style="object-fit: contain;" />', obj.url)
         return "-"
     preview.short_description = "Preview"
 
@@ -27,11 +31,21 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
 
     fieldsets = (
-        (None, {'fields': ('title', 'description', 'category', 'code', 'sku', 'is_active')}),
-        ('Pricing', {'fields': ('price_regular', 'price_sale', 'tax')}),
-        ('Inventory', {'fields': ('quantity',)}), 
-        ('Rating', {'fields': ('rating_rate', 'rating_count')}),
-        ('Timestamps', {'fields': ('inserted_in', 'modified_in')}),
+        (None, {
+            'fields': ('title', 'description', 'category', 'code', 'sku', 'is_active')
+        }),
+        ('Pricing', {
+            'fields': ('price_regular', 'price_sale', 'tax')
+        }),
+        ('Inventory', {
+            'fields': ('quantity',)
+        }),
+        ('Rating', {
+            'fields': ('rating_rate', 'rating_count')
+        }),
+        ('Timestamps', {
+            'fields': ('inserted_in', 'modified_in')
+        }),
     )
 
     search_fields = ['title', 'code', 'sku']
@@ -47,8 +61,12 @@ class ProductImageAdmin(admin.ModelAdmin):
     list_filter = ['product__category']
 
     def preview(self, obj):
-        url = obj.image.url if obj.image else obj.url
-        if url:
-            return format_html('<img src="{}" width="80" style="object-fit: contain;" />', url)
+        """
+        Exibe uma miniatura da imagem ou URL.
+        """
+        if obj.image and hasattr(obj.image, 'url'):
+            return format_html('<img src="{}" width="80" style="object-fit: contain;" />', obj.image.url)
+        elif obj.url:
+            return format_html('<img src="{}" width="80" style="object-fit: contain;" />', obj.url)
         return "-"
     preview.short_description = "Preview"

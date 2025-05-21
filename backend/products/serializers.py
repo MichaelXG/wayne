@@ -12,6 +12,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
+    image = serializers.SerializerMethodField()
     price = serializers.SerializerMethodField()
     rating = serializers.SerializerMethodField()
 
@@ -20,7 +21,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'description', 'category', 'code', 'sku', 'quantity',
             'price_regular', 'price_sale', 'tax', 'price',
-            'rating', 'images', 'is_active'
+            'rating', 'image', 'images', 'is_active'
         ]
 
     def get_price(self, obj):
@@ -36,6 +37,18 @@ class ProductSerializer(serializers.ModelSerializer):
             "count": obj.rating_count
         }
 
+    def get_image(self, obj):
+        """
+        Retorna um array contendo todas as URLs de imagens: primeiro 'url', depois 'image.url'
+        """
+        urls = []
+        for img in obj.images.all():
+            if img.url:
+                urls.append(img.url)
+            elif img.image:
+                urls.append(img.image.url)
+        return urls
+
     def create(self, validated_data):
         request = self.context.get('request')
         if not request:
@@ -45,7 +58,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
         product = Product.objects.create(**validated_data)
 
-        # Apenas se o modelo não tiver tratado código/sku na save()
+        # Gera code e SKU se não enviados
         if not product.code:
             product.code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
         if not product.sku:
