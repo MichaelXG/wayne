@@ -6,7 +6,6 @@ import uuid
 import random
 import string
 
-
 # ✅ Caminho customizado para upload de imagens de produtos
 @deconstructible
 class ProductImageUploadPath:
@@ -21,7 +20,6 @@ class ProductImageUploadPath:
         product_id = getattr(instance.product, 'id', None) or f"temp_{uuid.uuid4().hex[:6]}"
         new_filename = f"product_{product_id}_{uuid.uuid4().hex[:8]}.{ext}"
         return os.path.join(self.prefix, new_filename)
-
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
@@ -83,17 +81,15 @@ class ProductImage(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        if self.image and not hasattr(self.image, 'name'):
-            raise ValueError("Invalid 'image' field when saving ProductImage.")
-
         super().save(*args, **kwargs)
 
-        # Se não tiver url, e tiver image local, usa a URL da imagem local
+        # ✅ Atualiza o campo URL se imagem local foi enviada
         if self.image and (not self.url or self.url != self.image.url):
             self.url = self.image.url
             super().save(update_fields=["url"])
 
     def delete(self, *args, **kwargs):
+        # ✅ Remove o arquivo físico da imagem se for local
         if self.image and self.image.name:
             try:
                 image_path = self.image.path

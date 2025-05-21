@@ -41,17 +41,21 @@ class ProductSerializer(serializers.ModelSerializer):
         if not request:
             raise serializers.ValidationError("Request context is required.")
 
-        images = request.FILES.getlist('images')
-
         product = Product.objects.create(**validated_data)
 
-        # Apenas se o modelo não tiver tratado código/sku na save()
+        # Geração automática de código e SKU, se não informados
+        updated = False
         if not product.code:
             product.code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            updated = True
         if not product.sku:
             product.sku = f"SKU-{product.id:04d}"
-        product.save(update_fields=['code', 'sku'])
+            updated = True
+        if updated:
+            product.save(update_fields=['code', 'sku'])
 
+        # Importação de imagens - suporte a múltiplas imagens enviadas
+        images = request.FILES.getlist('images')
         for image in images:
             ProductImage.objects.create(product=product, image=image)
 
@@ -62,15 +66,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if not request:
             raise serializers.ValidationError("Request context is required.")
 
-        existing_urls = request.data.getlist('existing_images', [])
-
-        # Remover imagens que não estão mais presentes
-        instance.images.exclude(url__in=existing_urls).delete()
-
-        # Adicionar novas imagens
-        for uploaded_file in request.FILES.getlist('images'):
-            ProductImage.objects.create(product=instance, image=uploaded_file)
-
         # Atualizar campos do produto
         for field in [
             'title', 'description', 'category', 'code', 'sku', 'quantity',
@@ -80,4 +75,15 @@ class ProductSerializer(serializers.ModelSerializer):
                 setattr(instance, field, validated_data[field])
 
         instance.save()
+
+        # Sincronização de imagens
+        existing_urls = request.data.getlist('existing_images', [])
+        # Remove imagens que não estão mais presentes
+        instance.images.exclude(url__in=existing_urls).delete()
+
+        # Adiciona novas imagens
+        new_images = request.FILES.getlist('images')
+        for uploaded_file in new_images:
+            ProductImage.objects.create(product=instance, image=uploaded_file)
+
         return instance

@@ -29,9 +29,9 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ['title', 'description', 'category', 'code', 'sku', 'is_active']}),
         ('Pricing', {'fields': ['price_regular', 'price_sale', 'tax']}),
-        ('Inventory', {'fields': ['quantity']}),  
-        ('Rating', {'fields': ['rating_rate', 'rating_count']}),  
-        ('Timestamps', {'fields': ['inserted_in', 'modified_in']}),  
+        ('Inventory', {'fields': ['quantity']}),
+        ('Rating', {'fields': ['rating_rate', 'rating_count']}),
+        ('Timestamps', {'fields': ['inserted_in', 'modified_in']}),
     )
 
     search_fields = ['title', 'code', 'sku']
