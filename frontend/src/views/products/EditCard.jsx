@@ -27,7 +27,7 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
     console.log('🛠️ EditCard received product:', product);
   }
 
-  const { id, title, images = [], category, description, code, sku, gender, quantity, price, rating, is_active } = product || {};
+  const { id, title, images = [], category, description, code, sku, quantity, price, rating, is_active } = product || {};
 
   const methods = useForm({
     defaultValues: {
@@ -36,7 +36,6 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
       category: category || '',
       code: code || '',
       sku: sku || '',
-      gender: gender || '',
       quantity: quantity || '',
       price_regular: price?.regular || 0,
       price_sale: price?.sale || 0,
@@ -57,7 +56,6 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
       category: category || '',
       code: code || '',
       sku: sku || '',
-      gender: gender || '',
       quantity: quantity || '',
       price_regular: price?.regular || 0,
       tax: price?.tax || 0,
@@ -70,7 +68,7 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
     setInitialData(original);
     setCurrentImages(images);
     setOriginalImages(images);
-  }, [title, description, category, code, sku, gender, quantity, price?.regular, price?.sale, price?.tax, is_active]);
+  }, [title, description, category, code, sku, quantity, price?.regular, price?.sale, price?.tax, is_active]);
 
   const { control, watch, getValues, setValue } = methods;
 
@@ -365,50 +363,6 @@ const EditCard = forwardRef(({ product, onSubmit }, ref) => {
                   )}
                 />
               </Stack>
-
-              <Controller
-                name="gender"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Box
-                    sx={(theme) => ({
-                      border: `1px solid ${theme.palette.divider}`,
-                      borderRadius: 2,
-                      px: 2,
-                      py: 2,
-                      mt: 1
-                    })}
-                  >
-                    <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                      Gender
-                    </Typography>
-                    <RadioGroup row {...field}>
-                      {['men', 'women', 'kids', 'unisex', 'others'].map((option) => (
-                        <FormControlLabel
-                          key={option}
-                          value={option}
-                          control={
-                            <Radio
-                              disabled={!isActive}
-                              sx={(theme) => ({
-                                color: theme.palette.grey[600],
-                                '&.Mui-checked': {
-                                  color: theme.palette.grey[600]
-                                },
-                                ...(!isActive && {
-                                  color: theme.palette.action.disabled
-                                })
-                              })}
-                            />
-                          }
-                          label={option.charAt(0).toUpperCase() + option.slice(1)}
-                        />
-                      ))}
-                    </RadioGroup>
-                  </Box>
-                )}
-              />
             </Stack>
           </Card>
 

@@ -30,7 +30,6 @@ class Product(models.Model):
     code = models.CharField(max_length=50, unique=True, blank=True)
     sku = models.CharField(max_length=50, unique=True, blank=True)
     quantity = models.PositiveIntegerField()
-    gender = models.CharField(max_length=20)
 
     price_regular = models.DecimalField(max_digits=10, decimal_places=2)
     price_sale = models.DecimalField(max_digits=10, decimal_places=2)

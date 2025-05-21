@@ -62,7 +62,6 @@ export default function DetailPage() {
             description={product.description}
             code={product.code}
             sku={product.sku}
-            gender={product.gender}
             quantity={product.quantity}
             price={{
               regular: product.price?.sale,

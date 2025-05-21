@@ -36,7 +36,6 @@ export default function ProductCreatePage({ productEditRef }) {
     payload.append('title', formData.title ?? '');
     payload.append('description', formData.description ?? '');
     payload.append('category', formData.category ?? '');
-    payload.append('gender', formData.gender ?? '');
     payload.append('quantity', formData.quantity ?? 0);
     payload.append('price_regular', !isNaN(regularPrice) ? regularPrice.toFixed(2) : '0.00');
     payload.append('price_sale', priceSale.toFixed(2));

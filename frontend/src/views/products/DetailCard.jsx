@@ -20,7 +20,6 @@ export default function DetailCard({
   description,
   code,
   sku,
-  gender,
   quantity,
   price,
   rating,
@@ -247,22 +246,6 @@ export default function DetailCard({
                         {' '}
                         {description}
                       </Typography>
-                    </Tooltip>
-                  </Box>
-
-                  <Box display="flex" alignItems="center">
-                    <Tooltip title="Gender" placement="top" arrow>
-                      <Chip
-                        label={gender}
-                        variant="outlined"
-                        size="small"
-                        sx={(theme) => ({
-                          fontWeight: theme.typography.fontWeightMedium,
-                          textTransform: 'capitalize',
-                          color: theme.palette.grey[600],
-                          borderColor: theme.palette.grey[600]
-                        })}
-                      />
                     </Tooltip>
                   </Box>
                 </Stack>

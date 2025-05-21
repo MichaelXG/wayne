@@ -7,14 +7,15 @@
     "category": "Safety Equipment",
     "code": "YNJ0IFMN",
     "quantity": 3,
-    "gender": "women",
     "price_regular": 1545454.55,
     "price_sale": 1700000,
     "tax": 10,
     "rating_rate": 4.1,
     "rating_count": 91,
     "is_active": true,
-    "image": "https://upload.wikimedia.org/wikipedia/en/e/ed/Batsuit_BenAffleck.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/001.png?raw=true"
+    ]
   },
   {
     "id": 2,
@@ -24,14 +25,15 @@
     "category": "Safety Equipment",
     "code": "VAXUA77C",
     "quantity": 25,
-    "gender": "kids",
     "price_regular": 27272.73,
     "price_sale": 30000,
     "tax": 10,
     "rating_rate": 4.5,
     "rating_count": 19,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/06/28/16/53/night-5352353_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/002.png?raw=true"
+    ]
   },
   {
     "id": 3,
@@ -41,795 +43,844 @@
     "category": "Vehicles",
     "code": "Q9HJXZXB",
     "quantity": 2,
-    "gender": "kids",
     "price_regular": 2272727.27,
     "price_sale": 2500000,
     "tax": 10,
     "rating_rate": 4.5,
     "rating_count": 126,
     "is_active": true,
-    "image": "https://upload.wikimedia.org/wikipedia/en/3/3b/Batmobile_tumbler.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/003.png?raw=true"
+    ]
   },
   {
     "id": 4,
     "sku": "SKU-0004",
     "title": "Batcycle V4",
-    "description": "Motocicleta de resposta r\u00e1pida com rodas articuladas e sistema antitravamento.",
+    "description": "Fast-response motorcycle with articulated wheels and anti-lock system.",
     "category": "Vehicles",
     "code": "3EGIBJOJ",
     "quantity": 5,
-    "gender": "others",
     "price_regular": 381818.18,
     "price_sale": 420000,
     "tax": 10,
     "rating_rate": 3.9,
     "rating_count": 116,
     "is_active": true,
-    "image": "https://upload.wikimedia.org/wikipedia/en/8/80/Batpod_TDKR.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/004.png?raw=true"
+    ]
   },
   {
     "id": 5,
     "sku": "SKU-0005",
     "title": "Batwing Stealth-X",
-    "description": "Aeronave VTOL com propuls\u00e3o silenciosa, escudos reflexivos e IA de navega\u00e7\u00e3o.",
-    "category": "Vehicles A\u00e9reos",
+    "description": "VTOL aircraft with silent propulsion, reflective shields and navigation AI.",
+    "category": "Air Vehicles",
     "code": "F8LNKGXE",
     "quantity": 1,
-    "gender": "others",
     "price_regular": 5454545.45,
     "price_sale": 6000000,
     "tax": 10,
     "rating_rate": 3.5,
     "rating_count": 65,
     "is_active": true,
-    "image": "https://upload.wikimedia.org/wikipedia/en/d/d1/Batman_Batwing_1989.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/005.png?raw=true"
+    ]
   },
   {
     "id": 6,
     "sku": "SKU-0006",
-    "title": "Garra de Ascens\u00e3o Autom\u00e1tica",
-    "description": "Propulsor de escalada com cabo de a\u00e7o retr\u00e1til e ancoragem magn\u00e9tica de alta precis\u00e3o.",
-    "category": "Ferramentas T\u00e1ticas",
+    "title": "Automatic Ascension Claw",
+    "description": "Climbing thruster with retractable steel cable and high-precision magnetic anchor.",
+    "category": "Tactical Tools",
     "code": "SOCFJD19",
     "quantity": 15,
-    "gender": "men",
     "price_regular": 40909.09,
     "price_sale": 45000,
     "tax": 10,
     "rating_rate": 4.1,
     "rating_count": 150,
     "is_active": true,
-    "image": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Batman_grapple.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/006.png?raw=true",
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/006_1.png?raw=true"
+    ]
   },
   {
     "id": 7,
     "sku": "SKU-0007",
-    "title": "Batarang com GPS",
-    "description": "Bumerangue equipado com chip rastreador e modo de retorno autom\u00e1tico.",
-    "category": "Ferramentas T\u00e1ticas",
+    "title": "Batarang with GPS",
+    "description": "Boomerang equipped with tracking chip and automatic return mode.",
+    "category": "Tactical Tools",
     "code": "A53UHPJ4",
     "quantity": 60,
-    "gender": "women",
     "price_regular": 6363.64,
     "price_sale": 7000,
     "tax": 10,
     "rating_rate": 5.0,
     "rating_count": 38,
     "is_active": true,
-    "image": "https://upload.wikimedia.org/wikipedia/en/5/59/Batarang_example.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/007.png?raw=true"
+    ]
   },
   {
     "id": 8,
     "sku": "SKU-0008",
-    "title": "Kit M\u00e9dico WayneAid Pro",
-    "description": "Unidade port\u00e1til com desfibrilador autom\u00e1tico, anest\u00e9sico e bioespuma regenerativa.",
-    "category": "Sa\u00fade",
+    "title": "WayneAid Pro Medical Kit",
+    "description": "Portable unit with automatic defibrillator, anesthetic and regenerative biofoam.",
+    "category": "Health",
     "code": "N2B0NE43",
     "quantity": 30,
-    "gender": "others",
     "price_regular": 11363.64,
     "price_sale": 12500,
     "tax": 10,
     "rating_rate": 4.6,
     "rating_count": 52,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2014/11/27/20/36/first-aid-548659_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/008.png?raw=true"
+    ]
   },
   {
     "id": 9,
     "sku": "SKU-0009",
     "title": "Nanobots Regenerativos Alpha-R",
-    "description": "Nanotecnologia de reparo celular para uso militar e de campo. Promove regenera\u00e7\u00e3o r\u00e1pida de tecidos.",
-    "category": "Sa\u00fade",
+    "description": "Cellular repair nanotechnology for military and field use. Promotes rapid tissue regeneration.",
+    "category": "Health",
     "code": "LKWN6KRK",
     "quantity": 40,
-    "gender": "others",
     "price_regular": 17727.27,
     "price_sale": 19500,
     "tax": 10,
     "rating_rate": 3.5,
     "rating_count": 70,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2019/03/22/18/00/medicine-4073603_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/009.png?raw=true"
+    ]
   },
   {
     "id": 10,
     "sku": "SKU-0010",
-    "title": "Drone de Vigil\u00e2ncia WayneTech V2",
-    "description": "Drone compacto com IA embarcada, reconhecimento facial e sensores t\u00e9rmicos de alta precis\u00e3o.",
-    "category": "Seguran\u00e7a e Monitoramento",
+    "title": "WayneTech V2 Surveillance Drone",
+    "description": "Compact drone with onboard AI, facial recognition and high-precision thermal sensors.",
+    "category": "HealthSecurity and Monitoring",
     "code": "0X36W6GN",
     "quantity": 18,
-    "gender": "men",
     "price_regular": 89090.91,
     "price_sale": 98000,
     "tax": 10,
     "rating_rate": 4.8,
     "rating_count": 56,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2018/03/02/10/36/drone-3198324_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/010.png?raw=true"
+    ]
   },
   {
     "id": 11,
     "sku": "SKU-0011",
-    "title": "Wayne Shield (Central de Monitoramento)",
-    "description": "Sistema integrado de c\u00e2meras, microfones e IA para controle urbano em tempo real.",
-    "category": "Seguran\u00e7a e Monitoramento",
+    "title": "Wayne Shield (Monitoring Center)",
+    "description": "Integrated system of cameras, microphones and AI for real-time urban control.",
+    "category": "HealthSecurity and Monitoring",
     "code": "PVSFK2ZH",
     "quantity": 3,
-    "gender": "men",
     "price_regular": 290909.09,
     "price_sale": 320000,
     "tax": 10,
     "rating_rate": 4.2,
     "rating_count": 46,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2018/03/01/14/56/cctv-3192896_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/011.png?raw=true"
+    ]
   },
   {
     "id": 12,
     "sku": "SKU-0012",
     "title": "Wayne Neural Core AI",
-    "description": "N\u00facleo de IA neural para controle de opera\u00e7\u00f5es de defesa, an\u00e1lise de amea\u00e7as e suporte t\u00e1tico.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "description": "Neural AI core for defense operations control, threat analysis, and tactical support.",
+    "category": "Information Technology",
     "code": "34OUY0F4",
     "quantity": 8,
-    "gender": "others",
     "price_regular": 250000.0,
     "price_sale": 275000,
     "tax": 10,
     "rating_rate": 4.2,
     "rating_count": 9,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/02/16/17/59/artificial-intelligence-4855099_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/012.png?raw=true"
+    ]
   },
   {
     "id": 13,
     "sku": "SKU-0013",
-    "title": "WayneTrace (Software de Rastreamento)",
-    "description": "Sistema avan\u00e7ado de rastreamento com criptografia e IA preditiva. Utilizado por for\u00e7as especiais.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "title": "WayneTrace (Tracking Software)",
+    "description": "Advanced tracking system with encryption and predictive AI. Used by special forces.",
+    "category": "Information Technology",
     "code": "3K35TYPE",
     "quantity": 25,
-    "gender": "unisex",
     "price_regular": 136363.64,
     "price_sale": 150000,
     "tax": 10,
     "rating_rate": 5.0,
     "rating_count": 117,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2015/01/08/18/29/monitor-593136_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/013.png?raw=true"
+    ]
   },
   {
     "id": 14,
     "sku": "SKU-0014",
-    "title": "Reator Port\u00e1til FusionCell Z",
-    "description": "Fonte port\u00e1til de energia limpa com fus\u00e3o controlada. Ideal para dispositivos de campo e Vehicles de elite.",
-    "category": "Energia e Sustentabilidade",
+    "title": "FusionCell Z Portable Reactor",
+    "description": "Portable source of clean energy with controlled fusion. Ideal for field devices and elite vehicles.",
+    "category": "Energy and Sustainability",
     "code": "9GUWG38U",
     "quantity": 4,
-    "gender": "kids",
     "price_regular": 809090.91,
     "price_sale": 890000,
     "tax": 10,
     "rating_rate": 4.3,
     "rating_count": 141,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2018/05/08/21/28/technology-3389904_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/014.png?raw=true"
+    ]
   },
   {
     "id": 15,
     "sku": "SKU-0015",
-    "title": "Sala de Simula\u00e7\u00e3o HoloRoom XR",
-    "description": "Ambiente de realidade aumentada para treinos imersivos de combate, t\u00e1tica e resgate urbano.",
-    "category": "Simula\u00e7\u00e3o e Treinamento",
+    "title": "HoloRoom XR Simulation Room",
+    "description": "Augmented reality environment for immersive combat, tactics and urban rescue training.",
+    "category": "Simulation and Training",
     "code": "XJJCWBVK",
     "quantity": 1,
-    "gender": "others",
     "price_regular": 1090909.09,
     "price_sale": 1200000,
     "tax": 10,
     "rating_rate": 3.7,
     "rating_count": 149,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2018/03/15/10/08/virtual-3221807_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/015.png?raw=true"
+    ]
   },
   {
     "id": 16,
     "sku": "SKU-0016",
-    "title": "Sistema de An\u00e1lise de Combate FightIQ",
-    "description": "IA que monitora movimentos do corpo em combate e prop\u00f5e melhorias biomec\u00e2nicas.",
-    "category": "Simula\u00e7\u00e3o e Treinamento",
+    "title": "FightIQ Combat Analysis System",
+    "description": "AI that monitors body movements in combat and provides biomechanical improvements.",
+    "category": "Simulation and Training",
     "code": "HV4BLKBW",
     "quantity": 10,
-    "gender": "unisex",
     "price_regular": 83636.36,
     "price_sale": 92000,
     "tax": 10,
     "rating_rate": 4.4,
     "rating_count": 8,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/10/26/20/01/box-1778586_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/016.png?raw=true"
+    ]
   },
   {
     "id": 17,
     "sku": "SKU-0017",
-    "title": "EMP Port\u00e1til Wayne EMPulse",
-    "description": "Dispositivo de pulso eletromagn\u00e9tico port\u00e1til capaz de neutralizar equipamentos eletr\u00f4nicos em um raio de 10 metros.",
-    "category": "Ferramentas T\u00e1ticas",
+    "title": "EMP Portable Wayne EMPulse",
+    "description": "Portable electromagnetic pulse device capable of neutralizing electronic equipment within a 10 meter radius.",
+    "category": "Tactical Tools",
     "code": "TWE8NVFJ",
     "quantity": 7,
-    "gender": "unisex",
     "price_regular": 67272.73,
     "price_sale": 74000,
     "tax": 10,
     "rating_rate": 4.5,
     "rating_count": 79,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/09/07/08/56/electricity-2728356_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/017.png?raw=true"
+    ]
   },
   {
     "id": 18,
     "sku": "SKU-0018",
-    "title": "Spray Anti\u00e1cido WayneProtect",
-    "description": "Spray qu\u00edmico de uso emergencial capaz de neutralizar subst\u00e2ncias corrosivas e proteger a pele em combate qu\u00edmico.",
-    "category": "Sa\u00fade",
+    "title": "WayneProtect Anti-Acid Spray",
+    "description": "Emergency chemical spray capable of neutralizing corrosive substances and protecting the skin in chemical combat.",
+    "category": "Health",
     "code": "QZ09EOT7",
     "quantity": 20,
-    "gender": "men",
     "price_regular": 4727.27,
     "price_sale": 5200,
     "tax": 10,
     "rating_rate": 4.0,
     "rating_count": 23,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/05/16/15/27/disinfectant-5175726_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/018.png?raw=true"
+    ]
   },
   {
     "id": 19,
     "sku": "SKU-0019",
-    "title": "Detector de Escutas WayneScan",
-    "description": "Dispositivo compacto que detecta escutas e transmissores ocultos em salas ou Vehicles.",
-    "category": "Seguran\u00e7a e Monitoramento",
+    "title": "WayneScan Bug Detector",
+    "description": "Compact device that detects hidden eavesdropping and transmitters in rooms or vehicles.",
+    "category": "HealthSecurity and Monitoring",
     "code": "MB6LG28Z",
     "quantity": 12,
-    "gender": "unisex",
     "price_regular": 17727.27,
     "price_sale": 19500,
     "tax": 10,
     "rating_rate": 4.3,
     "rating_count": 139,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/12/20/20/43/bug-1929359_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/019.png?raw=true"
+    ]
   },
   {
     "id": 20,
     "sku": "SKU-0020",
-    "title": "Bracelete de Conten\u00e7\u00e3o Inteligente",
-    "description": "Dispositivo de pulso usado por agentes para conten\u00e7\u00e3o de indiv\u00edduos, com sensores biom\u00e9tricos e controle remoto.",
+    "title": "Smart Containment Bracelet",
+    "description": "Wrist device worn by officers to restrain individuals, with biometric sensors and remote control.",
     "category": "Safety Equipment",
     "code": "94Z5E6I8",
     "quantity": 18,
-    "gender": "women",
     "price_regular": 30454.55,
     "price_sale": 33500,
     "tax": 10,
     "rating_rate": 3.8,
     "rating_count": 87,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/06/13/22/42/handcuffs-2405950_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/020.png?raw=true"
+    ]
   },
   {
     "id": 21,
     "sku": "SKU-0021",
-    "title": "Granada de Fuma\u00e7a de Densidade Alta",
-    "description": "Granada n\u00e3o-letal com fuma\u00e7a negra de densidade militar para fuga ou desorienta\u00e7\u00e3o em ambientes fechados.",
-    "category": "Ferramentas T\u00e1ticas",
+    "title": "High Density Smoke Grenade",
+    "description": "Non-lethal grenade with military density black smoke for escape or disorientation in closed environments.",
+    "category": "Tactical Tools",
     "code": "2VS8EN9L",
     "quantity": 35,
-    "gender": "kids",
     "price_regular": 7090.91,
     "price_sale": 7800,
     "tax": 10,
     "rating_rate": 3.8,
     "rating_count": 40,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/11/07/13/28/smoke-5721454_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/021.png?raw=true"
+    ]
   },
   {
     "id": 22,
     "sku": "SKU-0022",
-    "title": "Escudo Bal\u00edstico Retr\u00e1til",
-    "description": "Escudo retr\u00e1til feito de liga de tit\u00e2nio leve, com resist\u00eancia a impacto de alta velocidade e compatibilidade com traje Wayne.",
+    "title": "Retractable Ballistic Shield",
+    "description": "Retractable shield made of lightweight titanium alloy, with high-velocity impact resistance and Wayne suit compatibility.",
     "category": "Safety Equipment",
     "code": "OOU3CUNA",
     "quantity": 6,
-    "gender": "women",
     "price_regular": 49090.91,
     "price_sale": 54000,
     "tax": 10,
     "rating_rate": 4.8,
     "rating_count": 20,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/06/27/08/51/shield-2442110_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/022.png?raw=true"
+    ]
   },
   {
     "id": 23,
     "sku": "SKU-0023",
-    "title": "Sistema de Jammer Port\u00e1til WayneBlock",
-    "description": "Dispositivo de bloqueio de sinal para ambientes controlados, impedindo transmiss\u00e3o de dados e comunica\u00e7\u00f5es externas.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "title": "WayneBlock Portable Jammer System",
+    "description": "Signal blocking device for controlled environments, preventing data transmission and external communications.",
+    "category": "Information Technology",
     "code": "ZUSZ17WC",
     "quantity": 8,
-    "gender": "women",
     "price_regular": 80000.0,
     "price_sale": 88000,
     "tax": 10,
     "rating_rate": 3.9,
     "rating_count": 132,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2014/12/16/23/45/radio-570186_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/023.png?raw=true"
+    ]
   },
   {
     "id": 24,
     "sku": "SKU-0024",
-    "title": "Spray Hemost\u00e1tico Instant\u00e2neo",
-    "description": "Spray que estanca rapidamente sangramentos externos em situa\u00e7\u00f5es de combate. Uso aprovado em campo.",
-    "category": "Sa\u00fade",
+    "title": "Instant hemostatic spray",
+    "description": "Spray that quickly stops external bleeding in combat situations. Approved for use in the field.",
+    "category": "Health",
     "code": "ECYLXHHE",
     "quantity": 42,
-    "gender": "others",
     "price_regular": 4181.82,
     "price_sale": 4600,
     "tax": 10,
     "rating_rate": 4.1,
     "rating_count": 33,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/03/25/08/35/first-aid-4966344_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/024.png?raw=true"
+    ]
   },
   {
     "id": 25,
     "sku": "SKU-0025",
-    "title": "Jetpack de Resgate R\u00e1pido",
-    "description": "Dispositivo de voo individual para extra\u00e7\u00e3o de emerg\u00eancia com controle estabilizado e autonomia de 2 km.",
-    "category": "Vehicles A\u00e9reos",
+    "title": "Rapid Rescue Jetpack",
+    "description": "Individual flight device for emergency extraction with stabilized control and 2 km range.",
+    "category": "Air Vehicles",
     "code": "V0S8P322",
     "quantity": 2,
-    "gender": "others",
     "price_regular": 900000.0,
     "price_sale": 990000,
     "tax": 10,
     "rating_rate": 3.5,
     "rating_count": 54,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2021/03/19/12/13/jetpack-6106476_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/025.png?raw=true"
+    ]
   },
   {
     "id": 26,
     "sku": "SKU-0026",
-    "title": "Arma N\u00e3o Letal S\u00f4nica WayneSound",
-    "description": "Dispositivo port\u00e1til de emiss\u00e3o sonora para conten\u00e7\u00e3o de multid\u00f5es e desorienta\u00e7\u00e3o de alvos sem danos f\u00edsicos.",
+    "title": "WayneSound Sonic Non-Lethal Weapon",
+    "description": "Portable sound emission device for crowd containment and disorientation of targets without physical damage.",
     "category": "Safety Equipment",
     "code": "HENZAH0Q",
     "quantity": 9,
-    "gender": "kids",
     "price_regular": 111818.18,
     "price_sale": 123000,
     "tax": 10,
     "rating_rate": 3.6,
     "rating_count": 45,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/08/01/08/29/speaker-2568213_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/026.png?raw=true"
+    ]
   },
   {
     "id": 27,
     "sku": "SKU-0027",
     "title": "Wayne ReGen Chamber",
-    "description": "C\u00e2mara de recupera\u00e7\u00e3o com estimula\u00e7\u00e3o celular por pulsos magn\u00e9ticos. Reduz em 60% o tempo de recupera\u00e7\u00e3o muscular.",
-    "category": "Sa\u00fade",
+    "description": "Recovery chamber with cellular stimulation by magnetic pulses. Reduces muscle recovery time by 60%.",
+    "category": "Health",
     "code": "KS8X4FQX",
     "quantity": 3,
-    "gender": "unisex",
     "price_regular": 134545.45,
     "price_sale": 148000,
     "tax": 10,
     "rating_rate": 4.4,
     "rating_count": 146,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/11/14/04/45/hospital-1828621_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/027.png?raw=true"
+    ]
   },
   {
     "id": 28,
     "sku": "SKU-0028",
     "title": "WayneBio Tracker",
-    "description": "Pulseira inteligente com monitoramento card\u00edaco, temperatura, satura\u00e7\u00e3o e IA de alerta de risco t\u00e1tico.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "description": "Smart bracelet with heart rate, temperature, saturation monitoring and AI tactical risk alert.",
+    "category": "Information Technology",
     "code": "CSCX5PAS",
     "quantity": 50,
-    "gender": "kids",
     "price_regular": 20909.09,
     "price_sale": 23000,
     "tax": 10,
     "rating_rate": 4.8,
     "rating_count": 35,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2021/03/23/10/12/smartwatch-6116597_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/028.png?raw=true"
+    ]
   },
   {
     "id": 29,
     "sku": "SKU-0029",
-    "title": "Injetor de Cura R\u00e1pida WayneHeal-X",
-    "description": "Dispositivo port\u00e1til que administra subst\u00e2ncias regenerativas com leitura biom\u00e9trica integrada.",
-    "category": "Sa\u00fade",
+    "title": "WayneHeal-X Rapid Healing Injector",
+    "description": "Portable device that delivers regenerative substances with integrated biometric reading.",
+    "category": "Health",
     "code": "LWMP8NG7",
     "quantity": 24,
-    "gender": "others",
     "price_regular": 10181.82,
     "price_sale": 11200,
     "tax": 10,
     "rating_rate": 4.1,
     "rating_count": 100,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/09/06/19/54/injection-2722937_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/029.png?raw=true"
+    ]
   },
   {
     "id": 30,
     "sku": "SKU-0030",
     "title": "Nanoscanner BioField",
-    "description": "Scanner de campo port\u00e1til com leitura \u00f3ssea, muscular e vascular. Utilizado em diagn\u00f3sticos instant\u00e2neos.",
-    "category": "Sa\u00fade",
+    "description": "Portable field scanner with bone, muscle and vascular reading. Used in instant diagnostics.",
+    "category": "Health",
     "code": "EBQ3NLLQ",
     "quantity": 9,
-    "gender": "men",
     "price_regular": 31363.64,
     "price_sale": 34500,
     "tax": 10,
     "rating_rate": 3.9,
     "rating_count": 98,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/05/11/14/53/ultrasound-5155823_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/030.png?raw=true"
+    ]
   },
   {
     "id": 31,
     "sku": "SKU-0031",
     "title": "Wayne Stealth Glider",
-    "description": "Asa-delta com motor el\u00e9trico silencioso, estabilizador autom\u00e1tico e revestimento antidetec\u00e7\u00e3o.",
-    "category": "Vehicles A\u00e9reos",
+    "description": "Hang glider with silent electric motor, automatic stabilizer and anti-detection coating.",
+    "category": "Air Vehicles",
     "code": "T6ETBYY4",
     "quantity": 2,
-    "gender": "men",
     "price_regular": 236363.64,
     "price_sale": 260000,
     "tax": 10,
     "rating_rate": 4.7,
     "rating_count": 23,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/08/25/17/26/hang-glider-5517262_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/031.png?raw=true"
+    ]
   },
   {
     "id": 32,
     "sku": "SKU-0032",
-    "title": "Wayne Submers\u00edvel T\u00e1tico",
-    "description": "Ve\u00edculo subaqu\u00e1tico para infiltra\u00e7\u00e3o com casco refor\u00e7ado, m\u00edsseis n\u00e3o-letais e sonar criptografado.",
+    "title": "Wayne Submersible Tactical",
+    "description": "Underwater infiltration vehicle with reinforced hull, non-lethal missiles and encrypted sonar.",
     "category": "Vehicles",
     "code": "SR7854SA",
     "quantity": 1,
-    "gender": "men",
     "price_regular": 1436363.64,
     "price_sale": 1580000,
     "tax": 10,
     "rating_rate": 4.0,
     "rating_count": 33,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2021/03/17/11/57/submarine-6102530_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/032.png?raw=true"
+    ]
   },
   {
     "id": 33,
     "sku": "SKU-0033",
     "title": "Wayne Sky Pod",
-    "description": "C\u00e1psula de extra\u00e7\u00e3o vertical para evacua\u00e7\u00e3o de emerg\u00eancia. Compat\u00edvel com IA de rastreamento.",
-    "category": "Vehicles A\u00e9reos",
+    "description": "Vertical extraction capsule for emergency evacuation. Supports AI tracking.",
+    "category": "Air Vehicles",
     "code": "0G4T7ZOY",
     "quantity": 2,
-    "gender": "unisex",
     "price_regular": 440909.09,
     "price_sale": 485000,
     "tax": 10,
     "rating_rate": 4.2,
     "rating_count": 120,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2021/01/04/08/01/sky-5886213_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/033.png?raw=true"
+    ]
   },
   {
     "id": 34,
     "sku": "SKU-0034",
-    "title": "M\u00f3dulo de Camuflagem Urbana",
-    "description": "Manto t\u00e1tico que distorce assinatura t\u00e9rmica e visual. Ideal para opera\u00e7\u00f5es furtivas em solo urbano.",
+    "title": "Urban Camouflage Module",
+    "description": "Thermal cloak that distorts thermal and visual signatures. Ideal for stealth operations in urban areas.",
     "category": "Safety Equipment",
     "code": "JLKRQJM2",
     "quantity": 6,
-    "gender": "unisex",
     "price_regular": 67272.73,
     "price_sale": 74000,
     "tax": 10,
     "rating_rate": 4.0,
     "rating_count": 124,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/11/22/19/15/man-1851482_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/034.png?raw=true"
+    ]
   },
   {
     "id": 35,
     "sku": "SKU-0035",
-    "title": "Armadilha de Rede WayneNet",
-    "description": "Dispositivo port\u00e1til de arremesso de rede com sensores de travamento autom\u00e1tico em m\u00faltiplos alvos.",
-    "category": "Ferramentas T\u00e1ticas",
+    "title": "WayneNet Net Trap",
+    "description": "Portable net throwing device with sensors that automatically lock onto multiple targets.",
+    "category": "Tactical Tools",
     "code": "LMBTKRQV",
     "quantity": 22,
-    "gender": "women",
     "price_regular": 14090.91,
     "price_sale": 15500,
     "tax": 10,
     "rating_rate": 4.5,
     "rating_count": 82,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/03/23/12/49/net-4958346_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/035.png?raw=true"
+    ]
   },
   {
     "id": 36,
     "sku": "SKU-0036",
-    "title": "Luvas de Alta Tens\u00e3o ShockGlove",
-    "description": "Luvas com carga el\u00e9trica para imobiliza\u00e7\u00e3o n\u00e3o letal. Alimentadas por micro-bateria recarreg\u00e1vel.",
+    "title": "ShockGlove High Voltage Gloves",
+    "description": "Electrically charged gloves for non-lethal immobilization. Powered by rechargeable micro-battery.",
     "category": "Safety Equipment",
     "code": "NZ7EPM0N",
     "quantity": 16,
-    "gender": "unisex",
     "price_regular": 28181.82,
     "price_sale": 31000,
     "tax": 10,
     "rating_rate": 4.0,
     "rating_count": 82,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2015/05/31/11/51/gloves-791420_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/036.png?raw=true"
+    ]
   },
   {
     "id": 37,
     "sku": "SKU-0037",
     "title": "Wayne Quantum OS",
-    "description": "Sistema operacional qu\u00e2ntico desenvolvido para an\u00e1lise preditiva e simula\u00e7\u00e3o em tempo real de amea\u00e7as.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "description": "Quantum operating system designed for predictive analysis and real-time threat simulation.",
+    "category": "Information Technology",
     "code": "AT5K2HKT",
     "quantity": 3,
-    "gender": "men",
     "price_regular": 654545.45,
     "price_sale": 720000,
     "tax": 10,
     "rating_rate": 4.1,
     "rating_count": 100,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2022/02/09/07/30/quantum-computer-7001310_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/037.png?raw=true"
+    ]
   },
   {
     "id": 38,
     "sku": "SKU-0038",
     "title": "Wayne HUD Lens",
-    "description": "Lente de contato com proje\u00e7\u00e3o de realidade aumentada, mapeamento de ambiente e informa\u00e7\u00f5es biom\u00e9tricas.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "description": "Contact lens with augmented reality projection, environment mapping and biometric information.",
+    "category": "Information Technology",
     "code": "R5OPMC8X",
     "quantity": 12,
-    "gender": "unisex",
     "price_regular": 41363.64,
     "price_sale": 45500,
     "tax": 10,
     "rating_rate": 4.5,
     "rating_count": 87,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2018/04/25/11/06/contact-lens-3343341_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/038.png?raw=true"
+    ]
   },
   {
     "id": 39,
     "sku": "SKU-0039",
-    "title": "Painel T\u00e1tico Port\u00e1til WayneMap",
-    "description": "Tablet t\u00e1tico ultrarresistente com sincroniza\u00e7\u00e3o de mapas, telemetria e comandos de campo em tempo real.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "title": "WayneMap Portable Dashboard",
+    "description": "Ultra-rugged tactical tablet with real-time map synchronization, telemetry and field commands.",
+    "category": "Information Technology",
     "code": "S49CW459",
     "quantity": 20,
-    "gender": "others",
     "price_regular": 35454.55,
     "price_sale": 39000,
     "tax": 10,
     "rating_rate": 4.1,
     "rating_count": 129,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2015/05/31/12/15/tablet-791533_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/039.png?raw=true"
+    ]
   },
   {
     "id": 40,
     "sku": "SKU-0040",
-    "title": "Mochila T\u00e1tica Modular WaynePack",
-    "description": "Mochila multifuncional com m\u00f3dulos remov\u00edveis, revestimento anti-chamas e sistema de distribui\u00e7\u00e3o de peso inteligente.",
+    "title": "WaynePack Modular Tactical Backpack",
+    "description": "Multifunctional backpack with removable modules, flame retardant coating and intelligent weight distribution system.",
     "category": "Safety Equipment",
     "code": "53DAI8Z0",
     "quantity": 30,
-    "gender": "others",
     "price_regular": 13181.82,
     "price_sale": 14500,
     "tax": 10,
     "rating_rate": 4.0,
     "rating_count": 105,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/04/13/17/42/backpack-5038793_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/040.png?raw=true"
+    ]
   },
   {
     "id": 41,
     "sku": "SKU-0041",
-    "title": "Sensor de Movimento Subterr\u00e2neo W-Ground",
-    "description": "Sensor geolocalizado de vibra\u00e7\u00e3o e intrus\u00e3o subterr\u00e2nea, com IA de an\u00e1lise de padr\u00f5es s\u00edsmicos.",
-    "category": "Seguran\u00e7a e Monitoramento",
+    "title": "W-Ground Underground Motion Sensor",
+    "description": "Geolocated underground vibration and intrusion sensor, with AI seismic pattern analysis.",
+    "category": "HealthSecurity and Monitoring",
     "code": "33JDKSYJ",
     "quantity": 7,
-    "gender": "others",
     "price_regular": 82727.27,
     "price_sale": 91000,
     "tax": 10,
     "rating_rate": 4.5,
     "rating_count": 121,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/06/02/18/24/earthquake-2363807_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/041.png?raw=true"
+    ]
   },
   {
     "id": 42,
     "sku": "SKU-0042",
     "title": "Wayne Tactical Boots V3",
-    "description": "Botas de infiltra\u00e7\u00e3o com absor\u00e7\u00e3o de impacto, base magn\u00e9tica adapt\u00e1vel e RFID integrado.",
+    "description": "Impact-absorbing infiltration boots with adaptive magnetic base and integrated RFID.",
     "category": "Safety Equipment",
     "code": "AGMKRSA4",
     "quantity": 22,
-    "gender": "kids",
     "price_regular": 16818.18,
     "price_sale": 18500,
     "tax": 10,
     "rating_rate": 4.9,
     "rating_count": 125,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/11/23/15/14/boots-1853993_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/042.png?raw=true"
+    ]
   },
   {
     "id": 43,
     "sku": "SKU-0043",
     "title": "Wayne UltraNoise Canceller",
-    "description": "Dispositivo port\u00e1til para cancelamento ativo de ru\u00eddos de alta frequ\u00eancia em zonas de vigil\u00e2ncia sonora.",
-    "category": "Tecnologia de Informa\u00e7\u00e3o",
+    "description": "Portable device for active cancellation of high frequency noise in sound surveillance zones.",
+    "category": "Information Technology",
     "code": "027V5LBK",
     "quantity": 10,
-    "gender": "unisex",
     "price_regular": 39090.91,
     "price_sale": 43000,
     "tax": 10,
     "rating_rate": 5.0,
     "rating_count": 32,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/11/29/09/32/headphones-1868612_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/043.png?raw=true"
+    ]
   },
   {
     "id": 44,
     "sku": "SKU-0044",
     "title": "Wayne Tactical Helmet HUD X2",
-    "description": "Capacete blindado com display de realidade aumentada, telemetria em tempo real e sensor de amea\u00e7a lateral.",
+    "description": "Armored helmet with augmented reality display, real-time telemetry and side threat sensor.",
     "category": "Safety Equipment",
     "code": "W0IA6R2W",
     "quantity": 6,
-    "gender": "men",
     "price_regular": 89090.91,
     "price_sale": 98000,
     "tax": 10,
     "rating_rate": 3.5,
     "rating_count": 95,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2016/05/05/02/37/helmet-1376864_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/044.png?raw=true"
+    ]
   },
   {
     "id": 45,
     "sku": "SKU-0045",
-    "title": "Unidade de Respira\u00e7\u00e3o Aut\u00f4noma WayneAir",
-    "description": "Sistema respirat\u00f3rio port\u00e1til para ambientes t\u00f3xicos, com filtro de carbono, oxig\u00eanio de emerg\u00eancia e visor integrado.",
-    "category": "Sa\u00fade",
+    "title": "WayneAir Self-Contained Breathing Unit",
+    "description": "Portable breathing system for toxic environments, with carbon filter, emergency oxygen and integrated display.",
+    "category": "Health",
     "code": "6BCLF8OU",
     "quantity": 12,
-    "gender": "women",
     "price_regular": 60909.09,
     "price_sale": 67000,
     "tax": 10,
     "rating_rate": 5.0,
     "rating_count": 71,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/05/19/15/17/mask-5191677_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/045.png?raw=true"
+    ]
   },
   {
     "id": 46,
     "sku": "SKU-0046",
     "title": "Wayne Tactical Shield Dome",
-    "description": "Escudo de campo com expans\u00e3o semiautom\u00e1tica, cobertura total e absor\u00e7\u00e3o de impacto cin\u00e9tico.",
+    "description": "Field shield with semi-automatic expansion, total coverage and kinetic impact absorption.",
     "category": "Safety Equipment",
     "code": "GPBNETAP",
     "quantity": 3,
-    "gender": "others",
     "price_regular": 113636.36,
     "price_sale": 125000,
     "tax": 10,
     "rating_rate": 3.7,
     "rating_count": 130,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2018/10/06/20/38/shield-3726413_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/046.png?raw=true"
+    ]
   },
   {
     "id": 47,
     "sku": "SKU-0047",
-    "title": "Sistema de Rastreamento Termal WayneTrack",
-    "description": "Dispositivo de rastreamento de assinatura t\u00e9rmica com alcance de at\u00e9 3 km e integra\u00e7\u00e3o com HUD.",
-    "category": "Seguran\u00e7a e Monitoramento",
+    "title": "WayneTrack Thermal Tracking System",
+    "description": "Thermal signature tracking device with up to 3 km range and HUD integration.",
+    "category": "HealthSecurity and Monitoring",
     "code": "QDFXW3X2",
     "quantity": 15,
-    "gender": "women",
     "price_regular": 50909.09,
     "price_sale": 56000,
     "tax": 10,
     "rating_rate": 4.0,
     "rating_count": 69,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2017/03/25/18/15/thermographic-camera-2178702_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/047.png?raw=true"
+    ]
   },
   {
     "id": 48,
     "sku": "SKU-0048",
-    "title": "Mina de Pulso N\u00e3o Letal WayneFlash",
-    "description": "Dispositivo ativado por proximidade que emite pulso de luz e som para desorienta\u00e7\u00e3o tempor\u00e1ria.",
-    "category": "Ferramentas T\u00e1ticas",
+    "title": "WayneFlash Non-Lethal Pulse Mine",
+    "description": "Proximity-activated device that emits pulses of light and sound for temporary disorientation.",
+    "category": "Tactical Tools",
     "code": "1F4K1LY5",
     "quantity": 38,
-    "gender": "unisex",
     "price_regular": 7909.09,
     "price_sale": 8700,
     "tax": 10,
     "rating_rate": 4.2,
     "rating_count": 107,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/11/25/15/46/stun-grenade-5774969_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/048.png?raw=true",
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/048_1.png?raw=true"
+    ]
   },
   {
     "id": 49,
     "sku": "SKU-0049",
     "title": "Wayne Tactical Belt XR",
-    "description": "Cinto t\u00e1tico com compartimentos retr\u00e1teis, RFID, monitor biom\u00e9trico e sistema de libera\u00e7\u00e3o r\u00e1pida.",
-    "category": "Ferramentas T\u00e1ticas",
+    "description": "Tactical belt with retractable compartments, RFID, biometric monitor and quick release system.",
+    "category": "Tactical Tools",
     "code": "7RP6JJY3",
     "quantity": 17,
-    "gender": "others",
     "price_regular": 19090.91,
     "price_sale": 21000,
     "tax": 10,
     "rating_rate": 4.3,
     "rating_count": 75,
     "is_active": true,
-    "image": "https://cdn.pixabay.com/photo/2020/04/27/21/57/belt-5101442_1280.jpg"
+    "image": [
+      "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/049.png?raw=true"
+    ]
   }
 ]

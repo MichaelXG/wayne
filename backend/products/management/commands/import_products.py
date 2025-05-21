@@ -29,7 +29,6 @@ class Command(BaseCommand):
                         "category": item.get("category"),
                         "code": item.get("code", ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))),
                         "quantity": item.get("quantity", 0),
-                        "gender": item.get("gender", "unisex"),
                         "price_regular": item.get("price_regular"),
                         "price_sale": item.get("price_sale"),
                         "tax": item.get("tax", 10),

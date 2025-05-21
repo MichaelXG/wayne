@@ -19,7 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'id', 'title', 'description', 'category', 'code', 'sku', 'quantity',
-            'gender', 'price_regular', 'price_sale', 'tax', 'price',
+            'price_regular', 'price_sale', 'tax', 'price',
             'rating', 'images', 'is_active'
         ]
 
@@ -74,7 +74,7 @@ class ProductSerializer(serializers.ModelSerializer):
         # Atualizar campos do produto
         for field in [
             'title', 'description', 'category', 'code', 'sku', 'quantity',
-            'gender', 'price_regular', 'price_sale', 'tax', 'is_active'
+            'price_regular', 'price_sale', 'tax', 'is_active'
         ]:
             if field in validated_data:
                 setattr(instance, field, validated_data[field])

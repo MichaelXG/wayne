@@ -24,7 +24,6 @@ const CreateCard = forwardRef(({ onSubmit }, ref) => {
       description: '',
       category: '',
       quantity: 0,
-      gender: '',
       price_regular: 0,
       price_sale: 0,
       tax: 0,
@@ -246,45 +245,6 @@ const CreateCard = forwardRef(({ onSubmit }, ref) => {
                 />
                 <Controller name="category" control={control} render={({ field }) => <CategorySelect {...field} />} />
               </Stack>
-
-              <Controller
-                name="gender"
-                control={control}
-                render={({ field }) => (
-                  <Box
-                    sx={(theme) => ({
-                      border: `1px solid ${theme.palette.divider}`, // substitui '#DFE3E8'
-                      borderRadius: 2,
-                      px: 2,
-                      py: 2,
-                      mt: 1
-                    })}
-                  >
-                    <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                      Gender
-                    </Typography>
-                    <RadioGroup row {...field}>
-                      {['men', 'women', 'kids', 'unisex', 'others'].map((option) => (
-                        <FormControlLabel
-                          key={option}
-                          value={option}
-                          control={
-                            <Radio
-                              sx={(theme) => ({
-                                color: theme.palette.grey[600],
-                                '&.Mui-checked': {
-                                  color: theme.palette.grey[600]
-                                }
-                              })}
-                            />
-                          }
-                          label={option.charAt(0).toUpperCase() + option.slice(1)}
-                        />
-                      ))}
-                    </RadioGroup>
-                  </Box>
-                )}
-              />
             </Stack>
           </Card>
 

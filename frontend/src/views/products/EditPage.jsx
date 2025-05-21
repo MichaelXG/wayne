@@ -52,7 +52,6 @@ export default function EditPage({ productEditRef }) {
       payload.append('category', formData.category ?? '');
       payload.append('code', formData.code ?? '');
       payload.append('sku', formData.sku ?? '');
-      payload.append('gender', formData.gender ?? '');
       payload.append('quantity', formData.quantity ?? 0);
       payload.append('price_regular', formData.price_regular ?? 0);
       payload.append('price_sale', formData.price_sale ?? 0);

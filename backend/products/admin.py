@@ -6,7 +6,7 @@ from .models import Product, ProductImage
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
-    fields = ['preview', 'url', 'image']
+    fields = ['preview', 'url', 'image']  
     readonly_fields = ['preview']
 
     def preview(self, obj):
@@ -21,7 +21,7 @@ class ProductImageInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         "title", "category", "code", "sku", "price_regular", "price_sale", "quantity",
-        "gender", "rating_rate", "rating_count", "is_active", "inserted_in", "modified_in"
+        "rating_rate", "rating_count", "is_active", "inserted_in", "modified_in"
     )
     readonly_fields = ("inserted_in", "modified_in")
     inlines = [ProductImageInline]
@@ -29,13 +29,13 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('title', 'description', 'category', 'code', 'sku', 'is_active')}),
         ('Pricing', {'fields': ('price_regular', 'price_sale', 'tax')}),
-        ('Inventory', {'fields': ('quantity', 'gender')}),
+        ('Inventory', {'fields': ('quantity',)}), 
         ('Rating', {'fields': ('rating_rate', 'rating_count')}),
         ('Timestamps', {'fields': ('inserted_in', 'modified_in')}),
     )
 
     search_fields = ['title', 'code', 'sku']
-    list_filter = ['category', 'gender', 'is_active']
+    list_filter = ['category', 'is_active']
     ordering = ['-inserted_in']
 
 
