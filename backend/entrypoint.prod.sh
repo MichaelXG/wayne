@@ -23,12 +23,12 @@ python3 -m pip install --upgrade pip --root-user-action=ignore || { echo "❌ Fa
 
 echo "♻️ Reinstalling Django..."
 pip uninstall -y django
-pip install django --root-user-action=ignore|| { echo "❌ Failed to reinstall Django!"; exit 1; }
+pip install django --root-user-action=ignore || { echo "❌ Failed to reinstall Django!"; exit 1; }
 
 echo "📦 Installing project dependencies..."
 pip install --no-cache-dir --root-user-action=ignore -r /app/requirements.txt || { echo "❌ Failed to install dependencies!"; exit 1; }
 
-sleep 5
+sleep 2
 
 # 🔄 Migrations
 echo "📄 Generating migrations..."
@@ -64,9 +64,7 @@ echo "👤 Creating superuser if it doesn't exist..."
 python3 manage.py shell <<EOF
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
 email = "$DJANGO_SUPERUSER_EMAIL"
-
 if not User.objects.filter(email=email).exists():
     try:
         User.objects.create_superuser(
@@ -87,12 +85,12 @@ else:
     print("ℹ️ Superuser already exists.")
 EOF
 
-# 🛒 Import products from FakeStore API
-echo "📦 Importing products from FakeStore API..."
+# 🛒 Import products from local JSON
+echo "📦 Importing products from local JSON..."
 python3 manage.py import_products || { echo "❌ Failed to import products!"; exit 1; }
 
-# 🛒 Import carriers from API AfterShip
-echo "📦 Importing carriers from API AfterShip..."
+# 🚚 Import carriers from AfterShip
+echo "📦 Importing carriers from AfterShip API..."
 python3 manage.py import_carriers || { echo "❌ Failed to import carriers!"; exit 1; }
 echo "✅ Carriers imported successfully!"
 

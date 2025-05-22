@@ -1,6 +1,6 @@
 import Slider from 'react-slick';
 import { useState, useRef } from 'react';
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -24,84 +24,67 @@ export default function ImageCarousel({ images = [] }) {
   const handleNext = () => sliderRef.current?.slickNext();
 
   return (
-    <Box>
-      {/* Navegação + Slide Principal */}
+    <Box >
+      {/* Slide Principal */}
       <Box
         sx={{
-          width: '100%',
-          position: 'relative',
+          display: 'block',
+          width: '800px',
           maxWidth: 400,
           mx: 'auto',
           mb: 2,
+          position: 'relative',
           borderRadius: 2,
           boxShadow: 4,
           overflow: 'hidden',
-          backgroundColor: theme.palette.background.paper
+          backgroundColor: theme.palette.grey[900]
         }}
       >
         {/* Arrows */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: 0,
-            transform: 'translateY(-50%)',
-            zIndex: 1
-          }}
+        <IconButton
+          onClick={handlePrev}
+          size="small"
+          sx={{ position: 'absolute', top: '50%', left: 8, zIndex: 1, transform: 'translateY(-50%)' }}
         >
-          <IconButton onClick={handlePrev} size="small" sx={{ color: theme.palette.text.primary }}>
-            <ChevronLeft />
-          </IconButton>
-        </Box>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            right: 0,
-            transform: 'translateY(-50%)',
-            zIndex: 1
-          }}
+          <ChevronLeft />
+        </IconButton>
+        <IconButton
+          onClick={handleNext}
+          size="small"
+          sx={{ position: 'absolute', top: '50%', right: 8, zIndex: 1, transform: 'translateY(-50%)' }}
         >
-          <IconButton onClick={handleNext} size="small" sx={{ color: theme.palette.text.primary }}>
-            <ChevronRight />
-          </IconButton>
-        </Box>
+          <ChevronRight />
+        </IconButton>
 
-        {/* Carousel */}
         <Slider ref={sliderRef} {...settings}>
           {images.map((img, index) => (
-            <Box key={index} sx={{ px: 2 }}>
+            <Box key={index} sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <img
-                src={img}
+                src={typeof img === 'object' ? img.url : img}
                 alt={`image-${index}`}
                 style={{
                   width: '100%',
-                  height: 'auto',
-                  borderRadius: theme.shape.borderRadius,
-                  objectFit: 'cover'
+                  height: '100%',
+                  objectFit: 'contain'
                 }}
               />
             </Box>
           ))}
         </Slider>
 
-        {/* Slide Count */}
+        {/* Contador */}
         <Box
-          sx={(theme) => ({
+          sx={{
             position: 'absolute',
             bottom: theme.spacing(1),
             right: theme.spacing(2),
-            backgroundColor:
-              theme.palette.mode === 'dark'
-                ? theme.palette.common.black // fundo preto no dark mode
-                : 'rgba(0, 0, 0, 0.6)', // fundo semitransparente no light mode
-            color: theme.palette.common.white,
+            backgroundColor: 'grey.600',
+            color: '#fff',
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            fontSize: 12,
-            boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)'
-          })}
+            fontSize: 12
+          }}
         >
           {`${currentSlide + 1} / ${images.length}`}
         </Box>
@@ -112,6 +95,7 @@ export default function ImageCarousel({ images = [] }) {
         {images.map((img, index) => (
           <Box
             key={index}
+            onClick={() => sliderRef.current?.slickGoTo(index)}
             sx={{
               border: index === currentSlide ? `2px solid ${theme.palette.grey[600]}` : `1px solid ${theme.palette.divider}`,
               borderRadius: 1,
@@ -120,16 +104,11 @@ export default function ImageCarousel({ images = [] }) {
               width: 60,
               height: 60
             }}
-            onClick={() => sliderRef.current?.slickGoTo(index)}
           >
             <img
-              src={img}
+              src={typeof img === 'object' ? img.url : img}
               alt={`thumb-${index}`}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover'
-              }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </Box>
         ))}
