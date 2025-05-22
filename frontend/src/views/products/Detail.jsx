@@ -3,7 +3,6 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import DetailPage from './DetailPage';
 import { useProductIDContext } from '../../contexts/ProductIDContext';
 import { BaseDir, customSvgEditIcon, isDebug } from '../../App';
-import { IconEdit } from '@tabler/icons-react';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
 
 export default function ProductDetail() {

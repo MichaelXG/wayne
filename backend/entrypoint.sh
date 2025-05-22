@@ -23,21 +23,19 @@ python3 -m pip install --upgrade pip --root-user-action=ignore || { echo "❌ Fa
 
 echo "♻️ Reinstalling Django..."
 pip uninstall -y django
-pip install django --root-user-action=ignore|| { echo "❌ Failed to reinstall Django!"; exit 1; }
+pip install django --root-user-action=ignore || { echo "❌ Failed to reinstall Django!"; exit 1; }
 
 echo "📦 Installing project dependencies..."
 pip install --no-cache-dir --root-user-action=ignore -r /app/requirements.txt || { echo "❌ Failed to install dependencies!"; exit 1; }
 
-sleep 5
+sleep 2
 
 # 🔄 Migrations
 echo "📄 Generating migrations..."
-python3 manage.py makemigrations accounts || { echo "❌ Failed to generate 'accounts' migrations!"; exit 1; }
-python3 manage.py makemigrations products || { echo "❌ Failed to generate 'products' migrations!"; exit 1; }
-python3 manage.py makemigrations orders || { echo "❌ Failed to generate 'orders' migrations!"; exit 1; }
-python3 manage.py makemigrations wallet || { echo "❌ Failed to generate 'wallet' migrations!"; exit 1; }
-python3 manage.py makemigrations address || { echo "❌ Failed to generate 'address' migrations!"; exit 1; }
-python3 manage.py makemigrations carrier || { echo "❌ Failed to generate 'carrier' migrations!"; exit 1; }
+for app in accounts products orders wallet address carrier; do
+    echo "➡️ Generating migrations for $app..."
+    python3 manage.py makemigrations "$app" || { echo "❌ Failed to generate '$app' migrations!"; exit 1; }
+done
 python3 manage.py makemigrations || { echo "❌ Failed to generate general migrations!"; exit 1; }
 
 echo "⚙️ Applying migrations..."
@@ -64,9 +62,7 @@ echo "👤 Creating superuser if it doesn't exist..."
 python3 manage.py shell <<EOF
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
 email = "$DJANGO_SUPERUSER_EMAIL"
-
 if not User.objects.filter(email=email).exists():
     try:
         User.objects.create_superuser(
@@ -87,12 +83,12 @@ else:
     print("ℹ️ Superuser already exists.")
 EOF
 
-# 🛒 Import products from Wayne Industries 
-echo "📦 Importing products from Wayne Industries..."
+# 🛒 Import products from local JSON
+echo "📦 Importing products from local JSON..."
 python3 manage.py import_products || { echo "❌ Failed to import products!"; exit 1; }
 
-# 🛒 Import carriers from API AfterShip
-echo "📦 Importing carriers from API AfterShip..."
+# 🚚 Import carriers from AfterShip
+echo "📦 Importing carriers from AfterShip API..."
 python3 manage.py import_carriers || { echo "❌ Failed to import carriers!"; exit 1; }
 echo "✅ Carriers imported successfully!"
 

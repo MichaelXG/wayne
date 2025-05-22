@@ -6,27 +6,34 @@ import { fileURLToPath, URL } from 'url';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const API_URL = env.VITE_APP_BASE_NAME || '/';
-  const PORT = env.VITE_PORT || 3000; // ✅ Agora acessa corretamente do `.env`
+  const PORT = Number(env.VITE_PORT) || 3000;
 
   return {
     server: {
-      open: false, // ✅ Evita erro no Docker ao tentar abrir o navegador automaticamente
-      port: Number(PORT), // ✅ Certifica que o valor seja um número
-      host: '0.0.0.0' // ✅ Permite acesso externo no Docker
+      open: false,
+      port: PORT,
+      host: '0.0.0.0',
+      strictPort: true, // Força erro se a porta estiver ocupada
+      fs: {
+        strict: true
+      }
     },
     build: {
-      chunkSizeWarningLimit: 1600
+      chunkSizeWarningLimit: 1600,
+      commonjsOptions: {
+        include: [/node_modules/]
+      }
     },
     preview: {
-      open: false, // ✅ Desativado no modo preview
+      open: false,
       host: '0.0.0.0'
     },
     define: {
-      global: 'window' // ⚠️ Apenas necessário se bibliotecas externas precisarem
+      global: 'window'
     },
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)), // ✅ Melhor compatibilidade
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
         '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
         '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
         '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
@@ -34,7 +41,18 @@ export default defineConfig(({ mode }) => {
         '@utils': fileURLToPath(new URL('./src/utils', import.meta.url))
       }
     },
-    base: API_URL, // ✅ Define corretamente a base da aplicação
-    plugins: [react(), jsconfigPaths()]
+    base: API_URL,
+    plugins: [
+      react(),
+      jsconfigPaths()
+    ],
+    optimizeDeps: {
+      exclude: [
+        // Adicione aqui as dependências problemáticas
+        'chunk-MNXAHIXX'
+      ]
+    },
+    cacheDir: 'node_modules/.vite',  // define explicitamente o diretório de cache
+    clearScreen: false // para melhor visualização de logs em dev
   };
 });

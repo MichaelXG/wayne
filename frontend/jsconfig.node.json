@@ -6,7 +6,8 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "strict": true,
-    "noEmit": true 
+    "noEmit": true,
+    "lib": ["ESNext", "DOM"]
   },
   "include": ["vite.config.mjs", "src/**/*"],
   "exclude": ["node_modules", "dist", "build", "coverage"]
