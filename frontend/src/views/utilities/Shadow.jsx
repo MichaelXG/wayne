@@ -10,6 +10,9 @@ import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
 import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
+import { useAuthGuard } from '../../hooks/useAuthGuard';
+import { IconShieldCheck, IconShieldX } from '@tabler/icons-react';
+import { Tooltip } from '@mui/material';
 
 // ===============================|| SHADOW BOX ||=============================== //
 
@@ -59,8 +62,52 @@ function CustomShadowBox({ shadow, label, color }) {
 export default function UtilitiesShadow() {
   const theme = useTheme();
 
+  const checkingAuth = useAuthGuard();
+
+  const authIcon = !checkingAuth ? (
+    <Tooltip
+      title="User authenticated"
+      placement="top"
+      componentsProps={{
+        tooltip: {
+          sx: (theme) => ({
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.common.white,
+            fontSize: 12,
+            px: 1.5,
+            py: 0.5,
+            borderRadius: 1,
+            boxShadow: theme.shadows[2]
+          })
+        }
+      }}
+    >
+      <IconShieldCheck color={theme.palette.success.main} size={20} />{' '}
+    </Tooltip>
+  ) : (
+    <Tooltip
+      title="Authentication failed"
+      placement="top"
+      componentsProps={{
+        tooltip: {
+          sx: (theme) => ({
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.common.white,
+            fontSize: 12,
+            px: 1.5,
+            py: 0.5,
+            borderRadius: 1,
+            boxShadow: theme.shadows[2]
+          })
+        }
+      }}
+    >
+      <IconShieldX color={theme.palette.error.main} size={20} />
+    </Tooltip>
+  );
+
   return (
-    <MainCard title="Basic Shadow" secondary={<SecondaryAction link="https://next.material-ui.com/system/shadows/" />}>
+    <MainCard title="Basic Shadow" secondary={authIcon}>
       <Grid container spacing={gridSpacing}>
         <Grid size={12}>
           <SubCard title="Basic Shadow">

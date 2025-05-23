@@ -24,8 +24,8 @@ const other = {
       type: 'item',
       url: '/about-page',
       icon: icons.IconHelp,
-      external: true,
-      target: true
+      // external: true,
+      // target: true
     }
   ]
 };

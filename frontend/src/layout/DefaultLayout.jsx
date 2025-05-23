@@ -69,6 +69,7 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
       <IconShieldX color={theme.palette.error.main} size={20} />
     </Tooltip>
   );
+  
   const renderBackButton = () => {
     const iconButtonStyles = (theme) => ({
       mt: 1,
