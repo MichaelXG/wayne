@@ -7,6 +7,9 @@ import ThemeCustomization from 'themes';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
 import AppContextProvider from './contexts/AppContextProvider';
 
 // ==============================|| APP ||============================== //

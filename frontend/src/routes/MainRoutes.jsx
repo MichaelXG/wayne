@@ -37,6 +37,9 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 // Página de exemplo
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
+// About page
+const AboutPage = Loadable(lazy(() => import('views/about-page')));
+
 // Wrapper para proteger todas as rotas
 
 function ProtectedRoutesWrapper() {
@@ -128,6 +131,10 @@ const MainRoutes = {
     {
       path: 'sample-page',
       element: <SamplePage />
+    },
+     {
+      path: 'about-page',
+      element: <AboutPage />
     }
   ]
 };

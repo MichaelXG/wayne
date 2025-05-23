@@ -21,6 +21,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=wayne_backend.settings
+      - FORCE_CLEAN=${FORCE_CLEAN:-false}
     depends_on:
       redis:
         condition: service_started

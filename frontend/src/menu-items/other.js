@@ -19,10 +19,10 @@ const other = {
       breadcrumbs: false
     },
     {
-      id: 'documentation',
-      title: 'Documentation',
+      id: 'about-page',
+      title: 'About',
       type: 'item',
-      url: 'https://codedthemes.gitbook.io/berry/',
+      url: '/about-page',
       icon: icons.IconHelp,
       external: true,
       target: true
