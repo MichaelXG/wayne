@@ -39,6 +39,8 @@ import DynamicModal from '../../../../ui-component/modal/DynamicModal';
 import { API_ROUTES } from '../../../../routes/ApiRoutes';
 import { safeAtob } from '../../../../utils/base64';
 import { isDebug } from '../../../../App';
+import { Tooltip } from '@mui/material';
+import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 
 export default function ProfileSection() {
   const [isLogout, setIsLogout] = useState(false);
@@ -55,11 +57,6 @@ export default function ProfileSection() {
   const token = userData?.authToken || null;
   const anchorRef = useRef(null);
   const navigate = useNavigate();
-
-  // ✅ Aqui o console log para ver userData completo
-  isDebug && console.log('UserData:', userData);
-
-  isDebug && console.log('UserData.group:', userData?.group ? safeAtob(userData.group) : null);
 
   useEffect(() => {
     if (safeAtob(userData.id)) {
@@ -173,7 +170,8 @@ export default function ProfileSection() {
                 {open && (
                   <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                     <Box sx={{ p: 2, pb: 0 }}>
-                      <Stack>
+                      <Stack spacing={0.5}>
+                        {' '}
                         <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
                           <Greeting />
                           <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
@@ -182,10 +180,42 @@ export default function ProfileSection() {
                               : 'Guest'}
                           </Typography>
                         </Stack>
-                        <Typography variant="subtitle2">
-                          Group: {userData?.group && safeAtob(userData.group) ? `${safeAtob(userData.group)}` : 'No Group'}
-                        </Typography>
+                        <AnimateButton>
+                          <Tooltip
+                            title={'Group'}
+                            placement="top"
+                            componentsProps={{
+                              tooltip: {
+                                sx: (theme) => ({
+                                  backgroundColor: theme.palette.grey[600],
+                                  color: theme.palette.common.white,
+                                  fontSize: 12,
+                                  px: 1.5,
+                                  py: 0.5,
+                                  borderRadius: 1,
+                                  boxShadow: theme.shadows[2]
+                                })
+                              }
+                            }}
+                          >
+                            <Chip
+                              label={userData?.group && safeAtob(userData.group) ? safeAtob(userData.group) : 'No Group'}
+                              variant="outlined"
+                              size="small"
+                              sx={(theme) => ({
+                                ml: 1,
+                                borderColor: theme.palette.grey[600],
+                                backgroundColor: theme.palette.grey[600],
+                                color: theme.palette.common.white,
+                                '& .MuiChip-label': {
+                                  fontWeight: theme.typography.fontWeightMedium
+                                }
+                              })}
+                            />
+                          </Tooltip>
+                        </AnimateButton>
                       </Stack>
+
                       <OutlinedInput
                         sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
                         id="input-search-profile"
