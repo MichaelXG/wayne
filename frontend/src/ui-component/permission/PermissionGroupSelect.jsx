@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 
 const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
-  { value, onChange, name = 'permission_group', label = 'Permission Group', ...props },
+  { value, onChange, name = 'group', label = 'Permission Group', ...props },
   ref
 ) {
   const [groups, setGroups] = useState([]);
@@ -14,7 +14,7 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get(API_ROUTES.PERMISSION_GROUPS);
+        const response = await axios.get(API_ROUTES.GROUPS);
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
         setGroups(data);
       } catch (error) {

@@ -27,6 +27,6 @@ export const API_ROUTES = {
   WALLETS_VERIFY_CSC: (id: string | number) => `${API_BASE_URL}/wallets/${id}/verify-csc/`,
   CARRIER: `${API_BASE_URL}/carrier/`,
   ADDRESS: `${API_BASE_URL}/address/`,
-  PERMISSION_GROUPS: `${API_BASE_URL}/groups/`,
+  GROUPS: `${API_BASE_URL}/groups/`,
   MY_PERMISSIONS: `${API_BASE_URL}/my-permissions/`,
 };

@@ -17,9 +17,7 @@ import {
   OutlinedInput,
   TextField,
   Typography,
-  Box,
-  MenuItem,
-  Select
+  Box
 } from '@mui/material';
 
 // project imports
@@ -36,14 +34,12 @@ export default function AuthRegister() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(null);
- 
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [avatarImage, setAvatarImage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -53,37 +49,13 @@ export default function AuthRegister() {
     cpf: '',
     phone: '',
     birth_date: '',
-    permission_group: '' 
+    group: ''
   });
-
-  const [groups, setGroups] = useState([]);
-
-  const [avatarImage, setAvatarImage] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
-
-  useEffect(() => {
-    async function fetchGroups() {
-      try {
-        const response = await axios.get(API_ROUTES.PERMISSION_GROUPS);
-        isDebug && console.log('✅ Groups response:', response.data);
-        const data = Array.isArray(response.data) ? response.data : response.data.results || [];
-        setGroups(data);
-      } catch (err) {
-        console.error('❌ Failed to load groups:', err);
-        setGroups([]); // segurança: se falhar, mantemos vazio.
-      }
-    }
-    fetchGroups();
-  }, []);
 
   const handleImageChange = (file) => {
     isDebug && console.log('📥 Imagem recebida:', file);
-    setAvatarImage(file); // ✅ salvar a imagem recebida
+    setAvatarImage(file);
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,7 +67,6 @@ export default function AuthRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessMessage(null);
 
     const payload = {
       ...formData,
@@ -109,10 +80,8 @@ export default function AuthRegister() {
       const response = await axios.post(API_ROUTES.USERS, payload);
 
       if ([200, 201].includes(response.status)) {
-          const userId = response.data?.user?.id;
-          const token = response.data?.access;
+        const token = response.data?.access;
 
-        // ✅ Envia o avatar separado após o registro
         if (avatarImage && token) {
           const avatarFormData = new FormData();
           avatarFormData.append('image', avatarImage);
@@ -124,7 +93,7 @@ export default function AuthRegister() {
             }
           });
 
-          isDebug && console.log('✅ Avatar sent successfully!');
+          isDebug && console.log('✅ Avatar enviado com sucesso!');
         }
         setSuccessModalOpen(true);
       }
@@ -154,9 +123,8 @@ export default function AuthRegister() {
           </Grid>
         </Grid>
 
-        <Grid container spacing={{ xs: 0, sm: 2 }}>
-          <Grid item xs={12} sm={12}>
-            {' '}
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
             <UserAvatarUpload initialImage="" onChange={handleImageChange} />
           </Grid>
 
@@ -189,9 +157,9 @@ export default function AuthRegister() {
           </Grid>
         </Grid>
 
-        <Grid container spacing={{ xs: 0, sm: 2 }}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange} required>
+            <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange}>
               {(inputProps) => (
                 <TextField {...inputProps} fullWidth label="CPF" margin="normal" name="cpf" sx={{ ...theme.typography.customInput }} />
               )}
@@ -214,14 +182,14 @@ export default function AuthRegister() {
           </Grid>
         </Grid>
 
-        <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange} required>
+        <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange}>
           {(inputProps) => (
             <TextField {...inputProps} fullWidth label="Phone" margin="normal" name="phone" sx={{ ...theme.typography.customInput }} />
           )}
         </InputMask>
 
         <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel htmlFor="email">Email Address</InputLabel>
+          <InputLabel>Email Address</InputLabel>
           <OutlinedInput
             id="email"
             type="email"
@@ -234,7 +202,7 @@ export default function AuthRegister() {
         </FormControl>
 
         <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel htmlFor="password">Password</InputLabel>
+          <InputLabel>Password</InputLabel>
           <OutlinedInput
             id="password"
             type={showPassword ? 'text' : 'password'}
@@ -253,10 +221,8 @@ export default function AuthRegister() {
           />
         </FormControl>
 
-        <PermissionGroupSelect value={formData.permission_group} onChange={handleChange} />
+        <PermissionGroupSelect value={formData.group} onChange={handleChange} />
 
-        <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-           <Grid>
         <FormControlLabel
           control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} name="checked" color="primary" />}
           label={
@@ -265,8 +231,6 @@ export default function AuthRegister() {
             </Typography>
           }
         />
-          </Grid>
-        </Grid>
 
         <Box sx={{ mt: 2 }}>
           <AnimateButton>
@@ -277,7 +241,6 @@ export default function AuthRegister() {
         </Box>
       </form>
 
-      {/* Success Modal */}
       <DynamicModal
         open={successModalOpen}
         onClose={() => setSuccessModalOpen(false)}
@@ -293,7 +256,6 @@ export default function AuthRegister() {
         }}
       />
 
-      {/* Error Modal */}
       <DynamicModal
         open={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}

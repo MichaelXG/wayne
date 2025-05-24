@@ -176,7 +176,7 @@ export default function ProfileSection() {
                               : 'Guest'}
                           </Typography>
                         </Stack>
-                        <Typography variant="subtitle2">{userData.permission_group}</Typography>
+                        <Typography variant="subtitle2">Group: {safeAtob(userData.group) || 'No Group'}</Typography>
                       </Stack>
                       <OutlinedInput
                         sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}

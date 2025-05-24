@@ -46,7 +46,8 @@ class UserPermission(models.Model):
     """
     Link between User and Group.
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
     group = models.ForeignKey(
         PermissionGroup,
         on_delete=models.SET_NULL,

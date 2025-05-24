@@ -109,17 +109,7 @@ export default function AuthLogin() {
           throw new Error('JWT tokens not found in response.');
         }
 
-        setUserData({
-          authToken: accessToken,
-          refreshToken: refreshToken,
-          email: safeBtoa(email),
-          id: safeBtoa(response.data.id || ''),
-          first_name: safeBtoa(response.data.first_name || ''),
-          last_name: safeBtoa(response.data.last_name || ''),
-          birth_date: safeBtoa(response.data.birth_date || ''),
-          permission_group: response.data.permission_group ? safeBtoa(response.data.permission_group) : '',
-          keeploggedin: checked
-        });
+        isDebug && console.log('response.data: ', response.data);
 
         // ✅ Definir token para próximas requisições
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
@@ -132,7 +122,24 @@ export default function AuthLogin() {
           }
         });
 
-        setPermissions(permsResponse.data.permissions || []);
+        setUserData({
+          authToken: accessToken,
+          refreshToken: refreshToken,
+          email: safeBtoa(email),
+          id: safeBtoa(response.data.id || ''),
+          first_name: safeBtoa(response.data.first_name || ''),
+          last_name: safeBtoa(response.data.last_name || ''),
+          birth_date: safeBtoa(response.data.birth_date || ''),
+          group: response.data.group ? safeBtoa(response.data.group) : '',
+          keeploggedin: checked
+        });
+
+        if (Array.isArray(permsResponse.data.permissions)) {
+          setPermissions(permsResponse.data.permissions);
+        } else {
+          setPermissions([]);
+        }
+
         isDebug && console.log('✅ Permissões carregadas:', permsResponse.data.permissions);
 
         setSuccessMessage('Login successful! Redirecting...');
@@ -159,66 +166,66 @@ export default function AuthLogin() {
 
   return (
     <>
-    <form onSubmit={handleLogin}>
-      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-        <InputLabel>Email Address</InputLabel>
-        <OutlinedInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </FormControl>
+      <form onSubmit={handleLogin}>
+        <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+          <InputLabel>Email Address</InputLabel>
+          <OutlinedInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </FormControl>
 
-      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-        <InputLabel>Password</InputLabel>
-        <OutlinedInput
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-
-      <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <Grid>
-          <FormControlLabel
-            control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} />}
-            label="Keep me logged in"
+        <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+          <InputLabel>Password</InputLabel>
+          <OutlinedInput
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
-        </Grid>
-        <Grid>
-          <Typography
-            component={Link}
-            to="/pages/recover"
-            sx={(theme) => ({
-              textDecoration: 'none',
-              color: theme.palette.grey[600],
-              '&:hover': {
-                textDecoration: 'underline'
-              }
-            })}
-          >
-            Forgot Password?
-          </Typography>
-        </Grid>
-      </Grid>
+        </FormControl>
 
-      <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        {error && <Alert severity="error">{error}</Alert>}
-        {successMessage && <Alert severity="success">{successMessage}</Alert>}
-      </Grid>
+        <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+          <Grid>
+            <FormControlLabel
+              control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} />}
+              label="Keep me logged in"
+            />
+          </Grid>
+          <Grid>
+            <Typography
+              component={Link}
+              to="/pages/recover"
+              sx={(theme) => ({
+                textDecoration: 'none',
+                color: theme.palette.grey[600],
+                '&:hover': {
+                  textDecoration: 'underline'
+                }
+              })}
+            >
+              Forgot Password?
+            </Typography>
+          </Grid>
+        </Grid>
 
-      <Box sx={{ mt: 2 }}>
-        <AnimateButton>
-          <Button color="secondary" fullWidth size="large" type="submit" variant="contained" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
-          </Button>
-        </AnimateButton>
-      </Box>
-    </form>
+        <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
+          {error && <Alert severity="error">{error}</Alert>}
+          {successMessage && <Alert severity="success">{successMessage}</Alert>}
+        </Grid>
+
+        <Box sx={{ mt: 2 }}>
+          <AnimateButton>
+            <Button color="secondary" fullWidth size="large" type="submit" variant="contained" disabled={isLoading}>
+              {isLoading ? 'Signing In...' : 'Sign In'}
+            </Button>
+          </AnimateButton>
+        </Box>
+      </form>
     </>
   );
 }

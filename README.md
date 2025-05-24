@@ -1,9 +1,32 @@
+# 1. Parar os containers
+docker-compose down
+
+# 2. Remover os containers
+docker container prune -f
+
+# 3. Remover as imagens
+docker image prune -a -f
+
+# 4. Remover volumes (inclui banco de dados, se estiver em volume)
+docker volume prune -f
+
+# 5. Remover cache de build
+docker builder prune -a -f
+
+# 6. (Opcional) Remover redes
+docker network prune -f
+
+# 7. Confirmar que tudo foi limpo
+docker system df
+
+# 8. Recriar
+docker-compose up --build -d
 
 
 fake.store.2025@gmail.com
 fake.store.2025@project.full.stack
 
-<!--  -->
+
 
 fake.store.2025@FS
 

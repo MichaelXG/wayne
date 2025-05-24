@@ -16,7 +16,6 @@ from .serializers import CustomUserSerializer, UserAvatarSerializer
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
-
 # 🔐 Utility: create JWT token pair for a user
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -25,15 +24,14 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
     }
 
-
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
     def get_permissions(self):
         if self.action == 'create':
-            return [permission() for permission in [AllowAny]]
-        return [permission() for permission in [IsAdminUser]]
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -47,7 +45,6 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             "user": serializer.data,
             **tokens
         }, status=status.HTTP_201_CREATED)
-
 
 class CustomLoginView(APIView):
     permission_classes = [AllowAny]
@@ -75,6 +72,10 @@ class CustomLoginView(APIView):
         tokens = get_tokens_for_user(user)
         logger.info(f"✅ User {email} successfully authenticated.")
 
+        # ✅ Buscar o grupo do usuário diretamente
+        group = user.group
+        group_data = {"id": group.id, "name": group.name} if group else None
+
         return Response({
             **tokens,
             "id": user.id,
@@ -84,13 +85,12 @@ class CustomLoginView(APIView):
             "birth_date": user.birth_date,
             "cpf": user.cpf,
             "phone": user.phone,
-            "avatar": user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None
+            "avatar": user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None,
+            "group": group_data  # ✅ agora como objeto direto
         }, status=status.HTTP_200_OK)
-
 
 class CustomTokenRefreshView(TokenRefreshView):
     pass
-
 
 class UserAvatarViewSet(viewsets.ModelViewSet):
     queryset = UserAvatar.objects.all()
@@ -99,8 +99,8 @@ class UserAvatarViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['retrieve', 'list', 'get_my_avatar']:
-            return [permission() for permission in [AllowAny]]
-        return [permission() for permission in [IsAuthenticated]]
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         if self.request.user.is_authenticated:

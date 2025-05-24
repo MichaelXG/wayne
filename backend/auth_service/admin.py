@@ -21,7 +21,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('first_name', 'last_name', 'email', 'birth_date', 'cpf')
         }),
         ('Permissions', {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')
         }),
         ('Timestamps', {'fields': ('inserted_in', 'modified_in')}),
     )

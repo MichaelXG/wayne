@@ -10,11 +10,11 @@ from .serializers import PermissionGroupSerializer, UserPermissionSerializer
 class PermissionGroupViewSet(viewsets.ModelViewSet):
     """
     ViewSet to manage permission groups.
-    Only admins can access.
+    Only admins can access, except for list/retrieve.
     """
     queryset = PermissionGroup.objects.all()
     serializer_class = PermissionGroupSerializer
-    
+
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
@@ -33,7 +33,7 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
 
 class MyPermissionsView(APIView):
     """
-    API endpoint to return the authenticated user's permissions.
+    API endpoint to return the authenticated user's permission group and detailed permissions.
     """
     permission_classes = [IsAuthenticated]
 
@@ -43,22 +43,26 @@ class MyPermissionsView(APIView):
             group = user_perm.group
 
             if not group:
-                return Response({"detail": "No permission group assigned."}, status=status.HTTP_403_FORBIDDEN)
+                return Response({
+                    "username": request.user.username,
+                    "group": None,
+                    "permissions": []
+                }, status=status.HTTP_200_OK)
 
-            permissions = []
-
-            for perm in group.permissions.all():
-                permissions.append({
+            permissions = [
+                {
                     "menu_name": perm.menu_name,
                     "can_view": perm.can_view,
                     "can_create": perm.can_create,
                     "can_update": perm.can_update,
                     "can_delete": perm.can_delete
-                })
+                }
+                for perm in group.permissions.all()
+            ]
 
             return Response({
                 "username": request.user.username,
-                "group": group.name,
+                "group": group.name,  # ✅ compatível com seu frontend
                 "permissions": permissions
             }, status=status.HTTP_200_OK)
 
@@ -67,4 +71,4 @@ class MyPermissionsView(APIView):
                 "username": request.user.username,
                 "group": None,
                 "permissions": []
-            }, status=200)
+            }, status=status.HTTP_200_OK)

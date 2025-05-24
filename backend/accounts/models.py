@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Permission
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from permissions.models import PermissionGroup  # ✅ Import
+from permissions.models import PermissionGroup
 
 import os
 
@@ -16,7 +16,6 @@ def validate_image_size(image):
 def avatar_upload_path(instance, filename):
     ext = os.path.splitext(filename)[1].lower()
     return os.path.join("users", "avatars", f"user-{instance.user.id}-avatar{ext}")
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, first_name, last_name, email, birth_date, cpf, phone, password=None, **extra_fields):
@@ -37,6 +36,9 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("is_staff", True)
 
+        # ✅ Permitir passar group no extra_fields
+        group = extra_fields.pop("group", None)
+
         user = self.model(
             first_name=first_name,
             last_name=last_name,
@@ -44,6 +46,7 @@ class CustomUserManager(BaseUserManager):
             birth_date=birth_date,
             cpf=cpf,
             phone=phone,
+            group=group,  # ✅ setado aqui
             **extra_fields
         )
         user.set_password(password)
@@ -71,7 +74,6 @@ class CustomUserManager(BaseUserManager):
             **extra_fields
         )
 
-
 class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
@@ -81,7 +83,7 @@ class CustomUser(AbstractUser):
     cpf = models.CharField(max_length=14, unique=True)
     phone = models.CharField(max_length=13)
 
-    permission_group = models.ForeignKey(  # ✅ New field
+    group = models.ForeignKey(
         PermissionGroup,
         on_delete=models.SET_NULL,
         null=True,
@@ -93,9 +95,6 @@ class CustomUser(AbstractUser):
     inserted_in = models.DateTimeField(auto_now_add=True)
     modified_by = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="modified_users")
     modified_in = models.DateTimeField(auto_now=True)
-
-    groups = models.ManyToManyField(Group, related_name="customuser_accounts_groups", blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name="customuser_accounts_permissions", blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "birth_date", "cpf", "phone"]
@@ -112,8 +111,7 @@ class CustomUser(AbstractUser):
         ]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email})"
-
+        return f"{self.first_name} {self.last_name} ({self.email}) - Group: {self.group.name if self.group else 'None'}"
 
 class UserAvatar(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="avatar")

@@ -19,7 +19,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     avatar_data = UserAvatarSerializer(source='avatar', read_only=True)
     avatar_image = serializers.ImageField(write_only=True, required=False)
 
-    permission_group = serializers.PrimaryKeyRelatedField(
+    group = serializers.PrimaryKeyRelatedField(
         queryset=PermissionGroup.objects.all(),
         required=False,
         allow_null=True
@@ -31,7 +31,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'id', 'first_name', 'last_name', 'email', 'birth_date', 'cpf', 'phone',
             'username', 'is_active', 'is_staff', 'inserted_by', 'inserted_in',
             'modified_by', 'modified_in', 'avatar_image', 'avatar_data', 'password',
-            'permission_group'  # ✅ adicionado aqui
+            'group'
         ]
         read_only_fields = ['id', 'inserted_in', 'modified_in', 'avatar_data']
 
@@ -87,6 +87,9 @@ class LoginSerializer(serializers.Serializer):
         if not user.check_password(password):
             raise AuthenticationFailed('Invalid credentials.')
 
+        group = user.group
+        group_data = {"id": group.id, "name": group.name} if group else None
+        
         return {
             'id': user.id,
             'first_name': user.first_name,
@@ -97,5 +100,5 @@ class LoginSerializer(serializers.Serializer):
             'phone': user.phone,
             'avatar': user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None,
             'authToken': getattr(user, 'token', None),
-            'permission_group': user.permission_group.id if user.permission_group else None  # ✅ também no retorno
+            'group': group_data 
         }
