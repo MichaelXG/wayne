@@ -21,11 +21,14 @@ import Alert from '@mui/material/Alert';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { API_ROUTES } from '../../../routes/ApiRoutes';
 import useLocalStorage from '../../../hooks/useLocalStorage';
+import { usePermissions } from '../../../contexts/PermissionsContext';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { isTokenValid } from '../../../utils/auth';
+import { isDebug } from '../../../App';
+import { safeBtoa } from '../../../utils/base64';
 
 // Função para validar o formato do email
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -35,6 +38,7 @@ export default function AuthLogin() {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
+  const { setPermissions } = usePermissions();
 
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -45,19 +49,17 @@ export default function AuthLogin() {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
-    // Verifica se há um token válido salvo e se o usuário escolheu "Keep me logged in"
     const checkAutoLogin = async () => {
       if (userData.keeploggedin && userData.authToken) {
-        console.log('🔍 Verificando login automático...');
-
+        isDebug && console.log('🔍 Verificando login automático...');
         const validToken = await isTokenValid(userData.authToken);
 
         if (validToken) {
-          console.log('✅ Token válido! Redirecionando para o Dashboard...');
+          isDebug && console.log('✅ Token válido! Redirecionando para o Dashboard...');
           navigate('/dashboard/default');
         } else {
-          console.warn('❌ Token inválido! Redirecionando para login.');
-          setUserData({}); // Remove os dados inválidos
+          isDebug && console.warn('❌ Token inválido! Redirecionando para login.');
+          setUserData({});
         }
       }
     };
@@ -79,24 +81,24 @@ export default function AuthLogin() {
     setError(null);
     setSuccessMessage(null);
 
-    console.log('🔍 Validating credentials...');
+    isDebug && console.log('🔍 Validating credentials...');
 
     if (!email.trim() || !password.trim()) {
       setError('Email and password cannot be empty.');
-      console.error('❌ Validation Error: Empty fields');
+      isDebug && console.error('❌ Validation Error: Empty fields');
       setIsLoading(false);
       return;
     }
 
     if (!validateEmail(email)) {
       setError('Invalid email format.');
-      console.error('❌ Validation Error: Invalid email format');
+      isDebug && console.error('❌ Validation Error: Invalid email format');
       setIsLoading(false);
       return;
     }
 
     try {
-      console.log('📤 Sending login request...');
+      isDebug && console.log('📤 Sending login request...');
       const response = await axios.post(API_ROUTES.LOGIN, { email, password }, { headers: { 'Content-Type': 'application/json' } });
 
       if (response.status === 200) {
@@ -110,26 +112,41 @@ export default function AuthLogin() {
         setUserData({
           authToken: accessToken,
           refreshToken: refreshToken,
-          email: btoa(email),
-          id: btoa(response.data.id || ''),
-          first_name: btoa(response.data.first_name || ''),
-          last_name: btoa(response.data.last_name || ''),
-          birth_date: btoa(response.data.birth_date || ''),
+          email: safeBtoa(email),
+          id: safeBtoa(response.data.id || ''),
+          first_name: safeBtoa(response.data.first_name || ''),
+          last_name: safeBtoa(response.data.last_name || ''),
+          birth_date: safeBtoa(response.data.birth_date || ''),
+          permission_group: response.data.permission_group ? safeBtoa(response.data.permission_group) : '',
           keeploggedin: checked
         });
 
+        // ✅ Definir token para próximas requisições
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+        // ✅ Buscar permissões após login
+        const permsResponse = await axios.get(API_ROUTES.MY_PERMISSIONS, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+        setPermissions(permsResponse.data.permissions || []);
+        isDebug && console.log('✅ Permissões carregadas:', permsResponse.data.permissions);
+
         setSuccessMessage('Login successful! Redirecting...');
-        console.log('✅ Login successful!');
+        isDebug && console.log('✅ Login successful!');
 
         setTimeout(() => {
-          console.log('🔄 Redirecting to dashboard...');
+          isDebug && console.log('🔄 Redirecting to dashboard...');
           navigate(`/dashboard/default`);
-        }, 3000);
+        }, 1500);
       } else {
         throw new Error(`Unexpected response status: ${response.status}`);
       }
     } catch (error) {
-      console.error('❌ Login error:', error.response?.data || error);
+      isDebug && console.error('❌ Login error:', error.response?.data || error);
       if (axios.isAxiosError(error)) {
         setError(error.response?.data.detail || 'Error during login. Please check your credentials.');
       } else {
@@ -142,66 +159,66 @@ export default function AuthLogin() {
 
   return (
     <>
-      <form onSubmit={handleLogin}>
-        <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel>Email Address</InputLabel>
-          <OutlinedInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </FormControl>
+    <form onSubmit={handleLogin}>
+      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+        <InputLabel>Email Address</InputLabel>
+        <OutlinedInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </FormControl>
 
-        <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel>Password</InputLabel>
-          <OutlinedInput
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
+      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+        <InputLabel>Password</InputLabel>
+        <OutlinedInput
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+
+      <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Grid>
+          <FormControlLabel
+            control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} />}
+            label="Keep me logged in"
           />
-        </FormControl>
-
-        <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Grid>
-            <FormControlLabel
-              control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} />}
-              label="Keep me logged in"
-            />
-          </Grid>
-          <Grid>
-            <Typography
-              component={Link}
-              to="/pages/recover"
-              sx={(theme) => ({
-                textDecoration: 'none',
-                color: theme.palette.grey[600],
-                '&:hover': {
-                  textDecoration: 'underline'
-                }
-              })}
-            >
-              Forgot Password?
-            </Typography>
-          </Grid>
         </Grid>
-
-        <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          {error && <Alert severity="error">{error}</Alert>}
-          {successMessage && <Alert severity="success">{successMessage}</Alert>}
+        <Grid>
+          <Typography
+            component={Link}
+            to="/pages/recover"
+            sx={(theme) => ({
+              textDecoration: 'none',
+              color: theme.palette.grey[600],
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            })}
+          >
+            Forgot Password?
+          </Typography>
         </Grid>
+      </Grid>
 
-        <Box sx={{ mt: 2 }}>
-          <AnimateButton>
-            <Button color="secondary" fullWidth size="large" type="submit" variant="contained" disabled={isLoading}>
-              {isLoading ? 'Signing In...' : 'Sign In'}
-            </Button>
-          </AnimateButton>
-        </Box>
-      </form>
+      <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        {error && <Alert severity="error">{error}</Alert>}
+        {successMessage && <Alert severity="success">{successMessage}</Alert>}
+      </Grid>
+
+      <Box sx={{ mt: 2 }}>
+        <AnimateButton>
+          <Button color="secondary" fullWidth size="large" type="submit" variant="contained" disabled={isLoading}>
+            {isLoading ? 'Signing In...' : 'Sign In'}
+          </Button>
+        </AnimateButton>
+      </Box>
+    </form>
     </>
   );
 }

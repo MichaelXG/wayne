@@ -40,6 +40,9 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 // About page
 const AboutPage = Loadable(lazy(() => import('views/about-page')));
 
+// Página de erro
+const ForbiddenPage = Loadable(lazy(() => import('views/forbidden/ForbiddenPage')));
+
 // Wrapper para proteger todas as rotas
 
 function ProtectedRoutesWrapper() {
@@ -132,9 +135,13 @@ const MainRoutes = {
       path: 'sample-page',
       element: <SamplePage />
     },
-     {
+    {
       path: 'about-page',
       element: <AboutPage />
+    },
+    {
+      path: 'forbidden',
+      element: <ForbiddenPage />
     }
   ]
 };

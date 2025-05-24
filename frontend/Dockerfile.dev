@@ -1,5 +1,5 @@
 # 🏗️ Use Node.js Alpine to keep the image lightweight and optimized
-FROM node:20-alpine AS dev
+FROM node:20 AS dev
 
 # 🔹 Startup message for the build process
 RUN echo "✅ Starting Vite.js container setup..."

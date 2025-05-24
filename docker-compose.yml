@@ -3,7 +3,12 @@ services:
     image: redis:alpine
     container_name: redis-wayne
     ports:
-      - "6379:6379"
+      - "6379:6379"  # Porta padrão do Redis
+    volumes:
+      - redis_data:/data  # Persistência dos dados
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    restart: unless-stopped
 
   django_wayne_app:
     build:
@@ -68,3 +73,4 @@ services:
 volumes:
   sqlite_data:
   static_data:
+  redis_data: 

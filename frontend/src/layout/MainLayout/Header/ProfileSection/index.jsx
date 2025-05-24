@@ -37,6 +37,7 @@ import Greeting from '../../../../ui-component/Greeting';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import DynamicModal from '../../../../ui-component/modal/DynamicModal';
 import { API_ROUTES } from '../../../../routes/ApiRoutes';
+import { safeAtob } from '../../../../utils/base64';
 
 export default function ProfileSection() {
   const [isLogout, setIsLogout] = useState(false);
@@ -55,10 +56,10 @@ export default function ProfileSection() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (atob(userData.id)) {
+    if (safeAtob(userData.id)) {
       getAvatar();
     }
-  }, [atob(userData.id)]);
+  }, [safeAtob(userData.id)]);
 
   const handleLogout = () => {
     if (userData.keeploggedin) {
@@ -97,7 +98,7 @@ export default function ProfileSection() {
 
   const getAvatar = async () => {
     try {
-      const response = await axios.get(`${API_ROUTES.AVATARS}me/?id=${atob(userData.id)}`);
+      const response = await axios.get(`${API_ROUTES.AVATARS}me/?id=${safeAtob(userData.id)}`);
       // Check if the response is successful (status code 200)
       if (response.status === 200) {
         const data = response.data;
@@ -171,11 +172,11 @@ export default function ProfileSection() {
                           <Greeting />
                           <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
                             {userData.first_name && userData.last_name
-                              ? `${atob(userData.first_name)} ${atob(userData.last_name)}`
+                              ? `${safeAtob(userData.first_name)} ${safeAtob(userData.last_name)}`
                               : 'Guest'}
                           </Typography>
                         </Stack>
-                        <Typography variant="subtitle2">Project Admin</Typography>
+                        <Typography variant="subtitle2">{userData.permission_group}</Typography>
                       </Stack>
                       <OutlinedInput
                         sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}

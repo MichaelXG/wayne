@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 
@@ -17,7 +17,9 @@ import {
   OutlinedInput,
   TextField,
   Typography,
-  Box
+  Box,
+  MenuItem,
+  Select
 } from '@mui/material';
 
 // project imports
@@ -28,19 +30,20 @@ import { API_ROUTES } from '../../../routes/ApiRoutes';
 import { isDebug } from '../../../App';
 import DynamicModal from '../../../ui-component/modal/DynamicModal';
 import UserAvatarUpload from '../../../ui-component/image/UserAvatarUpload';
+import PermissionGroupSelect from '../../../ui-component/permission/PermissionGroupSelect';
 
 export default function AuthRegister() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(null);
-
+    const [email, setEmail] = useState('');
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(null);
+ 
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -49,10 +52,30 @@ export default function AuthRegister() {
     password: '',
     cpf: '',
     phone: '',
-    birth_date: ''
+    birth_date: '',
+    permission_group: '' 
   });
 
+  const [groups, setGroups] = useState([]);
+
   const [avatarImage, setAvatarImage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [checked, setChecked] = useState(true);
+
+  useEffect(() => {
+    async function fetchGroups() {
+      try {
+        const response = await axios.get(API_ROUTES.PERMISSION_GROUPS);
+        isDebug && console.log('✅ Groups response:', response.data);
+        const data = Array.isArray(response.data) ? response.data : response.data.results || [];
+        setGroups(data);
+      } catch (err) {
+        console.error('❌ Failed to load groups:', err);
+        setGroups([]); // segurança: se falhar, mantemos vazio.
+      }
+    }
+    fetchGroups();
+  }, []);
 
   const handleImageChange = (file) => {
     isDebug && console.log('📥 Imagem recebida:', file);
@@ -85,9 +108,9 @@ export default function AuthRegister() {
     try {
       const response = await axios.post(API_ROUTES.USERS, payload);
 
-      if (response.status === 200 || response.status === 201) {
-        const userId = response.data?.user?.id;
-        const token = response.data?.access;
+      if ([200, 201].includes(response.status)) {
+          const userId = response.data?.user?.id;
+          const token = response.data?.access;
 
         // ✅ Envia o avatar separado após o registro
         if (avatarImage && token) {
@@ -101,7 +124,7 @@ export default function AuthRegister() {
             }
           });
 
-          isDebug && console.log('✅ Avatar enviado com sucesso!');
+          isDebug && console.log('✅ Avatar sent successfully!');
         }
         setSuccessModalOpen(true);
       }
@@ -136,6 +159,7 @@ export default function AuthRegister() {
             {' '}
             <UserAvatarUpload initialImage="" onChange={handleImageChange} />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -149,6 +173,7 @@ export default function AuthRegister() {
               sx={{ ...theme.typography.customInput }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -228,16 +253,18 @@ export default function AuthRegister() {
           />
         </FormControl>
 
+        <PermissionGroupSelect value={formData.permission_group} onChange={handleChange} />
+
         <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Grid>
-            <FormControlLabel
-              control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} name="checked" color="primary" />}
-              label={
-                <Typography variant="subtitle2" component="span">
-                  <Link to="#">Terms & Conditions</Link>
-                </Typography>
-              }
-            />
+           <Grid>
+        <FormControlLabel
+          control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} name="checked" color="primary" />}
+          label={
+            <Typography variant="subtitle2" component="span">
+              <Link to="#">Terms & Conditions</Link>
+            </Typography>
+          }
+        />
           </Grid>
         </Grid>
 

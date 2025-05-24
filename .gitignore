@@ -43,3 +43,8 @@
 /backend/media/products
 /backend/accounts/management/commands/__pycache__
 /Projeto Final atualizado - DEV.pdf
+/backend/permissions/management/commands/__pycache__
+/backend/permissions/migrations/__pycache__
+/backend/permissions/__pycache__
+/backend/permissions/migrations
+/media/users/avatars

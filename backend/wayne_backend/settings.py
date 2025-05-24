@@ -1,9 +1,11 @@
+import os
+import base64
 from pathlib import Path
 from datetime import timedelta
-from django.core.management.utils import get_random_secret_key
 
 from decouple import config, Csv
-import base64
+from django.core.management.utils import get_random_secret_key
+
 
 def decode_base64(value):
     try:
@@ -40,9 +42,19 @@ CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="http://localhost:
 ROOT_URLCONF = "wayne_backend.urls"  # Ajuste conforme o nome correto do seu projeto
 
 # Configuração dos arquivos estáticos
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"] if DEBUG else []
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+# ✅ Diretório onde os arquivos estáticos serão coletados após `collectstatic`
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# ✅ Diretórios adicionais de arquivos estáticos (se houver)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')  # ✅ Só mantenha se esta pasta realmente existir!
+]
+
+# ✅ Segurança extra para produção
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Configuração dos arquivos de mídia
 MEDIA_URL = "/media/"
@@ -185,6 +197,8 @@ INSTALLED_APPS = [
     'address',
     'wallet',
     'carrier',
+    'permissions',
+
 ]
 
 # Configuração da WSGI

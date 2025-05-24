@@ -38,5 +38,10 @@ urlpatterns = [
 
     # ❤️ Health Check
     path('health/', health_check, name='health_check'),
+    
+    # Permissions
+    path('api/', include('permissions.urls')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import CustomUser, UserAvatar
+from permissions.models import PermissionGroup
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 import random
@@ -18,12 +19,19 @@ class CustomUserSerializer(serializers.ModelSerializer):
     avatar_data = UserAvatarSerializer(source='avatar', read_only=True)
     avatar_image = serializers.ImageField(write_only=True, required=False)
 
+    permission_group = serializers.PrimaryKeyRelatedField(
+        queryset=PermissionGroup.objects.all(),
+        required=False,
+        allow_null=True
+    )
+
     class Meta:
         model = CustomUser
         fields = [
             'id', 'first_name', 'last_name', 'email', 'birth_date', 'cpf', 'phone',
             'username', 'is_active', 'is_staff', 'inserted_by', 'inserted_in',
-            'modified_by', 'modified_in', 'avatar_image', 'avatar_data', 'password'
+            'modified_by', 'modified_in', 'avatar_image', 'avatar_data', 'password',
+            'permission_group'  # ✅ adicionado aqui
         ]
         read_only_fields = ['id', 'inserted_in', 'modified_in', 'avatar_data']
 
@@ -88,5 +96,6 @@ class LoginSerializer(serializers.Serializer):
             'cpf': user.cpf,
             'phone': user.phone,
             'avatar': user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None,
-            'authToken': getattr(user, 'token', None)
+            'authToken': getattr(user, 'token', None),
+            'permission_group': user.permission_group.id if user.permission_group else None  # ✅ também no retorno
         }
