@@ -37,7 +37,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
 
         # ✅ Permitir passar group no extra_fields
-        group = extra_fields.pop("group", None)
+        groups = extra_fields.pop("groups", [])
 
         user = self.model(
             first_name=first_name,
@@ -46,11 +46,15 @@ class CustomUserManager(BaseUserManager):
             birth_date=birth_date,
             cpf=cpf,
             phone=phone,
-            group=group,  # ✅ setado aqui
             **extra_fields
         )
         user.set_password(password)
         user.save(using=self._db)
+        
+        # ✅ Atribuir grupos após salvar
+        if groups:
+            user.groups.set(groups)
+            
         return user
 
     def create_superuser(self, first_name, last_name, email, birth_date, cpf, phone, password=None, **extra_fields):
@@ -83,12 +87,10 @@ class CustomUser(AbstractUser):
     cpf = models.CharField(max_length=14, unique=True)
     phone = models.CharField(max_length=13)
 
-    group = models.ForeignKey(
+    groups = models.ManyToManyField(
         PermissionGroup,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="users"
+        related_name="custom_users",
+        blank=True
     )
 
     inserted_by = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="inserted_users")
@@ -111,7 +113,8 @@ class CustomUser(AbstractUser):
         ]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email}) - Group: {self.group.name if self.group else 'None'}"
+        groups = ", ".join(g.name for g in self.groups.all())
+        return f"{self.first_name} {self.last_name} ({self.email}) - Groups: {groups or 'None'}"
 
 class UserAvatar(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="avatar")

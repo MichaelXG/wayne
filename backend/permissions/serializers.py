@@ -9,16 +9,19 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
 class PermissionGroupSerializer(serializers.ModelSerializer):
-    permissions = PermissionSerializer(many=True)  # ✅ Nested permissions
+    permissions = PermissionSerializer(many=True, read_only=True)  # ✅ Nested permissions
 
     class Meta:
         model = PermissionGroup
-        fields = '__all__'
-
+        fields = ['id', 'name', 'permissions']
+        
 
 class UserPermissionSerializer(serializers.ModelSerializer):
-    group = PermissionGroupSerializer()  # ✅ Nested group with permissions
+    groups = serializers.PrimaryKeyRelatedField(
+        queryset=PermissionGroup.objects.all(),
+        many=True
+    )
 
     class Meta:
         model = UserPermission
-        fields = '__all__'
+        fields = ['id', 'user', 'groups']

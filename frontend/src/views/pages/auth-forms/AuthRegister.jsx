@@ -49,7 +49,7 @@ export default function AuthRegister() {
     cpf: '',
     phone: '',
     birth_date: '',
-    group: ''
+    groups: []
   });
 
   const handleImageChange = (file) => {
@@ -70,6 +70,7 @@ export default function AuthRegister() {
 
     const payload = {
       ...formData,
+      groups: formData.groups.map((g) => (typeof g === 'object' ? g.id : g)),
       cpf: formData.cpf.replace(/\D/g, ''),
       phone: formData.phone.replace(/\D/g, '')
     };
@@ -139,6 +140,9 @@ export default function AuthRegister() {
               onChange={handleChange}
               required
               sx={{ ...theme.typography.customInput }}
+              InputProps={{
+                sx: { textTransform: 'capitalize' }
+              }}
             />
           </Grid>
 
@@ -153,6 +157,9 @@ export default function AuthRegister() {
               onChange={handleChange}
               required
               sx={{ ...theme.typography.customInput }}
+              InputProps={{
+                sx: { textTransform: 'capitalize' }
+              }}
             />
           </Grid>
         </Grid>
@@ -221,7 +228,7 @@ export default function AuthRegister() {
           />
         </FormControl>
 
-        <PermissionGroupSelect value={formData.group} onChange={handleChange} />
+        <PermissionGroupSelect value={formData.groups} onChange={(newGroups) => setFormData((prev) => ({ ...prev, groups: newGroups }))} />
 
         <FormControlLabel
           control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} name="checked" color="primary" />}

@@ -72,22 +72,22 @@ class CustomLoginView(APIView):
         tokens = get_tokens_for_user(user)
         logger.info(f"✅ User {email} successfully authenticated.")
 
-        # ✅ Buscar o grupo do usuário diretamente
-        group = user.group
-        group_data = {"id": group.id, "name": group.name} if group else None
+        groups = [{"id": g.id, "name": g.name} for g in user.groups.all()]
 
-        return Response({
-            **tokens,
-            "id": user.id,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-            "birth_date": user.birth_date,
-            "cpf": user.cpf,
-            "phone": user.phone,
-            "avatar": user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None,
-            "group": group_data  # ✅ agora como objeto direto
-        }, status=status.HTTP_200_OK)
+        response_data = {
+            'id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'birth_date': user.birth_date,
+            'cpf': user.cpf,
+            'phone': user.phone,
+            'avatar': user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None,
+            'groups': groups,
+            **tokens
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 class CustomTokenRefreshView(TokenRefreshView):
     pass

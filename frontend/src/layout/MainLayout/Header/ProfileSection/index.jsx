@@ -182,7 +182,7 @@ export default function ProfileSection() {
                         </Stack>
                         <AnimateButton>
                           <Tooltip
-                            title={'Group'}
+                            title="Groups"
                             placement="top"
                             componentsProps={{
                               tooltip: {
@@ -198,20 +198,40 @@ export default function ProfileSection() {
                               }
                             }}
                           >
-                            <Chip
-                              label={userData?.group && safeAtob(userData.group) ? safeAtob(userData.group) : 'No Group'}
-                              variant="outlined"
-                              size="small"
-                              sx={(theme) => ({
-                                ml: 1,
-                                borderColor: theme.palette.grey[600],
-                                backgroundColor: theme.palette.grey[600],
-                                color: theme.palette.common.white,
-                                '& .MuiChip-label': {
-                                  fontWeight: theme.typography.fontWeightMedium
-                                }
-                              })}
-                            />
+                            <Box sx={{ display: 'flex', gap: 0.5, ml: 1 }}>
+                              {Array.isArray(userData?.groups) && userData.groups.length > 0 ? (
+                                userData.groups.map((group, index) => (
+                                  <Chip
+                                    key={index}
+                                    label={safeAtob(group.name)}
+                                    variant="outlined"
+                                    size="small"
+                                    sx={(theme) => ({
+                                      borderColor: theme.palette.grey[600],
+                                      backgroundColor: theme.palette.grey[600],
+                                      color: theme.palette.common.white,
+                                      '& .MuiChip-label': {
+                                        fontWeight: theme.typography.fontWeightMedium
+                                      }
+                                    })}
+                                  />
+                                ))
+                              ) : (
+                                <Chip
+                                  label="No Group"
+                                  variant="outlined"
+                                  size="small"
+                                  sx={(theme) => ({
+                                    borderColor: theme.palette.grey[600],
+                                    backgroundColor: theme.palette.grey[600],
+                                    color: theme.palette.common.white,
+                                    '& .MuiChip-label': {
+                                      fontWeight: theme.typography.fontWeightMedium
+                                    }
+                                  })}
+                                />
+                              )}
+                            </Box>
                           </Tooltip>
                         </AnimateButton>
                       </Stack>

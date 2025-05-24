@@ -130,7 +130,7 @@ export default function AuthLogin() {
           first_name: safeBtoa(response.data.first_name || ''),
           last_name: safeBtoa(response.data.last_name || ''),
           birth_date: safeBtoa(response.data.birth_date || ''),
-          group: response.data.group?.name ? safeBtoa(response.data.group.name) : '',
+          groups: Array.isArray(response.data.groups) ? response.data.groups.map((g) => ({ id: g.id, name: safeBtoa(g.name) })) : [],
           keeploggedin: checked
         });
 

@@ -41,22 +41,16 @@ class PermissionGroup(models.Model):
             models.Index(fields=["name"], name="perm_group_name_idx"),
         ]
 
-
 class UserPermission(models.Model):
     """
-    Link between User and Group.
+    Link between User and multiple PermissionGroups.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-    group = models.ForeignKey(
-        PermissionGroup,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_permission')
+    groups = models.ManyToManyField('PermissionGroup', related_name='user_permissions')
 
     def __str__(self):
-        return f"{self.user.username} -> {self.group.name if self.group else 'No Group'}"
+        group_names = ", ".join([group.name for group in self.groups.all()])
+        return f"{self.user.username} -> [{group_names}]"
 
     class Meta:
         db_table = "user_permission"
@@ -64,5 +58,4 @@ class UserPermission(models.Model):
         verbose_name_plural = "User Permissions"
         indexes = [
             models.Index(fields=["user"], name="user_perm_user_idx"),
-            models.Index(fields=["group"], name="user_perm_group_idx"),
         ]

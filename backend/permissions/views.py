@@ -38,37 +38,38 @@ class MyPermissionsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        user = request.user
+        username = user.username
+
         try:
-            user_perm = UserPermission.objects.get(user=request.user)
+            user_perm = UserPermission.objects.get(user=user)
             group = user_perm.group
 
-            if not group:
-                return Response({
-                    "username": request.user.username,
-                    "group": None,
-                    "permissions": []
-                }, status=status.HTTP_200_OK)
+            permissions = []
+            group_name = None
 
-            permissions = [
-                {
-                    "menu_name": perm.menu_name,
-                    "can_view": perm.can_view,
-                    "can_create": perm.can_create,
-                    "can_update": perm.can_update,
-                    "can_delete": perm.can_delete
-                }
-                for perm in group.permissions.all()
-            ]
+            if group:
+                group_name = group.name
+                permissions = [
+                    {
+                        "menu_name": perm.menu_name,
+                        "can_view": perm.can_view,
+                        "can_create": perm.can_create,
+                        "can_update": perm.can_update,
+                        "can_delete": perm.can_delete
+                    }
+                    for perm in group.permissions.all()
+                ]
 
             return Response({
-                "username": request.user.username,
-                "group": group.name,  # ✅ compatível com seu frontend
+                "username": username,
+                "group": group_name,
                 "permissions": permissions
             }, status=status.HTTP_200_OK)
 
         except UserPermission.DoesNotExist:
             return Response({
-                "username": request.user.username,
+                "username": username,
                 "group": None,
                 "permissions": []
             }, status=status.HTTP_200_OK)

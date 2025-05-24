@@ -14,5 +14,9 @@ class PermissionGroupAdmin(admin.ModelAdmin):
 
 @admin.register(UserPermission)
 class UserPermissionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'group')
-    list_filter = ('group',)
+    list_display = ('id', 'user', 'get_groups')
+
+    def get_groups(self, obj):
+        return ", ".join([g.name for g in obj.groups.all()])
+    get_groups.short_description = 'Groups'
+

@@ -40,7 +40,8 @@ urlpatterns = [
     path('health/', health_check, name='health_check'),
     
     # Permissions
-    path('api/', include('permissions.urls')),
+    path('api/permissions/', include('permissions.urls')),
+
 
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
