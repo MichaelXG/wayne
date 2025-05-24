@@ -38,6 +38,7 @@ import useLocalStorage from '../../../../hooks/useLocalStorage';
 import DynamicModal from '../../../../ui-component/modal/DynamicModal';
 import { API_ROUTES } from '../../../../routes/ApiRoutes';
 import { safeAtob } from '../../../../utils/base64';
+import { isDebug } from '../../../../App';
 
 export default function ProfileSection() {
   const [isLogout, setIsLogout] = useState(false);
@@ -54,6 +55,11 @@ export default function ProfileSection() {
   const token = userData?.authToken || null;
   const anchorRef = useRef(null);
   const navigate = useNavigate();
+
+  // ✅ Aqui o console log para ver userData completo
+  isDebug && console.log('UserData:', userData);
+
+  isDebug && console.log('UserData.group:', userData?.group ? safeAtob(userData.group) : null);
 
   useEffect(() => {
     if (safeAtob(userData.id)) {
@@ -176,7 +182,9 @@ export default function ProfileSection() {
                               : 'Guest'}
                           </Typography>
                         </Stack>
-                        <Typography variant="subtitle2">Group: {safeAtob(userData.group) || 'No Group'}</Typography>
+                        <Typography variant="subtitle2">
+                          Group: {userData?.group && safeAtob(userData.group) ? `${safeAtob(userData.group)}` : 'No Group'}
+                        </Typography>
                       </Stack>
                       <OutlinedInput
                         sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
