@@ -37,9 +37,9 @@ export default function AuthLogin() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
-  const { setPermissions } = usePermissions();
+  const { loadPermissions } = usePermissions();
 
+  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -56,6 +56,7 @@ export default function AuthLogin() {
 
         if (validToken) {
           isDebug && console.log('✅ Token válido! Redirecionando para o Dashboard...');
+          await loadPermissions(userData.authToken);  // ✅ recarregar permissões automaticamente
           navigate('/dashboard/default');
         } else {
           isDebug && console.warn('❌ Token inválido! Redirecionando para login.');
@@ -65,15 +66,11 @@ export default function AuthLogin() {
     };
 
     checkAutoLogin();
-  }, [userData, navigate, setUserData]);
+  }, [userData, navigate, setUserData, loadPermissions]);
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (event) => event.preventDefault();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -114,14 +111,6 @@ export default function AuthLogin() {
         // ✅ Definir token para próximas requisições
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
-        // ✅ Buscar permissões após login
-        const permsResponse = await axios.get(API_ROUTES.MY_PERMISSIONS, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        });
-
         setUserData({
           authToken: accessToken,
           refreshToken: refreshToken,
@@ -134,13 +123,7 @@ export default function AuthLogin() {
           keeploggedin: checked
         });
 
-        if (Array.isArray(permsResponse.data.permissions)) {
-          setPermissions(permsResponse.data.permissions);
-        } else {
-          setPermissions([]);
-        }
-
-        isDebug && console.log('✅ Permissões carregadas:', permsResponse.data.permissions);
+        await loadPermissions(accessToken);  // ✅ carregar permissões após login
 
         setSuccessMessage('Login successful! Redirecting...');
         isDebug && console.log('✅ Login successful!');
@@ -165,67 +148,65 @@ export default function AuthLogin() {
   };
 
   return (
-    <>
-      <form onSubmit={handleLogin}>
-        <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel>Email Address</InputLabel>
-          <OutlinedInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </FormControl>
+    <form onSubmit={handleLogin}>
+      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+        <InputLabel>Email Address</InputLabel>
+        <OutlinedInput type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </FormControl>
 
-        <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel>Password</InputLabel>
-          <OutlinedInput
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
+      <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+        <InputLabel>Password</InputLabel>
+        <OutlinedInput
+          type={showPassword ? 'text' : 'password'}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+
+      <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Grid>
+          <FormControlLabel
+            control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} />}
+            label="Keep me logged in"
           />
-        </FormControl>
-
-        <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Grid>
-            <FormControlLabel
-              control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} />}
-              label="Keep me logged in"
-            />
-          </Grid>
-          <Grid>
-            <Typography
-              component={Link}
-              to="/pages/recover"
-              sx={(theme) => ({
-                textDecoration: 'none',
-                color: theme.palette.grey[600],
-                '&:hover': {
-                  textDecoration: 'underline'
-                }
-              })}
-            >
-              Forgot Password?
-            </Typography>
-          </Grid>
         </Grid>
-
-        <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          {error && <Alert severity="error">{error}</Alert>}
-          {successMessage && <Alert severity="success">{successMessage}</Alert>}
+        <Grid>
+          <Typography
+            component={Link}
+            to="/pages/recover"
+            sx={(theme) => ({
+              textDecoration: 'none',
+              color: theme.palette.grey[600],
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            })}
+          >
+            Forgot Password?
+          </Typography>
         </Grid>
+      </Grid>
 
-        <Box sx={{ mt: 2 }}>
-          <AnimateButton>
-            <Button color="secondary" fullWidth size="large" type="submit" variant="contained" disabled={isLoading}>
-              {isLoading ? 'Signing In...' : 'Sign In'}
-            </Button>
-          </AnimateButton>
-        </Box>
-      </form>
-    </>
+      <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        {error && <Alert severity="error">{error}</Alert>}
+        {successMessage && <Alert severity="success">{successMessage}</Alert>}
+      </Grid>
+
+      <Box sx={{ mt: 2 }}>
+        <AnimateButton>
+          <Button color="secondary" fullWidth size="large" type="submit" variant="contained" disabled={isLoading}>
+            {isLoading ? 'Signing In...' : 'Sign In'}
+          </Button>
+        </AnimateButton>
+      </Box>
+    </form>
   );
 }

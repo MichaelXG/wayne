@@ -41,16 +41,24 @@ class PermissionGroup(models.Model):
             models.Index(fields=["name"], name="perm_group_name_idx"),
         ]
 
+
 class UserPermission(models.Model):
     """
     Link between User and multiple PermissionGroups.
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_permission')
-    groups = models.ManyToManyField('PermissionGroup', related_name='user_permissions')
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='user_permission'
+    )
+    groups = models.ManyToManyField(
+        'PermissionGroup', 
+        related_name='user_permissions'
+    )
 
     def __str__(self):
         group_names = ", ".join([group.name for group in self.groups.all()])
-        return f"{self.user.username} -> [{group_names}]"
+        return f"{self.user.email if hasattr(self.user, 'email') else self.user.username} -> [{group_names}]"
 
     class Meta:
         db_table = "user_permission"

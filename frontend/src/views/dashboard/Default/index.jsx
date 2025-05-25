@@ -10,13 +10,13 @@ import PopularCard from './PopularCard';
 import TotalIncomeDarkCard from '../../../ui-component/cards/TotalIncomeDarkCard';
 import TotalIncomeLightCard from '../../../ui-component/cards/TotalIncomeLightCard';
 
-
 import { gridSpacing } from 'store/constant';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 import TotalGrowthBarChart from '../../../ui-component/cards/Skeleton/TotalGrowthBarChart';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
+import PermissionsList from '../../../ui-component/permission/PermissionsList';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -64,6 +64,12 @@ export default function Dashboard() {
           <Grid size={{ xs: 12, md: 4 }}>
             <PopularCard isLoading={isLoading} />
           </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid size={12}>
+        <Grid container spacing={gridSpacing}>
+          <PermissionsList />
         </Grid>
       </Grid>
     </Grid>

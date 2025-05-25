@@ -43,6 +43,10 @@ const AboutPage = Loadable(lazy(() => import('views/about-page')));
 // Página de erro
 const ForbiddenPage = Loadable(lazy(() => import('views/forbidden/ForbiddenPage')));
 
+const NotFoundPage = Loadable(lazy(() => import('views/not-found/NotFoundPage')));
+const ServerErrorPage = Loadable(lazy(() => import('views/server-error/ServerErrorPage')));
+
+// Página secreta (se necessário)
 const SecretHomePage = Loadable(lazy(() => import('views/secret-page'))); // Página secreta, se necessário
 
 // Wrapper para proteger todas as rotas
@@ -151,6 +155,14 @@ const MainRoutes = {
     {
       path: 'forbidden',
       element: <ForbiddenPage />
+    },
+    {
+      path: 'not-found',
+      element: <NotFoundPage />
+    },
+    {
+      path: 'server-error',
+      element: <ServerErrorPage />
     }
   ]
 };

@@ -3,8 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-from .models import PermissionGroup, UserPermission
-from .serializers import PermissionGroupSerializer, UserPermissionSerializer
+from .models import PermissionGroup
+from .serializers import PermissionGroupSerializer
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class PermissionGroupViewSet(viewsets.ModelViewSet):
@@ -21,55 +24,46 @@ class PermissionGroupViewSet(viewsets.ModelViewSet):
         return [permissions.IsAdminUser()]
 
 
-class UserPermissionViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to manage user permissions.
-    Only admins can access.
-    """
-    queryset = UserPermission.objects.all()
-    serializer_class = UserPermissionSerializer
-    permission_classes = [IsAdminUser]
-
-
 class MyPermissionsView(APIView):
     """
-    API endpoint to return the authenticated user's permission group and detailed permissions.
+    API endpoint to return the authenticated user's permission groups and detailed merged permissions.
     """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
-        username = user.username
+        username = f"{user.first_name} {user.last_name}".strip()
 
-        try:
-            user_perm = UserPermission.objects.get(user=user)
-            group = user_perm.group
+        groups = user.groups.all()
 
-            permissions = []
-            group_name = None
+        group_data = []
+        merged_permissions = {}
 
-            if group:
-                group_name = group.name
-                permissions = [
-                    {
+        for group in groups:
+            group_data.append({
+                "id": group.id,
+                "name": group.name
+            })
+
+            for perm in group.permissions.all():
+                key = perm.menu_name
+                if key not in merged_permissions:
+                    merged_permissions[key] = {
                         "menu_name": perm.menu_name,
                         "can_view": perm.can_view,
                         "can_create": perm.can_create,
                         "can_update": perm.can_update,
                         "can_delete": perm.can_delete
                     }
-                    for perm in group.permissions.all()
-                ]
+                else:
+                    # Merge: If any group has True, set to True
+                    merged_permissions[key]["can_view"] |= perm.can_view
+                    merged_permissions[key]["can_create"] |= perm.can_create
+                    merged_permissions[key]["can_update"] |= perm.can_update
+                    merged_permissions[key]["can_delete"] |= perm.can_delete
 
-            return Response({
-                "username": username,
-                "group": group_name,
-                "permissions": permissions
-            }, status=status.HTTP_200_OK)
-
-        except UserPermission.DoesNotExist:
-            return Response({
-                "username": username,
-                "group": None,
-                "permissions": []
-            }, status=status.HTTP_200_OK)
+        return Response({
+            "username": username,
+            "groups": group_data,
+            "permissions": list(merged_permissions.values())
+        }, status=status.HTTP_200_OK)
