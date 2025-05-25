@@ -40,6 +40,7 @@ export default function AuthLogin() {
   const { loadPermissions } = usePermissions();
 
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
+  const [triedAutoLogin, setTriedAutoLogin] = useState(false);
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -50,23 +51,26 @@ export default function AuthLogin() {
 
   useEffect(() => {
     const checkAutoLogin = async () => {
-      if (userData.keeploggedin && userData.authToken) {
-        isDebug && console.log('🔍 Verificando login automático...');
+      if (userData && userData.keeploggedin && userData.authToken && !triedAutoLogin) {
+        isDebug && console.log('🔍 Checking automatic login...');
         const validToken = await isTokenValid(userData.authToken);
 
         if (validToken) {
-          isDebug && console.log('✅ Token válido! Redirecionando para o Dashboard...');
-          await loadPermissions(userData.authToken);  // ✅ recarregar permissões automaticamente
+          isDebug && console.log('✅ Valid token! Redirecting to Dashboard...');
+          await loadPermissions(userData.authToken);
           navigate('/dashboard/default');
         } else {
-          isDebug && console.warn('❌ Token inválido! Redirecionando para login.');
+          isDebug && console.warn('❌ Invalid token! Clearing userData.');
           setUserData({});
         }
+        setTriedAutoLogin(true);
+      } else if (!userData?.keeploggedin) {
+        setTriedAutoLogin(true);
       }
     };
 
     checkAutoLogin();
-  }, [userData, navigate, setUserData, loadPermissions]);
+  }, [userData, triedAutoLogin, navigate, setUserData, loadPermissions]);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -123,7 +127,7 @@ export default function AuthLogin() {
           keeploggedin: checked
         });
 
-        await loadPermissions(accessToken);  // ✅ carregar permissões após login
+        await loadPermissions(accessToken); // ✅ carregar permissões após login
 
         setSuccessMessage('Login successful! Redirecting...');
         isDebug && console.log('✅ Login successful!');
