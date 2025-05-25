@@ -18,12 +18,14 @@ const pages = {
   caption: 'Pages Caption',
   icon: icons.IconKey,
   type: 'group',
+  permission: { menu: 'pages', action: 'can_read' },  // ✅ permissão para o grupo
   children: [
     {
       id: 'authentication',
       title: 'Authentication',
       type: 'collapse',
       icon: icons.IconKey,
+      permission: { menu: 'pages', action: 'can_read' }, 
       children: [
         {
           id: 'login',
@@ -31,7 +33,8 @@ const pages = {
           type: 'item',
           icon: icons.IconLogin,
           url: '/pages/login',
-          target: true
+          target: true,
+          // permission: { menu: 'login', action: 'can_read' }  
         },
         {
           id: 'register',
@@ -39,7 +42,8 @@ const pages = {
           type: 'item',
           icon: icons.IconUserPlus,
           url: '/pages/register',
-          target: true
+          target: true,
+          permission: { menu: 'register', action: 'can_read' }  
         },
         {
           id: 'recover',
@@ -47,16 +51,18 @@ const pages = {
           type: 'item',
           icon: icons.IconUserExclamation,
           url: '/pages/recover',
-          target: true
+          target: true,
+          permission: { menu: 'recover', action: 'can_read' }  
         }
-        // Se precisar faerz um reset de senha use o recover
+        // Se precisar fazer um reset de senha use o recover
         // {
         //   id: 'reset',
         //   title: 'Reset',
         //   type: 'item',
         //   icon: icons.IconUserCog,
         //   url: '/pages/reset',
-        //   target: true
+        //   target: true,
+        //   permission: { menu: 'pages', action: 'can_read' }  
         // }
       ]
     }

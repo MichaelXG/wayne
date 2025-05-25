@@ -11,12 +11,16 @@ const products = {
   title: 'Products',
   icon: icons.IconBarcode,
   type: 'group',
+  permission: { menu: 'products', action: 'can_read' },
+
   children: [
     {
       id: 'products',
       title: 'Products',
       type: 'collapse',
       icon: icons.IconBarcode,
+      permission: { menu: 'products', action: 'can_read' },
+
       children: [
         {
           id: 'product',
@@ -24,7 +28,8 @@ const products = {
           type: 'item',
           url: '/products/list',
           icon: icons.IconList,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'products', action: 'can_read' }
         },
         {
           id: 'detailProduct',
@@ -32,7 +37,8 @@ const products = {
           type: 'item',
           url: '/products/detail',
           icon: icons.IconDetails,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'products', action: 'can_read' }
         },
         {
           id: 'newProduct',
@@ -40,7 +46,8 @@ const products = {
           type: 'item',
           url: '/products/create',
           icon: icons.IconPlus,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'products', action: 'can_create' }
         },
         {
           id: 'editProduct',
@@ -48,7 +55,8 @@ const products = {
           type: 'item',
           url: '/products/edit',
           icon: icons.IconEdit,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'products', action: 'can_update' }
         }
       ]
     }

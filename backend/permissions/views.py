@@ -49,18 +49,20 @@ class MyPermissionsView(APIView):
                 key = perm.menu_name
                 if key not in merged_permissions:
                     merged_permissions[key] = {
-                        "menu_name": perm.menu_name,
-                        "can_view": perm.can_view,
+                        "menu_name" : perm.menu_name,
                         "can_create": perm.can_create,
+                        "can_read"  : perm.can_read,
                         "can_update": perm.can_update,
-                        "can_delete": perm.can_delete
+                        "can_delete": perm.can_delete,
+                        "can_secret": perm.can_secret,
                     }
                 else:
                     # Merge: If any group has True, set to True
-                    merged_permissions[key]["can_view"] |= perm.can_view
                     merged_permissions[key]["can_create"] |= perm.can_create
+                    merged_permissions[key]["can_read"]   |= perm.can_read
                     merged_permissions[key]["can_update"] |= perm.can_update
                     merged_permissions[key]["can_delete"] |= perm.can_delete
+                    merged_permissions[key]["can_secret"] |= perm.can_secret
 
         return Response({
             "username": username,

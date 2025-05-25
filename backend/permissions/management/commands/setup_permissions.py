@@ -5,7 +5,7 @@ class Command(BaseCommand):
     help = 'Creates default permissions and groups for roles including a secret group.'
 
     def handle(self, *args, **kwargs):
-        menus = ['dashboard', 'products', 'order', 'carrier', 'address', 'pages', 'utilities', 'other']
+        menus = ['dashboard', 'secret', 'products', 'order', 'carrier', 'address', 'pages', 'register', 'recover',  'utilities', 'typography', 'color', 'shadow', 'other', 'sample-page', 'about-page']
 
         permissions = []
 
@@ -14,10 +14,11 @@ class Command(BaseCommand):
             perm, created = Permission.objects.get_or_create(
                 menu_name=menu,
                 defaults={
-                    'can_view': True,
                     'can_create': False,
+                    'can_read'  : True,
                     'can_update': False,
-                    'can_delete': False
+                    'can_delete': False,
+                    'can_secret': False,
                 }
             )
             if created:

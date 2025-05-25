@@ -13,6 +13,7 @@ const secret = {
   title: 'Secret Home',
   type: 'group',
   icon: icons.secret,
+  permission: { menu: 'secret', action: 'can_read' }, 
   children: [
     {
       id: 'secret-home',
@@ -20,7 +21,8 @@ const secret = {
       type: 'item',
       url: '/secret/home',
       icon: icons.secret,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: { menu: 'secret', action: 'can_read' }  
     }
   ]
 };

@@ -5,7 +5,7 @@ import { API_ROUTES } from '../routes/ApiRoutes';
 import axios from 'axios';
 import { usePermissions } from '../contexts/PermissionsContext';
 
-export default function ProtectedRoute({ requiredMenu, requiredAction = 'can_view' }) {
+export default function ProtectedRoute({ requiredMenu, requiredAction = 'can_read' }) {
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);

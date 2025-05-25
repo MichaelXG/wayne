@@ -6,13 +6,14 @@ class Permission(models.Model):
     Represents permission for a specific menu.
     """
     menu_name = models.CharField(max_length=50, unique=True)  # Ex.: 'products', 'orders'
-    can_view = models.BooleanField(default=False)
     can_create = models.BooleanField(default=False)
+    can_read   = models.BooleanField(default=False)
     can_update = models.BooleanField(default=False)
     can_delete = models.BooleanField(default=False)
+    can_secret = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.menu_name} (V:{self.can_view} C:{self.can_create} U:{self.can_update} D:{self.can_delete})"
+        return f"{self.menu_name} (C:{self.can_create} R:{self.can_read} U:{self.can_update} D:{self.can_delete} S:{self.can_secret})"
 
     class Meta:
         db_table = "permission"

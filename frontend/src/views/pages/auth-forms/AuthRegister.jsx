@@ -137,11 +137,18 @@ export default function AuthRegister() {
               name="first_name"
               type="text"
               value={formData.first_name}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                // ✅ Capitaliza só a primeira letra da string
+                const capitalized = value.charAt(0).toUpperCase() + value.slice(1);
+                handleChange({
+                  target: { name: 'first_name', value: capitalized }
+                });
+              }}
               required
               sx={{ ...theme.typography.customInput }}
               InputProps={{
-                sx: { textTransform: 'capitalize' }
+                sx: { textTransform: 'capitalize' } // ✅ Mantém aparência (opcional)
               }}
             />
           </Grid>
@@ -154,11 +161,18 @@ export default function AuthRegister() {
               name="last_name"
               type="text"
               value={formData.last_name}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                // ✅ Capitaliza só a primeira letra da string
+                const capitalized = value.charAt(0).toUpperCase() + value.slice(1);
+                handleChange({
+                  target: { name: 'last_name', value: capitalized }
+                });
+              }}
               required
               sx={{ ...theme.typography.customInput }}
               InputProps={{
-                sx: { textTransform: 'capitalize' }
+                sx: { textTransform: 'capitalize' } // ✅ mantém aparência coerente
               }}
             />
           </Grid>

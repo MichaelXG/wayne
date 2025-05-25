@@ -38,7 +38,7 @@ export default function PermissionsList() {
             <ListItem>
               <ListItemText
                 primary={perm.menu_name}
-                secondary={`View: ${perm.can_view ? '✅' : '❌'}, Create: ${perm.can_create ? '✅' : '❌'}, Update: ${perm.can_update ? '✅' : '❌'}, Delete: ${perm.can_delete ? '✅' : '❌'}`}
+                secondary={`Create: ${perm.can_create ? '✅' : '❌'}, Read: ${perm.can_read ? '✅' : '❌'}, Update: ${perm.can_update ? '✅' : '❌'}, Delete: ${perm.can_delete ? '✅' : '❌'}, Secret: ${perm.can_secret ? '✅' : '❌'}`}
               />
             </ListItem>
             <Divider />

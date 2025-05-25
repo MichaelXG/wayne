@@ -33,9 +33,9 @@ class GroupMenuPermission(BasePermission):
                 return False
 
             # ✅ Verifica a ação
-            if view.action == 'list' and permission.can_view:
-                return True
             if view.action == 'create' and permission.can_create:
+                return True
+            if view.action == 'list' and permission.can_read:
                 return True
             if view.action in ['update', 'partial_update'] and permission.can_update:
                 return True

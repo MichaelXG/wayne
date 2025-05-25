@@ -18,12 +18,14 @@ const carrier = {
   title: 'Carriers',
   icon: icons.IconTruckDelivery,
   type: 'group',
+  permission: { menu: 'carrier', action: 'can_read' }, 
   children: [
     {
       id: 'carriers-menu',
       title: 'Carriers',
       type: 'collapse',
       icon: icons.IconTruckDelivery,
+      permission: { menu: 'carrier', action: 'can_read' },  
       children: [
         {
           id: 'carrier-list',
@@ -31,7 +33,8 @@ const carrier = {
           type: 'item',
           url: '/carrier/list',
           icon: icons.IconList,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'carrier', action: 'can_read' }  
         },
         {
           id: 'carrier-detail',
@@ -39,7 +42,8 @@ const carrier = {
           type: 'item',
           url: '/carrier/detail',
           icon: icons.IconDetails,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'carrier', action: 'can_read' }  
         },
         {
           id: 'carrier-create',
@@ -47,7 +51,8 @@ const carrier = {
           type: 'item',
           url: '/carrier/create',
           icon: icons.IconPlus,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'carrier', action: 'can_create' }  
         },
         {
           id: 'carrier-edit',
@@ -55,7 +60,8 @@ const carrier = {
           type: 'item',
           url: '/carrier/edit',
           icon: icons.IconEdit,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'carrier', action: 'can_update' }  
         }
       ]
     }
