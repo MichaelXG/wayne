@@ -14,6 +14,7 @@ import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 
 // assets
 import { IconMenu2 } from '@tabler/icons-react';
+import LanguageSection from './LanguageSection';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -57,6 +58,9 @@ export default function Header() {
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ flexGrow: 1 }} />
 
+      {/* language */}
+      <LanguageSection />
+      
       {/* notification */}
       <NotificationSection />
 
