@@ -5,7 +5,9 @@ const locales = { us, pt };
 
 class GlobalI18n {
   constructor() {
-    this.language = navigator.language.startsWith('us') ? 'us' : 'pt';
+    this.language = 'us'; // Default language
+    // Automatically set language based on browser settings
+    // this.language = navigator.language === 'en-US' ? 'us' : 'pt';
   }
 
   setLanguage(lang) {
