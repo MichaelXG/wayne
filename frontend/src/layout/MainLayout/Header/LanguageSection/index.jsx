@@ -32,7 +32,9 @@ const LanguageSelector = () => {
         {languages.map((lang) => (
           <MenuItem key={lang.code} value={lang.code}>
             <Tooltip title={lang.label}>
-              <Flag code={lang.country} style={{ width: 24, height: 16, borderRadius: 2 }} />
+              <span>
+                <Flag code={lang.country} style={{ width: 24, height: 16, borderRadius: 2 }} />
+              </span>
             </Tooltip>
           </MenuItem>
         ))}

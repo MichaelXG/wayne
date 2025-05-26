@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { API_ROUTES } from '../routes/ApiRoutes';
 import useLocalStorage from '../hooks/useLocalStorage';
@@ -12,7 +12,6 @@ export const PermissionsProvider = ({ children }) => {
   const [permissions, setPermissions] = useState([]);
   const permissionsFetchedRef = useRef(false);
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
-
   const { locale } = useI18n();
 
   const [snackbar, setSnackbar] = useState({
@@ -21,9 +20,19 @@ export const PermissionsProvider = ({ children }) => {
     severity: 'success'
   });
 
+  // ✅ Recuperar permissões do sessionStorage na inicialização
+  useEffect(() => {
+    const stored = sessionStorage.getItem('wayne-permissions');
+    if (stored) {
+      setPermissions(JSON.parse(stored));
+      permissionsFetchedRef.current = true;
+    }
+  }, []);
+
   const loadPermissions = async (token) => {
     if (!token) {
       setPermissions([]);
+      sessionStorage.removeItem('wayne-permissions');
       permissionsFetchedRef.current = false;
       return;
     }
@@ -32,8 +41,8 @@ export const PermissionsProvider = ({ children }) => {
 
     const valid = await isTokenValid(token);
     if (!valid) {
-      console.warn(locale.LOG_MESSAGES.INVALID_TOKEN);
       setPermissions([]);
+      sessionStorage.removeItem('wayne-permissions');
       permissionsFetchedRef.current = false;
       setUserData({});
       return;
@@ -43,10 +52,12 @@ export const PermissionsProvider = ({ children }) => {
       const response = await axios.get(API_ROUTES.MY_PERMISSIONS, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setPermissions(response.data.permissions || []);
+
+      const perms = response.data.permissions || [];
+      setPermissions(perms);
+      sessionStorage.setItem('wayne-permissions', JSON.stringify(perms));
       permissionsFetchedRef.current = true;
 
-      // ✅ Sucesso visual
       setSnackbar({
         open: true,
         message: locale.UI.PERMISSIONS.LOADED || 'Permissions loaded successfully',
@@ -54,18 +65,10 @@ export const PermissionsProvider = ({ children }) => {
       });
     } catch (error) {
       console.error(locale.LOG_MESSAGES.ERROR_LOADING, error);
+      setPermissions([]);
+      sessionStorage.removeItem('wayne-permissions');
+      permissionsFetchedRef.current = false;
 
-      if (error.response?.status === 401) {
-        console.warn(locale.LOG_MESSAGES.UNAUTHORIZED);
-        setPermissions([]);
-        permissionsFetchedRef.current = false;
-        setUserData({});
-      } else {
-        setPermissions([]);
-        permissionsFetchedRef.current = false;
-      }
-
-      // ✅ Erro visual
       setSnackbar({
         open: true,
         message: locale.UI.PERMISSIONS.LOAD_ERROR || 'Error loading permissions',
@@ -78,8 +81,15 @@ export const PermissionsProvider = ({ children }) => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
+  const logout = () => {
+    setUserData({});
+    setPermissions([]);
+    sessionStorage.removeItem('wayne-permissions');
+    permissionsFetchedRef.current = false;
+  };
+
   return (
-    <PermissionsContext.Provider value={{ permissions, loadPermissions }}>
+    <PermissionsContext.Provider value={{ permissions, loadPermissions, logout }}>
       {children}
 
       <Snackbar

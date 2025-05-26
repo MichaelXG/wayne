@@ -41,6 +41,7 @@ import { safeAtob } from '../../../../utils/base64';
 import { isDebug } from '../../../../App';
 import { Tooltip } from '@mui/material';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
+import { usePermissions } from '../../../../contexts/PermissionsContext';
 
 export default function ProfileSection() {
   const [isLogout, setIsLogout] = useState(false);
@@ -53,6 +54,7 @@ export default function ProfileSection() {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { logout } = usePermissions();
 
   const token = userData?.authToken || null;
   const anchorRef = useRef(null);
@@ -69,6 +71,7 @@ export default function ProfileSection() {
       setLogoutModalOpen(true);
     } else {
       setUserData({});
+      logout(); // → limpa permissões e userData
       navigate('/pages/login');
     }
   };
