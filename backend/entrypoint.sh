@@ -117,6 +117,6 @@ echo "🔍 Running Django system checks..."
 python3 manage.py check || { echo "❌ Django reported errors!"; exit 1; }
 echo "✅ Django system checks passed!"
 
-# Start Django with limited watchmedo
+# Start Django with limited watchmedo 
 echo "🚀 Starting Django dev server with watchmedo..."
 exec watchmedo auto-restart --recursive --pattern='*.py' --ignore-patterns='*/migrations/*.pyc' -- python manage.py runserver 0.0.0.0:8000

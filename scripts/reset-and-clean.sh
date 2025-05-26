@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Abrir o wsl
+# chmod +x scripts/reset-and-clean.sh
+# ./scripts/reset-and-clean.sh
+
+
 echo "🗑️ Clearing cache and temporary files..."
 
 # 1. Docker - limpar containers, imagens, volumes e cache
