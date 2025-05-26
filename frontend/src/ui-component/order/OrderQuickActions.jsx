@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Drawer, Fab, Grid, Button, Tooltip, IconButton, Badge, useTheme } from '@mui/material';
+import { Drawer, Fab, Grid, Tooltip, Badge, useTheme, Box } from '@mui/material';
 import { IconShoppingCart } from '@tabler/icons-react';
 import Draggable from 'react-draggable';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -37,7 +37,7 @@ export default function OrderQuickActions({}) {
                   borderRadius: 1,
                   boxShadow: theme.shadows[2]
                 })
-                }
+              }
             }}
           >
             <Fab
@@ -59,8 +59,8 @@ export default function OrderQuickActions({}) {
               }}
             >
               <AnimateButton type="scale">
-                <IconButton color="inherit" size="large" disableRipple>
-                  {totalItems > 0 && (
+                <Box>
+                  {totalItems > 0 ? (
                     <Badge
                       badgeContent={totalItems}
                       sx={{
@@ -74,8 +74,10 @@ export default function OrderQuickActions({}) {
                     >
                       <IconShoppingCart />
                     </Badge>
+                  ) : (
+                    <IconShoppingCart />
                   )}
-                </IconButton>
+                </Box>
               </AnimateButton>
             </Fab>
           </Tooltip>

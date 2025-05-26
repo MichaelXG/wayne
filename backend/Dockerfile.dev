@@ -1,90 +1,62 @@
-# Usa Python 3.11-slim como base para reduzir o tamanho da imagem
+# ✅ Usa Python 3.11-slim como base
 FROM python:3.11-slim
 
-# 📂 Define o diretório de trabalho no contêiner onde o código-fonte será armazenado e executado
-RUN echo "📂 Definindo o diretório de trabalho como /app dentro do contêiner..."
+# ✅ Define o diretório de trabalho
 WORKDIR /app
-RUN echo "✅ Diretório de trabalho definido com sucesso!"
+RUN echo "📂 Diretório de trabalho definido como /app"
 
-# 🔄 Atualiza pacotes do sistema e instala dependências essenciais
-RUN echo "📦 Iniciando atualização dos pacotes do sistema..." 
-RUN apt-get update 
-RUN echo "✅ Pacotes do sistema atualizados com sucesso!"
+# ✅ Atualiza pacotes e instala dependências essenciais
+RUN echo "📦 Atualizando pacotes e instalando dependências..." && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        sqlite3 \
+        dos2unix \
+        python3-venv \
+        procps && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "✅ Dependências do sistema instaladas!"
 
-# Exibe uma mensagem informando que a instalação das dependências está iniciando
-RUN echo "📦 Instalando pacotes essenciais: curl, sqlite3, dos2unix, python3-venv, procps..."
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    sqlite3 \
-    dos2unix \
-    python3-venv \
-    procps 
-
-# Exibe uma mensagem informando que a limpeza de pacotes desnecessários está iniciando
-RUN echo "🧹 Limpando pacotes desnecessários para reduzir o tamanho da imagem..."
-RUN apt-get clean 
-
-# Exibe uma mensagem informando que a remoção de arquivos temporários está sendo feita
-RUN echo "🗑️ Removendo arquivos temporários do gerenciador de pacotes..."
-RUN rm -rf /var/lib/apt/lists/*
-
-# Confirma que todos os pacotes foram instalados com sucesso
-RUN echo "✅ Todos os pacotes foram instalados e otimizados com sucesso!"
-
-# Copia o arquivo de dependências para o diretório do aplicativo no container
+# ✅ Copia arquivos essenciais
 COPY requirements.txt /app/
-RUN echo "📂 Arquivo requirements.txt copiado com sucesso!"
-
-# Copia o arquivo .env para o diretório do aplicativo, se existir
-RUN echo "🔍 Verificando a existência do arquivo .env..."
 COPY .env /app/.env
-
-# Converte o .env para o formato UNIX para evitar problemas de compatibilidade
-RUN if [ -f "/app/.env" ]; then \
-    echo "✅ Arquivo .env encontrado! Convertendo para formato UNIX..."; \
-    dos2unix /app/.env || true; \
-    echo "✅ Conversão concluída com sucesso!"; \
-    else \
-    echo "⚠️  Aviso: Arquivo .env não encontrado! Continuando sem conversão."; \
-    fi
-
-# Exibe uma mensagem indicando o início da instalação das dependências do Python
-RUN echo "📦 Iniciando a instalação das dependências do projeto..."
-
-# Atualiza o gerenciador de pacotes do Python e ferramentas essenciais
-RUN echo "🔄 Atualizando pip, setuptools e wheel..."
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel
-
-# Instala as dependências do projeto com estratégia otimizada para resolver dependências mais rapidamente
-RUN echo "🚀 Instalando dependências do projeto a partir do arquivo requirements.txt..."
-RUN pip install --no-cache-dir --upgrade-strategy eager -r /app/requirements.txt --timeout=1000 
-
-# Confirma que todas as dependências foram instaladas corretamente
-RUN echo "✅ Todas as dependências foram instaladas com sucesso!"
-
-# Copia o restante do código do projeto
+COPY entrypoint.sh /app/
 COPY . /app/
-RUN echo "✅ Código-fonte copiado!"
 
-# Copia o script de entrada para o diretório /app dentro do container
-RUN echo "📂 Copiando o script entrypoint.sh para o diretório do aplicativo..."
-COPY entrypoint.sh /app/entrypoint.sh
+# ✅ Ajusta permissões e converte arquivos
+RUN echo "🔒 Ajustando permissões e convertendo arquivos..." && \
+    chmod -R 755 /app && \
+    for f in .env entrypoint.sh; do \
+        if [ -f "/app/$f" ]; then \
+            echo "✅ $f encontrado! Convertendo para UNIX..."; \
+            dos2unix "/app/$f" || true; \
+            [ "$f" = "entrypoint.sh" ] && chmod +x "/app/$f"; \
+            echo "✅ $f pronto!"; \
+        else \
+            echo "⚠️ $f não encontrado!"; \
+        fi; \
+    done
 
-# Ajusta as permissões do script para garantir que ele seja executável
-RUN echo "🔒 Ajustando permissões de execução para entrypoint.sh..."
-RUN chmod +x /app/entrypoint.sh 
+# ✅ Atualiza pip, setuptools e wheel
+RUN echo "🔄 Atualizando pip, setuptools e wheel..." && \
+    pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Confirma que as permissões foram ajustadas corretamente
-RUN echo "✅ Permissões aplicadas com sucesso para entrypoint.sh!"
+# ✅ Instala dependências Python
+RUN echo "🚀 Instalando dependências do projeto..." && \
+    pip install --no-cache-dir --upgrade-strategy eager -r /app/requirements.txt --timeout=1000 && \
+    echo "✅ Dependências Python instaladas com sucesso!"
 
-# Expõe a porta 8000 para permitir acesso ao servidor Django dentro do container
-RUN echo "🌐 Configurando a porta 8000 para comunicação com o backend..."
+# ✅ Expondo porta padrão
 EXPOSE 8000
+RUN echo "🌐 Porta 8000 exposta para o backend!"
 
-# Exibe uma mensagem final confirmando que o container está pronto para ser iniciado
+# ✅ Confirma finalização da configuração
 RUN echo "🚀 Docker container configurado com sucesso e pronto para execução!"
 
-# Define o comando de entrada do container usando Bash para compatibilidade com o entrypoint.sh
-RUN echo "🛠️ Configurando o entrypoint para executar o script corretamente..."
-CMD ["/bin/bash", "/app/entrypoint.sh"]
+# ✅ Define o comando padrão de execução
+# Para ambiente de desenvolvimento, descomente a linha abaixo:
+# CMD ["/bin/bash", "/app/entrypoint.sh"]
+
+# Para ambiente de produção, com Gunicorn:
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "wayne_backend.wsgi:application", "--workers=3", "--timeout=120"]

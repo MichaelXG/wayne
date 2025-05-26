@@ -3,7 +3,7 @@ import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
-// Projetos / hooks / utilitários internos
+// Internos: utilitários, hooks, layouts
 import { isDebug } from '../../App';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
 import useLocalStorage from '../../hooks/useLocalStorage';
@@ -14,11 +14,13 @@ import { API_ROUTES } from '../../routes/ApiRoutes';
 
 export default function StoredOrder() {
   isDebug && console.log('📄 StoredOrder renderizado');
+
   const navigate = useNavigate();
   const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
 
   const checkingAuth = useAuthGuard();
+
   const order = getOrderFromLocalStorage();
 
   const breadcrumbs = useMemo(() => {
@@ -34,54 +36,52 @@ export default function StoredOrder() {
     ];
   }, [order]);
 
-  const actionbutton = useMemo(
-    () => ({
-      label: 'Place Order',
-      icon: <AddIcon />,
-      onClick: async () => {
+  const actionbutton = useMemo(() => ({
+    label: 'Place Order',
+    icon: <AddIcon />,
+    onClick: async () => {
+      try {
+        let storedOrder = null;
+
         try {
-            let storedOrder = null;
-            try {
-              storedOrder = JSON.parse(localStorage.getItem('order'));
-            } catch {
-              alert('Invalid order data');
-              return;
-            }
-
-          if (!storedOrder || !storedOrder.items?.length) {
-            alert('No order to submit!');
-            return;
-          }
-
-          const payload = {
-            items: storedOrder.items.map((item) => ({
-              product_id: item.id,
-              quantity: item.quantity,
-              price: item.price
-            })),
-            status: 'pending',
-            discount: 0,
-            shippingFee: 0,
-            tax: 0
-          };
-
-          const response = await axios.post(API_ROUTES.ORDERS, payload, {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
-            }
-          });
-
-          localStorage.removeItem('order');
-            navigate(`/orders/detail/${response.data.id}`);
-        } catch (error) {
-          console.error('❌ Error placing order:', error);
-          alert('Error placing order. Try again.');
+          storedOrder = JSON.parse(localStorage.getItem('order'));
+        } catch {
+          alert('Invalid order data');
+          return;
         }
+
+        if (!storedOrder || !storedOrder.items?.length) {
+          alert('No order to submit!');
+          return;
+        }
+
+        const payload = {
+          items: storedOrder.items.map((item) => ({
+            product_id: item.id,
+            quantity: item.quantity,
+            price: item.price
+          })),
+          status: 'pending',
+          discount: 0,
+          shippingFee: 0,
+          tax: 0
+        };
+
+        const response = await axios.post(API_ROUTES.ORDERS, payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        localStorage.removeItem('order');
+        navigate(`/orders/detail/${response.data.id}`);
+      } catch (error) {
+        console.error('❌ Error placing order:', error);
+        alert('Error placing order. Try again.');
       }
-    }),
-    [token, navigate]
-  );
+    }
+  }), [token, navigate]);
 
   if (checkingAuth) return null;
 
