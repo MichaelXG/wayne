@@ -1,11 +1,11 @@
-import en from '../locales/en';
+import us from '../locales/us';
 import pt from '../locales/pt';
 
-const locales = { en, pt };
+const locales = { us, pt };
 
 class GlobalI18n {
   constructor() {
-    this.language = navigator.language.startsWith('pt') ? 'pt' : 'en';
+    this.language = navigator.language.startsWith('us') ? 'us' : 'pt';
   }
 
   setLanguage(lang) {
@@ -13,7 +13,7 @@ class GlobalI18n {
       this.language = lang;
     } else {
       console.warn(`Language ${lang} not supported. Falling back to English.`);
-      this.language = 'en';
+      this.language = 'us';
     }
   }
 

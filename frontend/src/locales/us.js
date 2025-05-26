@@ -1,4 +1,4 @@
-const en = {
+const us = {
   LOG_MESSAGES: {
     NO_TOKEN: '❗ Token not provided for loading permissions',
     INVALID_TOKEN: '❗ Invalid token. Clearing permissions.',
@@ -7,13 +7,17 @@ const en = {
   },
   UI: {
     WELCOME: 'Welcome',
-    LOGOUT: 'Logout',
+    LOGOUT: 'Logout', 
+    PERMISSIONS: {
+      LOADED: 'Permissions loaded successfully',
+      LOAD_ERROR: 'Error loading permissions'
+    },
     GREETINGS: {
-      MORNING: 'Good Morning,',
+      MORNING: 'Good Morning,',  
       AFTERNOON: 'Good Afternoon,',
       EVENING: 'Good Evening,'
     }
   }
 };
 
-export default en;
+export default us;

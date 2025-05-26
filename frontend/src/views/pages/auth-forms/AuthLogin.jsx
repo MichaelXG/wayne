@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -30,7 +30,6 @@ import { isTokenValid } from '../../../utils/auth';
 import { isDebug } from '../../../App';
 import { safeBtoa } from '../../../utils/base64';
 
-// Função para validar o formato do email
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 export default function AuthLogin() {
@@ -40,7 +39,7 @@ export default function AuthLogin() {
   const { loadPermissions } = usePermissions();
 
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
-  const [triedAutoLogin, setTriedAutoLogin] = useState(false);
+  const triedAutoLoginRef = useRef(false);
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -51,7 +50,13 @@ export default function AuthLogin() {
 
   useEffect(() => {
     const checkAutoLogin = async () => {
-      if (userData && userData.keeploggedin && userData.authToken && !triedAutoLogin) {
+      if (
+        userData?.keeploggedin &&
+        userData?.authToken &&
+        !triedAutoLoginRef.current
+      ) {
+        triedAutoLoginRef.current = true;
+
         isDebug && console.log('🔍 Checking automatic login...');
         const validToken = await isTokenValid(userData.authToken);
 
@@ -63,14 +68,11 @@ export default function AuthLogin() {
           isDebug && console.warn('❌ Invalid token! Clearing userData.');
           setUserData({});
         }
-        setTriedAutoLogin(true);
-      } else if (!userData?.keeploggedin) {
-        setTriedAutoLogin(true);
       }
     };
 
     checkAutoLogin();
-  }, [userData, triedAutoLogin, navigate, setUserData, loadPermissions]);
+  }, [userData.authToken, userData.keeploggedin, loadPermissions, navigate, setUserData]);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -82,24 +84,19 @@ export default function AuthLogin() {
     setError(null);
     setSuccessMessage(null);
 
-    isDebug && console.log('🔍 Validating credentials...');
-
     if (!email.trim() || !password.trim()) {
       setError('Email and password cannot be empty.');
-      isDebug && console.error('❌ Validation Error: Empty fields');
       setIsLoading(false);
       return;
     }
 
     if (!validateEmail(email)) {
       setError('Invalid email format.');
-      isDebug && console.error('❌ Validation Error: Invalid email format');
       setIsLoading(false);
       return;
     }
 
     try {
-      isDebug && console.log('📤 Sending login request...');
       const response = await axios.post(API_ROUTES.LOGIN, { email, password }, { headers: { 'Content-Type': 'application/json' } });
 
       if (response.status === 200) {
@@ -110,9 +107,6 @@ export default function AuthLogin() {
           throw new Error('JWT tokens not found in response.');
         }
 
-        isDebug && console.log('response.data: ', response.data);
-
-        // ✅ Definir token para próximas requisições
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
         setUserData({
@@ -127,20 +121,17 @@ export default function AuthLogin() {
           keeploggedin: checked
         });
 
-        await loadPermissions(accessToken); // ✅ carregar permissões após login
+        await loadPermissions(accessToken);
 
         setSuccessMessage('Login successful! Redirecting...');
-        isDebug && console.log('✅ Login successful!');
 
         setTimeout(() => {
-          isDebug && console.log('🔄 Redirecting to dashboard...');
           navigate(`/dashboard/default`);
         }, 1500);
       } else {
         throw new Error(`Unexpected response status: ${response.status}`);
       }
     } catch (error) {
-      isDebug && console.error('❌ Login error:', error.response?.data || error);
       if (axios.isAxiosError(error)) {
         setError(error.response?.data.detail || 'Error during login. Please check your credentials.');
       } else {
