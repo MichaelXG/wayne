@@ -3,6 +3,7 @@ import { Autocomplete, TextField, Checkbox, FormControl, CircularProgress } from
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
+import axiosInstance from '../../services/axios';
 
 const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
   { value = [], onChange, name = 'groups', label = 'Permission Groups', ...props },
@@ -16,7 +17,7 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
     const fetchGroups = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(API_ROUTES.GROUPS);
+        const response = await axiosInstance.get(API_ROUTES.GROUPS);
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
         setGroups(data);
       } catch (error) {

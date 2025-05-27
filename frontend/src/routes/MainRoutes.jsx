@@ -49,6 +49,8 @@ const ServerErrorPage = Loadable(lazy(() => import('views/server-error/ServerErr
 // Página secreta (se necessário)
 const SecretHomePage = Loadable(lazy(() => import('views/secret-page'))); // Página secreta, se necessário
 
+const PermissionsTreeView = Loadable(lazy(() => import('views/permissions/PermissionsTreeView'))); // Página de árvore de permissões
+
 // Wrapper para proteger todas as rotas
 
 function ProtectedRoutesWrapper() {
@@ -130,6 +132,13 @@ const MainRoutes = {
         { path: 'create', element: <AddressCreatePage /> },
         { path: 'edit', element: <Navigate to="1" replace /> },
         { path: 'edit/:id', element: <AddressEditPage /> }
+      ]
+    },
+    {
+      path: 'permissions',
+      children: [
+        { index: true, element: <PermissionsTreeView /> },
+        { path: 'permissions-tree-view', element: <PermissionsTreeView /> }
       ]
     },
     {

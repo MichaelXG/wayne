@@ -16,7 +16,7 @@ import { gridSpacing } from 'store/constant';
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 import TotalGrowthBarChart from '../../../ui-component/cards/Skeleton/TotalGrowthBarChart';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-import PermissionsList from '../../../ui-component/permission/PermissionsList';
+import PermissionsList from '../../permissions/List';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 

@@ -3,6 +3,9 @@ import router from 'routes';
 import NavigationScroll from 'layout/NavigationScroll';
 import ThemeCustomization from 'themes';
 
+import { SnackbarProvider } from 'notistack'; // ✅ Adicionado
+import AppContextProvider from './contexts/AppContextProvider';
+
 // estilos de carrossel
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -10,9 +13,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
-import AppContextProvider from './contexts/AppContextProvider';
-
-// ==============================|| APP ||============================== //
+// ✅ Se quiser usar notificações globais fora do React:
+import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
+import { setNotifier } from './services/notifier';  // criar esse se quiser
 
 export const BaseDir = import.meta.env.VITE_APP_BASE_NAME || '/wayne';
 export const isDebug = true;
@@ -26,13 +30,26 @@ export const customSvgEditIcon = (
   </svg>
 );
 
+function GlobalNotifierSetup() {
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    setNotifier(enqueueSnackbar); // ✅ Configura notifier global
+  }, [enqueueSnackbar]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <ThemeCustomization>
       <NavigationScroll>
-        <AppContextProvider>
-          <RouterProvider router={router} />
-        </AppContextProvider>
+        <SnackbarProvider maxSnack={3} autoHideDuration={60000}>
+          <GlobalNotifierSetup /> {/* ✅ Se quiser notificações fora de componentes */}
+          <AppContextProvider>
+            <RouterProvider router={router} />
+          </AppContextProvider>
+        </SnackbarProvider>
       </NavigationScroll>
     </ThemeCustomization>
   );

@@ -1,0 +1,43 @@
+// assets
+import { IconSettings, IconKey, IconHierarchy } from '@tabler/icons-react';
+
+// constant
+const icons = {
+  IconSettings,
+  IconKey,
+
+  IconHierarchy
+};
+
+// ==============================|| PERMISSION MENU ITEMS ||============================== //
+
+const permissions = {
+  id: 'permissions',
+  title: 'Settings',
+  caption: 'Permissions Groups Settings',
+  icon: icons.IconSettings,
+  type: 'group',
+  permission: { menu: 'permissions', action: 'can_read' }, // ✅ Permissão no grupo
+  children: [
+    {
+      id: 'permissions-menu',
+      title: 'Permissions',
+      type: 'collapse',
+      icon: icons.IconKey,
+      permission: { menu: 'permissions', action: 'can_read' },
+      children: [
+        {
+          id: 'permissions-tree',
+          title: 'Permissions Tree',
+          type: 'item',
+          icon: icons.IconHierarchy,
+          url: '/permissions/permissions-tree-view',
+          breadcrumbs: false,
+          permission: { menu: 'permissions', action: 'can_read' }
+        }
+      ]
+    }
+  ]
+};
+
+export default permissions;

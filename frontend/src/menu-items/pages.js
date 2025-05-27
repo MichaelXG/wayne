@@ -14,18 +14,18 @@ const icons = {
 
 const pages = {
   id: 'pages',
-  title: 'Pages',
-  caption: 'Pages Caption',
+  title: 'Account',
+  // caption: 'Pages Caption',
   icon: icons.IconKey,
   type: 'group',
-  permission: { menu: 'pages', action: 'can_read' },  // ✅ permissão para o grupo
+  permission: { menu: 'pages', action: 'can_read' }, // ✅ permissão para o grupo
   children: [
     {
       id: 'authentication',
       title: 'Authentication',
       type: 'collapse',
       icon: icons.IconKey,
-      permission: { menu: 'pages', action: 'can_read' }, 
+      permission: { menu: 'pages', action: 'can_read' },
       children: [
         {
           id: 'login',
@@ -33,8 +33,8 @@ const pages = {
           type: 'item',
           icon: icons.IconLogin,
           url: '/pages/login',
-          target: true,
-          // permission: { menu: 'login', action: 'can_read' }  
+          target: true
+          // permission: { menu: 'login', action: 'can_read' }
         },
         {
           id: 'register',
@@ -43,7 +43,7 @@ const pages = {
           icon: icons.IconUserPlus,
           url: '/pages/register',
           target: true,
-          permission: { menu: 'register', action: 'can_read' }  
+          permission: { menu: 'register', action: 'can_read' }
         },
         {
           id: 'recover',
@@ -52,7 +52,7 @@ const pages = {
           icon: icons.IconUserExclamation,
           url: '/pages/recover',
           target: true,
-          permission: { menu: 'recover', action: 'can_read' }  
+          permission: { menu: 'recover', action: 'can_read' }
         }
         // Se precisar fazer um reset de senha use o recover
         // {

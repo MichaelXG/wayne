@@ -42,17 +42,22 @@ export default defineConfig(({ mode }) => {
       }
     },
     base: API_URL,
-    plugins: [
-      react(),
-      jsconfigPaths()
-    ],
+    plugins: [react(), jsconfigPaths()],
     optimizeDeps: {
+      include: [
+        '@mui/material',
+        '@mui/icons-material',
+        '@mui/system',
+        '@emotion/react',
+        '@emotion/styled'
+        // ✅ adicione outros pacotes necessários
+      ],
       exclude: [
-        // Adicione aqui as dependências problemáticas
+        // ✅ adicione aqui as dependências problemáticas
         'chunk-MNXAHIXX'
       ]
     },
-    cacheDir: 'node_modules/.vite',  // define explicitamente o diretório de cache
+    cacheDir: 'node_modules/.vite', // define explicitamente o diretório de cache
     clearScreen: false // para melhor visualização de logs em dev
   };
 });

@@ -1,45 +1,34 @@
 import axios from 'axios';
 import { authService } from './authService';
-import { enqueueSnackbar } from 'notistack'; // ✅ Usando notistack
+import { notify } from './notifier'; // ✅ usar notify global
 
 function handleGlobalError(error) {
   const status = error.response?.status;
 
   if (!status) {
-    console.error('❌ Network/Unknown Error:', error);
-    enqueueSnackbar('Network or unknown error.', { variant: 'error' });
+    notify('Network or unknown error.', 'error');
     return;
   }
 
   switch (status) {
     case 400:
-      console.warn('⚠️ Bad Request:', error.response.data);
-      enqueueSnackbar('Bad request.', { variant: 'warning' });
+      notify('Bad request.', 'warning');
       break;
-
     case 401:
-      console.warn('🔒 Unauthorized');
-      enqueueSnackbar('Session expired. Please log in again.', { variant: 'error' });
-      authService.logout(); // ✅ Faz logout e redireciona
+      notify('Session expired. Please log in again.', 'error');
+      authService.logout();
       break;
-
     case 403:
-      console.warn('🚫 Access Denied');
-      enqueueSnackbar('Access denied.', { variant: 'error' });
+      notify('Access denied.', 'error');
       break;
-
     case 404:
-      console.warn('❓ Not Found');
-      enqueueSnackbar('Page not found.', { variant: 'warning' });
+      notify('Page not found.', 'warning');
       break;
-
     default:
       if (status >= 500) {
-        console.error('💥 Server Error:', status, error.response.data);
-        enqueueSnackbar('Server error. Please try again later.', { variant: 'error' });
+        notify('Server error. Please try again later.', 'error');
       } else {
-        console.warn(`⚠️ Unhandled error ${status}:`, error.response.data);
-        enqueueSnackbar('An unexpected error occurred.', { variant: 'warning' });
+        notify('An unexpected error occurred.', 'warning');
       }
   }
 }

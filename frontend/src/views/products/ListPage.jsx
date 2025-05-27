@@ -2,7 +2,6 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
 
 import { API_ROUTES } from '../../routes/ApiRoutes';
-import productColumns from '../../ui-component/dataGrid/columns/productColumns';
 import DynamicDataGrid from '../../ui-component/dataGrid/DynamicDataGrid';
 import createDataGridSlots from '../../ui-component/dataGrid/slots/createDataGridSlots';
 import CustomToolbarProduct from '../../ui-component/dataGrid/slots/CustomToolbarProduct';
