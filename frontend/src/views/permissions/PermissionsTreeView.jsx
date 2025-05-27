@@ -1,107 +1,120 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import { useTreeItem } from '@mui/x-tree-view/useTreeItem';
-import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemIconContainer, TreeItemLabel } from '@mui/x-tree-view/TreeItem';
+import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemLabel } from '@mui/x-tree-view/TreeItem';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-import { useEffect, useState } from 'react';
-import { API_ROUTES } from '../../routes/ApiRoutes';
-import axios from 'axios';
+import { usePermissions } from '../../contexts/PermissionsContext';
 
 function PermissionLegend() {
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
-      <Typography variant="subtitle2">Legend:</Typography>
-      <Typography variant="body2">✅ Check to enable permission</Typography>
-      <Typography variant="body2">❌ Uncheck to disable permission</Typography>
-    </Paper>
+    <Card variant="outlined" sx={{ maxWidth: 400, mt: 2 }}>
+      <CardContent>
+        <Typography variant="subtitle2" gutterBottom>
+          Legend
+        </Typography>
+        <Typography variant="body2">🔒 Locked → Disabled permission</Typography>
+        <Typography variant="body2">🔓 Unlocked → Enabled permission</Typography>
+      </CardContent>
+    </Card>
   );
 }
 
-const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
-  { id, itemId, label, children, can_read, can_create, can_update, can_delete, onToggle },
-  ref
-) {
+function CustomPermissionContent({ children, item, togglePermission, ...props }) {
+  return (
+    <TreeItemContent {...props}>
+      <TreeItemLabel>{item.label}</TreeItemLabel>
+      <Box sx={{ ml: 'auto', display: 'flex', gap: 0.5 }}>
+        {['can_read', 'can_create', 'can_update', 'can_delete', 'can_secret'].map((perm) => (
+          <Tooltip key={perm} title={perm.replace('can_', '').toUpperCase()}>
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePermission(item.id, perm);
+              }}
+              sx={{
+                color: item[perm] ? 'success.main' : 'grey.500'
+              }}
+            >
+              {item[perm] ? <LockOpenOutlinedIcon fontSize="small" /> : <LockOutlinedIcon fontSize="small" />}
+            </IconButton>
+          </Tooltip>
+        ))}
+      </Box>
+    </TreeItemContent>
+  );
+}
+
+const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ item, togglePermission }, ref) {
   const { getContextProviderProps, getRootProps, getContentProps, getGroupTransitionProps } = useTreeItem({
-    id,
-    itemId,
-    label,
+    ...item,
     rootRef: ref
   });
-
-  const permProps = { can_read, can_create, can_update, can_delete };
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
       <TreeItemRoot {...getRootProps()}>
-        <TreeItemContent {...getContentProps()}>
-          <TreeItemLabel>{label}</TreeItemLabel>
-          <Stack direction="row" spacing={1}>
-            {Object.entries(permProps).map(([key, value]) => (
-              <Checkbox
-                key={key}
-                checked={!!value}
-                size="small"
-                onChange={() => onToggle(key)}
-                title={key.replace('can_', '').toUpperCase()}
-              />
-            ))}
-          </Stack>
-        </TreeItemContent>
-        {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
+        <CustomPermissionContent {...getContentProps()} item={item} togglePermission={togglePermission} />
+        {item.children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
       </TreeItemRoot>
     </TreeItemProvider>
   );
 });
 
 export default function PermissionsTreeView() {
-  const [permissions, setPermissions] = useState([]);
+  const { permissions, setPermissions } = usePermissions();
 
   useEffect(() => {
-    const fetchPermissions = async () => {
-      try {
-        const response = await axios.get(API_ROUTES.MY_PERMISSIONS);
-        const structured = response.data.permissions.map((perm) => ({
-          id: perm.menu_name,
-          itemId: perm.menu_name,
-          label: perm.menu_name,
-          can_read: perm.can_read,
-          can_create: perm.can_create,
-          can_update: perm.can_update,
-          can_delete: perm.can_delete
-        }));
-        setPermissions(structured);
-      } catch (error) {
-        console.error('❌ Failed to fetch permissions', error);
-      }
-    };
-    fetchPermissions();
-  }, []);
+    console.log('✅ Loaded Permissions:', permissions);
+  }, [permissions]);
 
   const handleToggle = (menuId, action) => {
-    setPermissions((prev) => prev.map((perm) => (perm.id === menuId ? { ...perm, [action]: !perm[action] } : perm)));
-    // TODO: Implement backend persistence here
+    setPermissions((prev) =>
+      prev.map((perm) =>
+        perm.menu_name === menuId ? { ...perm, [action]: !perm[action] } : perm
+      )
+    );
+    // TODO: persist changes in backend with axios.post
   };
 
+  // ✅ Criar estrutura compatível para RichTreeView
+  const permissionsWithIds = permissions.map((perm) => ({
+    ...perm,
+    id: perm.menu_name,
+    itemId: perm.menu_name,
+    label: perm.menu_name
+  }));
+
   return (
-    <Stack spacing={2}>
-      <Box sx={{ minHeight: 300, minWidth: 400 }}>
-        <RichTreeView
-          items={permissions}
-          defaultExpandedItems={permissions.map((p) => p.id)}
-          slots={{ item: PermissionTreeItem }}
-          slotProps={{
-            item: {
-              onToggle: (action, item) => handleToggle(item.id, action)
-            }
-          }}
-        />
-      </Box>
+    <Box sx={{ maxWidth: 500, mx: 'auto', my: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        Permissions Tree
+      </Typography>
+      <Card variant="outlined">
+        <CardContent sx={{ maxHeight: 500, overflowY: 'auto' }}>
+          <RichTreeView
+            items={permissionsWithIds}
+            defaultExpandedItems={permissionsWithIds.map((p) => p.id)}
+            slots={{ item: PermissionTreeItem }}
+            slotProps={{
+              item: (item) => ({
+                item,
+                togglePermission: handleToggle
+              })
+            }}
+          />
+        </CardContent>
+      </Card>
       <PermissionLegend />
-    </Stack>
+    </Box>
   );
 }
