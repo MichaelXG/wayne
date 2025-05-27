@@ -79,14 +79,19 @@ export default function PermissionsTreeView() {
 
   const handleToggle = (menuId, action) => {
     setPermissions((prev) =>
-      prev.map((perm) =>
-        perm.menu_name === menuId ? { ...perm, [action]: !perm[action] } : perm
-      )
+      prev.map((perm) => {
+        if (perm.menu_name === menuId) {
+          return {
+            ...perm,
+            [action]: !perm[action] // ✅ altera apenas o campo clicado
+          };
+        }
+        return perm;
+      })
     );
-    // TODO: persist changes in backend with axios.post
+    // TODO: persist changes with axios.post
   };
 
-  // ✅ Criar estrutura compatível para RichTreeView
   const permissionsWithIds = permissions.map((perm) => ({
     ...perm,
     id: perm.menu_name,
