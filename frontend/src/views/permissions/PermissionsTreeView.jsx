@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
@@ -20,8 +20,8 @@ import { useTreeItem } from '@mui/x-tree-view/useTreeItem';
 import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemIconContainer, TreeItemLabel } from '@mui/x-tree-view/TreeItem';
 import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-
-import { usePermissions } from '../../contexts/PermissionsContext';
+import { usePermissionsGroups } from '../../contexts/PermissionsGroupsContext';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const STATUS_ICONS = {
   focused: <AdjustIcon color="primary" fontSize="small" />,
@@ -37,7 +37,7 @@ const STATUS_ICONS = {
 
 function StatusLegend() {
   return (
-    <Paper variant="outlined" elevation={2} sx={{ p: 2 }}>
+    <Paper variant="outlined" sx={{ p: 2 }}>
       <Stack spacing={1}>
         <Typography variant="subtitle2">Legend</Typography>
         {Object.keys(STATUS_ICONS).map((key) => (
@@ -55,6 +55,8 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ item, 
   const { getContextProviderProps, getRootProps, getContentProps, getLabelProps, getGroupTransitionProps, getIconContainerProps, status } =
     useTreeItem({ ...item, rootRef: ref });
 
+  const isPermission = item.groupId !== undefined;
+
   return (
     <TreeItemProvider {...getContextProviderProps()}>
       <TreeItemRoot {...getRootProps()}>
@@ -65,29 +67,20 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ item, 
 
           <TreeItemLabel {...getLabelProps()} />
 
-          <Stack direction="row">
-            {Object.keys(STATUS_ICONS).map((iconKey, index) => (
-              status[iconKey] && (
-                <Box key={index} sx={{ display: 'flex' }}>
-                  {STATUS_ICONS[iconKey]}
-                </Box>
-              )
-            ))}
-          </Stack>
-
-          {/* Stack com switches */}
-          <Stack spacing={1} sx={{ mt: 1, ml: 3 }}>
-            {['can_read', 'can_create', 'can_update', 'can_delete'].map((perm) => (
-              <Stack key={perm} direction="row" spacing={1} alignItems="center">
-                <Typography variant="caption">{perm.replace('can_', '').toUpperCase()}</Typography>
-                <Switch
-                  size="small"
-                  checked={item[perm]}
-                  onChange={() => togglePermission(item.id, perm)}
-                />
-              </Stack>
-            ))}
-          </Stack>
+          {isPermission && (
+            <Stack spacing={1} sx={{ mt: 1, ml: 3 }}>
+              {['can_read', 'can_create', 'can_update', 'can_delete'].map((perm) => (
+                <Stack key={perm} direction="row" spacing={1} alignItems="center">
+                  <Typography variant="caption">{perm.replace('can_', '').toUpperCase()}</Typography>
+                  <Switch
+                    size="small"
+                    checked={item[perm]}
+                    onChange={() => togglePermission(item.groupId, item.menu_name, perm)}
+                  />
+                </Stack>
+              ))}
+            </Stack>
+          )}
         </TreeItemContent>
 
         {item.children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
@@ -97,47 +90,60 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ item, 
 });
 
 export default function PermissionsTreeView() {
-  const { permissions, setPermissions } = usePermissions();
-
-  const permissionsWithIds = permissions.map((perm) => ({
-    ...perm,
-    id: perm.menu_name,
-    itemId: perm.menu_name,
-    label: perm.menu_name,
-    disabled: false,
-    editable: false
-  }));
+  const { groups, setGroups, loadGroups } = usePermissionsGroups();
+  const [userData] = useLocalStorage('wayne-user-data', {});
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    console.log('✅ Loaded Permissions:', permissionsWithIds);
-  }, [permissions]);
+    if (!loaded && userData?.authToken) {
+      loadGroups(userData.authToken);
+      setLoaded(true);
+    }
+  }, [loaded, userData, loadGroups]);
 
-  const handleToggle = (menuId, permKey) => {
-    setPermissions((prev) =>
-      prev.map((p) => (p.menu_name === menuId ? { ...p, [permKey]: !p[permKey] } : p))
+  const handleToggle = (groupId, menuName, permKey) => {
+    setGroups((prev) =>
+      prev.map((group) =>
+        group.id === groupId
+          ? {
+              ...group,
+              permissions: group.permissions.map((perm) =>
+                perm.menu_name === menuName ? { ...perm, [permKey]: !perm[permKey] } : perm
+              )
+            }
+          : group
+      )
     );
   };
+
+  const treeItems = groups.map((group) => ({
+    id: `group-${group.id}`,
+    itemId: `group-${group.id}`,
+    label: group.name,
+    children: group.permissions.map((perm) => ({
+      ...perm,
+      id: `perm-${group.id}-${perm.menu_name}`,
+      itemId: `perm-${group.id}-${perm.menu_name}`,
+      label: perm.menu_name,
+      groupId: group.id,
+      disabled: false,
+      editable: false
+    }))
+  }));
 
   return (
     <Stack spacing={6} direction={{ md: 'row', xs: 'column' }}>
       <Box sx={{ minHeight: 200, minWidth: 350 }}>
         <RichTreeView
-          items={permissionsWithIds}
-          defaultExpandedItems={permissionsWithIds.map((p) => p.id)}
+          items={treeItems}
+          defaultExpandedItems={treeItems.map((g) => g.id)}
           slots={{
-            item: (props) => (
-              <PermissionTreeItem
-                {...props}
-                item={props}
-                togglePermission={handleToggle}
-              />
-            )
+            item: (props) => <PermissionTreeItem {...props} item={props} togglePermission={handleToggle} />
           }}
           isItemDisabled={(item) => Boolean(item?.disabled)}
           isItemEditable={(item) => Boolean(item?.editable)}
         />
       </Box>
-
       <StatusLegend />
     </Stack>
   );
