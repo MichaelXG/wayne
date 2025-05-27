@@ -8,17 +8,16 @@ import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import { useTreeItem } from '@mui/x-tree-view/useTreeItem';
 import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemIconContainer, TreeItemLabel } from '@mui/x-tree-view/TreeItem';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-
 import { useEffect, useState } from 'react';
 import { API_ROUTES } from '../../routes/ApiRoutes';
-import axiosInstance from '../../services/axios';
+import axios from 'axios';
 
 function PermissionLegend() {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Typography variant="subtitle2">Legend:</Typography>
-      <Typography variant="body2">- Check to enable permission</Typography>
-      <Typography variant="body2">- Uncheck to disable permission</Typography>
+      <Typography variant="body2">✅ Check to enable permission</Typography>
+      <Typography variant="body2">❌ Uncheck to disable permission</Typography>
     </Paper>
   );
 }
@@ -34,14 +33,22 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(
     rootRef: ref
   });
 
+  const permProps = { can_read, can_create, can_update, can_delete };
+
   return (
     <TreeItemProvider {...getContextProviderProps()}>
       <TreeItemRoot {...getRootProps()}>
         <TreeItemContent {...getContentProps()}>
           <TreeItemLabel>{label}</TreeItemLabel>
           <Stack direction="row" spacing={1}>
-            {['read', 'create', 'update', 'delete'].map((perm) => (
-              <Checkbox key={perm} checked={!!eval(`can_${perm}`)} size="small" onChange={() => onToggle(perm)} />
+            {Object.entries(permProps).map(([key, value]) => (
+              <Checkbox
+                key={key}
+                checked={!!value}
+                size="small"
+                onChange={() => onToggle(key)}
+                title={key.replace('can_', '').toUpperCase()}
+              />
             ))}
           </Stack>
         </TreeItemContent>
@@ -57,9 +64,10 @@ export default function PermissionsTreeView() {
   useEffect(() => {
     const fetchPermissions = async () => {
       try {
-        const response = await axiosInstance.get(API_ROUTES.MY_PERMISSIONS);
+        const response = await axios.get(API_ROUTES.MY_PERMISSIONS);
         const structured = response.data.permissions.map((perm) => ({
           id: perm.menu_name,
+          itemId: perm.menu_name,
           label: perm.menu_name,
           can_read: perm.can_read,
           can_create: perm.can_create,
@@ -68,22 +76,15 @@ export default function PermissionsTreeView() {
         }));
         setPermissions(structured);
       } catch (error) {
-        console.error('Failed to fetch permissions', error);
+        console.error('❌ Failed to fetch permissions', error);
       }
     };
     fetchPermissions();
   }, []);
 
   const handleToggle = (menuId, action) => {
-    setPermissions((prev) =>
-      prev.map((perm) => {
-        if (perm.id === menuId) {
-          return { ...perm, [`can_${action}`]: !perm[`can_${action}`] };
-        }
-        return perm;
-      })
-    );
-    // Aqui você pode adicionar lógica de persistência no backend com `axios.post`
+    setPermissions((prev) => prev.map((perm) => (perm.id === menuId ? { ...perm, [action]: !perm[action] } : perm)));
+    // TODO: Implement backend persistence here
   };
 
   return (
@@ -92,7 +93,12 @@ export default function PermissionsTreeView() {
         <RichTreeView
           items={permissions}
           defaultExpandedItems={permissions.map((p) => p.id)}
-          slots={{ item: ({ item }) => <PermissionTreeItem {...item} onToggle={(action) => handleToggle(item.id, action)} /> }}
+          slots={{ item: PermissionTreeItem }}
+          slotProps={{
+            item: {
+              onToggle: (action, item) => handleToggle(item.id, action)
+            }
+          }}
         />
       </Box>
       <PermissionLegend />
