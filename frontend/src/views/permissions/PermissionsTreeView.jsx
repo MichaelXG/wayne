@@ -1,125 +1,117 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import AdjustIcon from '@mui/icons-material/Adjust';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import ExpandCircleDownOutlinedIcon from '@mui/icons-material/ExpandCircleDownOutlined';
+import ExpandCircleDownRoundedIcon from '@mui/icons-material/ExpandCircleDownRounded';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutlined';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
+
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import { useTreeItem } from '@mui/x-tree-view/useTreeItem';
-import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemLabel } from '@mui/x-tree-view/TreeItem';
+import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemIconContainer, TreeItemLabel } from '@mui/x-tree-view/TreeItem';
+import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
 import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
+
 import { usePermissions } from '../../contexts/PermissionsContext';
 
-function PermissionLegend() {
-  return (
-    <Card variant="outlined" sx={{ maxWidth: 400, mt: 2 }}>
-      <CardContent>
-        <Typography variant="subtitle2" gutterBottom>
-          Legend
-        </Typography>
-        <Typography variant="body2">🔒 Locked → Disabled permission</Typography>
-        <Typography variant="body2">🔓 Unlocked → Enabled permission</Typography>
-      </CardContent>
-    </Card>
-  );
-}
+const STATUS_ICONS = {
+  focused: <AdjustIcon color="primary" fontSize="small" />,
+  selected: <CheckCircleOutlinedIcon color="success" fontSize="small" />,
+  expandable: <ExpandCircleDownOutlinedIcon color="secondary" fontSize="small" />,
+  expanded: <ExpandCircleDownRoundedIcon color="secondary" fontSize="small" />,
+  disabled: <CancelOutlinedIcon color="action" fontSize="small" />,
+  editable: <EditOutlinedIcon color="warning" fontSize="small" />,
+  editing: <DrawOutlinedIcon color="info" fontSize="small" />,
+  loading: <HourglassBottomOutlinedIcon color="info" fontSize="small" />,
+  error: <ErrorOutlineOutlinedIcon color="info" fontSize="small" />
+};
 
-function CustomPermissionContent({ children, item, togglePermission, ...props }) {
+function StatusLegend() {
   return (
-    <TreeItemContent {...props}>
-      <TreeItemLabel>{item.label}</TreeItemLabel>
-      <Box sx={{ ml: 'auto', display: 'flex', gap: 0.5 }}>
-        {['can_read', 'can_create', 'can_update', 'can_delete', 'can_secret'].map((perm) => (
-          <Tooltip key={perm} title={perm.replace('can_', '').toUpperCase()}>
-            <IconButton
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation();
-                togglePermission(item.id, perm);
-              }}
-              sx={{
-                color: item[perm] ? 'success.main' : 'grey.500'
-              }}
-            >
-              {item[perm] ? <LockOpenOutlinedIcon fontSize="small" /> : <LockOutlinedIcon fontSize="small" />}
-            </IconButton>
-          </Tooltip>
+    <Paper variant="outlined" elevation={2} sx={{ p: 2 }}>
+      <Stack spacing={1}>
+        <Typography variant="subtitle2">Legend</Typography>
+        {Object.keys(STATUS_ICONS).map((key) => (
+          <Stack direction="row" spacing={1} alignItems="center" key={key}>
+            {STATUS_ICONS[key]}
+            <Typography variant="body2">{key}</Typography>
+          </Stack>
         ))}
-      </Box>
-    </TreeItemContent>
+      </Stack>
+    </Paper>
   );
 }
 
-const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ item, togglePermission }, ref) {
-  const { getContextProviderProps, getRootProps, getContentProps, getGroupTransitionProps } = useTreeItem({
-    ...item,
-    rootRef: ref
-  });
+const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ id, itemId, label, disabled, editable, children }, ref) {
+  const { getContextProviderProps, getRootProps, getContentProps, getLabelProps, getGroupTransitionProps, getIconContainerProps, status } =
+    useTreeItem({ id, itemId, label, disabled, editable, children, rootRef: ref });
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
       <TreeItemRoot {...getRootProps()}>
-        <CustomPermissionContent {...getContentProps()} item={item} togglePermission={togglePermission} />
-        {item.children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
+        <TreeItemContent {...getContentProps()}>
+          <TreeItemIconContainer {...getIconContainerProps()}>
+            <TreeItemIcon status={status} />
+          </TreeItemIconContainer>
+
+          <TreeItemLabel {...getLabelProps()} />
+
+          <Stack direction="row">
+            {Object.keys(STATUS_ICONS).map((iconKey, index) => {
+              if (status[iconKey]) {
+                return (
+                  <Box key={index} sx={{ display: 'flex' }}>
+                    {STATUS_ICONS[iconKey]}
+                  </Box>
+                );
+              }
+              return null;
+            })}
+          </Stack>
+        </TreeItemContent>
+
+        {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
       </TreeItemRoot>
     </TreeItemProvider>
   );
 });
 
 export default function PermissionsTreeView() {
-  const { permissions, setPermissions } = usePermissions();
-
-  useEffect(() => {
-    console.log('✅ Loaded Permissions:', permissions);
-  }, [permissions]);
-
-  const handleToggle = (menuId, action) => {
-    setPermissions((prev) =>
-      prev.map((perm) => {
-        if (perm.menu_name === menuId) {
-          return {
-            ...perm,
-            [action]: !perm[action] // ✅ altera apenas o campo clicado
-          };
-        }
-        return perm;
-      })
-    );
-    // TODO: persist changes with axios.post
-  };
+  const { permissions } = usePermissions();
 
   const permissionsWithIds = permissions.map((perm) => ({
     ...perm,
     id: perm.menu_name,
     itemId: perm.menu_name,
-    label: perm.menu_name
+    label: perm.menu_name,
+    disabled: false, // Ajuste conforme necessário
+    editable: false // Ajuste conforme necessário
   }));
 
+  useEffect(() => {
+    console.log('✅ Loaded Permissions:', permissionsWithIds);
+  }, [permissions]);
+
   return (
-    <Box sx={{ maxWidth: 500, mx: 'auto', my: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Permissions Tree
-      </Typography>
-      <Card variant="outlined">
-        <CardContent sx={{ maxHeight: 500, overflowY: 'auto' }}>
-          <RichTreeView
-            items={permissionsWithIds}
-            defaultExpandedItems={permissionsWithIds.map((p) => p.id)}
-            slots={{ item: PermissionTreeItem }}
-            slotProps={{
-              item: (item) => ({
-                item,
-                togglePermission: handleToggle
-              })
-            }}
-          />
-        </CardContent>
-      </Card>
-      <PermissionLegend />
-    </Box>
+    <Stack spacing={6} direction={{ md: 'row', xs: 'column' }}>
+      <Box sx={{ minHeight: 200, minWidth: 350 }}>
+        <RichTreeView
+          items={permissionsWithIds}
+          defaultExpandedItems={permissionsWithIds.map((p) => p.id)}
+          slots={{ item: PermissionTreeItem }}
+          isItemDisabled={(item) => Boolean(item?.disabled)}
+          isItemEditable={(item) => Boolean(item?.editable)}
+        />
+      </Box>
+      <StatusLegend />
+    </Stack>
   );
 }
