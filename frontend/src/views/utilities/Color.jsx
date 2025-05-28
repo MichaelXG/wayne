@@ -1,7 +1,7 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
@@ -10,9 +10,6 @@ import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
 import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
-import { useAuthGuard } from '../../hooks/useAuthGuard';
-import { Tooltip } from '@mui/material';
-import { IconShieldCheck, IconShieldX } from '@tabler/icons-react';
 
 // ===============================|| COLOR BOX ||=============================== //
 
@@ -56,52 +53,9 @@ const ColorBox = ({ bgcolor, title, data, dark }) => (
 
 export default function UIColor() {
   const theme = useTheme();
-  const checkingAuth = useAuthGuard();
-
-  const authIcon = !checkingAuth ? (
-    <Tooltip
-      title="User authenticated"
-      placement="top"
-      componentsProps={{
-        tooltip: {
-          sx: (theme) => ({
-            backgroundColor: theme.palette.success.main,
-            color: theme.palette.common.white,
-            fontSize: 12,
-            px: 1.5,
-            py: 0.5,
-            borderRadius: 1,
-            boxShadow: theme.shadows[2]
-          })
-        }
-      }}
-    >
-      <IconShieldCheck color={theme.palette.success.main} size={20} />{' '}
-    </Tooltip>
-  ) : (
-    <Tooltip
-      title="Authentication failed"
-      placement="top"
-      componentsProps={{
-        tooltip: {
-          sx: (theme) => ({
-            backgroundColor: theme.palette.error.main,
-            color: theme.palette.common.white,
-            fontSize: 12,
-            px: 1.5,
-            py: 0.5,
-            borderRadius: 1,
-            boxShadow: theme.shadows[2]
-          })
-        }
-      }}
-    >
-      <IconShieldX color={theme.palette.error.main} size={20} />
-    </Tooltip>
-  );
 
   return (
-    <MainCard title="Color Palette" secondary={authIcon}>
+    <MainCard title="Color Palette" secondary={<SecondaryAction link="https://next.material-ui.com/system/palette/" />}>
       <Grid container spacing={gridSpacing}>
         <Grid size={12}>
           <SubCard title="Primary Color">
