@@ -1,11 +1,10 @@
 // assets
-import { IconSettings, IconKey, IconHierarchy } from '@tabler/icons-react';
+import { IconSettings, LockClosed, IconHierarchy } from '@tabler/icons-react';
 
 // constant
 const icons = {
   IconSettings,
-  IconKey,
-
+  LockClosed,
   IconHierarchy
 };
 
@@ -23,7 +22,7 @@ const permissions = {
       id: 'permissions-menu',
       title: 'Permissions',
       type: 'collapse',
-      icon: icons.IconKey,
+      icon: icons.LockClosed,
       permission: { menu: 'permissions', action: 'can_read' },
       children: [
         {

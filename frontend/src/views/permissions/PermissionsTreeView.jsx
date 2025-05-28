@@ -72,11 +72,7 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem({ item, 
               {['can_read', 'can_create', 'can_update', 'can_delete'].map((perm) => (
                 <Stack key={perm} direction="row" spacing={1} alignItems="center">
                   <Typography variant="caption">{perm.replace('can_', '').toUpperCase()}</Typography>
-                  <Switch
-                    size="small"
-                    checked={item[perm]}
-                    onChange={() => togglePermission(item.groupId, item.menu_name, perm)}
-                  />
+                  <Switch size="small" checked={item[perm]} onChange={() => togglePermission(item.groupId, item.menu_name, perm)} />
                 </Stack>
               ))}
             </Stack>
@@ -107,9 +103,7 @@ export default function PermissionsTreeView() {
         group.id === groupId
           ? {
               ...group,
-              permissions: group.permissions.map((perm) =>
-                perm.menu_name === menuName ? { ...perm, [permKey]: !perm[permKey] } : perm
-              )
+              permissions: group.permissions.map((perm) => (perm.menu_name === menuName ? { ...perm, [permKey]: !perm[permKey] } : perm))
             }
           : group
       )
@@ -133,7 +127,7 @@ export default function PermissionsTreeView() {
 
   return (
     <Stack spacing={6} direction={{ md: 'row', xs: 'column' }}>
-      <Box sx={{ minHeight: 200, minWidth: 350 }}>
+      <Box sx={{ flex: 1, minHeight: 200, minWidth: 350 }}>
         <RichTreeView
           items={treeItems}
           defaultExpandedItems={treeItems.map((g) => g.id)}
@@ -144,7 +138,9 @@ export default function PermissionsTreeView() {
           isItemEditable={(item) => Boolean(item?.editable)}
         />
       </Box>
-      <StatusLegend />
+      <Box sx={{ flex: '0 0 auto', minWidth: 200 }}>
+        <StatusLegend />
+      </Box>
     </Stack>
   );
 }
