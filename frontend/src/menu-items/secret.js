@@ -10,7 +10,7 @@ const icons = {
 
 const secret = {
   id: 'secret',
-  title: 'Secret Home',
+  title: 'Secret',
   type: 'group',
   icon: icons.secret,
   permission: { menu: 'secret', action: 'can_read' }, 

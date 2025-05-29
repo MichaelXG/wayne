@@ -393,11 +393,31 @@ export default function componentStyleOverrides(theme, borderRadius, outlinedFil
         }
       }
     },
+
     MuiTreeItem: {
       styleOverrides: {
+        root: {
+          '& .MuiTreeItem-content[data-selected="true"]': {
+            backgroundColor: '#616161 !important', // grey[700]
+            color: '#fff !important',
+            fontWeight: 'bold !important',
+            borderRadius: '4px !important'
+          },
+          '& .MuiTreeItem-content[data-focused="true"]': {
+            outline: '2px solid #757575 !important', // grey[600]
+            outlineOffset: '2px !important',
+            backgroundColor: '#9e9e9e !important', // grey[500]
+            color: '#fff !important'
+          },
+          '& .MuiTreeItem-content:hover': {
+            backgroundColor: '#bdbdbd !important', // grey[400]
+            color: '#fff !important',
+            cursor: 'pointer !important'
+          }
+        },
         label: {
-          marginTop: 14,
-          marginBottom: 14
+          marginTop: '12px !important',
+          marginBottom: '12px !important'
         }
       }
     },

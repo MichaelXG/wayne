@@ -51,6 +51,9 @@ const SecretHomePage = Loadable(lazy(() => import('views/secret-page'))); // Pá
 
 const PermissionsTreeView = Loadable(lazy(() => import('views/permissions/PermissionsTreeView'))); // Página de árvore de permissões
 
+const UserListPage = Loadable(lazy(() => import('views/users/List')));
+const UserDetailPage = Loadable(lazy(() => import('views/users/Detail')));
+const UserEditPage = Loadable(lazy(() => import('views/users/Edit')));
 // Wrapper para proteger todas as rotas
 
 function ProtectedRoutesWrapper() {
@@ -135,10 +138,21 @@ const MainRoutes = {
       ]
     },
     {
+      path: 'users',
+      children: [
+        { index: true, element: <UserListPage /> },
+        { path: 'list', element: <UserListPage /> },
+        { path: 'detail', element: <Navigate to="1" replace /> },
+        { path: 'detail/:id', element: <UserDetailPage /> },
+        { path: 'edit', element: <Navigate to="1" replace /> },
+        { path: 'edit/:id', element: <UserEditPage /> }
+      ]
+    },
+    {
       path: 'permissions',
       children: [
         { index: true, element: <PermissionsTreeView /> },
-        { path: 'permissions-tree-view', element: <PermissionsTreeView /> }
+        { path: 'permissions-groups', element: <PermissionsTreeView /> }
       ]
     },
     {

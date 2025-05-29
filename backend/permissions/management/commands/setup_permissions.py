@@ -7,7 +7,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         menus = [
             'dashboard', 'secret', 'products', 'order', 'carrier', 'address', 
-            'pages', 'register', 'recover', 'permissions', 'utilities', 
+            'pages', 'register', 'recover', 'users' ,'permissions', 'utilities', 
             'typography', 'color', 'shadow', 'other', 'sample-page', 'about-page'
         ]
 

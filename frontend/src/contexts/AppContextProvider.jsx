@@ -8,25 +8,28 @@ import { AddressIDProvider } from './AddressIDContext';
 import { PermissionsProvider } from './PermissionsContext';
 import { PermissionsGroupsProvider } from './PermissionsGroupsContext';
 import { I18nProvider } from './I18nContext';
+import { UserIDProvider } from './UserIDContext';
 
 export default function AppContextProvider({ children }) {
   return (
     <I18nProvider>
-      <PermissionsProvider>
-        <PermissionsGroupsProvider>
-          <OrderIDProvider>
-            <StoredOrderProvider>
-              <CscProvider>
-                <CarrierIDProvider>
-                  <AddressIDProvider>
-                    <ProductIDProvider>{children}</ProductIDProvider>
-                  </AddressIDProvider>
-                </CarrierIDProvider>
-              </CscProvider>
-            </StoredOrderProvider>
-          </OrderIDProvider>
-        </PermissionsGroupsProvider>
-      </PermissionsProvider>
+      <UserIDProvider>
+        <PermissionsProvider>
+          <PermissionsGroupsProvider>
+            <OrderIDProvider>
+              <StoredOrderProvider>
+                <CscProvider>
+                  <CarrierIDProvider>
+                    <AddressIDProvider>
+                      <ProductIDProvider>{children}</ProductIDProvider>
+                    </AddressIDProvider>
+                  </CarrierIDProvider>
+                </CscProvider>
+              </StoredOrderProvider>
+            </OrderIDProvider>
+          </PermissionsGroupsProvider>
+        </PermissionsProvider>
+      </UserIDProvider>
     </I18nProvider>
   );
 }

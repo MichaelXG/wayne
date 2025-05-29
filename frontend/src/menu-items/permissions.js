@@ -26,11 +26,11 @@ const permissions = {
       permission: { menu: 'permissions', action: 'can_read' },
       children: [
         {
-          id: 'permissions-tree',
-          title: 'Permissions Tree',
+          id: 'permissions-groups',
+          title: 'Groups',
           type: 'item',
           icon: icons.IconHierarchy,
-          url: '/permissions/permissions-tree-view',
+          url: '/permissions/permissions-groups',
           breadcrumbs: false,
           permission: { menu: 'permissions', action: 'can_read' }
         }
