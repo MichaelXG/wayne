@@ -15,6 +15,7 @@ const users = {
   title: 'Users',
   caption: 'Users settings',
   icon: icons.IconUser,
+
   type: 'group',
   permission: { menu: 'users', action: 'can_read' }, // ✅ permissão para o grupo
   children: [
@@ -26,20 +27,21 @@ const users = {
       permission: { menu: 'users', action: 'can_read' },
       children: [
         {
-          id: 'userList',
+          id: 'user-list',
           title: 'List',
           type: 'item',
           icon: icons.IconList,
           url: '/users/list',
+          breadcrumbs: false,
           permission: { menu: 'users', action: 'can_read' }
         },
         {
-          id: 'userDetail',
+          id: 'user-detail',
           title: 'Detail',
           type: 'item',
           icon: icons.IconDetails,
           url: '/users/detail',
-          target: true,
+          breadcrumbs: false,
           permission: { menu: 'users', action: 'can_read' }
         }
       ]

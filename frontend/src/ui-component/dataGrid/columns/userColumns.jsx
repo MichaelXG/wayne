@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Avatar, Typography, Link, Tooltip } from '@mui/material';
-import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
 import ActionsCell from '../ActionsCell';
-import { isDebug } from '../../../App';
 import { API_BASE_URL } from '../../../routes/ApiRoutes';
+import { maskCPFGPT, formatDate, formatPhone } from '../../../utils/validator';
 
-const BASE_URL = 'http://localhost:8000'; // ajuste conforme necessário
 
-const createUserColumns = (handleDelete) => {
+const createUserColumns = (handleDelete, theme, locale = 'en-US') => {
   const baseColumns = [
     {
       field: 'first_name',
@@ -19,16 +16,16 @@ const createUserColumns = (handleDelete) => {
       hideable: false,
       renderCell: (params) => {
         const full_name = `${params.row?.first_name || ''} ${params.row?.last_name || ''}`.trim() || 'No Name';
-        const cpf = params.row?.cpf || 'No CPF';
+        const cpf = maskCPFGPT(params.row?.cpf || '');
         const userId = params.row?.id;
 
-        let rawImage = params.row?.images?.[0]?.url || params.row?.images?.image || '';
+        const rawImage = params.row?.avatar_data?.image || '';
         const image = rawImage?.startsWith('http') ? rawImage : `${API_BASE_URL}${rawImage}`;
 
         return (
           <Box display="flex" alignItems="flex-start" gap={2}>
             <Avatar
-              alt={title}
+              alt={full_name}
               src={image}
               variant="rounded"
               sx={{
@@ -73,23 +70,34 @@ const createUserColumns = (handleDelete) => {
       }
     },
     {
+      field: 'email',
+      headerName: 'Email',
+      width: 250,
+      hide: true,
+      renderCell: (params) => (
+        <Typography variant="body2" color="text.secondary">
+          {params?.row?.email || 'no email'}
+        </Typography>
+      )
+    },
+    {
       field: 'birth_date',
       headerName: 'Birth Date',
       width: 130,
       hide: true,
       renderCell: (params) => (
         <Typography variant="body2" color="text.secondary">
-          {params?.row?.birth_date || 'dd/mm/yyyy'}
+          {formatDate(params?.row?.birth_date, locale)}
         </Typography>
       )
     },
     {
       field: 'phone',
-      headerName: 'phone',
-      width: 130,
+      headerName: 'Phone',
+      width: 180,
       renderCell: (params) => (
         <Typography variant="body2" color="text.secondary">
-          {!isNaN(params.row?.phone) ? params.row.phone : '(99) 99999-9999'}
+          {formatPhone(params?.row?.phone || '')}
         </Typography>
       )
     },
@@ -105,7 +113,6 @@ const createUserColumns = (handleDelete) => {
           <Box display="flex" gap={1} flexWrap="wrap">
             {groups.map((group, index) => (
               <Box key={index} display="flex" alignItems="center" gap={0.5}>
-                <StarIcon color="primary" fontSize="small" />
                 <Typography variant="body2">{group}</Typography>
               </Box>
             ))}
@@ -119,6 +126,25 @@ const createUserColumns = (handleDelete) => {
       width: 120,
       renderCell: (params) => {
         const active = params?.row?.is_staff;
+        return (
+          <Typography
+            variant="body2"
+            sx={{
+              color: active ? 'success.main' : 'error.main',
+              fontWeight: 600
+            }}
+          >
+            {active ? 'Active' : 'Inactive'}
+          </Typography>
+        );
+      }
+    },
+    {
+      field: 'is_superuser',
+      headerName: 'Super User',
+      width: 120,
+      renderCell: (params) => {
+        const active = params?.row?.is_superuser;
         return (
           <Typography
             variant="body2"
@@ -165,13 +191,13 @@ const createUserColumns = (handleDelete) => {
           componentsProps={{
             tooltip: {
               sx: {
-                backgroundColor: '#8E33FF',
-                color: '#fff',
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.common.white,
                 fontSize: 12,
-                px: 1.5,
-                py: 0.5,
-                borderRadius: 1,
-                boxShadow: 2
+                px: theme.spacing(1.5),
+                py: theme.spacing(0.5),
+                borderRadius: theme.shape.borderRadius,
+                boxShadow: theme.shadows[2]
               }
             }
           }}

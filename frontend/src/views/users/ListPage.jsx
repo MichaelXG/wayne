@@ -1,34 +1,41 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
+import { useTheme } from '@mui/material/styles';
 
 import { API_ROUTES } from '../../routes/ApiRoutes';
-import DynamicDataGrid from '../../ui-component/dataGrid/DynamicDataGrid';
-import createDataGridSlots from '../../ui-component/dataGrid/slots/createDataGridSlots';
-import IllustrationMessage from '../../ui-component/message/IllustrationMessage';
-import { isDebug } from '../../App';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
+import { isDebug } from '../../App';
+import { useI18n } from '../../contexts/I18nContext';
+
+import DynamicDataGrid from '../../ui-component/dataGrid/DynamicDataGrid';
 import createUserColumns from '../../ui-component/dataGrid/columns/userColumns';
-import { useTheme } from '@mui/material/styles';
+import createDataGridSlots from '../../ui-component/dataGrid/slots/createDataGridSlots';
 import CustomToolbarUser from '../../ui-component/dataGrid/slots/CustomToolbarUser';
+import IllustrationMessage from '../../ui-component/message/IllustrationMessage';
+import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 
 const ListPage = () => {
   const theme = useTheme();
-  const [users, setUsers] = useState([]); // armazena o array real
+  const { locale } = useI18n();
+
+  const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
   const [filterModel, setFilterModel] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
+
   const [userData] = useLocalStorage('wayne-user-data', {});
+  const token = userData?.authToken || null;
 
   const hasFilters = filterModel.items.length > 0;
-
-  const token = userData?.authToken || null;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = useMemo(() => `${API_ROUTES.USERS}`, []);
+        const response = await axios.get(API_ROUTES.USERS, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
         const usersList = response.data?.results || response.data || [];
 
         if (!Array.isArray(usersList)) {
@@ -38,36 +45,52 @@ const ListPage = () => {
 
         setUsers(usersList);
         setFilteredUsers(usersList);
-        setLoading(false);
 
-        if (isDebug) console.log('📦 Usuários carregados:', usersList);
+        if (isDebug) console.log('📦 Loaded users:', usersList);
       } catch (error) {
-        console.error('❌ Erro ao carregar usuarios:', error);
+        console.error('❌ Failed to fetch users:', error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_ROUTES.USERS}${id}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const updatedUsers = users.filter((u) => u.id !== id);
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+
+      if (isDebug) console.log(`🗑️ User ${id} deleted`);
+    } catch (error) {
+      console.error(`❌ Failed to delete user ${id}:`, error);
+    }
+  };
 
   const onDeleteSelected = async () => {
     try {
       await Promise.all(
         selectionModel.map((id) =>
           axios.delete(`${API_ROUTES.USERS}${id}/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+            headers: { Authorization: `Bearer ${token}` }
           })
         )
       );
 
-      const updatedUsers = users.filter((p) => !selectionModel.includes(p.id));
+      const updatedUsers = users.filter((u) => !selectionModel.includes(u.id));
       setUsers(updatedUsers);
       setFilteredUsers(updatedUsers);
       setSelectionModel([]);
     } catch (error) {
-      console.error('❌ Erro ao deletar usuários:', error);
+      console.error('❌ Failed to delete selected users:', error);
     }
   };
 
@@ -76,17 +99,20 @@ const ListPage = () => {
     setFilterModel({ items: [] });
   }, [users]);
 
-  const emptyMessage = useMemo(
-    () => ({
-      type: 'empty',
-      title: 'No users found',
-      description: 'Try changing the filters or register a new user.'
-    }),
-    []
-  );
+  const emptyMessage = useMemo(() => ({
+    type: 'empty',
+    title: 'No users found',
+    description: 'Try adjusting the filters or registering a new user.'
+  }), []);
 
   const noRowsOverlay = useCallback(
-    () => <IllustrationMessage type={emptyMessage.type} customTitle={emptyMessage.title} customDescription={emptyMessage.description} />,
+    () => (
+      <IllustrationMessage
+        type={emptyMessage.type}
+        customTitle={emptyMessage.title}
+        customDescription={emptyMessage.description}
+      />
+    ),
     [emptyMessage]
   );
 
@@ -104,30 +130,11 @@ const ListPage = () => {
   );
 
   const slots = useMemo(() => createDataGridSlots({ toolbar, noRowsOverlay }), [toolbar, noRowsOverlay]);
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${API_ROUTES.USERS}${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      const updatedUsers = users.filter((p) => p.id !== id);
-      setUsers(updatedUsers);
-      setFilteredUsers(updatedUsers);
-
-      if (isDebug) console.log(`🗑️ Produto ${id} deletado`);
-    } catch (error) {
-      console.error(`❌ Erro ao deletar produto ${id}:`, error);
-    }
-  };
-
-  const columns = createUserColumns(handleDelete);
+  const columns = useMemo(() => createUserColumns(handleDelete, theme, locale), [handleDelete, theme, locale]);
 
   return (
     <DynamicDataGrid
-      data={filteredUsers || []}
+      data={filteredUsers}
       columns={columns}
       loading={loading}
       selectionModel={selectionModel}

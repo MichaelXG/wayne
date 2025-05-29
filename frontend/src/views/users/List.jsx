@@ -13,7 +13,7 @@ export default function UsersList() {
   const breadcrumbs = useMemo(
     () => [
       { label: 'Dashboard', href: `${BaseDir}/dashboard/default` },
-      { label: 'Users', href: `${BaseDir}/users/list` },
+      { label: 'User', href: `${BaseDir}/users/list` },
       { label: 'List' }
     ],
     []

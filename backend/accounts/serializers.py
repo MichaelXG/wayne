@@ -12,7 +12,6 @@ class UserAvatarSerializer(serializers.ModelSerializer):
         model = UserAvatar
         fields = ['image']
 
-
 class CustomUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     email = serializers.EmailField(required=True)
@@ -29,7 +28,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = [
             'id', 'first_name', 'last_name', 'email', 'birth_date', 'cpf', 'phone',
-            'username', 'is_active', 'is_staff', 'inserted_by', 'inserted_in',
+            'username', 'is_active', 'is_staff', 'is_superuser', 'inserted_by', 'inserted_in',
             'modified_by', 'modified_in', 'avatar_image', 'avatar_data', 'password',
             'groups'
         ]
