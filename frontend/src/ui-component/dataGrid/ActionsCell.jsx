@@ -39,6 +39,11 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
       view: `${BaseDir}/products/detail/${params.row?.product_id}`,
       allowEdit: true,
       customEdit: true
+    },
+    users: {
+      view: `${BaseDir}/users/detail/${id}`,
+      edit: `${BaseDir}/users/edit/${id}`,
+      allowEdit: true
     }
   };
 
