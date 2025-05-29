@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
 
+        
 class GroupMenuPermission(BasePermission):
     """
     Checks if the authenticated user's groups have permission for the given menu and action.

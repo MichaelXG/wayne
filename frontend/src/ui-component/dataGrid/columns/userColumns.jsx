@@ -4,7 +4,6 @@ import ActionsCell from '../ActionsCell';
 import { API_BASE_URL } from '../../../routes/ApiRoutes';
 import { maskCPFGPT, formatDate, formatPhone } from '../../../utils/validator';
 
-
 const createUserColumns = (handleDelete, theme, locale = 'en-US') => {
   const baseColumns = [
     {
@@ -107,13 +106,14 @@ const createUserColumns = (handleDelete, theme, locale = 'en-US') => {
       hide: true,
       width: 180,
       renderCell: (params) => {
-        const rawgroups = params?.row?.groups || [];
-        const groups = Array.isArray(rawgroups) ? rawgroups : rawgroups ? [rawgroups] : [];
+        const rawGroups = params?.row?.groups || [];
+        const groups = Array.isArray(rawGroups) ? rawGroups : [];
+
         return (
           <Box display="flex" gap={1} flexWrap="wrap">
             {groups.map((group, index) => (
               <Box key={index} display="flex" alignItems="center" gap={0.5}>
-                <Typography variant="body2">{group}</Typography>
+                <Typography variant="body2">{group.name}</Typography>
               </Box>
             ))}
           </Box>

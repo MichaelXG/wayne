@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser, UserAvatar
-from permissions.models import PermissionGroup
+from permissions.models import PermissionGroup 
+from permissions.serializers import SimplePermissionGroupSerializer
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 import random
@@ -23,7 +24,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         many=True,
         required=False
     )
-
+        
     class Meta:
         model = CustomUser
         fields = [
@@ -34,6 +35,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'inserted_in', 'modified_in', 'avatar_data']
 
+    def to_representation(self, instance):
+            """Sobrescreve saída para retornar id e name dos grupos."""
+            rep = super().to_representation(instance)
+            rep['groups'] = SimplePermissionGroupSerializer(instance.groups.all(), many=True).data
+            return rep
+    
     def create(self, validated_data):
         avatar_image = validated_data.pop('avatar_image', None)
         groups = validated_data.pop('groups', [])
