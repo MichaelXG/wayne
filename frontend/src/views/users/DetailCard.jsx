@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box, Grid, Typography, TextField, FormControlLabel, Checkbox, Chip, Stack, Tooltip } from '@mui/material';
+import { Box, Grid, Typography, TextField, FormControlLabel, Checkbox, Chip, Stack, Tooltip, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import UserAvatarUpload from '../../ui-component/image/UserAvatarUpload';
 import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
@@ -192,10 +192,10 @@ export default function DetailCard({ user }) {
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>
                     Permission Groups
                   </Typography>
+                  <Divider />{' '}
                   <Box display="flex" gap={1} flexWrap="wrap">
                     {Array.isArray(user.groups) && user.groups.length > 0 ? (
                       user.groups.map((group) => (
-                        // <Tooltip key={group.id || group} title={`Group ID: ${group.id || group}`} arrow>
                         <Chip
                           label={group.name || group}
                           size="small"
@@ -205,7 +205,6 @@ export default function DetailCard({ user }) {
                             color: theme.palette.common.white
                           }}
                         />
-                        // </Tooltip>
                       ))
                     ) : (
                       <Chip label="No groups" size="small" disabled />
