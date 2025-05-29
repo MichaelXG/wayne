@@ -177,16 +177,19 @@ export default function DetailCard({ user }) {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <TextField fullWidth label="Phone" value={user.phone || ''} disabled sx={{ ...theme.typography.customInput }} />
+                  <TextField
+                    mask="(99) 99999-9999"
+                    fullWidth
+                    label="Phone"
+                    value={user.phone || ''}
+                    disabled
+                    sx={{ ...theme.typography.customInput }}
+                  />
                 </Grid>
 
                 <Grid item xs={12}>
                   <TextField fullWidth label="Email" value={user.email || ''} disabled sx={{ ...theme.typography.customInput }} />
                 </Grid>
-
-                {/* <Grid item xs={12}>
-                  <PermissionGroupSelect value={user.groups || []} disabled />
-                </Grid> */}
 
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>
