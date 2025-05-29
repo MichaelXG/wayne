@@ -16,7 +16,11 @@ import {
   OutlinedInput,
   TextField,
   Typography,
-  Box
+  Box,
+  Chip,
+  Tooltip,
+  Stack,
+  Divider
 } from '@mui/material';
 import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
 import AnimateButton from '../../ui-component/extended/AnimateButton';
@@ -24,6 +28,9 @@ import DynamicModal from '../../ui-component/modal/DynamicModal';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 import UserAvatarUpload from '../../ui-component/image/UserAvatarUpload';
+import AuthWrapper1 from '../pages/authentication/AuthWrapper1';
+import AuthCardWrapper from '../pages/authentication/AuthCardWrapper';
+import { maskCPFGPT } from '../../utils/validator';
 
 export default function EditCard({ user }) {
   const theme = useTheme();
@@ -62,18 +69,12 @@ export default function EditCard({ user }) {
     }
   }, [user]);
 
-  const handleImageChange = (file) => {
-    isDebug && console.log('📥 Imagem recebida:', file);
-    setAvatarImage(file);
-  };
+  const handleImageChange = (file) => setAvatarImage(file);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = (e) => e.preventDefault();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,118 +95,196 @@ export default function EditCard({ user }) {
           avatarFormData.append('image', avatarImage);
 
           await axios.post(API_ROUTES.AVATARS, avatarFormData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
+            headers: { 'Content-Type': 'multipart/form-data' }
           });
         }
         setSuccessModalOpen(true);
       }
     } catch (error) {
       const message = error.response?.data?.detail || '❌ Failed to update user.';
-
       setErrorMessage(message);
       setErrorModalOpen(true);
-      isDebug && console.error('❌ Update error:', error.response?.data || error.message);
     }
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <UserAvatarUpload initialImage={user?.avatar_data?.image || ''} onChange={handleImageChange} />
-          </Grid>
+    <Box
+      sx={(theme) => ({
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        px: { xs: 2, md: 4 },
+        py: { xs: 4, md: 6 },
+        backgroundColor: theme.palette.background.default
+      })}
+    >
+      <Box sx={{ width: '100%', maxWidth: 1000 }}>
+        <AuthWrapper1>
+          <Grid container sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 'calc(100vh - 68px)' }}>
+            <Grid sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+              <Stack spacing={1} width="100%">
+                <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
+                  {user?.id && (
+                    <Box sx={{ mb: 1 }}>
+                      <Chip
+                        label={`ID: ${user.id}`}
+                        size="small"
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          color: theme.palette.common.white,
+                          backgroundColor: theme.palette.grey[600]
+                        }}
+                      />
+                    </Box>
+                  )}
 
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth label="First Name" name="first_name" value={formData.first_name} onChange={handleChange} required />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} required />
-          </Grid>
+                  <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 1, ml: 'auto' }}>
+                    <Tooltip title="Super User">
+                      <Chip
+                        label={user?.is_superuser ? 'Yes' : 'No'}
+                        size="small"
+                        sx={{
+                          fontWeight: 600,
+                          bgcolor: theme.palette[user?.is_superuser ? 'success' : 'error'].main,
+                          color: theme.palette.common.white
+                        }}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Staff">
+                      <Chip
+                        label={user?.is_staff ? 'Yes' : 'No'}
+                        size="small"
+                        sx={{
+                          fontWeight: 600,
+                          bgcolor: theme.palette[user?.is_staff ? 'success' : 'error'].main,
+                          color: theme.palette.common.white
+                        }}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Active Status">
+                      <Chip
+                        label={user?.is_active ? 'Active' : 'Inactive'}
+                        size="small"
+                        sx={{
+                          fontWeight: 600,
+                          bgcolor: theme.palette[user?.is_active ? 'success' : 'error'].main,
+                          color: theme.palette.common.white
+                        }}
+                      />
+                    </Tooltip>
+                  </Box>
+                </Box>
+              </Stack>
 
-          <Grid item xs={12} sm={6}>
-            <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange}>
-              {(inputProps) => <TextField {...inputProps} fullWidth label="CPF" name="cpf" />}
-            </InputMask>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth label="Birth Date" name="birth_date" type="date" value={formData.birth_date} onChange={handleChange} />
-          </Grid>
+              <AuthCardWrapper
+                sx={{
+                  border: '1px solid',
+                  borderColor: theme.palette.divider,
+                  borderRadius: 2,
+                  boxShadow: theme.shadows[1],
+                  p: 2
+                }}
+              >
+                <form onSubmit={handleSubmit}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <UserAvatarUpload initialImage={user?.avatar_data?.image || ''} onChange={handleImageChange} />
+                    </Grid>
 
-          <Grid item xs={12}>
-            <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange}>
-              {(inputProps) => <TextField {...inputProps} fullWidth label="Phone" name="phone" />}
-            </InputMask>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="First Name"
+                        name="first_name"
+                        value={formData.first_name}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField fullWidth label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} required />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange}>
+                        {(inputProps) => <TextField {...inputProps} fullWidth label="CPF" name="cpf" />}
+                      </InputMask>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="Birth Date"
+                        name="birth_date"
+                        type="date"
+                        value={formData.birth_date}
+                        onChange={handleChange}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange}>
+                        {(inputProps) => <TextField {...inputProps} fullWidth label="Phone" name="phone" />}
+                      </InputMask>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel>Password</InputLabel>
+                        <OutlinedInput
+                          type={showPassword ? 'text' : 'password'}
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          label="Password"
+                        />
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <PermissionGroupSelect value={formData.groups} onChange={(groups) => setFormData((prev) => ({ ...prev, groups }))} />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />}
+                        label="Accept Terms"
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <AnimateButton>
+                        <Button fullWidth type="submit" variant="contained" color="primary">
+                          Save Changes
+                        </Button>
+                      </AnimateButton>
+                    </Grid>
+                  </Grid>
+                </form>
+              </AuthCardWrapper>
+            </Grid>
           </Grid>
-
-          <Grid item xs={12}>
-            <TextField fullWidth label="Email" name="email" type="email" value={formData.email} onChange={handleChange} required />
-          </Grid>
-
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel>Password</InputLabel>
-              <OutlinedInput
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12}>
-            <PermissionGroupSelect value={formData.groups} onChange={(groups) => setFormData((prev) => ({ ...prev, groups }))} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />}
-              label="Accept Terms"
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <AnimateButton>
-              <Button fullWidth type="submit" variant="contained" color="primary">
-                Save Changes
-              </Button>
-            </AnimateButton>
-          </Grid>
-        </Grid>
-      </form>
-
-      <DynamicModal
-        open={successModalOpen}
-        onClose={() => setSuccessModalOpen(false)}
-        type="success"
-        mode="confirm"
-        title="User Updated!"
-        description="Your changes have been saved."
-        submitLabel="OK"
-        onSubmit={() => navigate('/wayne/users')}
-      />
-
-      <DynamicModal
-        open={errorModalOpen}
-        onClose={() => setErrorModalOpen(false)}
-        type="error"
-        mode="confirm"
-        title="Update Failed"
-        description={errorMessage}
-        submitLabel="Close"
-        onSubmit={() => setErrorModalOpen(false)}
-      />
-    </>
+        </AuthWrapper1>
+      </Box>
+    </Box>
   );
 }

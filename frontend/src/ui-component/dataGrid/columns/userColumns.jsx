@@ -134,7 +134,7 @@ const createUserColumns = (handleDelete, theme, locale = 'en-US') => {
               fontWeight: 600
             }}
           >
-            {active ? 'Active' : 'Inactive'}
+            {active ? 'Yes' : 'No'}
           </Typography>
         );
       }
@@ -153,7 +153,7 @@ const createUserColumns = (handleDelete, theme, locale = 'en-US') => {
               fontWeight: 600
             }}
           >
-            {active ? 'Active' : 'Inactive'}
+            {active ? 'Yes' : 'No'}
           </Typography>
         );
       }
