@@ -45,6 +45,25 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             "user": serializer.data,
             **tokens
         }, status=status.HTTP_201_CREATED)
+        
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        partial = kwargs.pop('partial', False)
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        # ✅ Salvar avatar se enviado
+        avatar_file = request.FILES.get("avatar")
+        if avatar_file:
+            if hasattr(instance, "avatar"):
+                instance.avatar.image = avatar_file
+                instance.avatar.save()
+            else:
+                UserAvatar.objects.create(user=instance, image=avatar_file)
+
+        return Response(serializer.data)
 
 class CustomLoginView(APIView):
     permission_classes = [AllowAny]
