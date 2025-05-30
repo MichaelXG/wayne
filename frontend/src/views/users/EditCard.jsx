@@ -9,10 +9,11 @@ import PermissionGroupSelect from '../../ui-component/permission/PermissionGroup
 
 const EditCard = forwardRef(({ user, onSubmit }, ref) => {
   const theme = useTheme();
-  const { first_name, last_name, email, cpf, phone, birth_date, groups = [], is_active, is_superuser, is_staff } = user || {};
+  const { id, first_name, last_name, email, cpf, phone, birth_date, groups = [], is_active, is_superuser, is_staff } = user || {};
 
   const methods = useForm({
     defaultValues: {
+      id: id || null,
       first_name: first_name || '',
       last_name: last_name || '',
       email: email || '',
@@ -34,6 +35,7 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
   useEffect(() => {
     if (user) {
       const clean = {
+        id: user.id || null,
         first_name: user.first_name || '',
         last_name: user.last_name || '',
         email: user.email || '',
@@ -85,6 +87,19 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
             <Grid sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <Stack spacing={1} width="100%">
                 <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
+                  {id && (
+                    <Chip
+                      label={`ID: ${id}`}
+                      size="small"
+                      sx={(theme) => ({
+                        fontWeight: 600,
+                        fontSize: '0.75rem',
+                        color: theme.palette.common.white,
+                        backgroundColor: theme.palette.grey[600],
+                        width: 'fit-content'
+                      })}
+                    />
+                  )}
                   {['is_superuser', 'is_staff', 'is_active'].map((key) => (
                     <Controller
                       key={key}
@@ -92,7 +107,20 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
-                          control={<Switch checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />}
+                          control={
+                            <Switch
+                              checked={field.value}
+                              onChange={(e) => field.onChange(e.target.checked)}
+                              sx={{
+                                '& .MuiSwitch-thumb': {
+                                  color: field.value ? 'success.main' : 'error.main'
+                                },
+                                '& .MuiSwitch-track': {
+                                  backgroundColor: field.value ? 'success.light' : 'error.light'
+                                }
+                              }}
+                            />
+                          }
                           label={key.replace('is_', '').replace('_', ' ').toUpperCase()}
                         />
                       )}
