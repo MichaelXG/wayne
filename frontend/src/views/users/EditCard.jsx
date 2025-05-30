@@ -55,6 +55,7 @@ const EditCard = forwardRef(({ user, onSubmit, canEditSuperUser }, ref) => {
   useImperativeHandle(ref, () => ({
     submitForm: () => {
       const current = getValues();
+
       const changed = Object.keys(initialData).some((key) => {
         if (key === 'groups') {
           const currentIds = (current.groups || []).map((g) => (typeof g === 'object' ? g.id : g)).sort();
@@ -64,7 +65,9 @@ const EditCard = forwardRef(({ user, onSubmit, canEditSuperUser }, ref) => {
         return String(initialData[key]) !== String(current[key]);
       });
 
-      if (changed) {
+      const avatarChanged = avatarImage instanceof File;
+
+      if (changed || avatarChanged) {
         onSubmit(current, avatarImage);
       } else {
         setNoChangesModal(true);
