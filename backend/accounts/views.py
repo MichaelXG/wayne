@@ -25,7 +25,7 @@ def get_tokens_for_user(user):
     }
 
 class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
+    queryset = CustomUser.objects.all().order_by('-id')
     serializer_class = CustomUserSerializer
 
     def get_permissions(self):
