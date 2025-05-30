@@ -76,12 +76,12 @@ export default function EditPage({ userEditRef }) {
       isDebug && console.log('✅ User updated:', response.data);
       isDebug && alert('User saved successfully!');
     } catch (error) {
-      console.error('❌ Error saving product:', {
+      console.error('❌ Error saving user:', {
         status: error?.response?.status,
         data: error?.response?.data,
         headers: error?.response?.headers
       });
-      isDebug && alert('Failed to save product.');
+      isDebug && alert('Failed to save user.');
     } finally {
       setIsSaving(false);
       setOpenModal(false);
@@ -98,7 +98,7 @@ export default function EditPage({ userEditRef }) {
     <>
       <DataLoaderWrapper endpoint={endpoint}>
         {(user, loading, error) => {
-          if (error) return <IllustrationMessage type="error" title="Error" description="Failed to load product." />;
+          if (error) return <IllustrationMessage type="error" title="Error" description="Failed to load user." />;
           if (!user) return <IllustrationMessage type="notFound" title="Not Found" description="User not found." />;
 
           return <EditCard ref={userEditRef} user={user} onSubmit={handleSubmitWithConfirmation} />;
