@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Box, Grid, Typography, TextField, Chip, Stack, Tooltip, Divider } from '@mui/material';
+import { Box, Grid, Typography, TextField, Chip, Stack, Switch, Divider, FormControlLabel } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import UserAvatarUpload from '../../ui-component/image/UserAvatarUpload';
 import { useUserIDContext } from '../../contexts/UserIDContext';
@@ -13,6 +13,26 @@ export default function DetailCard({ user }) {
   useEffect(() => {
     if (user?.id) setUserId(user.id);
   }, [user, setUserId]);
+
+  const renderStatusSwitch = (label, value) => (
+    <FormControlLabel
+      control={
+        <Switch
+          checked={Boolean(value)}
+          disabled
+          sx={{
+            '& .MuiSwitch-thumb': {
+              color: value ? theme.palette.success.main : theme.palette.error.main
+            },
+            '& .MuiSwitch-track': {
+              backgroundColor: value ? theme.palette.success.light : theme.palette.error.light
+            }
+          }}
+        />
+      }
+      label={label}
+    />
+  );
 
   return (
     <Box
@@ -45,91 +65,13 @@ export default function DetailCard({ user }) {
                   </Box>
                 )}
 
-                {/* ✅ Agrupados e alinhados à direita com Tooltips */}
-                <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 1, ml: 'auto' }}>
-                  <Tooltip
-                    title="Super User"
-                    placement="top"
-                    componentsProps={{
-                      tooltip: {
-                        sx: (theme) => ({
-                          backgroundColor: theme.palette[user?.is_superuser ? 'success' : 'error'].main,
-                          color: theme.palette.common.white,
-                          fontSize: 12,
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: 1,
-                          boxShadow: theme.shadows[2]
-                        })
-                      }
-                    }}
-                  >
-                    <Chip
-                      label={user?.is_superuser ? 'Yes' : 'No'}
-                      size="small"
-                      sx={(theme) => ({
-                        fontWeight: theme.typography.fontWeightBold,
-                        bgcolor: theme.palette[user?.is_superuser ? 'success' : 'error'].main,
-                        color: theme.palette.common.white
-                      })}
-                    />
-                  </Tooltip>
-
-                  <Tooltip
-                    title="Staff"
-                    placement="top"
-                    componentsProps={{
-                      tooltip: {
-                        sx: (theme) => ({
-                          backgroundColor: theme.palette[user?.is_staff ? 'success' : 'error'].main,
-                          color: theme.palette.common.white,
-                          fontSize: 12,
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: 1,
-                          boxShadow: theme.shadows[2]
-                        })
-                      }
-                    }}
-                  >
-                    <Chip
-                      label={user?.is_staff ? 'Yes' : 'No'}
-                      size="small"
-                      sx={(theme) => ({
-                        fontWeight: theme.typography.fontWeightBold,
-                        bgcolor: theme.palette[user?.is_staff ? 'success' : 'error'].main,
-                        color: theme.palette.common.white
-                      })}
-                    />
-                  </Tooltip>
-
-                  <Tooltip
-                    title="Active Status"
-                    placement="top"
-                    componentsProps={{
-                      tooltip: {
-                        sx: (theme) => ({
-                          backgroundColor: theme.palette[user?.is_active ? 'success' : 'error'].main,
-                          color: theme.palette.common.white,
-                          fontSize: 12,
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: 1,
-                          boxShadow: theme.shadows[2]
-                        })
-                      }
-                    }}
-                  >
-                    <Chip
-                      label={user?.is_active ? 'Active' : 'Inactive'}
-                      size="small"
-                      sx={(theme) => ({
-                        fontWeight: theme.typography.fontWeightBold,
-                        bgcolor: theme.palette[user?.is_active ? 'success' : 'error'].main,
-                        color: theme.palette.common.white
-                      })}
-                    />
-                  </Tooltip>
+                {/* ✅ Substituição dos Tooltips por Switches */}
+                <Box display="flex" gap={3} flexWrap="wrap" sx={{ mb: 1, ml: 'auto' }}>
+                  {[
+                    { label: 'Super User', key: 'is_superuser' },
+                    { label: 'Staff', key: 'is_staff' },
+                    { label: 'Active', key: 'is_active' }
+                  ].map(({ label, key }) => renderStatusSwitch(label, user?.[key]))}
                 </Box>
               </Box>
             </Stack>
@@ -194,8 +136,9 @@ export default function DetailCard({ user }) {
                   <Divider />{' '}
                   <Box display="flex" gap={1} flexWrap="wrap">
                     {Array.isArray(user.groups) && user.groups.length > 0 ? (
-                      user.groups.map((group) => (
+                      user.groups.map((group, index) => (
                         <Chip
+                          key={index}
                           label={group.name || group}
                           size="small"
                           sx={{

@@ -88,44 +88,52 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
               <Stack spacing={1} width="100%">
                 <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
                   {id && (
-                    <Chip
-                      label={`ID: ${id}`}
-                      size="small"
-                      sx={(theme) => ({
-                        fontWeight: 600,
-                        fontSize: '0.75rem',
-                        color: theme.palette.common.white,
-                        backgroundColor: theme.palette.grey[600],
-                        width: 'fit-content'
-                      })}
-                    />
+                    <Box sx={{ mb: 1 }}>
+                      <Chip
+                        label={`ID: ${id}`}
+                        size="small"
+                        sx={(theme) => ({
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          color: theme.palette.common.white,
+                          backgroundColor: theme.palette.grey[600],
+                          width: 'fit-content'
+                        })}
+                      />
+                    </Box>
                   )}
-                  {['is_superuser', 'is_staff', 'is_active'].map((key) => (
-                    <Controller
-                      key={key}
-                      name={key}
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={field.value}
-                              onChange={(e) => field.onChange(e.target.checked)}
-                              sx={{
-                                '& .MuiSwitch-thumb': {
-                                  color: field.value ? 'success.main' : 'error.main'
-                                },
-                                '& .MuiSwitch-track': {
-                                  backgroundColor: field.value ? 'success.light' : 'error.light'
-                                }
-                              }}
-                            />
-                          }
-                          label={key.replace('is_', '').replace('_', ' ').toUpperCase()}
-                        />
-                      )}
-                    />
-                  ))}
+                  <Box display="flex" gap={3} flexWrap="wrap" sx={{ mb: 1, ml: 'auto' }}>
+                    {[
+                      { label: 'Super User', key: 'is_superuser' },
+                      { label: 'Staff', key: 'is_staff' },
+                      { label: 'Active', key: 'is_active' }
+                    ].map(({ label, key }) => (
+                      <Controller
+                        key={key}
+                        name={key}
+                        control={control}
+                        render={({ field }) => (
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                checked={field.value}
+                                onChange={(e) => field.onChange(e.target.checked)}
+                                sx={{
+                                  '& .MuiSwitch-thumb': {
+                                    color: field.value ? 'success.main' : 'error.main'
+                                  },
+                                  '& .MuiSwitch-track': {
+                                    backgroundColor: field.value ? 'success.light' : 'error.light'
+                                  }
+                                }}
+                              />
+                            }
+                            label={label}
+                          />
+                        )}
+                      />
+                    ))}
+                  </Box>
                 </Box>
               </Stack>
 
