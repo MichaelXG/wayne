@@ -1,11 +1,12 @@
 // assets
-import { IconSettings, IconLock, IconHierarchy } from '@tabler/icons-react';
+import { IconSettings, IconLock, IconHierarchy, IconEdit } from '@tabler/icons-react';
 
 // constant
 const icons = {
   IconSettings,
   IconLock,
-  IconHierarchy
+  IconHierarchy,
+  IconEdit
 };
 
 // ==============================|| PERMISSION MENU ITEMS ||============================== //
@@ -26,11 +27,11 @@ const permissions = {
       permission: { menu: 'permissions', action: 'can_read' },
       children: [
         {
-          id: 'permissions-groups',
-          title: 'Groups',
+          id: 'permissions-groups-editor',
+          title: 'Edit',
           type: 'item',
-          icon: icons.IconHierarchy,
-          url: '/permissions/permissions-groups',
+          icon: icons.IconEdit,
+          url: '/permissions/edit',
           breadcrumbs: false,
           permission: { menu: 'permissions', action: 'can_read' }
         }
