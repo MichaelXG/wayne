@@ -42,14 +42,21 @@ const STATUS_ICONS = {
 };
 
 const mapPermissionToTreeItem = (groupId, perm) => ({
-  ...perm,
   id: `perm-${groupId}-${perm.menu_name}`,
   itemId: `perm-${groupId}-${perm.menu_name}`,
   label: perm.menu_name,
+  type: 'menu',
   groupId,
-  disabled: false,
-  editable: false,
-  type: 'menu'
+  children: ['can_read', 'can_create', 'can_update', 'can_delete', 'can_secret'].map((key) => ({
+    id: `perm-${groupId}-${perm.menu_name}-${key}`,
+    itemId: `perm-${groupId}-${perm.menu_name}-${key}`,
+    label: key.replace('can_', '').toUpperCase(),
+    type: 'permission',
+    permissionKey: key,
+    checked: perm[key],
+    groupId,
+    menuName: perm.menu_name
+  }))
 });
 
 const mapGroupToTreeItem = (group) => ({
@@ -89,8 +96,6 @@ function StatusLegend() {
 }
 
 const getPermissionItemStyles = (theme, { isGroup = false, isPermission = false, status = {} } = {}) => {
-  console.log('getPermissionItemStyles', { isGroup, isPermission, status });
-
   const base = {
     px: 1.5,
     py: 0.5,
@@ -109,30 +114,36 @@ const getPermissionItemStyles = (theme, { isGroup = false, isPermission = false,
     base.pl = 3;
   }
 
-  // if (status.selected) {
-  //   base.backgroundColor = theme.palette.grey[500]; // ✅ Forçado grey[500]
-  //   base.color = theme.palette.common.black; // ✅ Texto preto
-  // }
-
-  // if (status.focused) {
-  //   base.outline = `2px solid ${theme.palette.grey[700]}`;
-  //   base.backgroundColor = theme.palette.grey[600];
-  //   base.outlineOffset = '2px';
-  // }
-
   return base;
 };
 
 const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(props, ref) {
   const { id, itemId, label, disabled, children, groupId, menu_name, type, togglePermission, ...rest } = props;
-
   const { getContextProviderProps, getRootProps, getContentProps, getLabelProps, getGroupTransitionProps, getIconContainerProps, status } =
     useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
-
   const theme = useTheme();
-
   const isGroup = type === 'group';
   const isPermission = type === 'menu';
+
+  if (type === 'permission') {
+    return (
+      <TreeItemProvider {...getContextProviderProps()}>
+        <TreeItemRoot {...getRootProps()}>
+          <TreeItemContent {...getContentProps()} sx={getPermissionItemStyles(theme, { isPermission: true })}>
+            <TreeItemIconContainer {...getIconContainerProps()}>
+              <TreeItemIcon status={status} />
+            </TreeItemIconContainer>
+            <Box {...getLabelProps()}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Typography variant="caption">{label}</Typography>
+                <Switch size="small" checked={props.checked} onChange={() => togglePermission(groupId, menu_name, props.permissionKey)} />
+              </Stack>
+            </Box>
+          </TreeItemContent>
+        </TreeItemRoot>
+      </TreeItemProvider>
+    );
+  }
 
   const styleProps = { isGroup, isPermission, status };
 
@@ -143,28 +154,12 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(props, r
           <TreeItemIconContainer {...getIconContainerProps()}>
             <TreeItemIcon status={status} />
           </TreeItemIconContainer>
-
           <Box {...getLabelProps()}>
             <Typography variant="body2" sx={{ color: 'inherit' }}>
               {label}
             </Typography>
           </Box>
         </TreeItemContent>
-
-        {/* {isPermission && ( */}
-        <Stack spacing={1} sx={{ mt: 1, ml: 3 }}>
-          {['can_read', 'can_create', 'can_update', 'can_delete', 'can_secret'].map(
-            (perm) =>
-              props.hasOwnProperty(perm) && (
-                <Stack key={perm} direction="row" spacing={1} alignItems="center">
-                  <Typography variant="caption">{perm.replace('can_', '').toUpperCase()}</Typography>
-                  <Switch size="small" checked={props[perm] || false} onChange={() => togglePermission(groupId, menu_name, perm)} />
-                </Stack>
-              )
-          )}
-        </Stack>
-        {/* )} */}
-
         {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
       </TreeItemRoot>
     </TreeItemProvider>
@@ -236,4 +231,3 @@ export default function PermissionsTreeView() {
   );
 }
 PermissionsTreeView.displayName = 'PermissionsTreeView';
-// PermissionsTreeView.propTypes = {};
