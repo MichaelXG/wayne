@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
-import { Box, Grid, Typography, TextField, FormControlLabel, Checkbox, Chip, Stack, Tooltip, Divider } from '@mui/material';
+import { Box, Grid, Typography, TextField, Chip, Stack, Tooltip, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import UserAvatarUpload from '../../ui-component/image/UserAvatarUpload';
-import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
 import { useUserIDContext } from '../../contexts/UserIDContext';
-import AuthWrapper1 from '../pages/authentication/AuthWrapper1';
 import AuthCardWrapper from '../pages/authentication/AuthCardWrapper';
 import { maskCPFGPT } from '../../utils/validator';
 
@@ -22,8 +20,6 @@ export default function DetailCard({ user }) {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-        px: { xs: 2, md: 4 },
-        py: { xs: 4, md: 6 },
         backgroundColor: theme.palette.background.default
       })}
     >

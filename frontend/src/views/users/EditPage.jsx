@@ -12,7 +12,7 @@ import { useUserIDContext } from '../../contexts/UserIDContext';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
 
-export default function EditPage({ productEditRef }) {
+export default function EditPage({ userEditRef }) {
   const { id } = useParams();
   const userId = id ? Number(id) : 1;
 
@@ -47,15 +47,15 @@ export default function EditPage({ productEditRef }) {
       const payload = new FormData();
 
       // Campos do formulário
-      payload.append('title', formData.title ?? '');
-      payload.append('description', formData.description ?? '');
-      payload.append('category', formData.category ?? '');
-      payload.append('code', formData.code ?? '');
-      payload.append('sku', formData.sku ?? '');
-      payload.append('quantity', formData.quantity ?? 0);
-      payload.append('price_regular', formData.price_regular ?? 0);
-      payload.append('price_sale', formData.price_sale ?? 0);
-      payload.append('tax', formData.tax ?? 0);
+      payload.append('first_name', formData.first_name ?? '');
+      payload.append('last_name', formData.last_name ?? '');
+      payload.append('cpf', formData.cpf ?? '');
+      payload.append('birth_date', formData.birth_date ?? '');
+      payload.append('phone', formData.phone ?? '');
+      payload.append('email', formData.email ?? '');
+
+      payload.append('is_superuser', formData.is_superuser ? 'true' : 'false');
+      payload.append('is_staff', formData.is_staff ? 'true' : 'false');
       payload.append('is_active', formData.is_active ? 'true' : 'false');
 
       // Imagens: arquivos novos e URLs existentes
@@ -67,7 +67,7 @@ export default function EditPage({ productEditRef }) {
         }
       });
 
-      const response = await api.put(`${API_ROUTES.PRODUCTS}${userId}/`, payload, {
+      const response = await api.put(`${API_ROUTES.USERS}${userId}/`, payload, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -97,11 +97,11 @@ export default function EditPage({ productEditRef }) {
   return (
     <>
       <DataLoaderWrapper endpoint={endpoint}>
-        {(product, loading, error) => {
+        {(user, loading, error) => {
           if (error) return <IllustrationMessage type="error" title="Error" description="Failed to load product." />;
-          if (!product) return <IllustrationMessage type="notFound" title="Not Found" description="User not found." />;
+          if (!user) return <IllustrationMessage type="notFound" title="Not Found" description="User not found." />;
 
-          return <EditCard ref={productEditRef} product={product} onSubmit={handleSubmitWithConfirmation} />;
+          return <EditCard ref={userEditRef} user={user} onSubmit={handleSubmitWithConfirmation} />;
         }}
       </DataLoaderWrapper>
 

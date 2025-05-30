@@ -1,179 +1,103 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { Box, Grid, Chip, Stack, TextField, Tooltip, FormControlLabel, Switch, useTheme } from '@mui/material';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
 import InputMask from 'react-input-mask';
-import axios from 'axios';
-
-import { useTheme } from '@mui/material/styles';
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-  Box,
-  Chip,
-  Tooltip,
-  Stack,
-  Divider
-} from '@mui/material';
-import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
-import AnimateButton from '../../ui-component/extended/AnimateButton';
-import DynamicModal from '../../ui-component/modal/DynamicModal';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { API_ROUTES } from '../../routes/ApiRoutes';
 import UserAvatarUpload from '../../ui-component/image/UserAvatarUpload';
-import AuthWrapper1 from '../pages/authentication/AuthWrapper1';
 import AuthCardWrapper from '../pages/authentication/AuthCardWrapper';
-import { maskCPFGPT } from '../../utils/validator';
+import DynamicModal from '../../ui-component/modal/DynamicModal';
+import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
 
-export default function EditCard({ user }) {
+const EditCard = forwardRef(({ user, onSubmit }, ref) => {
   const theme = useTheme();
-  const navigate = useNavigate();
+  const { first_name, last_name, email, cpf, phone, birth_date, groups = [], is_active, is_superuser, is_staff } = user || {};
 
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [avatarImage, setAvatarImage] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
-
-  const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-    cpf: '',
-    phone: '',
-    birth_date: '',
-    groups: []
+  const methods = useForm({
+    defaultValues: {
+      first_name: first_name || '',
+      last_name: last_name || '',
+      email: email || '',
+      cpf: cpf || '',
+      phone: phone || '',
+      birth_date: birth_date || '',
+      groups: groups.map((g) => (typeof g === 'object' ? g.id : g)) || [],
+      is_superuser: is_superuser || false,
+      is_staff: is_staff || false,
+      is_active: is_active || false
+    }
   });
+
+  const { control, getValues, reset } = methods;
+  const [noChangesModal, setNoChangesModal] = useState(false);
+  const [avatarImage, setAvatarImage] = useState(null);
+  const [initialData, setInitialData] = useState({});
 
   useEffect(() => {
     if (user) {
-      setFormData({
+      const clean = {
         first_name: user.first_name || '',
         last_name: user.last_name || '',
         email: user.email || '',
-        password: '',
         cpf: user.cpf || '',
         phone: user.phone || '',
         birth_date: user.birth_date || '',
-        groups: user.groups || []
-      });
+        groups: user.groups || [],
+        is_active: user.is_active || false,
+        is_superuser: user.is_superuser || false,
+        is_staff: user.is_staff || false
+      };
+      reset(clean);
+      setInitialData(clean);
     }
-  }, [user]);
+  }, [user, reset]);
 
-  const handleImageChange = (file) => setAvatarImage(file);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const payload = {
-      ...formData,
-      groups: formData.groups.map((g) => (typeof g === 'object' ? g.id : g)),
-      cpf: formData.cpf.replace(/\D/g, ''),
-      phone: formData.phone.replace(/\D/g, '')
-    };
-
-    try {
-      const response = await axios.put(`${API_ROUTES.USERS}${user.id}/`, payload);
-
-      if ([200, 201].includes(response.status)) {
-        if (avatarImage) {
-          const avatarFormData = new FormData();
-          avatarFormData.append('image', avatarImage);
-
-          await axios.post(API_ROUTES.AVATARS, avatarFormData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          });
+  useImperativeHandle(ref, () => ({
+    submitForm: () => {
+      const current = getValues();
+      const changed = Object.keys(initialData).some((key) => {
+        if (key === 'groups') {
+          const currentIds = (current.groups || []).map((g) => (typeof g === 'object' ? g.id : g)).sort();
+          const originalIds = (initialData.groups || []).map((g) => (typeof g === 'object' ? g.id : g)).sort();
+          return JSON.stringify(currentIds) !== JSON.stringify(originalIds);
         }
-        setSuccessModalOpen(true);
+        return String(initialData[key]) !== String(current[key]);
+      });
+
+      if (changed) {
+        onSubmit(current, avatarImage);
+      } else {
+        setNoChangesModal(true);
       }
-    } catch (error) {
-      const message = error.response?.data?.detail || '❌ Failed to update user.';
-      setErrorMessage(message);
-      setErrorModalOpen(true);
     }
-  };
+  }));
 
   return (
-    <Box
-      sx={(theme) => ({
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        px: { xs: 2, md: 4 },
-        py: { xs: 4, md: 6 },
-        backgroundColor: theme.palette.background.default
-      })}
-    >
-      <Box sx={{ width: '100%', maxWidth: 1000 }}>
-        <AuthWrapper1>
+    <FormProvider {...methods}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          backgroundColor: theme.palette.background.default
+        }}
+      >
+        <Box sx={{ width: '100%', maxWidth: 1000 }}>
           <Grid container sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 'calc(100vh - 68px)' }}>
             <Grid sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <Stack spacing={1} width="100%">
                 <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
-                  {user?.id && (
-                    <Box sx={{ mb: 1 }}>
-                      <Chip
-                        label={`ID: ${user.id}`}
-                        size="small"
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: '0.75rem',
-                          color: theme.palette.common.white,
-                          backgroundColor: theme.palette.grey[600]
-                        }}
-                      />
-                    </Box>
-                  )}
-
-                  <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 1, ml: 'auto' }}>
-                    <Tooltip title="Super User">
-                      <Chip
-                        label={user?.is_superuser ? 'Yes' : 'No'}
-                        size="small"
-                        sx={{
-                          fontWeight: 600,
-                          bgcolor: theme.palette[user?.is_superuser ? 'success' : 'error'].main,
-                          color: theme.palette.common.white
-                        }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Staff">
-                      <Chip
-                        label={user?.is_staff ? 'Yes' : 'No'}
-                        size="small"
-                        sx={{
-                          fontWeight: 600,
-                          bgcolor: theme.palette[user?.is_staff ? 'success' : 'error'].main,
-                          color: theme.palette.common.white
-                        }}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Active Status">
-                      <Chip
-                        label={user?.is_active ? 'Active' : 'Inactive'}
-                        size="small"
-                        sx={{
-                          fontWeight: 600,
-                          bgcolor: theme.palette[user?.is_active ? 'success' : 'error'].main,
-                          color: theme.palette.common.white
-                        }}
-                      />
-                    </Tooltip>
-                  </Box>
+                  {['is_superuser', 'is_staff', 'is_active'].map((key) => (
+                    <Controller
+                      key={key}
+                      name={key}
+                      control={control}
+                      render={({ field }) => (
+                        <FormControlLabel
+                          control={<Switch checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />}
+                          label={key.replace('is_', '').replace('_', ' ').toUpperCase()}
+                        />
+                      )}
+                    />
+                  ))}
                 </Box>
               </Stack>
 
@@ -186,105 +110,143 @@ export default function EditCard({ user }) {
                   p: 2
                 }}
               >
-                <form onSubmit={handleSubmit}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <UserAvatarUpload initialImage={user?.avatar_data?.image || ''} onChange={handleImageChange} />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        fullWidth
-                        label="First Name"
-                        name="first_name"
-                        value={formData.first_name}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} required />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange}>
-                        {(inputProps) => <TextField {...inputProps} fullWidth label="CPF" name="cpf" />}
-                      </InputMask>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        fullWidth
-                        label="Birth Date"
-                        name="birth_date"
-                        type="date"
-                        value={formData.birth_date}
-                        onChange={handleChange}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange}>
-                        {(inputProps) => <TextField {...inputProps} fullWidth label="Phone" name="phone" />}
-                      </InputMask>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <FormControl fullWidth>
-                        <InputLabel>Password</InputLabel>
-                        <OutlinedInput
-                          type={showPassword ? 'text' : 'password'}
-                          name="password"
-                          value={formData.password}
-                          onChange={handleChange}
-                          endAdornment={
-                            <InputAdornment position="end">
-                              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                              </IconButton>
-                            </InputAdornment>
-                          }
-                          label="Password"
-                        />
-                      </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <PermissionGroupSelect value={formData.groups} onChange={(groups) => setFormData((prev) => ({ ...prev, groups }))} />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <FormControlLabel
-                        control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />}
-                        label="Accept Terms"
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <AnimateButton>
-                        <Button fullWidth type="submit" variant="contained" color="primary">
-                          Save Changes
-                        </Button>
-                      </AnimateButton>
-                    </Grid>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <UserAvatarUpload initialImage={user?.avatar_data?.image || ''} onChange={setAvatarImage} />
                   </Grid>
-                </form>
+
+                  <Grid item xs={12} sm={6}>
+                    <Controller
+                      name="first_name"
+                      control={control}
+                      rules={{ required: 'First name is required' }}
+                      render={({ field, fieldState }) => (
+                        <TextField
+                          {...field}
+                          label="First Name"
+                          fullWidth
+                          required
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Controller
+                      name="last_name"
+                      control={control}
+                      rules={{ required: 'Last name is required' }}
+                      render={({ field, fieldState }) => (
+                        <TextField
+                          {...field}
+                          label="Last Name"
+                          fullWidth
+                          required
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Controller
+                      name="cpf"
+                      control={control}
+                      rules={{ required: 'CPF is required' }}
+                      render={({ field, fieldState }) => (
+                        <InputMask mask="999.999.999-99" value={field.value} onChange={field.onChange}>
+                          {(inputProps) => (
+                            <TextField
+                              {...inputProps}
+                              inputRef={field.ref}
+                              label="CPF"
+                              fullWidth
+                              error={!!fieldState.error}
+                              helperText={fieldState.error?.message}
+                            />
+                          )}
+                        </InputMask>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Controller
+                      name="birth_date"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField {...field} label="Birth Date" fullWidth type="date" InputLabelProps={{ shrink: true }} />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Controller
+                      name="phone"
+                      control={control}
+                      render={({ field }) => (
+                        <InputMask mask="(99) 99999-9999" value={field.value} onChange={field.onChange}>
+                          {(inputProps) => <TextField {...inputProps} inputRef={field.ref} label="Phone" fullWidth />}
+                        </InputMask>
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Controller
+                      name="email"
+                      control={control}
+                      rules={{
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                          message: 'Invalid email format'
+                        }
+                      }}
+                      render={({ field, fieldState }) => (
+                        <TextField
+                          {...field}
+                          label="Email"
+                          fullWidth
+                          required
+                          type="email"
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Controller
+                      name="groups"
+                      control={control}
+                      rules={{ required: 'At least one group is required' }}
+                      render={({ field, fieldState }) => <PermissionGroupSelect value={field.value} onChange={field.onChange} />}
+                    />
+                  </Grid>
+                </Grid>
               </AuthCardWrapper>
             </Grid>
           </Grid>
-        </AuthWrapper1>
+        </Box>
       </Box>
-    </Box>
+
+      <DynamicModal
+        open={noChangesModal}
+        onClose={() => setNoChangesModal(false)}
+        onSubmit={() => setNoChangesModal(false)}
+        title="No Changes Detected"
+        description="You haven’t changed anything. There’s nothing to save."
+        type="warning"
+        mode="confirm"
+        submitLabel="OK"
+      />
+    </FormProvider>
   );
-}
+});
+
+export default EditCard;
