@@ -1,8 +1,8 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../api/api';
-
 import { API_ROUTES } from '../../routes/ApiRoutes';
+
 import DataLoaderWrapper from '../../ui-component/dataGrid/DataLoaderWrapper';
 import IllustrationMessage from '../../ui-component/message/IllustrationMessage';
 import EditCard from './EditCard';
@@ -42,30 +42,40 @@ export default function EditPage({ userEditRef }) {
     setIsSaving(true);
 
     try {
-      const { formData, imageFiles = [] } = pendingFormData;
-
+      const { formData, avatarImage } = pendingFormData;
       const payload = new FormData();
 
-      // Campos do formulário
-      payload.append('first_name', formData.first_name ?? '');
-      payload.append('last_name', formData.last_name ?? '');
-      payload.append('cpf', formData.cpf ?? '');
-      payload.append('birth_date', formData.birth_date ?? '');
-      payload.append('phone', formData.phone ?? '');
-      payload.append('email', formData.email ?? '');
+      // 🔧 Remover máscara de CPF e telefone
+      const cleanCpf = (formData.cpf || '').replace(/\D/g, '');
+      const cleanPhone = (formData.phone || '').replace(/\D/g, '');
 
+      // Campos básicos
+      if (formData.first_name) payload.append('first_name', formData.first_name);
+      if (formData.last_name) payload.append('last_name', formData.last_name);
+      if (cleanCpf) payload.append('cpf', cleanCpf);
+      if (formData.birth_date) payload.append('birth_date', formData.birth_date);
+      if (cleanPhone) payload.append('phone', cleanPhone);
+      if (formData.email) payload.append('email', formData.email);
+
+      // Campos booleanos
       payload.append('is_superuser', formData.is_superuser ? 'true' : 'false');
       payload.append('is_staff', formData.is_staff ? 'true' : 'false');
       payload.append('is_active', formData.is_active ? 'true' : 'false');
 
-      // Imagens: arquivos novos e URLs existentes
-      imageFiles.forEach((img) => {
-        if (img?.file) {
-          payload.append('images', img.file);
-        } else if (img?.url) {
-          payload.append('existing_images', img.url);
-        }
-      });
+      // Grupos
+      if (Array.isArray(formData.groups)) {
+        formData.groups.forEach((group) => {
+          const id = typeof group === 'object' ? group.id : group;
+          if (!isNaN(id)) {
+            payload.append('groups', parseInt(id, 10));
+          }
+        });
+      }
+
+      // Avatar
+      if (avatarImage instanceof File) {
+        payload.append('avatar', avatarImage);
+      }
 
       const response = await api.put(`${API_ROUTES.USERS}${userId}/`, payload, {
         headers: {
@@ -81,6 +91,7 @@ export default function EditPage({ userEditRef }) {
         data: error?.response?.data,
         headers: error?.response?.headers
       });
+      alert(JSON.stringify(error?.response?.data, null, 2));
       isDebug && alert('Failed to save user.');
     } finally {
       setIsSaving(false);
@@ -89,8 +100,8 @@ export default function EditPage({ userEditRef }) {
     }
   };
 
-  const handleSubmitWithConfirmation = (formData, imageFiles = []) => {
-    setPendingFormData({ formData, imageFiles });
+  const handleSubmitWithConfirmation = (formData, avatarImage) => {
+    setPendingFormData({ formData, avatarImage });
     setOpenModal(true);
   };
 
