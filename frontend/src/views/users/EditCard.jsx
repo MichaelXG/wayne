@@ -7,7 +7,7 @@ import AuthCardWrapper from '../pages/authentication/AuthCardWrapper';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
 import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
 
-const EditCard = forwardRef(({ user, onSubmit }, ref) => {
+const EditCard = forwardRef(({ user, onSubmit, canEditSuperUser }, ref) => {
   const theme = useTheme();
   const { id, first_name, last_name, email, cpf, phone, birth_date, groups = [], is_active, is_superuser, is_staff } = user || {};
 
@@ -106,10 +106,10 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
                   )}
                   <Box display="flex" gap={3} flexWrap="wrap" sx={{ mb: 1, ml: 'auto' }}>
                     {[
-                      { label: 'Super User', key: 'is_superuser' },
+                      { label: 'Super User', key: 'is_superuser', disabled: !canEditSuperUser },
                       { label: 'Staff', key: 'is_staff' },
                       { label: 'Active', key: 'is_active' }
-                    ].map(({ label, key }) => (
+                    ].map(({ label, key, disabled }) => (
                       <Controller
                         key={key}
                         name={key}
@@ -120,6 +120,7 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
                               <Switch
                                 checked={field.value}
                                 onChange={(e) => field.onChange(e.target.checked)}
+                                disabled={disabled}
                                 sx={{
                                   '& .MuiSwitch-thumb': {
                                     color: field.value ? 'success.main' : 'error.main'

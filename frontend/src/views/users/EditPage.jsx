@@ -112,7 +112,9 @@ export default function EditPage({ userEditRef }) {
           if (error) return <IllustrationMessage type="error" title="Error" description="Failed to load user." />;
           if (!user) return <IllustrationMessage type="notFound" title="Not Found" description="User not found." />;
 
-          return <EditCard ref={userEditRef} user={user} onSubmit={handleSubmitWithConfirmation} />;
+          return (
+            <EditCard ref={userEditRef} user={user} onSubmit={handleSubmitWithConfirmation} canEditSuperUser={!!userData?.is_superuser} />
+          );
         }}
       </DataLoaderWrapper>
 

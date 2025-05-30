@@ -6,6 +6,7 @@ import { useUserIDContext } from '../../contexts/UserIDContext';
 import AuthCardWrapper from '../pages/authentication/AuthCardWrapper';
 import { maskCPFGPT } from '../../utils/validator';
 import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
+import InputMask from 'react-input-mask';
 
 export default function DetailCard({ user }) {
   const theme = useTheme();
@@ -127,14 +128,11 @@ export default function DetailCard({ user }) {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    mask="(99) 99999-9999"
-                    fullWidth
-                    label="Phone"
-                    value={user.phone || ''}
-                    disabled
-                    sx={{ ...theme.typography.customInput }}
-                  />
+                  <InputMask mask="(99) 99999-9999" value={user.phone || ''} disabled>
+                    {(inputProps) => (
+                      <TextField {...inputProps} label="Phone" fullWidth disabled sx={{ ...theme.typography.customInput }} />
+                    )}
+                  </InputMask>
                 </Grid>
 
                 <Grid item xs={12}>
