@@ -41,23 +41,32 @@ const STATUS_ICONS = {
   error: <ErrorOutlineOutlinedIcon color="info" fontSize="small" />
 };
 
-const mapPermissionToTreeItem = (groupId, perm) => ({
-  id: `perm-${groupId}-${perm.menu_name}`,
-  itemId: `perm-${groupId}-${perm.menu_name}`,
-  label: perm.menu_name,
-  type: 'menu',
-  groupId,
-  children: ['can_read', 'can_create', 'can_update', 'can_delete', 'can_secret'].map((key) => ({
-    id: `perm-${groupId}-${perm.menu_name}-${key}`,
-    itemId: `perm-${groupId}-${perm.menu_name}-${key}`,
-    label: key.replace('can_', '').toUpperCase(),
-    type: 'permission',
-    permissionKey: key,
-    checked: perm[key],
+// ✅ Ordem ajustada
+const mapPermissionToTreeItem = (groupId, perm) => {
+  const permissionOrder = ['can_create', 'can_read', 'can_update', 'can_delete', 'can_secret'];
+
+  return {
+    id: `perm-${groupId}-${perm.menu_name}`,
+    itemId: `perm-${groupId}-${perm.menu_name}`,
+    label: perm.menu_name,
+    type: 'menu',
     groupId,
-    menuName: perm.menu_name
-  }))
-});
+    children: permissionOrder.map((key) => {
+      const rawLabel = key.replace('can_', '');
+      const formattedLabel = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1).toLowerCase();
+      return {
+        id: `perm-${groupId}-${perm.menu_name}-${key}`,
+        itemId: `perm-${groupId}-${perm.menu_name}-${key}`,
+        label: formattedLabel,
+        type: 'permission',
+        permissionKey: key,
+        checked: perm[key],
+        groupId,
+        menuName: perm.menu_name
+      };
+    })
+  };
+};
 
 const mapGroupToTreeItem = (group) => ({
   id: `group-${group.id}`,
@@ -105,8 +114,8 @@ const getPermissionItemStyles = (theme, { isGroup = false, isPermission = false,
 
   if (isGroup) {
     base.fontWeight = 'bold';
-    base.backgroundColor = theme.palette.grey[700];
-    base.color = theme.palette.common.white;
+    base.backgroundColor = theme.palette.grey[700]; // <- corrigido aqui
+    base.color = theme.palette.common.white; // <- e aqui
   }
 
   if (isPermission) {
@@ -135,8 +144,16 @@ const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(props, r
             </TreeItemIconContainer>
             <Box {...getLabelProps()}>
               <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="caption">{label}</Typography>
-                <Switch size="small" checked={props.checked} onChange={() => togglePermission(groupId, menu_name, props.permissionKey)} />
+                <Typography variant="caption" component="span" sx={{ display: 'inline', whiteSpace: 'nowrap' }}>
+                  <span style={{ fontWeight: 700 }}>{label.slice(0, 1)}</span>
+                  {label.slice(1)}
+                </Typography>
+                <Switch
+                  size="small"
+                  checked={!!props.checked}
+                  onChange={() => togglePermission(groupId, menu_name, props.permissionKey)}
+                  inputProps={{ 'aria-label': `Toggle ${label}` }}
+                />
               </Stack>
             </Box>
           </TreeItemContent>
