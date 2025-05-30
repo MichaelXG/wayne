@@ -1,10 +1,15 @@
+// 📁 components/PermissionsTreeView.jsx
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Switch from '@mui/material/Switch';
+import axios from 'axios';
+import { Box, Grid, Stack, Paper, Typography, Tooltip, CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
+
+import MainCard from '../../ui-component/cards/MainCard';
+import PermissionTreeItem from './PermissionTreeItem';
+import { gridSpacing } from '../../store/constant';
+import { IconShieldCheck } from '@tabler/icons-react';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import ExpandCircleDownOutlinedIcon from '@mui/icons-material/ExpandCircleDownOutlined';
@@ -14,20 +19,8 @@ import HourglassBottomOutlinedIcon from '@mui/icons-material/HourglassBottomOutl
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DrawOutlinedIcon from '@mui/icons-material/DrawOutlined';
-
-import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
-import { useTreeItem } from '@mui/x-tree-view/useTreeItem';
-import { TreeItemContent, TreeItemRoot, TreeItemGroupTransition, TreeItemIconContainer } from '@mui/x-tree-view/TreeItem';
-import { TreeItemIcon } from '@mui/x-tree-view/TreeItemIcon';
-import { TreeItemProvider } from '@mui/x-tree-view/TreeItemProvider';
-
-import { usePermissionsGroups } from '../../contexts/PermissionsGroupsContext';
+import { API_ROUTES } from '../../routes/ApiRoutes';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { IconShieldCheck, IconShieldX } from '@tabler/icons-react';
-import { Grid, Tooltip, useTheme } from '@mui/material';
-import { useAuthGuard } from '../../hooks/useAuthGuard';
-import MainCard from '../../ui-component/cards/MainCard';
-import { gridSpacing } from '../../store/constant';
 
 const STATUS_ICONS = {
   focused: <AdjustIcon color="primary" fontSize="small" />,
@@ -38,51 +31,16 @@ const STATUS_ICONS = {
   editable: <EditOutlinedIcon color="warning" fontSize="small" />,
   editing: <DrawOutlinedIcon color="info" fontSize="small" />,
   loading: <HourglassBottomOutlinedIcon color="info" fontSize="small" />,
-  error: <ErrorOutlineOutlinedIcon color="info" fontSize="small" />
+  error: <ErrorOutlineOutlinedIcon color="info" fontSize="small" />,
+  modified: <ErrorOutlineOutlinedIcon color="warning" fontSize="small" />
 };
-
-// ✅ Ordem ajustada
-const mapPermissionToTreeItem = (groupId, perm) => {
-  const permissionOrder = ['can_create', 'can_read', 'can_update', 'can_delete', 'can_secret'];
-
-  return {
-    id: `perm-${groupId}-${perm.menu_name}`,
-    itemId: `perm-${groupId}-${perm.menu_name}`,
-    label: perm.menu_name,
-    type: 'menu',
-    groupId,
-    children: permissionOrder.map((key) => {
-      const rawLabel = key.replace('can_', '');
-      const formattedLabel = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1).toLowerCase();
-      return {
-        id: `perm-${groupId}-${perm.menu_name}-${key}`,
-        itemId: `perm-${groupId}-${perm.menu_name}-${key}`,
-        label: formattedLabel,
-        type: 'permission',
-        permissionKey: key,
-        checked: perm[key],
-        groupId,
-        menuName: perm.menu_name
-      };
-    })
-  };
-};
-
-const mapGroupToTreeItem = (group) => ({
-  id: `group-${group.id}`,
-  itemId: `group-${group.id}`,
-  label: group.name,
-  type: 'group',
-  children: group.permissions.map((perm) => mapPermissionToTreeItem(group.id, perm))
-});
 
 function StatusLegend() {
   const theme = useTheme();
-
   return (
     <Paper
       variant="outlined"
-      elevation={2}
+      elevation={0}
       sx={{
         padding: 2,
         background: theme.palette.grey[50],
@@ -104,139 +62,108 @@ function StatusLegend() {
   );
 }
 
-const getPermissionItemStyles = (theme, { isGroup = false, isPermission = false, status = {} } = {}) => {
-  const base = {
-    px: 1.5,
-    py: 0.5,
-    borderRadius: theme.shape.borderRadius,
-    textTransform: 'capitalize'
-  };
+// Função para converter array flat em árvore
+function buildTree(flatList) {
+  const lookup = {};
+  const rootItems = [];
 
-  if (isGroup) {
-    base.fontWeight = 'bold';
-    base.backgroundColor = theme.palette.grey[700]; // <- corrigido aqui
-    base.color = theme.palette.common.white; // <- e aqui
-  }
+  flatList.forEach((item) => {
+    lookup[item.id] = { ...item, children: [] };
+  });
 
-  if (isPermission) {
-    base.fontStyle = 'italic';
-    base.pl = 3;
-  }
+  flatList.forEach((item) => {
+    if (item.parentId) {
+      const parent = lookup[item.parentId];
+      if (parent) parent.children.push(lookup[item.id]);
+    } else {
+      rootItems.push(lookup[item.id]);
+    }
+  });
 
-  return base;
-};
-
-const PermissionTreeItem = React.forwardRef(function PermissionTreeItem(props, ref) {
-  const { id, itemId, label, disabled, children, groupId, menu_name, type, togglePermission, ...rest } = props;
-  const { getContextProviderProps, getRootProps, getContentProps, getLabelProps, getGroupTransitionProps, getIconContainerProps, status } =
-    useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
-  const theme = useTheme();
-  const isGroup = type === 'group';
-  const isPermission = type === 'menu';
-
-  if (type === 'permission') {
-    return (
-      <TreeItemProvider {...getContextProviderProps()}>
-        <TreeItemRoot {...getRootProps()}>
-          <TreeItemContent {...getContentProps()} sx={getPermissionItemStyles(theme, { isPermission: true })}>
-            <TreeItemIconContainer {...getIconContainerProps()}>
-              <TreeItemIcon status={status} />
-            </TreeItemIconContainer>
-            <Box {...getLabelProps()}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="caption" component="span" sx={{ display: 'inline', whiteSpace: 'nowrap' }}>
-                  <span style={{ fontWeight: 700 }}>{label.slice(0, 1)}</span>
-                  {label.slice(1)}
-                </Typography>
-                <Switch
-                  size="small"
-                  checked={!!props.checked}
-                  onChange={() => togglePermission(groupId, menu_name, props.permissionKey)}
-                  inputProps={{ 'aria-label': `Toggle ${label}` }}
-                />
-              </Stack>
-            </Box>
-          </TreeItemContent>
-        </TreeItemRoot>
-      </TreeItemProvider>
-    );
-  }
-
-  const styleProps = { isGroup, isPermission, status };
-
-  return (
-    <TreeItemProvider {...getContextProviderProps()}>
-      <TreeItemRoot {...getRootProps()}>
-        <TreeItemContent {...getContentProps()} sx={getPermissionItemStyles(theme, styleProps)}>
-          <TreeItemIconContainer {...getIconContainerProps()}>
-            <TreeItemIcon status={status} />
-          </TreeItemIconContainer>
-          <Box {...getLabelProps()}>
-            <Typography variant="body2" sx={{ color: 'inherit' }}>
-              {label}
-            </Typography>
-          </Box>
-        </TreeItemContent>
-        {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
-      </TreeItemRoot>
-    </TreeItemProvider>
-  );
-});
+  return rootItems;
+}
 
 export default function PermissionsTreeView() {
-  const { groups, setGroups, loadGroups } = usePermissionsGroups();
-  const [userData] = useLocalStorage('wayne-user-data', {});
-  const [loaded, setLoaded] = useState(false);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const theme = useTheme();
-  const checkingAuth = useAuthGuard();
+  const [expandedItems, setExpandedItems] = useState([]);
+  const [userData] = useLocalStorage('wayne-user-data', {});
+  const token = userData?.authToken || null;
 
-  const authIcon = !checkingAuth ? (
+  const fetchPermissionsTree = async () => {
+    try {
+      const res = await axios.get(`${API_ROUTES.PREMISSIONS_TREE}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const treeData = buildTree(res.data);
+      setItems(treeData);
+    } catch (error) {
+      console.error('Failed to fetch permissions tree:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (token) fetchPermissionsTree();
+  }, [token]);
+
+  const handleToggle = (groupId, menuName, permKey) => {
+    const toggleRecursive = (nodes) =>
+      nodes.map((node) => {
+        if (node.groupId === groupId && node.menu_name === menuName && node.permissionKey === permKey) {
+          return {
+            ...node,
+            checked: !node.checked,
+            status: { ...node.status, modified: true, icon: STATUS_ICONS.modified }
+          };
+        }
+        if (node.children) {
+          return { ...node, children: toggleRecursive(node.children) };
+        }
+        return node;
+      });
+
+    setItems((prev) => toggleRecursive(prev));
+  };
+
+  const authIcon = (
     <Tooltip title="User authenticated">
       <IconShieldCheck color={theme.palette.success.main} size={20} />
     </Tooltip>
-  ) : (
-    <Tooltip title="Authentication failed">
-      <IconShieldX color={theme.palette.error.main} size={20} />
-    </Tooltip>
   );
 
-  useEffect(() => {
-    if (!loaded && userData?.authToken) {
-      loadGroups(userData.authToken);
-      setLoaded(true);
-    }
-  }, [loaded, userData, loadGroups]);
-
-  const handleToggle = (groupId, menuName, permKey) => {
-    setGroups((prev) =>
-      prev.map((group) =>
-        group.id === groupId
-          ? {
-              ...group,
-              permissions: group.permissions.map((perm) => (perm.menu_name === menuName ? { ...perm, [permKey]: !perm[permKey] } : perm))
-            }
-          : group
-      )
-    );
-  };
-
-  const treeItems = groups.map(mapGroupToTreeItem);
-
   return (
-    <MainCard title="Permissions Groups" secondary={authIcon}>
+    <MainCard
+      title="Permissions Groups"
+      secondary={authIcon}
+      contentSX={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+    >
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12}>
           <Stack spacing={6} direction={{ md: 'row', xs: 'column' }}>
-            <Box sx={{ flex: 1, minHeight: 200, minWidth: 350 }}>
-              <RichTreeView
-                items={treeItems}
-                defaultExpandedItems={treeItems.map((g) => g.id)}
-                slots={{
-                  item: (props) => <PermissionTreeItem {...props} togglePermission={handleToggle} />
-                }}
-                isItemDisabled={(item) => Boolean(item?.disabled)}
-                isItemEditable={(item) => Boolean(item?.editable)}
-              />
+            <Box sx={{ flex: 1, minHeight: 200, minWidth: 300 }}>
+              {loading ? (
+                <Stack alignItems="center" justifyContent="center" height="100%">
+                  <CircularProgress />
+                </Stack>
+              ) : (
+                <RichTreeView
+                  items={items}
+                  getItemId={(item) => item.id}
+                  getItemLabel={(item) => item.label}
+                  getItemChildren={(item) => item.children || []}
+                  // defaultExpandedItems={[]} // collapsed by default
+                  // expandedItems={expandedItems}
+                  // onExpandedItemsChange={setExpandedItems}
+                  slots={{
+                    item: (props) => <PermissionTreeItem {...props} togglePermission={handleToggle} />
+                  }}
+                  // isItemDisabled={(item) => Boolean(item?.disabled)}
+                  // isItemEditable={(item) => Boolean(item?.editable)}
+                />
+              )}
             </Box>
             <Box sx={{ flex: '0 0 auto', minWidth: 200 }}>
               <StatusLegend />
@@ -247,4 +174,5 @@ export default function PermissionsTreeView() {
     </MainCard>
   );
 }
+
 PermissionsTreeView.displayName = 'PermissionsTreeView';

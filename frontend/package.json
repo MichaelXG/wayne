@@ -20,7 +20,7 @@
     "@mui/material": "^6.4.8",
     "@mui/system": "^5.15.14",
     "@mui/x-data-grid": "^7.28.0",
-    "@mui/x-tree-view": "^8.4.0",
+    "@mui/x-tree-view": "^8.5.0",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
     "@tabler/icons-react": "^3.31.0",

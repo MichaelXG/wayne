@@ -16,7 +16,6 @@ import { gridSpacing } from 'store/constant';
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 import TotalGrowthBarChart from '../../../ui-component/cards/Skeleton/TotalGrowthBarChart';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-import PermissionsList from '../../permissions/List';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -64,12 +63,6 @@ export default function Dashboard() {
           <Grid size={{ xs: 12, md: 4 }}>
             <PopularCard isLoading={isLoading} />
           </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid size={12}>
-        <Grid container spacing={gridSpacing}>
-          <PermissionsList />
         </Grid>
       </Grid>
     </Grid>

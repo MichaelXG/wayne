@@ -800,22 +800,22 @@
     "@babel/runtime" "^7.25.7"
     "@mui/utils" "^5.16.6 || ^6.0.0 || ^7.0.0"
 
-"@mui/x-internals@8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-internals/-/x-internals-8.4.0.tgz#593b36cab7050fe1e4ca8dc3ce455349a3edae5d"
-  integrity sha512-Z7FCahC4MLfTVzEwnKOB7P1fiR9DzFuMzHOPRNaMXc/rsS7unbtBKAG94yvsRzReCyjzZUVA7h37lnQ1DoPKJw==
+"@mui/x-internals@8.5.0":
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/@mui/x-internals/-/x-internals-8.5.0.tgz#f1fbeb02804459ebc46d57b61a89adbb99d9d105"
+  integrity sha512-Ef4KJij1pBGk6/xILyVZHf76tcuRpJIX30k4Ghklsd5QJujZ9ENCGAjvd7aWRAFAs5p3ffn0H8UDESoIcroj1Q==
   dependencies:
     "@babel/runtime" "^7.27.1"
     "@mui/utils" "^7.0.2"
 
-"@mui/x-tree-view@^8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-tree-view/-/x-tree-view-8.4.0.tgz#3771073533f4b732605dc4e3828ae7b5372ee063"
-  integrity sha512-TsweCJ2fazVIvVdNq7KuY7BEInPMPeWCCxG4XxHyoN3GdSa/8a+S4dH6iww3yaYE5nBXZQV3wZm940W4eV1uYw==
+"@mui/x-tree-view@^8.5.0":
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/@mui/x-tree-view/-/x-tree-view-8.5.0.tgz#30945c873bd45ff41028250acb644a66936b349c"
+  integrity sha512-Qx8aZTW8QUvRtxLu5XdkXxEKTT3daQVKkkae5o11w6zS5JBpMu1f3N/5FjMuo66/0S67nCGWjlaU5GSxtsL0YQ==
   dependencies:
     "@babel/runtime" "^7.27.1"
     "@mui/utils" "^7.0.2"
-    "@mui/x-internals" "8.4.0"
+    "@mui/x-internals" "8.5.0"
     "@types/react-transition-group" "^4.4.12"
     clsx "^2.1.1"
     prop-types "^15.8.1"

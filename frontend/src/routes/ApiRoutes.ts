@@ -28,5 +28,6 @@ export const API_ROUTES = {
   CARRIER: `${API_BASE_URL}/carrier/`,
   ADDRESS: `${API_BASE_URL}/address/`,
   GROUPS: `${API_BASE_URL}/permissions/groups/`,
-  MY_PERMISSIONS: `${API_BASE_URL}/permissions/my-permissions/`
+  MY_PERMISSIONS: `${API_BASE_URL}/permissions/my-permissions/`,
+  PREMISSIONS_TREE: `${API_BASE_URL}/permissions/treeview-permissions/`
 };
