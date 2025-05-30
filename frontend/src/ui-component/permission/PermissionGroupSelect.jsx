@@ -30,7 +30,7 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
     fetchGroups();
   }, []);
 
-  const selectedGroups = groups.filter((group) => value.includes(group.id));
+  const selectedGroups = groups.filter((group) => value.some((v) => (typeof v === 'object' ? v.id === group.id : v === group.id)));
 
   const handleChange = (event, newValue) => {
     const selectedIds = newValue.map((g) => g.id);
@@ -60,6 +60,9 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
             {...params}
             label={label}
             placeholder="Select groups"
+            inputRef={ref}
+            error={props.error}
+            helperText={props.helperText}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -69,7 +72,6 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
                 </>
               )
             }}
-            inputRef={ref}
           />
         )}
         {...props}

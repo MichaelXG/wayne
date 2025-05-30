@@ -40,6 +40,8 @@ export default function DetailCard({ user }) {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
+        px: { xs: 2, md: 4 },
+        py: { xs: 4, md: 6 },
         backgroundColor: theme.palette.background.default
       })}
     >

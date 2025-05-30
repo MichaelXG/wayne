@@ -79,6 +79,8 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
+          px: { xs: 2, md: 4 },
+          py: { xs: 4, md: 6 },
           backgroundColor: theme.palette.background.default
         }}
       >
@@ -261,7 +263,15 @@ const EditCard = forwardRef(({ user, onSubmit }, ref) => {
                       name="groups"
                       control={control}
                       rules={{ required: 'At least one group is required' }}
-                      render={({ field, fieldState }) => <PermissionGroupSelect value={field.value} onChange={field.onChange} />}
+                      render={({ field, fieldState }) => (
+                        <PermissionGroupSelect
+                          name={field.name}
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
+                        />
+                      )}
                     />
                   </Grid>
                 </Grid>
