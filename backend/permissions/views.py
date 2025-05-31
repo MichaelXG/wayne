@@ -1,4 +1,6 @@
-from rest_framework import viewsets, status, permissions
+# 📁 permissions/views.py
+
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
@@ -43,21 +45,17 @@ class MyPermissionsView(APIView):
     def get(self, request):
         user = request.user
         username = f"{user.first_name} {user.last_name}".strip()
-
         group_list = []
         merged = {}
 
         for group in user.groups.prefetch_related('permissions').all():
-            group_list.append({
-                "id": group.id,
-                "name": group.name
-            })
+            group_list.append({"id": group.id, "name": group.name})
 
             for perm in group.permissions.all():
                 key = perm.menu_name
                 if key not in merged:
                     merged[key] = {
-                        "menu_name": perm.menu_name,
+                        "menu_name": key,
                         "can_create": perm.can_create,
                         "can_read": perm.can_read,
                         "can_update": perm.can_update,
@@ -66,7 +64,7 @@ class MyPermissionsView(APIView):
                     }
                 else:
                     merged[key]["can_create"] |= perm.can_create
-                    merged[key]["can_read"] |= perm.can_read
+                    merged[key]["can_read"]   |= perm.can_read
                     merged[key]["can_update"] |= perm.can_update
                     merged[key]["can_delete"] |= perm.can_delete
                     merged[key]["can_secret"] |= perm.can_secret
@@ -105,18 +103,17 @@ class PermissionsTreeView(APIView):
 
             # Agrupar permissões por menu
             menu_map = {}
-
             for perm in group.permissions.all():
                 menu_name = perm.menu_name
                 if menu_name not in menu_map:
-                    menu_id = f"menu-{group.id}-{menu_name}"
                     menu_map[menu_name] = {
-                        "id": menu_id,
+                        "id": f"menu-{group.id}-{menu_name}",
                         "label": menu_name.capitalize(),
                         "type": "menu",
                         "children": []
                     }
 
+                # Adicionar permissões individuais
                 for action in ["can_create", "can_read", "can_update", "can_delete", "can_secret"]:
                     menu_map[menu_name]["children"].append({
                         "id": f"perm-{group.id}-{menu_name}-{action}",
@@ -141,7 +138,7 @@ class PermissionsTreeView(APIView):
 @permission_classes([IsAuthenticated])
 def save_group_permissions(request):
     """
-    Salva as permissões (create, read, update...) para um determinado grupo.
+    Atualiza permissões (create, read, update...) de um grupo específico.
     Espera:
     {
       "groupId": 1,
@@ -151,14 +148,13 @@ def save_group_permissions(request):
           "can_create": true,
           "can_read": false,
           ...
-        },
-        ...
+        }
       ]
     }
     """
     data = request.data
     group_id = data.get('groupId')
-    permissions = data.get('permissions', [])
+    permissions_data = data.get('permissions', [])
 
     if not group_id:
         return Response({"detail": "groupId is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -169,19 +165,25 @@ def save_group_permissions(request):
         return Response({"detail": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
 
     with transaction.atomic():
-        # Remove permissões antigas
-        Permission.objects.filter(group=group).delete()
+        # Atualiza ou cria permissões conforme menu_name
+        updated_permissions = []
+        for perm_data in permissions_data:
+            menu_name = perm_data.get("menu_name", "").lower()
 
-        # Cria novas permissões
-        for perm_data in permissions:
-            Permission.objects.create(
-                group=group,
-                menu_name=perm_data.get('menu_name', '').lower(),
-                can_create=perm_data.get('can_create', False),
-                can_read=perm_data.get('can_read', False),
-                can_update=perm_data.get('can_update', False),
-                can_delete=perm_data.get('can_delete', False),
-                can_secret=perm_data.get('can_secret', False),
+            perm_obj, created = Permission.objects.update_or_create(
+                menu_name=menu_name,
+                groups=group,  # filtro via m2m
+                defaults={
+                    "can_create": perm_data.get("can_create", False),
+                    "can_read": perm_data.get("can_read", False),
+                    "can_update": perm_data.get("can_update", False),
+                    "can_delete": perm_data.get("can_delete", False),
+                    "can_secret": perm_data.get("can_secret", False),
+                }
             )
+            updated_permissions.append(perm_obj)
 
-    return Response({"detail": "Permissions saved successfully"}, status=status.HTTP_200_OK)
+        # Garante que apenas as permissões recém-atualizadas estejam vinculadas
+        group.permissions.set(updated_permissions)
+
+    return Response({"detail": "Permissions updated successfully"}, status=status.HTTP_200_OK)

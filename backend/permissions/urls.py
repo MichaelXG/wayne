@@ -22,5 +22,5 @@ urlpatterns = [
     path("treeview-permissions/", PermissionsTreeView.as_view(), name="treeview-permissions"),
 
     # 💾 Endpoint para salvar permissões de um grupo
-    path('permissions/save/', save_group_permissions, name='save-group-permissions'),
+    path('save/', save_group_permissions, name='save-group-permissions'),
 ]

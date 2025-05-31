@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -21,6 +21,7 @@ import { useAuthGuard } from '../../hooks/useAuthGuard';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
+import DynamicModal from '../../ui-component/modal/DynamicModal';
 
 export default function PermissionsEdit() {
   const checkingAuth = useAuthGuard();
@@ -31,6 +32,8 @@ export default function PermissionsEdit() {
   const [selectedGroupId, setSelectedGroupId] = useState('');
   const [menus, setMenus] = useState([]);
   const [form, setForm] = useState({});
+  const [initialForm, setInitialForm] = useState({});
+  const [noChangesModal, setNoChangesModal] = useState(false);
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -57,10 +60,13 @@ export default function PermissionsEdit() {
             transformed[menu.label.toLowerCase()] = permObj;
           });
           setForm(transformed);
+          setInitialForm(transformed); // Salva estado inicial
         }
       });
     }
   }, [selectedGroupId]);
+
+  const deepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
   const handleToggle = (menu, action) => {
     setForm((prev) => ({
@@ -73,6 +79,11 @@ export default function PermissionsEdit() {
   };
 
   const handleSubmit = () => {
+    if (deepEqual(form, initialForm)) {
+      setNoChangesModal(true);
+      return;
+    }
+
     const payload = {
       groupId: selectedGroupId,
       permissions: Object.entries(form).map(([menu, actions]) => ({
@@ -117,7 +128,12 @@ export default function PermissionsEdit() {
       <Box p={2}>
         <FormControl sx={{ mb: 3, width: 300 }}>
           <InputLabel id="group-select-label">Groups</InputLabel>
-          <Select labelId="group-select-label" value={selectedGroupId} label="Selected Group" onChange={(e) => setSelectedGroupId(e.target.value)}>
+          <Select
+            labelId="group-select-label"
+            value={selectedGroupId}
+            label="Selected Group"
+            onChange={(e) => setSelectedGroupId(e.target.value)}
+          >
             {groups.map((g) => (
               <MenuItem key={g.id} value={g.id}>
                 {g.name}
@@ -132,6 +148,7 @@ export default function PermissionsEdit() {
           <Box key={menu.id} sx={{ mb: 4 }}>
             <Card variant="outlined" sx={{ p: 2 }}>
               <CardHeader title={menu.label} subheader="Manage permissions for this menu" />
+              <Divider sx={{ mb: 2 }} />
               <FormGroup row sx={{ mt: 2 }}>
                 {menu.children.map((perm) => (
                   <FormControlLabel
@@ -150,6 +167,17 @@ export default function PermissionsEdit() {
           </Box>
         ))}
       </Box>
+
+      <DynamicModal
+        open={noChangesModal}
+        onClose={() => setNoChangesModal(false)}
+        onSubmit={() => setNoChangesModal(false)}
+        title="No Changes Detected"
+        description="You haven’t changed anything. There’s nothing to save."
+        type="warning"
+        mode="confirm"
+        submitLabel="OK"
+      />
     </DefaultLayout>
   );
 }
