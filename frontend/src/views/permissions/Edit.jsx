@@ -34,6 +34,8 @@ export default function PermissionsEdit() {
   const [form, setForm] = useState({});
   const [initialForm, setInitialForm] = useState({});
   const [noChangesModal, setNoChangesModal] = useState(false);
+  const [confirmSaveModal, setConfirmSaveModal] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState(false);
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -60,7 +62,7 @@ export default function PermissionsEdit() {
             transformed[menu.label.toLowerCase()] = permObj;
           });
           setForm(transformed);
-          setInitialForm(transformed); // Salva estado inicial
+          setInitialForm(transformed); // Save initial state
         }
       });
     }
@@ -78,12 +80,7 @@ export default function PermissionsEdit() {
     }));
   };
 
-  const handleSubmit = () => {
-    if (deepEqual(form, initialForm)) {
-      setNoChangesModal(true);
-      return;
-    }
-
+  const confirmAndSubmit = () => {
     const payload = {
       groupId: selectedGroupId,
       permissions: Object.entries(form).map(([menu, actions]) => ({
@@ -94,8 +91,24 @@ export default function PermissionsEdit() {
 
     axios
       .post(API_ROUTES.SAVE_PERMISSIONS, payload, headers)
-      .then(() => alert('Permissões atualizadas com sucesso'))
-      .catch((err) => console.error('Erro ao salvar permissões', err));
+      .then(() => {
+        alert('Permissions successfully updated.');
+        setInitialForm(form); // update reference after save
+      })
+      .catch((err) => console.error('Error saving permissions', err))
+      .finally(() => {
+        setConfirmSaveModal(false);
+        setPendingSubmit(false);
+      });
+  };
+
+  const handleSubmit = () => {
+    if (deepEqual(form, initialForm)) {
+      setNoChangesModal(true);
+    } else {
+      setConfirmSaveModal(true);
+      setPendingSubmit(true);
+    }
   };
 
   const breadcrumbs = useMemo(
@@ -177,6 +190,20 @@ export default function PermissionsEdit() {
         type="warning"
         mode="confirm"
         submitLabel="OK"
+      />
+
+      <DynamicModal
+        open={confirmSaveModal}
+        onClose={() => {
+          setConfirmSaveModal(false);
+          setPendingSubmit(false);
+        }}
+        onSubmit={confirmAndSubmit}
+        title="Confirm Changes"
+        description="You have made changes to the permissions. Do you want to save them?"
+        type="success"
+        mode="confirm"
+        submitLabel="Save"
       />
     </DefaultLayout>
   );
