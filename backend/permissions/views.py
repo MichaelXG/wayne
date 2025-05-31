@@ -2,9 +2,11 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
+from django.db import transaction
 
-from .models import PermissionGroup
+from .models import PermissionGroup, Permission
 from .serializers import PermissionGroupSerializer
 
 User = get_user_model()
@@ -63,9 +65,8 @@ class MyPermissionsView(APIView):
                         "can_secret": perm.can_secret
                     }
                 else:
-                    # Se qualquer grupo tiver permissão, ela será true
                     merged[key]["can_create"] |= perm.can_create
-                    merged[key]["can_read"]   |= perm.can_read
+                    merged[key]["can_read"] |= perm.can_read
                     merged[key]["can_update"] |= perm.can_update
                     merged[key]["can_delete"] |= perm.can_delete
                     merged[key]["can_secret"] |= perm.can_secret
@@ -76,6 +77,10 @@ class MyPermissionsView(APIView):
             "permissions": list(merged.values())
         }, status=status.HTTP_200_OK)
 
+
+# ========================================================
+# 🌳 View: Estrutura de permissões para árvore RichTreeView
+# ========================================================
 class PermissionsTreeView(APIView):
     """
     Returns permission groups structured for RichTreeView:
@@ -127,3 +132,56 @@ class PermissionsTreeView(APIView):
             tree_data.append(group_node)
 
         return Response(tree_data, status=status.HTTP_200_OK)
+
+
+# ========================================================
+# 💾 View: Salvar permissões atualizadas de um grupo
+# ========================================================
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def save_group_permissions(request):
+    """
+    Salva as permissões (create, read, update...) para um determinado grupo.
+    Espera:
+    {
+      "groupId": 1,
+      "permissions": [
+        {
+          "menu_name": "users",
+          "can_create": true,
+          "can_read": false,
+          ...
+        },
+        ...
+      ]
+    }
+    """
+    data = request.data
+    group_id = data.get('groupId')
+    permissions = data.get('permissions', [])
+
+    if not group_id:
+        return Response({"detail": "groupId is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        group = PermissionGroup.objects.get(id=group_id)
+    except PermissionGroup.DoesNotExist:
+        return Response({"detail": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    with transaction.atomic():
+        # Remove permissões antigas
+        Permission.objects.filter(group=group).delete()
+
+        # Cria novas permissões
+        for perm_data in permissions:
+            Permission.objects.create(
+                group=group,
+                menu_name=perm_data.get('menu_name', '').lower(),
+                can_create=perm_data.get('can_create', False),
+                can_read=perm_data.get('can_read', False),
+                can_update=perm_data.get('can_update', False),
+                can_delete=perm_data.get('can_delete', False),
+                can_secret=perm_data.get('can_secret', False),
+            )
+
+    return Response({"detail": "Permissions saved successfully"}, status=status.HTTP_200_OK)
