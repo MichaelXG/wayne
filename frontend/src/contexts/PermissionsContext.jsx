@@ -6,7 +6,10 @@ import { isTokenValid } from '../utils/auth';
 import { useI18n } from '../contexts/I18nContext';
 import { Snackbar, Alert } from '@mui/material';
 
-const PermissionsContext = createContext();
+const PermissionsContext = createContext({
+  permissions: [],
+  hasPermission: () => false
+});
 
 export const PermissionsProvider = ({ children }) => {
   const [permissions, setPermissions] = useState([]);
@@ -52,7 +55,6 @@ export const PermissionsProvider = ({ children }) => {
       const response = await axios.get(API_ROUTES.PERMISSIONS.MY, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
 
       const perms = response.data.permissions || [];
       setPermissions(perms);

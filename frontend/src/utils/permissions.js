@@ -1,10 +1,12 @@
 export const canAccess = (item, userPermissions) => {
   if (!item.permission) return true;
 
+  if (!Array.isArray(userPermissions)) return false; // <- ✅ Garantia contra erro
+
   const perm = userPermissions.find((p) => p.menu_name === item.permission.menu);
   if (!perm) return false;
 
-  return !!perm[item.permission.action];
+  return !!perm.permissions?.[item.permission.action];
 };
 
 
