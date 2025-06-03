@@ -1,7 +1,9 @@
 import React, { useEffect, useState, forwardRef } from 'react';
+import axios from 'axios';
 import { Autocomplete, TextField, Checkbox, CircularProgress } from '@mui/material';
 import axiosInstance from '../../services/axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
   { value = [], onChange, name = 'groups', label = 'Permission Groups', error, helperText, ...props },
@@ -10,11 +12,17 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [userData] = useLocalStorage('wayne-user-data', {});
+  const token = userData?.authToken || null;
+
   useEffect(() => {
     const fetchGroups = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get(API_ROUTES.GROUPS);
+        const response = await axios.get(API_ROUTES.PERMISSIONS.GROUPS_ACTIVE);
+
+        console.log('✅ Resposta da API GROUPS_ACTIVE:', response.data);
+
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
         setGroups(data);
       } catch (error) {
@@ -27,9 +35,7 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
     fetchGroups();
   }, []);
 
-  const selectedGroups = groups.filter((group) =>
-    value.some((v) => (typeof v === 'object' ? v.id === group.id : v === group.id))
-  );
+  const selectedGroups = groups.filter((group) => value.some((v) => (typeof v === 'object' ? v.id === group.id : v === group.id)));
 
   const handleChange = (event, newValue) => {
     const selectedIds = newValue.map((g) => g.id);
@@ -57,12 +63,12 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
       renderInput={(params) => (
         <TextField
           {...params}
-          label={label} // ✅ Garante que o label sempre seja renderizado corretamente
+          label={label}
           inputRef={ref}
           placeholder="Select groups"
           error={error}
           helperText={helperText}
-          InputLabelProps={{ shrink: true }} // ✅ Garante que o label não fique sobreposto
+          InputLabelProps={{ shrink: true }}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

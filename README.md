@@ -23,6 +23,12 @@ docker system df
 docker-compose up --build -d
 
 
+
+ docker network prune
+ docker system prune -a --volumes
+ docker-compose down -v  # Remove todos os containers e volumes
+ docker-compose up --build  # Reconstrói e inicia o projeto
+
 fake.store.2025@gmail.com
 fake.store.2025@project.full.stack
 
@@ -31,6 +37,14 @@ fake.store.2025@project.full.stack
 fake.store.2025@FS
 
 
+docker-compose down
+docker container prune -f
+docker image prune -a -f
+docker volume prune -f
+docker builder prune -a -f
+docker network prune -f
+docker system df
+docker-compose up --build -d
 
 
 

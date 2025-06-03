@@ -48,3 +48,17 @@
 /backend/permissions/__pycache__
 /backend/permissions/migrations
 /media/users/avatars
+/backend/venv
+/backend/db
+/backend/scripts/wallet/migrations
+/backend/scripts/products/migrations
+/backend/scripts/permissions/migrations
+/backend/scripts/orders/migrations
+/backend/scripts/address/migrations
+/backend/scripts/accounts/migrations
+/backend/scripts/carrier/migrations
+/carrier/migrations
+/orders/migrations
+/permissions/migrations
+/products/migrations
+/wallet/migrations

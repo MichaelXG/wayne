@@ -22,43 +22,47 @@ export const PermissionsGroupsProvider = ({ children }) => {
 
   const loadGroups = async (token) => {
     if (!token) {
-      setGroups([]);
+      resetState();
       return;
     }
 
     const valid = await isTokenValid(token);
     if (!valid) {
-      setGroups([]);
+      resetState();
       setUserData({});
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.get(API_ROUTES.GROUPS, {
+      const response = await axios.get(API_ROUTES.PERMISSIONS.GROUPS, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      const groupsData = response.data || [];
-      setGroups(groupsData);
+      const data = Array.isArray(response.data) ? response.data : response.data.results || [];
+      setGroups(data);
 
       setSnackbar({
         open: true,
-        message: locale.UI.PERMISSIONS.LOADED || 'Permissions Groups loaded successfully',
+        message: locale?.UI?.PERMISSIONS?.LOADED || 'Permission groups loaded successfully.',
         severity: 'success'
       });
     } catch (error) {
-      console.error(locale.LOG_MESSAGES.ERROR_LOADING, error);
-      setGroups([]);
+      console.error(locale?.LOG_MESSAGES?.ERROR_LOADING || 'Error loading permissions groups:', error);
+      resetState();
 
       setSnackbar({
         open: true,
-        message: locale.UI.PERMISSIONS.LOAD_ERROR || 'Error loading permissions groups',
+        message: locale?.UI?.PERMISSIONS?.LOAD_ERROR || 'Error loading permission groups.',
         severity: 'error'
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const resetState = () => {
+    setGroups([]);
   };
 
   const handleSnackbarClose = () => {
@@ -67,7 +71,7 @@ export const PermissionsGroupsProvider = ({ children }) => {
 
   const logout = () => {
     setUserData({});
-    setGroups([]);
+    resetState();
   };
 
   return (

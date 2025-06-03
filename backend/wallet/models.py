@@ -15,7 +15,7 @@ class Wallet(models.Model):
     ]
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        'accounts.CustomUser',
         on_delete=models.CASCADE,
         related_name='wallets'
     )

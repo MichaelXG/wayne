@@ -27,14 +27,15 @@ export const API_ROUTES = {
   WALLETS_VERIFY_CSC: (id: string | number) => `${API_BASE_URL}/wallets/${id}/verify-csc/`,
   CARRIER: `${API_BASE_URL}/carrier/`,
   ADDRESS: `${API_BASE_URL}/address/`,
-  GROUPS: `${API_BASE_URL}/permissions/groups/`,
-  MY_PERMISSIONS: `${API_BASE_URL}/permissions/my-permissions/`,
-  PREMISSIONS_TREE: `${API_BASE_URL}/permissions/treeview-permissions/`,
-  SAVE_PERMISSIONS: `${API_BASE_URL}/permissions/save/`,
 
+  PERMISSIONS: {
+    GROUPS: `${API_BASE_URL}/permissions/groups/`,
+    GROUPS_ACTIVE: `${API_BASE_URL}/permissions/groups/`,
+    MY: `${API_BASE_URL}/permissions/my/`,
+    TREE: `${API_BASE_URL}/permissions/treeview/`,
+    SAVE: `${API_BASE_URL}/permissions/save/`
+  }
 };
-
-
 
 // export const API_BASE_URL = import.meta.env.VITE_PUBLIC_API_BASE_URL;
 

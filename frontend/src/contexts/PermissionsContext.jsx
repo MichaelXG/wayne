@@ -49,9 +49,10 @@ export const PermissionsProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.get(API_ROUTES.MY_PERMISSIONS, {
+      const response = await axios.get(API_ROUTES.PERMISSIONS.MY, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      
 
       const perms = response.data.permissions || [];
       setPermissions(perms);

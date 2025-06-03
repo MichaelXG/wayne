@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Product
 from .serializers import ProductSerializer
-from permissions.permissions import GroupMenuPermission
+
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     """
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated, GroupMenuPermission]
+    permission_classes = [IsAuthenticated]
     menu_name = 'products'
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
@@ -67,6 +67,6 @@ class ProductDetailView(RetrieveAPIView):
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated, GroupMenuPermission]
+    permission_classes = [IsAuthenticated]
     menu_name = 'products'
     lookup_field = 'id'

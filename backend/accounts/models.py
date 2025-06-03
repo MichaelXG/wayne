@@ -89,10 +89,12 @@ class CustomUser(AbstractUser):
 
     groups = models.ManyToManyField(
         PermissionGroup,
-        related_name="custom_users",
-        blank=True
+        related_name='customuser_groups',  # ✅ Evita conflito com UserPermission
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups',
     )
-
+    
     inserted_by = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="inserted_users")
     inserted_in = models.DateTimeField(auto_now_add=True)
     modified_by = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="modified_users")

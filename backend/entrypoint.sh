@@ -13,9 +13,9 @@ trap 'log_error "❌ Ocorreu um erro na execução do script!"' ERR
 export DJANGO_SETTINGS_MODULE=wayne_backend.settings
 log_info "Starting entry script..."
 
-FORCE_CLEAN="${FORCE_CLEAN:-false}"
+FORCE_CLEAN=${FORCE_CLEAN:-false}
 
-if [[ "$FORCE_CLEAN" == "true" ]]; then
+if [[ $FORCE_CLEAN == true ]]; then
     log_info "Removing all Django migration files..."
     find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
     find . -path "*/migrations/*.pyc" -delete
@@ -39,12 +39,16 @@ pip install --no-cache-dir --root-user-action=ignore -r /app/requirements.txt
 sleep 1
 
 generate_migration() {
-    app="$1"
-    log_info "Generating migrations for ${app}..."
-    python3 manage.py makemigrations "$app"
+    local app="$1"
+    if python3 manage.py makemigrations "$app"; then
+        log_success "✔️ Migrations generated for $app"
+    else
+        log_warn "⚠️ Skipped $app (maybe not installed or has no changes)"
+    fi
 }
 
-apps=(accounts products orders wallet address carrier permissions)
+apps=("address" "accounts" "permissions" "orders"  "wallet" "products" "carrier" )
+
 for app in "${apps[@]}"; do
     generate_migration "$app"
 done
@@ -101,7 +105,9 @@ run_management_command() {
     python3 manage.py "$cmd"
 }
 
-run_management_command setup_permissions "Importing permissions"
+run_management_command load_groups "Importing groups"
+run_management_command load_menus "Importing menus"
+run_management_command load_permissions "Importing permissions"
 run_management_command import_products "Importing products from local JSON"
 run_management_command import_carriers "Importing carriers from AfterShip API"
 log_success "All import tasks completed!"

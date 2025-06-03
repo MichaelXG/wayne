@@ -1,8 +1,8 @@
 #!/bin/bash
 # ✅ Como usar:
 # Dê permissão:
-#   chmod +x clean-project.sh
-#   ./clean-project.sh
+#   chmod +x scripts/clean-project.sh
+#   ./scripts/clean-project.sh
 
 echo "🚀 Iniciando limpeza de dependências e arquivos temporários..."
 

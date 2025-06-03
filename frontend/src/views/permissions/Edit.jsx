@@ -12,7 +12,8 @@ import {
   Divider,
   Card,
   CardHeader,
-  Stack
+  Stack,
+  CircularProgress
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DefaultLayout from '../../layout/DefaultLayout';
@@ -36,35 +37,48 @@ export default function PermissionsEdit() {
   const [noChangesModal, setNoChangesModal] = useState(false);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
+  const [isLoadingGroupData, setIsLoadingGroupData] = useState(false);
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
-    axios.get(API_ROUTES.GROUPS, headers).then((res) => {
-      setGroups(res.data);
-    });
+    axios
+      .get(API_ROUTES.PERMISSIONS.GROUPS, headers)
+      .then((res) => {
+        setGroups(Array.isArray(res.data) ? res.data : []);
+      })
+      .catch((err) => {
+        console.error('Failed to load groups', err);
+        setGroups([]);
+      });
   }, [token]);
 
   useEffect(() => {
     if (selectedGroupId) {
-      axios.get(API_ROUTES.PREMISSIONS_TREE, headers).then((res) => {
-        const groupNode = res.data.find((g) => g.id === `group-${selectedGroupId}`);
-        if (groupNode) {
-          const newMenus = groupNode.children || [];
-          setMenus(newMenus);
+      setIsLoadingGroupData(true);
+      axios
+        .get(API_ROUTES.PERMISSIONS.TREE, headers)
+        .then((res) => {
+          const groupNode = res.data.find((g) => g.id === `group-${selectedGroupId}`);
+          if (groupNode) {
+            const newMenus = groupNode.children || [];
+            setMenus(newMenus);
 
-          const transformed = {};
-          newMenus.forEach((menu) => {
-            const permObj = {};
-            menu.children.forEach((perm) => {
-              permObj[perm.permissionKey] = perm.checked;
+            const transformed = {};
+            newMenus.forEach((menu) => {
+              const permObj = {};
+              menu.children.forEach((perm) => {
+                permObj[perm.permissionKey] = perm.checked;
+              });
+              transformed[menu.label.toLowerCase()] = permObj;
             });
-            transformed[menu.label.toLowerCase()] = permObj;
-          });
-          setForm(transformed);
-          setInitialForm(transformed); // Save initial state
-        }
-      });
+            setForm(transformed);
+            setInitialForm(transformed);
+          }
+        })
+        .finally(() => {
+          setIsLoadingGroupData(false);
+        });
     }
   }, [selectedGroupId]);
 
@@ -90,10 +104,10 @@ export default function PermissionsEdit() {
     };
 
     axios
-      .post(API_ROUTES.SAVE_PERMISSIONS, payload, headers)
+      .post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
       .then(() => {
         alert('Permissions successfully updated.');
-        setInitialForm(form); // update reference after save
+        setInitialForm(form);
       })
       .catch((err) => console.error('Error saving permissions', err))
       .finally(() => {
@@ -148,37 +162,43 @@ export default function PermissionsEdit() {
             onChange={(e) => setSelectedGroupId(e.target.value)}
           >
             {groups.map((g) => (
-              <MenuItem key={g.id} value={g.id}>
-                {g.name}
-              </MenuItem>
-            ))}
+                <MenuItem key={g.id} value={g.id}>
+                  {g.name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
 
         <Divider sx={{ mb: 2 }} />
 
-        {menus.map((menu) => (
-          <Box key={menu.id} sx={{ mb: 4 }}>
-            <Card variant="outlined" sx={{ p: 2 }}>
-              <CardHeader title={menu.label} subheader="Manage permissions for this menu" />
-              <Divider sx={{ mb: 2 }} />
-              <FormGroup row sx={{ mt: 2 }}>
-                {menu.children.map((perm) => (
-                  <FormControlLabel
-                    key={perm.id}
-                    control={
-                      <Checkbox
-                        checked={form[menu.label.toLowerCase()]?.[perm.permissionKey] || false}
-                        onChange={() => handleToggle(menu.label.toLowerCase(), perm.permissionKey)}
-                      />
-                    }
-                    label={perm.label}
-                  />
-                ))}
-              </FormGroup>
-            </Card>
+        {isLoadingGroupData ? (
+          <Box display="flex" justifyContent="center" py={4}>
+            <CircularProgress />
           </Box>
-        ))}
+        ) : (
+          menus.map((menu) => (
+            <Box key={menu.id} sx={{ mb: 4 }}>
+              <Card variant="outlined" sx={{ p: 2 }}>
+                <CardHeader title={menu.label} subheader="Manage permissions for this menu" />
+                <Divider sx={{ mb: 2 }} />
+                <FormGroup row sx={{ mt: 2 }}>
+                  {menu.children.map((perm) => (
+                    <FormControlLabel
+                      key={perm.id}
+                      control={
+                        <Checkbox
+                          checked={form[menu.label.toLowerCase()]?.[perm.permissionKey] || false}
+                          onChange={() => handleToggle(menu.label.toLowerCase(), perm.permissionKey)}
+                        />
+                      }
+                      label={perm.label}
+                    />
+                  ))}
+                </FormGroup>
+              </Card>
+            </Box>
+          ))
+        )}
       </Box>
 
       <DynamicModal

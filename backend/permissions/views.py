@@ -1,127 +1,103 @@
-# 📁 permissions/views.py
-
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
-from django.contrib.auth import get_user_model
-from django.db import transaction
+from rest_framework.generics import ListAPIView
+from django.db.models import Prefetch
 
-from .models import PermissionGroup, Permission
-from .serializers import PermissionGroupSerializer
-
-User = get_user_model()
-
+from .models import PermissionGroup, PermissionMenu, Permission, UserPermission
+from .serializers import (
+    PermissionGroupSerializer,
+    PermissionMenuSerializer,
+    PermissionSerializer,
+    SimplePermissionGroupSerializer
+)
 
 # ========================================================
-# 🔐 ViewSet: Gerenciar Grupos de Permissão
+# 📦 CRUD: PermissionGroup
 # ========================================================
 class PermissionGroupViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet to manage permission groups.
-    Only admins can create/update/delete.
-    Public access to list/retrieve.
-    """
-    queryset = PermissionGroup.objects.all()
-    serializer_class = PermissionGroupSerializer
-
+    queryset = PermissionGroup.objects.all()  
+    serializer_class = SimplePermissionGroupSerializer  
+    
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [AllowAny()]
-        return [IsAdminUser()]
+        return [IsAuthenticated()]
+
+# ========================================================
+# 📦 CRUD: PermissionMenu
+# ========================================================
+class PermissionMenuViewSet(viewsets.ModelViewSet):
+    queryset = PermissionMenu.objects.all()
+
+    serializer_class = PermissionMenuSerializer
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
 
 # ========================================================
-# 👤 View: Permissões mescladas do usuário autenticado
+# 📦 CRUD: Permission
 # ========================================================
-class MyPermissionsView(APIView):
-    """
-    Returns merged permission set for the authenticated user.
-    Merges all permissions across user's groups.
-    """
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        username = f"{user.first_name} {user.last_name}".strip()
-        group_list = []
-        merged = {}
-
-        for group in user.groups.prefetch_related('permissions').all():
-            group_list.append({"id": group.id, "name": group.name})
-
-            for perm in group.permissions.all():
-                key = perm.menu_name
-                if key not in merged:
-                    merged[key] = {
-                        "menu_name": key,
-                        "can_create": perm.can_create,
-                        "can_read": perm.can_read,
-                        "can_update": perm.can_update,
-                        "can_delete": perm.can_delete,
-                        "can_secret": perm.can_secret
-                    }
-                else:
-                    merged[key]["can_create"] |= perm.can_create
-                    merged[key]["can_read"]   |= perm.can_read
-                    merged[key]["can_update"] |= perm.can_update
-                    merged[key]["can_delete"] |= perm.can_delete
-                    merged[key]["can_secret"] |= perm.can_secret
-
-        return Response({
-            "username": username,
-            "groups": group_list,
-            "permissions": list(merged.values())
-        }, status=status.HTTP_200_OK)
-
+class PermissionViewSet(viewsets.ModelViewSet):
+    queryset = Permission.objects.select_related('menu')
+    serializer_class = PermissionSerializer
+  
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
 # ========================================================
-# 🌳 View: Estrutura de permissões para árvore RichTreeView
+# 🌳 View: Estrutura RichTreeView (para frontend)
 # ========================================================
 class PermissionsTreeView(APIView):
-    """
-    Returns permission groups structured for RichTreeView:
-    - group (Administrator, Sales...)
-      └─ menu (Dashboard, Users...)
-         └─ permission (Create, Read...)
-    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        groups = PermissionGroup.objects.prefetch_related('permissions').all()
         tree_data = []
 
+        groups = PermissionGroup.objects.prefetch_related(
+            Prefetch(
+                'permissions',
+                queryset=Permission.objects.select_related('menu')
+            )
+        )
+
         for group in groups:
-            group_id = f"group-{group.id}"
             group_node = {
-                "id": group_id,
+                "id": f"group-{group.id}",
                 "label": group.name,
                 "type": "group",
                 "children": []
             }
 
-            # Agrupar permissões por menu
             menu_map = {}
             for perm in group.permissions.all():
-                menu_name = perm.menu_name
-                if menu_name not in menu_map:
-                    menu_map[menu_name] = {
-                        "id": f"menu-{group.id}-{menu_name}",
-                        "label": menu_name.capitalize(),
+                if perm.menu.id not in menu_map:
+                    menu_map[perm.menu.id] = {
+                        "id": f"menu-{perm.menu.id}",
+                        "label": perm.menu.name.capitalize(),
                         "type": "menu",
                         "children": []
                     }
 
-                # Adicionar permissões individuais
-                for action in ["can_create", "can_read", "can_update", "can_delete", "can_secret"]:
-                    menu_map[menu_name]["children"].append({
-                        "id": f"perm-{group.id}-{menu_name}-{action}",
+                for action in [
+                    "can_create", "can_read", "can_update",
+                    "can_delete", "can_secret",
+                    "can_export", "can_import", "can_download", "can_upload"
+                ]:
+                    menu_map[perm.menu.id]["children"].append({
+                        "id": f"perm-{perm.menu.id}-{action}",
                         "label": action.replace("can_", "").capitalize(),
                         "type": "permission",
                         "checked": getattr(perm, action, False),
                         "permissionKey": action,
-                        "menu_name": menu_name,
+                        "menu_name": perm.menu.name,
                         "groupId": group.id
                     })
 
@@ -130,60 +106,65 @@ class PermissionsTreeView(APIView):
 
         return Response(tree_data, status=status.HTTP_200_OK)
 
-
 # ========================================================
-# 💾 View: Salvar permissões atualizadas de um grupo
+# 💾 View: Salvar ou atualizar permissões de um grupo
 # ========================================================
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def save_group_permissions(request):
-    """
-    Atualiza permissões (create, read, update...) de um grupo específico.
-    Espera:
-    {
-      "groupId": 1,
-      "permissions": [
-        {
-          "menu_name": "users",
-          "can_create": true,
-          "can_read": false,
-          ...
-        }
-      ]
-    }
-    """
     data = request.data
-    group_id = data.get('groupId')
-    permissions_data = data.get('permissions', [])
+    group_id = data.get("groupId")
+    permissions_data = data.get("permissions", [])
 
-    if not group_id:
-        return Response({"detail": "groupId is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not group_id or not permissions_data:
+        return Response({"detail": "Missing groupId or permissions."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         group = PermissionGroup.objects.get(id=group_id)
     except PermissionGroup.DoesNotExist:
-        return Response({"detail": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Permission group not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    with transaction.atomic():
-        # Atualiza ou cria permissões conforme menu_name
-        updated_permissions = []
-        for perm_data in permissions_data:
-            menu_name = perm_data.get("menu_name", "").lower()
+    for item in permissions_data:
+        menu_name = item.get("menu_name")
+        if not menu_name:
+            continue
 
-            perm_obj, created = Permission.objects.update_or_create(
-                menu_name=menu_name,
-                groups=group,  # filtro via m2m
-                defaults={
-                    "can_create": perm_data.get("can_create", False),
-                    "can_read": perm_data.get("can_read", False),
-                    "can_update": perm_data.get("can_update", False),
-                    "can_delete": perm_data.get("can_delete", False),
-                    "can_secret": perm_data.get("can_secret", False),
-                }
-            )
-            updated_permissions.append(perm_obj)
+        # Cria ou atualiza o menu
+        menu, _ = PermissionMenu.objects.get_or_create(name=menu_name)
 
-        # Garante que apenas as permissões recém-atualizadas estejam vinculadas
-        group.permissions.set(updated_permissions)
+        # Cria ou atualiza as permissões do menu
+        permission_defaults = {
+            "can_create": item.get("can_create", False),
+            "can_read": item.get("can_read", False),
+            "can_update": item.get("can_update", False),
+            "can_delete": item.get("can_delete", False),
+            "can_secret": item.get("can_secret", False),
+            "can_export": item.get("can_export", False),
+            "can_import": item.get("can_import", False),
+            "can_download": item.get("can_download", False),
+            "can_upload": item.get("can_upload", False),
+        }
 
-    return Response({"detail": "Permissions updated successfully"}, status=status.HTTP_200_OK)
+        Permission.objects.update_or_create(menu=menu, defaults=permission_defaults)
+
+    return Response({"detail": "Permissions saved successfully."}, status=status.HTTP_200_OK)
+
+
+# ========================================================
+# 🔐 View: Permissões do usuário autenticado
+# ========================================================
+from rest_framework.permissions import AllowAny
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def my_permissions(request):
+    try:
+        user_perm = UserPermission.objects.prefetch_related('groups__permissions__menu').get(user=request.user)
+        groups = request.user.groups.prefetch_related('permissions__menu').all()
+        if not groups:
+            return Response({"detail": "No permission groups associated with this user."}, status=status.HTTP_404_NOT_FOUND)
+        serializer = PermissionGroupSerializer(groups, many=True)
+        return Response({"permissions": serializer.data}, status=status.HTTP_200_OK)
+    except UserPermission.DoesNotExist:
+        return Response({"detail": "No permission group associated with this user."}, status=status.HTTP_404_NOT_FOUND)
+
