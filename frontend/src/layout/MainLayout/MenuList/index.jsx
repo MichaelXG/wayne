@@ -21,14 +21,15 @@ function MenuList() {
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
-  const { hasPermission } = usePermissions();
+
+  const { permissions: userPermissions } = usePermissions();
 
   const [selectedID, setSelectedID] = useState('');
 
   const lastItem = null;
 
   // ✅ Aplica o filtro baseado nas permissões
-  const filteredMenuItems = filterMenuItems(menuItems.items, (menu, action = 'can_read') => hasPermission(menu, action));
+  const filteredMenuItems = filterMenuItems(menuItems.items, userPermissions);
 
   let lastItemIndex = filteredMenuItems.length - 1;
   let remItems = [];

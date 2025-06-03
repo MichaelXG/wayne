@@ -7,9 +7,11 @@ User = get_user_model()
 class Command(BaseCommand):
     help = 'Create default permission menus.'
 
+
     def handle(self, *args, **kwargs):
         menus = [
-            'dashboard', 'products', 'order', 'carrier', 'address',
+            'dashboard', 'secret', 'products', 'order', 'carrier', 'address', 'pages',
+            'utilities', 'other', 'settings', 'profile', 
             'register', 'recover', 'users', 'permissions',
             'typography', 'color', 'shadow', 'sample-page', 'about-page'
         ]

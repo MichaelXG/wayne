@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from permissions.models import PermissionGroup, PermissionMenu, Permission
 
 class Command(BaseCommand):
-    help = 'Link all groups and menus with default permissions.'
+    help = 'Link all groups and menus with default permissions. Admin group gets full access to "permissions" menu.'
 
     def handle(self, *args, **kwargs):
         groups = PermissionGroup.objects.all()
@@ -10,21 +10,27 @@ class Command(BaseCommand):
 
         for group in groups:
             for menu in menus:
+                # Regra: grupo "Administrador" e menu "permissions" -> tudo True
+                is_admin_permissions = group.name.lower() == 'administrator' and menu.name == 'permissions'
+
+                defaults = {
+                    'can_create': is_admin_permissions,
+                    'can_read': True,
+                    'can_update': is_admin_permissions,
+                    'can_delete': is_admin_permissions,
+                    'can_secret': is_admin_permissions,
+                    'can_export': is_admin_permissions,
+                    'can_import': is_admin_permissions,
+                    'can_download': is_admin_permissions,
+                    'can_upload': is_admin_permissions,
+                }
+
                 perm, created = Permission.objects.get_or_create(
                     group=group,
                     menu=menu,
-                    defaults={
-                        'can_create': False,
-                        'can_read': True,
-                        'can_update': False,
-                        'can_delete': False,
-                        'can_secret': False,
-                        'can_export': False,
-                        'can_import': False,
-                        'can_download': False,
-                        'can_upload': False,
-                    }
+                    defaults=defaults
                 )
+
                 if created:
                     self.stdout.write(self.style.SUCCESS(f'✅ Linked {group.name} with {menu.name}'))
                 else:
