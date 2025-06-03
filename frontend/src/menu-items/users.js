@@ -17,7 +17,7 @@ const users = {
   icon: icons.IconUser,
 
   type: 'group',
-  permission: { menu: 'users', action: 'can_read' }, // ✅ permissão para o grupo
+  permission: { menu: 'users', action: 'can_read' }, 
   children: [
     {
       id: 'user',

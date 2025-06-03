@@ -153,11 +153,12 @@ def save_group_permissions(request):
 # ========================================================
 # 🔐 View: Permissões do usuário autenticado
 # ========================================================
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def my_permissions(request):
     """
-    Retorna todas as permissões associadas aos grupos do usuário autenticado.
+    Retorna os menus e permissões associadas aos grupos do usuário autenticado.
     """
     user = request.user
     groups = user.groups.prefetch_related('permissions__menu')
@@ -165,8 +166,26 @@ def my_permissions(request):
     if not groups.exists():
         return Response({"detail": "No permission groups associated with this user."}, status=status.HTTP_404_NOT_FOUND)
 
-    # Obtem todas as permissões dos grupos
-    all_permissions = Permission.objects.filter(group__in=groups).select_related('menu').distinct()
-    serializer = PermissionSerializer(all_permissions, many=True)
+    # Junta todas as permissões dos grupos do usuário
+    permissions = Permission.objects.filter(group__in=groups).select_related('menu').distinct()
 
-    return Response({"permissions": serializer.data}, status=status.HTTP_200_OK)
+    # Organiza por menu
+    menu_permissions = {}
+    for perm in permissions:
+        menu_name = perm.menu.name
+        if menu_name not in menu_permissions:
+            menu_permissions[menu_name] = {
+                # "menu_id": perm.menu.id,
+                "menu_name": menu_name,
+                "permissions": {}
+            }
+        for field in [
+            "can_create", "can_read", "can_update",
+            "can_delete", "can_secret", "can_export",
+            "can_import", "can_download", "can_upload"
+        ]:
+            menu_permissions[menu_name]["permissions"][field] = (
+                menu_permissions[menu_name]["permissions"].get(field, False) or getattr(perm, field, False)
+            )
+
+    return Response({"permissions": list(menu_permissions.values())}, status=status.HTTP_200_OK)
