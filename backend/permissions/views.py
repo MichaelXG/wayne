@@ -153,18 +153,20 @@ def save_group_permissions(request):
 # ========================================================
 # 🔐 View: Permissões do usuário autenticado
 # ========================================================
-from rest_framework.permissions import AllowAny
-
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def my_permissions(request):
-    try:
-        user_perm = UserPermission.objects.prefetch_related('groups__permissions__menu').get(user=request.user)
-        groups = request.user.groups.prefetch_related('permissions__menu').all()
-        if not groups:
-            return Response({"detail": "No permission groups associated with this user."}, status=status.HTTP_404_NOT_FOUND)
-        serializer = PermissionGroupSerializer(groups, many=True)
-        return Response({"permissions": serializer.data}, status=status.HTTP_200_OK)
-    except UserPermission.DoesNotExist:
-        return Response({"detail": "No permission group associated with this user."}, status=status.HTTP_404_NOT_FOUND)
+    """
+    Retorna todas as permissões associadas aos grupos do usuário autenticado.
+    """
+    user = request.user
+    groups = user.groups.prefetch_related('permissions__menu')
 
+    if not groups.exists():
+        return Response({"detail": "No permission groups associated with this user."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Obtem todas as permissões dos grupos
+    all_permissions = Permission.objects.filter(group__in=groups).select_related('menu').distinct()
+    serializer = PermissionSerializer(all_permissions, many=True)
+
+    return Response({"permissions": serializer.data}, status=status.HTTP_200_OK)
