@@ -3,19 +3,18 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 
-const CategorySelect = forwardRef(function CategorySelect(
-  { value, onChange, name = 'category', label = 'Category', ...props },
-  ref
-) {
+const CategorySelect = forwardRef(function CategorySelect({ value, onChange, name = 'category', label = 'Category', ...props }, ref) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(API_ROUTES.PRODUCTS);
-        const products = Array.isArray(response.data.results)
-          ? response.data.results
-          : response.data;
+        const response = await axios.get(API_ROUTES.PRODUCTS, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        const products = Array.isArray(response.data.results) ? response.data.results : response.data;
 
         const unique = [...new Set(products.map((p) => p.category))].sort();
         setCategories(unique);

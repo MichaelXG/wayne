@@ -10,8 +10,7 @@ class Command(BaseCommand):
 
         for group in groups:
             for menu in menus:
-                # Regra: grupo "Administrador" e menu "permissions" -> tudo True
-                is_admin_permissions = group.name.lower() == 'administrator' and menu.name == 'permissions'
+                is_admin_permissions = group.name.lower() in ['administrator', 'admin', 'administrador'] and menu.name == 'permissions'
 
                 defaults = {
                     'can_create': is_admin_permissions,
@@ -33,6 +32,11 @@ class Command(BaseCommand):
 
                 if created:
                     self.stdout.write(self.style.SUCCESS(f'✅ Linked {group.name} with {menu.name}'))
+                elif is_admin_permissions:
+                    for field, value in defaults.items():
+                        setattr(perm, field, value)
+                    perm.save()
+                    self.stdout.write(self.style.WARNING(f'🔁 Updated admin permission for "{menu.name}"'))
                 else:
                     self.stdout.write(f'ℹ️ Permission already exists for {group.name} - {menu.name}')
 

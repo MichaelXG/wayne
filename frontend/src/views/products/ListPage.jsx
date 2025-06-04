@@ -28,7 +28,11 @@ const ListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_ROUTES.PRODUCTS);
+        const response = await axios.get(API_ROUTES.PRODUCTS, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         const productList = response.data?.results || response.data || [];
 
         if (!Array.isArray(productList)) {

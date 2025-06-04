@@ -3,13 +3,11 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product
 from .serializers import ProductSerializer
 
-
 logger = logging.getLogger(__name__)
-
 
 class ProductViewSet(viewsets.ModelViewSet):
     """
@@ -18,9 +16,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     """
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
-    menu_name = 'products'
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    
+    def get_permissions(self):
+        if self.request.method in ['GET']:
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     def get_serializer_context(self):
         """Pass the request to the serializer context."""
@@ -68,5 +69,5 @@ class ProductDetailView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
-    menu_name = 'products'
+    # menu_name = 'products'
     lookup_field = 'id'

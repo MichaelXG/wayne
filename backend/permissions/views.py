@@ -3,12 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import ListAPIView
 from django.db.models import Prefetch
 
-from .models import PermissionGroup, PermissionMenu, Permission, UserPermission
+from .models import PermissionGroup, PermissionMenu, Permission
 from .serializers import (
-    PermissionGroupSerializer,
     PermissionMenuSerializer,
     PermissionSerializer,
     SimplePermissionGroupSerializer
@@ -38,7 +36,6 @@ class PermissionMenuViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve']:
             return [AllowAny()]
         return [IsAuthenticated()]
-
 
 # ========================================================
 # 📦 CRUD: Permission
@@ -106,9 +103,6 @@ class PermissionsTreeView(APIView):
 
         return Response(tree_data, status=status.HTTP_200_OK)
 
-# ========================================================
-# 💾 View: Salvar ou atualizar permissões de um grupo
-# ========================================================
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def save_group_permissions(request):
@@ -126,34 +120,37 @@ def save_group_permissions(request):
 
     for item in permissions_data:
         menu_name = item.get("menu_name")
-        if not menu_name:
+        perms = item.get("permissions", {})
+
+        if not menu_name or not isinstance(perms, dict):
             continue
 
-        # Cria ou atualiza o menu
-        menu, _ = PermissionMenu.objects.get_or_create(name=menu_name)
+        try:
+            menu = PermissionMenu.objects.get(name=menu_name)
+        except PermissionMenu.DoesNotExist:
+            continue  # ou retorne erro se quiser forçar que o menu exista
 
-        # Cria ou atualiza as permissões do menu
-        permission_defaults = {
-            "can_create": item.get("can_create", False),
-            "can_read": item.get("can_read", False),
-            "can_update": item.get("can_update", False),
-            "can_delete": item.get("can_delete", False),
-            "can_secret": item.get("can_secret", False),
-            "can_export": item.get("can_export", False),
-            "can_import": item.get("can_import", False),
-            "can_download": item.get("can_download", False),
-            "can_upload": item.get("can_upload", False),
-        }
-
-        Permission.objects.update_or_create(menu=menu, defaults=permission_defaults)
+        Permission.objects.update_or_create(
+            group=group,
+            menu=menu,
+            defaults={
+                "can_create": perms.get("can_create", False),
+                "can_read": perms.get("can_read", False),
+                "can_update": perms.get("can_update", False),
+                "can_delete": perms.get("can_delete", False),
+                "can_secret": perms.get("can_secret", False),
+                "can_export": perms.get("can_export", False),
+                "can_import": perms.get("can_import", False),
+                "can_download": perms.get("can_download", False),
+                "can_upload": perms.get("can_upload", False),
+            }
+        )
 
     return Response({"detail": "Permissions saved successfully."}, status=status.HTTP_200_OK)
-
 
 # ========================================================
 # 🔐 View: Permissões do usuário autenticado
 # ========================================================
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def my_permissions(request):
@@ -180,9 +177,8 @@ def my_permissions(request):
                 "permissions": {}
             }
         for field in [
-            "can_create", "can_read", "can_update",
-            "can_delete", "can_secret", "can_export",
-            "can_import", "can_download", "can_upload"
+            "can_create", "can_read", "can_update", "can_delete", 
+            "can_secret", "can_export", "can_import", "can_download", "can_upload"
         ]:
             menu_permissions[menu_name]["permissions"][field] = (
                 menu_permissions[menu_name]["permissions"].get(field, False) or getattr(perm, field, False)

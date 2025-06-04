@@ -25,7 +25,8 @@ export default function CarrierDetail() {
     () => ({
       label: 'Edit',
       href: `${BaseDir}/carrier/edit/${carrierId}`,
-      icon: customSvgEditIcon
+      icon: customSvgEditIcon,
+      permission: { menu: 'carrier', action: 'can_update' },
     }),
     [carrierId]
   );

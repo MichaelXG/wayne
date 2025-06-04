@@ -99,9 +99,11 @@ export default function PermissionsEdit() {
       groupId: selectedGroupId,
       permissions: Object.entries(form).map(([menu, actions]) => ({
         menu_name: menu,
-        ...actions
+        permissions: actions
       }))
     };
+
+    isDebug && console.log('[🔄 PAYLOAD ENVIADO]', payload);
 
     axios
       .post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
@@ -136,6 +138,7 @@ export default function PermissionsEdit() {
       label: 'Save',
       icon: <SaveIcon />,
       disabled: !selectedGroupId,
+      permission: { menu: 'permissions', action: 'can_update' },
       onClick: handleSubmit
     }),
     [form, selectedGroupId]
@@ -162,10 +165,10 @@ export default function PermissionsEdit() {
             onChange={(e) => setSelectedGroupId(e.target.value)}
           >
             {groups.map((g) => (
-                <MenuItem key={g.id} value={g.id}>
-                  {g.name}
-                </MenuItem>
-              ))}
+              <MenuItem key={g.id} value={g.id}>
+                {g.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 

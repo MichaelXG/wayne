@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
@@ -22,11 +22,19 @@ import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
 
 import { gridSpacing } from 'store/constant';
+import { usePermissions } from '../contexts/PermissionsContext';
+import DynamicModal from '../ui-component/modal/DynamicModal';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 export default function DefaultLayout({ mainCardTitle, subCardTitle, children, backButton, breadcrumbs = [], actionbutton, checkingAuth }) {
   const theme = useTheme();
   const downMD = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
+  const { hasPermission } = usePermissions();
+  const [permissionModalOpen, setPermissionModalOpen] = useState(false);
+
+  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
+  const token = userData?.authToken || null;
 
   const authIcon = checkingAuth ? (
     <Tooltip
@@ -69,7 +77,7 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
       <IconShieldX color={theme.palette.error.main} size={20} />
     </Tooltip>
   );
-  
+
   const renderBackButton = () => {
     const iconButtonStyles = (theme) => ({
       mt: 1,
@@ -80,10 +88,7 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
       backgroundColor: theme.palette.grey[300],
       color: theme.palette.grey[600],
       borderRadius: '50%',
-      '&:hover': {
-        backgroundColor: theme.palette.grey[600],
-        color: theme.palette.common.white
-      }
+      '&:hover': { backgroundColor: theme.palette.grey[600], color: theme.palette.common.white }
     });
 
     const handleBackClick = () => {
@@ -119,6 +124,37 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
     );
   };
 
+  const handleActionClick = () => {
+    const perm = actionbutton?.permission;
+    console.log('[ACTION BUTTON]', actionbutton); // ✅ Exibe dados do botão
+
+    if (!token) {
+      console.warn('[PERMISSION BLOCKED] ❌ Sem token disponível.');
+      setPermissionModalOpen(true);
+      return;
+    }
+
+    if (perm) {
+      const allowed = hasPermission(perm.menu, perm.action || 'can_read');
+      console.log('[CHECKING PERMISSION]', {
+        menu: perm.menu,
+        action: perm.action || 'can_read',
+        allowed
+      });
+
+      if (!allowed) {
+        console.warn('[PERMISSION BLOCKED] ❌ Permissão negada para ação:', perm);
+        setPermissionModalOpen(true);
+        return;
+      }
+    }
+
+    console.log('[PERMISSION GRANTED] ✅ Executando ação...');
+    if (typeof actionbutton?.onClick === 'function') {
+      actionbutton.onClick();
+    }
+  };
+
   return (
     <MainCard
       title={mainCardTitle}
@@ -132,22 +168,14 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
         <SubCard
           title={
             <Box sx={{ width: '100%' }}>
-              {/* Linha com Título e Botão */}
               <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
                 <Box display="flex" alignItems="center" gap={1}>
                   {renderBackButton()}
-                  <Typography
-                    variant={downMD ? 'h5' : 'h4'}
-                    sx={(theme) => ({
-                      color: theme.palette.grey[600],
-                      fontWeight: 600
-                    })}
-                  >
+                  <Typography variant={downMD ? 'h5' : 'h4'} sx={(theme) => ({ color: theme.palette.grey[600], fontWeight: 600 })}>
                     {subCardTitle}
                   </Typography>
                 </Box>
 
-                {/* Direita: Botão de ação */}
                 {actionbutton && (
                   <AnimateButton>
                     <Tooltip
@@ -170,15 +198,11 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
                       <IconButton
                         color={actionbutton.color || theme.palette.grey[600]}
                         size="medium"
-                        href={actionbutton.href}
-                        onClick={actionbutton.onClick}
                         type={actionbutton.type || 'button'}
+                        onClick={handleActionClick}
                         sx={{
                           backgroundColor: theme.palette.grey[300],
-                          '&:hover': {
-                            backgroundColor: theme.palette.grey[600],
-                            color: 'white'
-                          }
+                          '&:hover': { backgroundColor: theme.palette.grey[600], color: 'white' }
                         }}
                       >
                         {actionbutton.icon}
@@ -188,7 +212,6 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
                 )}
               </Box>
 
-              {/* Breadcrumbs abaixo do título */}
               {breadcrumbs?.length > 0 && (
                 <Box mt={1}>
                   <Breadcrumbs>
@@ -203,22 +226,13 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
                           sx={(theme) => ({
                             color: theme.palette.grey[600],
                             textDecoration: 'none',
-                            '&:hover': {
-                              textDecoration: 'underline'
-                            }
+                            '&:hover': { textDecoration: 'underline' }
                           })}
                         >
                           {item.label}
                         </Typography>
                       ) : (
-                        <Typography
-                          key={index}
-                          variant="body2"
-                          fontWeight={500}
-                          sx={(theme) => ({
-                            color: theme.palette.text.primary
-                          })}
-                        >
+                        <Typography key={index} variant="body2" fontWeight={500} sx={(theme) => ({ color: theme.palette.text.primary })}>
                           {item.label}
                         </Typography>
                       )
@@ -234,6 +248,16 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
           </Grid>
         </SubCard>
       </Grid>
+
+      <DynamicModal
+        open={permissionModalOpen}
+        onClose={() => setPermissionModalOpen(false)}
+        onSubmit={() => setPermissionModalOpen(false)}
+        title="Permission Denied"
+        description="You do not have permission to perform this action."
+        type="error"
+        mode="alert"
+      />
     </MainCard>
   );
 }
@@ -245,5 +269,19 @@ DefaultLayout.propTypes = {
   backButton: PropTypes.shape({
     type: PropTypes.oneOf(['link']),
     link: PropTypes.string
-  })
+  }),
+  breadcrumbs: PropTypes.array,
+  actionbutton: PropTypes.shape({
+    label: PropTypes.string,
+    icon: PropTypes.node,
+    href: PropTypes.string,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
+    color: PropTypes.string,
+    permission: PropTypes.shape({
+      menu: PropTypes.string,
+      action: PropTypes.string
+    })
+  }),
+  checkingAuth: PropTypes.bool
 };

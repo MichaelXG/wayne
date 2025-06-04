@@ -32,7 +32,7 @@ export const API_ROUTES = {
     GROUPS: `${API_BASE_URL}/permissions/groups/`,
     GROUPS_ACTIVE: `${API_BASE_URL}/permissions/groups/`,
     MY: `${API_BASE_URL}/permissions/my/`,
-    TREE: `${API_BASE_URL}/permissions/treeview/`,
+    TREE: `${API_BASE_URL}/permissions/tree/`,
     SAVE: `${API_BASE_URL}/permissions/save/`
   }
 };
@@ -59,7 +59,7 @@ export const API_ROUTES = {
 //   PERMISSIONS: {
 //     GROUPS: `${API_BASE_URL}/permissions/groups/`,
 //     MY: `${API_BASE_URL}/permissions/my-permissions/`,
-//     TREE: `${API_BASE_URL}/permissions/treeview-permissions/`,
+//     TREE: `${API_BASE_URL}/permissions/tree/`,
 //     SAVE: `${API_BASE_URL}/permissions/save/`
 //   },
 

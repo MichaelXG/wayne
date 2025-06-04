@@ -31,6 +31,7 @@ export default function CarrierEdit() {
       label: 'Save',
       icon: <SaveIcon />,
       disabled: !isActive,
+      permission: { menu: 'carrier', action: 'can_update' },
       onClick: () => {
         carrierEditRef.current?.submitForm();
       }
