@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  GridToolbarContainer,
-  GridToolbarQuickFilter,
-  GridToolbarExport,
-  GridToolbarFilterButton
-} from '@mui/x-data-grid';
+import { GridToolbarContainer, GridToolbarQuickFilter, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { Box, Button, Divider } from '@mui/material';
 import Clear from '@mui/icons-material/Clear';
 import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
@@ -47,7 +42,7 @@ const CustomToolbarCarrier = ({
         />
 
         <Box display="flex" gap={1} flexWrap="wrap">
-          <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} />
+          <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName="carrier" />
           <GridToolbarColumnsButtonCustom />
           <GridToolbarFilterButton />
           <GridToolbarExport />

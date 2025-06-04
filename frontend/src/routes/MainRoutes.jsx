@@ -20,7 +20,7 @@ const OrderDetailPage = Loadable(lazy(() => import('views/orders/Detail')));
 // Rotas de carrier
 const CarrierListPage = Loadable(lazy(() => import('views/carrier/List')));
 const CarrierDetailPage = Loadable(lazy(() => import('views/carrier/Detail')));
-const CreatePage = Loadable(lazy(() => import('views/carrier/Create')));
+const CarrierCreatePage = Loadable(lazy(() => import('views/carrier/Create')));
 const CarrierEditPage = Loadable(lazy(() => import('views/carrier/Edit')));
 
 // Rotas de Address
@@ -120,7 +120,7 @@ const MainRoutes = {
         { path: 'list', element: <CarrierListPage /> },
         { path: 'detail', element: <Navigate to="1" replace /> },
         { path: 'detail/:id', element: <CarrierDetailPage /> },
-        { path: 'create', element: <CreatePage /> },
+        { path: 'create', element: <CarrierCreatePage /> },
         { path: 'edit', element: <Navigate to="1" replace /> },
         { path: 'edit/:id', element: <CarrierEditPage /> }
       ]

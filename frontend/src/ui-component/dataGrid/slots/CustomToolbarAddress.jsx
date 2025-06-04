@@ -45,7 +45,7 @@ const CustomToolbarAddress = ({
         />
 
         <Box display="flex" gap={1} flexWrap="wrap">
-          <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} />
+          <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName='address' />
           <GridToolbarColumnsButtonCustom />
           <GridToolbarFilterButton />
           <GridToolbarExport />

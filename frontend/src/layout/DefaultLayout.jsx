@@ -25,6 +25,7 @@ import { gridSpacing } from 'store/constant';
 import { usePermissions } from '../contexts/PermissionsContext';
 import DynamicModal from '../ui-component/modal/DynamicModal';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { isDebug } from '../App';
 
 export default function DefaultLayout({ mainCardTitle, subCardTitle, children, backButton, breadcrumbs = [], actionbutton, checkingAuth }) {
   const theme = useTheme();
@@ -126,32 +127,36 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
 
   const handleActionClick = () => {
     const perm = actionbutton?.permission;
-    console.log('[ACTION BUTTON]', actionbutton); // ✅ Exibe dados do botão
+    isDebug && console.log('[ACTION BUTTON]', actionbutton);
 
     if (!token) {
-      console.warn('[PERMISSION BLOCKED] ❌ Sem token disponível.');
+      isDebug && console.warn('[PERMISSION BLOCKED] ❌ Sem token disponível.');
       setPermissionModalOpen(true);
       return;
     }
 
     if (perm) {
       const allowed = hasPermission(perm.menu, perm.action || 'can_read');
-      console.log('[CHECKING PERMISSION]', {
-        menu: perm.menu,
-        action: perm.action || 'can_read',
-        allowed
-      });
+      isDebug &&
+        console.log('[CHECKING PERMISSION]', {
+          menu: perm.menu,
+          action: perm.action || 'can_read',
+          allowed
+        });
 
       if (!allowed) {
-        console.warn('[PERMISSION BLOCKED] ❌ Permissão negada para ação:', perm);
+        isDebug && console.warn('[PERMISSION BLOCKED] ❌ Permissão negada para ação:', perm);
         setPermissionModalOpen(true);
         return;
       }
     }
 
-    console.log('[PERMISSION GRANTED] ✅ Executando ação...');
+    isDebug && console.log('[PERMISSION GRANTED] ✅ Executando ação...');
+
     if (typeof actionbutton?.onClick === 'function') {
       actionbutton.onClick();
+    } else if (actionbutton?.href) {
+      navigate(actionbutton.href);
     }
   };
 

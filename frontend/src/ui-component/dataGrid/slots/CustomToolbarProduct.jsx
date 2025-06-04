@@ -47,7 +47,7 @@ const CustomToolbarProduct = ({
         />
 
         <Box display="flex" gap={1} flexWrap="wrap">
-          <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} />
+          <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName='products' />
           <GridToolbarColumnsButtonCustom />
           <GridToolbarFilterButton />
           <GridToolbarExport />

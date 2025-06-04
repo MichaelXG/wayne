@@ -50,7 +50,7 @@ export const PermissionsProvider = ({ children }) => {
   // ✅ Carrega permissões via API (se token for válido)
   const loadPermissions = async (token) => {
     // if (!token) {
-    //   clearPermissions();
+      clearPermissions();
     //   return;
     // }
 
