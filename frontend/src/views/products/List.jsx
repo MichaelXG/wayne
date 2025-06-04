@@ -22,7 +22,7 @@ export default function ProductList() {
   const actionbutton = useMemo(
     () => ({
       label: 'Create',
-      href: `${BaseDir}/products/create`,
+      href: `/products/create`,
       icon: <AddIcon />
     }),
     []

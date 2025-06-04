@@ -25,7 +25,7 @@ export default function AddressDetail() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/address/edit/${addressId}`,
+      href: `/address/edit/${addressId}`,
       icon: customSvgEditIcon
     }),
     [addressId]

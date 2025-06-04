@@ -1,4 +1,4 @@
- import { useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { IconButton, Menu, MenuItem, ListItemIcon, Typography, Tooltip, Link } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -12,6 +12,8 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
   const [anchorEl, setAnchorEl] = useState(null);
   const [permissionModalOpen, setPermissionModalOpen] = useState(false);
   const { hasPermission } = usePermissions();
+  const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState(null);
 
   const open = Boolean(anchorEl);
   const handleOpenMenu = (e) => setAnchorEl(e.currentTarget);
@@ -92,11 +94,16 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
       return;
     }
 
-    if (variant === 'storedOrder' && onDeleteItem) {
-      onDeleteItem(id);
-    } else if (onDelete) {
-      onDelete(id);
-    }
+    // 👉 Exibe modal de confirmação em vez de deletar direto
+    setPendingDelete(() => () => {
+      if (variant === 'storedOrder' && onDeleteItem) {
+        onDeleteItem(id);
+      } else if (onDelete) {
+        onDelete(id);
+      }
+    });
+
+    setConfirmDeleteModalOpen(true);
   };
 
   const handleEdit = () => {
@@ -189,6 +196,24 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
           </Typography>
         </MenuItem>
       </Menu>
+
+      <DynamicModal
+        open={confirmDeleteModalOpen}
+        onClose={() => {
+          setConfirmDeleteModalOpen(false);
+          setPendingDelete(null);
+        }}
+        onSubmit={() => {
+          if (pendingDelete) pendingDelete();
+          setConfirmDeleteModalOpen(false);
+          setPendingDelete(null);
+        }}
+        title="Confirm Deletion"
+        description="Are you sure you want to delete this item? This action cannot be undone."
+        type="error"
+        mode="confirm"
+        submitLabel="Delete"
+      />
 
       <DynamicModal
         open={permissionModalOpen}

@@ -24,7 +24,7 @@ export default function UserDetail() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/users/edit/${userId}`,
+      href: `/users/edit/${userId}`,
       icon: customSvgEditIcon
     }),
     [userId]

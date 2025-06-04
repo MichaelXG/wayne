@@ -24,7 +24,7 @@ export default function ProductDetail() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/products/edit/${productId}`,
+      href: `/products/edit/${productId}`,
       icon: customSvgEditIcon
     }),
     [productId]

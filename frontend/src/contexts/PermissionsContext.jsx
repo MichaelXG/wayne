@@ -99,8 +99,8 @@ export const PermissionsProvider = ({ children }) => {
 
   const reloadPermissions = () => {
     if (isDebug) {
-      console.log('[🔁 RELOAD PERMISSIONS] Iniciando recarregamento das permissões...');
-      console.log('[🔁 RELOAD PERMISSIONS] Token presente?', !!token);
+      console.log('[🔁 RELOAD PERMISSIONS] Starting reloading permissions...');
+      console.log('[🔁 RELOAD PERMISSIONS]Token present?', !!token);
     }
 
     permissionsFetchedRef.current = false;
@@ -109,7 +109,7 @@ export const PermissionsProvider = ({ children }) => {
       loadPermissions(token);
     } else {
       if (isDebug) {
-        console.warn('[❌ RELOAD PERMISSIONS] Token ausente. Não foi possível recarregar permissões.');
+        console.warn('[❌ RELOAD PERMISSIONS] Token missing. Unable to reload permissions.');
       }
     }
   };

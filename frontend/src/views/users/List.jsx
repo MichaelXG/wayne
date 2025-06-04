@@ -22,7 +22,7 @@ export default function UsersList() {
   const actionbutton = useMemo(
     () => ({
       label: 'Create',
-      href: `${BaseDir}/pages/register`,
+      href: `/pages/register`,
       icon: <AddIcon />
     }),
     []

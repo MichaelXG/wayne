@@ -33,7 +33,7 @@ export default function DetailItem() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/orders/edit/${orderId}`,
+      href: `/orders/edit/${orderId}`,
       icon: customSvgEditIcon,
       disabled: !canEdit
     }),
