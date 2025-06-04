@@ -23,11 +23,13 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
+import { usePermissions } from '../../contexts/PermissionsContext';
 
 export default function PermissionsEdit() {
   const checkingAuth = useAuthGuard();
   const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
+  const { reloadPermissions } = usePermissions(); 
 
   const [groups, setGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState('');
@@ -110,6 +112,7 @@ export default function PermissionsEdit() {
       .then(() => {
         alert('Permissions successfully updated.');
         setInitialForm(form);
+        reloadPermissions(); 
       })
       .catch((err) => console.error('Error saving permissions', err))
       .finally(() => {

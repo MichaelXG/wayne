@@ -49,11 +49,6 @@ export const PermissionsProvider = ({ children }) => {
 
   // ✅ Carrega permissões via API (se token for válido)
   const loadPermissions = async (token) => {
-    // if (!token) {
-      clearPermissions();
-    //   return;
-    // }
-
     if (permissionsFetchedRef.current) return;
 
     const valid = await isTokenValid(token);
@@ -102,6 +97,23 @@ export const PermissionsProvider = ({ children }) => {
     permissionsFetchedRef.current = false;
   };
 
+  const reloadPermissions = () => {
+    if (isDebug) {
+      console.log('[🔁 RELOAD PERMISSIONS] Iniciando recarregamento das permissões...');
+      console.log('[🔁 RELOAD PERMISSIONS] Token presente?', !!token);
+    }
+
+    permissionsFetchedRef.current = false;
+
+    if (token) {
+      loadPermissions(token);
+    } else {
+      if (isDebug) {
+        console.warn('[❌ RELOAD PERMISSIONS] Token ausente. Não foi possível recarregar permissões.');
+      }
+    }
+  };
+
   const logout = () => {
     setUserData({});
     clearPermissions();
@@ -112,7 +124,7 @@ export const PermissionsProvider = ({ children }) => {
   };
 
   return (
-    <PermissionsContext.Provider value={{ permissions, hasPermission, loadPermissions, logout }}>
+    <PermissionsContext.Provider value={{ permissions, hasPermission, loadPermissions, reloadPermissions, logout }}>
       {children}
 
       <Snackbar
