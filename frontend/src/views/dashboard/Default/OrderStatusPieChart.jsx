@@ -16,7 +16,8 @@ import {
   ListItemIcon,
   Chip,
   Fade,
-  Skeleton
+  Skeleton,
+  styled
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
@@ -24,6 +25,39 @@ import { statusColors, statusIcons } from '../../../utils/statusUtils';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { useAuthGuard } from '../../../hooks/useAuthGuard';
 import { API_ROUTES } from '../../../routes/ApiRoutes';
+
+// styles
+const DarkCard = styled(Card)(({ theme }) => ({
+  backgroundColor: theme.palette.grey[800],
+  color: theme.palette.grey[300],
+  overflow: 'hidden',
+  position: 'relative',
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  '&:hover': {
+    transform: 'translateY(-4px)',
+    boxShadow: `0 4px 20px 0 ${alpha(theme.palette.common.black, 0.2)}`
+  },
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    width: 210,
+    height: 210,
+    background: `linear-gradient(210.04deg, ${alpha(theme.palette.primary.main, 0.2)} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    borderRadius: '50%',
+    top: -30,
+    right: -180
+  },
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    width: 210,
+    height: 210,
+    background: `linear-gradient(140.9deg, ${alpha(theme.palette.primary.main, 0.15)} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
+    borderRadius: '50%',
+    top: -160,
+    right: -130
+  }
+}));
 
 export default function OrderStatusDonutChart({ timeRange = 'week' }) {
   const theme = useTheme();
@@ -77,7 +111,7 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
   if (checkingAuth) return null;
 
   return (
-    <Card 
+    <DarkCard 
       elevation={0}
       sx={{
         height: '100%',
@@ -91,8 +125,10 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
             <Typography 
               variant="h3" 
               sx={{ 
-                fontWeight: 600,
-                color: theme.palette.text.primary,
+                fontWeight: 700,
+                background: `linear-gradient(135deg, ${theme.palette.common.white} 0%, ${theme.palette.grey[300]} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
                 fontSize: { xs: '1.2rem', sm: '1.5rem' }
               }}
             >
@@ -108,8 +144,11 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
               size="small"
               sx={{
                 borderRadius: '16px',
-                fontWeight: 500,
-                backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                fontWeight: 600,
+                backgroundColor: alpha(theme.palette.primary.main, 0.15),
+                color: theme.palette.primary.light,
+                borderColor: alpha(theme.palette.primary.main, 0.25),
+                backdropFilter: 'blur(4px)',
                 '& .MuiChip-label': {
                   px: 2
                 }
@@ -117,15 +156,21 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
             />
           </Box>
         }
+        sx={{
+          p: 2.5,
+          '& .MuiCardHeader-content': {
+            width: '100%'
+          }
+        }}
       />
-      <Divider />
+      <Divider sx={{ borderColor: theme.palette.grey[500] }} />
       <CardContent>
         <Box sx={{ position: 'relative', minHeight: '300px' }}>
           {loading ? (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2 }}>
-              <Skeleton variant="circular" width={200} height={200} sx={{ mx: 'auto' }} />
-              <Skeleton variant="text" width="60%" sx={{ mx: 'auto' }} />
-              <Skeleton variant="rectangular" height={100} />
+              <Skeleton variant="circular" width={200} height={200} sx={{ mx: 'auto', bgcolor: theme.palette.grey[500] }} />
+              <Skeleton variant="text" width="60%" sx={{ mx: 'auto', bgcolor: theme.palette.grey[500] }} />
+              <Skeleton variant="rectangular" height={100} sx={{ bgcolor: theme.palette.grey[500] }} />
             </Box>
           ) : (
             <Fade in={!loading} timeout={500}>
@@ -133,10 +178,9 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                 <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                   <Typography 
                     variant="h4" 
-                    color="textSecondary"
                     sx={{
                       fontWeight: 500,
-                      color: theme.palette.text.secondary
+                      color: theme.palette.common.white
                     }}
                   >
                     Total Orders: {total}
@@ -159,20 +203,38 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                           enabled: true,
                           speed: 350
                         }
+                      },
+                      background: 'transparent',
+                      dropShadow: {
+                        enabled: true,
+                        color: theme.palette.common.black,
+                        top: 3,
+                        left: 3,
+                        blur: 6,
+                        opacity: 0.2
                       }
                     },
                     labels,
                     colors: labels.map((label) => {
                       const muiColor = statusColors[label];
-                      return theme.palette[muiColor]?.main || theme.palette.grey[500];
+                      return alpha(theme.palette[muiColor]?.main || theme.palette.grey[500], 0.85);
                     }),
                     legend: { 
                       position: 'bottom',
                       fontSize: '14px',
+                      fontWeight: 500,
+                      labels: {
+                        colors: theme.palette.grey[300]
+                      },
                       markers: {
                         width: 12,
                         height: 12,
-                        radius: 6
+                        radius: 6,
+                        offsetY: 0
+                      },
+                      itemMargin: {
+                        horizontal: 10,
+                        vertical: 5
                       }
                     },
                     tooltip: {
@@ -183,7 +245,7 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                           return `${percent}% - ${value} order${value === 1 ? '' : 's'} (${label})`;
                         }
                       },
-                      theme: theme.palette.mode
+                      theme: 'dark'
                     },
                     plotOptions: {
                       pie: {
@@ -194,25 +256,31 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                               show: true,
                               label: 'Total Orders',
                               formatter: () => total,
+                              fontSize: '20px',
+                              fontWeight: 700,
+                              color: theme.palette.common.white
+                            },
+                            value: {
                               fontSize: '16px',
-                              fontWeight: 600,
-                              color: theme.palette.text.primary
+                              fontWeight: 500,
+                              color: theme.palette.grey[300]
                             }
-                          }
+                          },
+                          size: '85%'
                         }
                       }
                     },
                     stroke: {
-                      width: 2,
-                      colors: [theme.palette.background.paper]
+                      width: 3,
+                      colors: [theme.palette.grey[800]]
                     },
                     dataLabels: {
                       enabled: true,
                       formatter: (val) => `${Math.round(val)}%`,
                       style: {
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        colors: [theme.palette.background.paper]
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        colors: [theme.palette.grey[800]]
                       },
                       dropShadow: {
                         enabled: true,
@@ -226,7 +294,7 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                   height={300}
                 />
 
-                <Divider sx={{ my: 2 }} />
+                <Divider sx={{ my: 2, borderColor: theme.palette.grey[500] }} />
 
                 <List>
                   {labels.map((label, index) => {
@@ -239,14 +307,16 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                         key={label} 
                         divider
                         sx={{
-                          py: 1.5,
-                          transition: 'background-color 0.2s',
+                          py: 1.75,
+                          transition: 'all 0.2s ease-in-out',
                           '&:hover': {
-                            backgroundColor: alpha(theme.palette.primary.main, 0.04)
-                          }
+                            backgroundColor: alpha(theme.palette.common.white, 0.08),
+                            transform: 'translateX(4px)'
+                          },
+                          borderColor: alpha(theme.palette.grey[500], 0.2)
                         }}
                       >
-                        <ListItemIcon>
+                        <ListItemIcon sx={{ color: theme.palette.common.white }}>
                           {statusIcons[label] || (
                             <Box
                               sx={{
@@ -260,11 +330,23 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                         </ListItemIcon>
                         <ListItemText
                           primary={
-                            <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                            <Typography variant="body1" sx={{ 
+                              fontWeight: 600, 
+                              color: theme.palette.common.white,
+                              letterSpacing: '0.02em'
+                            }}>
                               {label.charAt(0).toUpperCase() + label.slice(1)}
                             </Typography>
                           }
-                          secondary={`${current} order${current !== 1 ? 's' : ''}`}
+                          secondary={
+                            <Typography variant="body2" sx={{ 
+                              color: theme.palette.grey[400],
+                              mt: 0.5,
+                              fontSize: '0.875rem'
+                            }}>
+                              {`${current} order${current !== 1 ? 's' : ''}`}
+                            </Typography>
+                          }
                         />
                         {change !== null && (
                           <Chip
@@ -273,8 +355,9 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                             color={change >= 0 ? 'success' : 'error'}
                             sx={{ 
                               ml: 1,
-                              fontWeight: 500,
+                              fontWeight: 600,
                               minWidth: 65,
+                              background: change >= 0 ? alpha(theme.palette.success.main, 0.15) : alpha(theme.palette.error.main, 0.15),
                               '& .MuiChip-label': {
                                 px: 1
                               }
@@ -290,6 +373,6 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
           )}
         </Box>
       </CardContent>
-    </Card>
+    </DarkCard>
   );
 }
