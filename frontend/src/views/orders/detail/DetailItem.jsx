@@ -35,7 +35,8 @@ export default function DetailItem() {
       label: 'Edit',
       href: `/orders/edit/${orderId}`,
       icon: customSvgEditIcon,
-      disabled: !canEdit
+      disabled: !canEdit,
+      permission: { menu: 'orders', action: 'can_update' }
     }),
     [canEdit, orderId]
   );

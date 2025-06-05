@@ -30,7 +30,8 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
     label: 'Save',
     icon: <CheckIcon />,
     onClick: handleSave,
-    disabled: !localSelectedId
+    disabled: !localSelectedId,
+    permission: { menu: 'orders', action: 'can_update' },
   };
 
   const actionClose = useMemo(
@@ -122,7 +123,7 @@ export default function DeliveryModal({ open, onClose, carriers = [], selectedCa
                                   color={carrier.is_active ? 'success' : 'error'}
                                   sx={(theme) => ({
                                     fontWeight: theme.typography.fontWeightBold,
-                                    bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                                    bgcolor: theme.palette[carrier.is_active ? 'success' : 'error'].dark,
                                     color: theme.palette.common.white
                                   })}
                                 />

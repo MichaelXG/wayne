@@ -109,6 +109,7 @@ export default function AuthLogin() {
 
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
+        // Save user data first
         setUserData({
           authToken: accessToken,
           refreshToken: refreshToken,
@@ -121,10 +122,20 @@ export default function AuthLogin() {
           keeploggedin: checked
         });
 
-        await loadPermissions(accessToken);
+        // Load permissions and wait for completion
+        try {
+          await loadPermissions(accessToken);
+          if (isDebug) {
+            console.log('[✅ LOGIN] Permissions loaded successfully');
+          }
+        } catch (permError) {
+          console.error('[❌ LOGIN] Error loading permissions:', permError);
+          throw new Error('Failed to load permissions');
+        }
 
         setSuccessMessage('Login successful! Redirecting...');
 
+        // Only redirect after permissions are loaded
         setTimeout(() => {
           navigate(`/dashboard/default`);
         }, 1500);
@@ -135,8 +146,10 @@ export default function AuthLogin() {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data.detail || 'Error during login. Please check your credentials.');
       } else {
-        setError('An unexpected error occurred. Please try again.');
+        setError(error.message || 'An unexpected error occurred. Please try again.');
       }
+      // Clear user data on error
+      setUserData({});
     } finally {
       setIsLoading(false);
     }

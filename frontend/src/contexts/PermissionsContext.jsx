@@ -49,7 +49,10 @@ export const PermissionsProvider = ({ children }) => {
 
   // ✅ Carrega permissões via API (se token for válido)
   const loadPermissions = async (token) => {
-    if (permissionsFetchedRef.current) return;
+    if (!token) {
+      clearPermissions();
+      return;
+    }
 
     const valid = await isTokenValid(token);
     if (!valid) {
@@ -67,6 +70,10 @@ export const PermissionsProvider = ({ children }) => {
       setPermissions(perms);
       sessionStorage.setItem('wayne-permissions', JSON.stringify(perms));
       permissionsFetchedRef.current = true;
+
+      if (isDebug) {
+        console.log('[✅ PERMISSIONS] Loaded successfully:', perms);
+      }
 
       setSnackbar({
         open: true,
@@ -97,16 +104,21 @@ export const PermissionsProvider = ({ children }) => {
     permissionsFetchedRef.current = false;
   };
 
-  const reloadPermissions = () => {
+  const reloadPermissions = async () => {
     if (isDebug) {
       console.log('[🔁 RELOAD PERMISSIONS] Starting reloading permissions...');
-      console.log('[🔁 RELOAD PERMISSIONS]Token present?', !!token);
+      console.log('[🔁 RELOAD PERMISSIONS] Token present?', !!token);
     }
 
+    // Force reload by resetting the ref
     permissionsFetchedRef.current = false;
+    
+    // Clear current permissions before reloading
+    setPermissions([]);
+    sessionStorage.removeItem('wayne-permissions');
 
     if (token) {
-      loadPermissions(token);
+      await loadPermissions(token);
     } else {
       if (isDebug) {
         console.warn('[❌ RELOAD PERMISSIONS] Token missing. Unable to reload permissions.');

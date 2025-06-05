@@ -100,12 +100,6 @@ export default function Shipping({ onSelectShipping }) {
       setAlert({ open: true, severity: 'success', message: 'Shipping saved to order!' });
       setOpenModal(false);
 
-      // const timeoutDuration =
-      //   !isNaN(Number(import.meta.env.VITE_PUBLIC_TIMEOUT_DURATION)) / 2 ? Number(import.meta.env.VITE_PUBLIC_TIMEOUT_DURATION) / 2 : 1000;
-
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, timeoutDuration);
     } catch (error) {
       console.error('Failed to create OrderShipping:', error);
       setAlert({ open: true, severity: 'error', message: 'Failed to save address!' });
@@ -132,12 +126,7 @@ export default function Shipping({ onSelectShipping }) {
       setSelectedAddress(null);
       setAlert({ open: true, severity: 'info', message: 'Shipping removed. You can add a new one.' });
       setOpenModal(true);
-      // const timeoutDuration =
-      //   !isNaN(Number(import.meta.env.VITE_PUBLIC_TIMEOUT_DURATION)) / 2 ? Number(import.meta.env.VITE_PUBLIC_TIMEOUT_DURATION) / 2 : 1000;
 
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, timeoutDuration);
     } catch (error) {
       console.error('❌ Failed to cancel shipping:', error);
       setAlert({ open: true, severity: 'error', message: 'Failed to cancel address!' });

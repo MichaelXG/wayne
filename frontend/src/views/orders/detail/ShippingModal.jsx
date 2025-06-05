@@ -108,7 +108,7 @@ export default function ShippingModal({ open, onClose, addresses = [], selectedA
                                   size="small"
                                   sx={(theme) => ({
                                     fontWeight: theme.typography.fontWeightBold,
-                                    bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                                    bgcolor: theme.palette[address.is_active ? 'success' : 'error'].dark,
                                     color: theme.palette.common.white
                                   })}
                                 />

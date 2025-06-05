@@ -9,7 +9,7 @@ export default function ProtectedRoute({ requiredMenu, requiredAction = 'can_rea
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { permissions } = usePermissions();
+  const { permissions, reloadPermissions } = usePermissions();
 
   useEffect(() => {
     const validateToken = async () => {
@@ -29,6 +29,13 @@ export default function ProtectedRoute({ requiredMenu, requiredAction = 'can_rea
 
         if (response.status === 200) {
           console.log('✅ Token is valid. Access granted.');
+          
+          // If we have a valid token but no permissions, try to reload them
+          if (permissions.length === 0) {
+            console.log('🔄 No permissions found. Attempting to reload...');
+            await reloadPermissions();
+          }
+          
           setIsAuthenticated(true);
         } else {
           console.warn('❌ Invalid token. Redirecting...');
@@ -45,7 +52,7 @@ export default function ProtectedRoute({ requiredMenu, requiredAction = 'can_rea
     };
 
     validateToken();
-  }, [userData, setUserData]);
+  }, [userData, setUserData, permissions.length, reloadPermissions]);
 
   if (isLoading) {
     return <div>🔄 Checking authentication...</div>;
@@ -57,8 +64,8 @@ export default function ProtectedRoute({ requiredMenu, requiredAction = 'can_rea
 
   // ✅ Check if the user has the required permission
   if (requiredMenu) {
-    const perm = permissions.find(p => p.menu_name === requiredMenu);
-    if (!perm || !perm[requiredAction]) {
+    const perm = permissions.find(p => p.menu_name.toLowerCase() === requiredMenu.toLowerCase());
+    if (!perm || !perm.permissions?.[requiredAction]) {
       console.warn(`🚫 No permission: ${requiredMenu} - ${requiredAction}`);
       return <Navigate to="/forbidden" replace />;
     }

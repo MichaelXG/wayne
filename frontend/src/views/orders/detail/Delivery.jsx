@@ -181,7 +181,8 @@ export default function Delivery({ onSelectCarrier }) {
         label: 'Edit Carrier',
         icon: customSvgEditIcon,
         onClick: openEditModal,
-        disabled: !canEdit
+        disabled: !canEdit,
+        permission: { menu: 'orders', action: 'can_update' }
       };
     }
     return {

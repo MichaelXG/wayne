@@ -129,7 +129,8 @@ export default function OrderDetail() {
       return {
         label: 'Cancel Order',
         icon: <IconBan size={20} />,
-        onClick: () => setShowCancelOrderModal(true)
+        onClick: () => setShowCancelOrderModal(true),
+        permission: { menu: 'orders', action: 'can_delete' }
       };
     }
     return null;

@@ -20,6 +20,7 @@ import Breadcrumbs from 'ui-component/extended/Breadcrumbs';
 import useConfig from 'hooks/useConfig';
 import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 import OrderQuickActions from '../../ui-component/order/OrderQuickActions';
+import { PermissionsProvider } from '../../contexts/PermissionsContext';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -95,14 +96,16 @@ export default function MainLayout() {
 
       {/* ✅ Aparece automaticamente conforme ordem existir */}
       {hasOrder && (
-        <OrderQuickActions
-          onFilterChange={(status) => {
-            console.log('Status changed:', status);
-          }}
-          onCreateClick={() => {
-            navigate('/orders/create');
-          }}
-        />
+        <PermissionsProvider>
+          <OrderQuickActions
+            onFilterChange={(status) => {
+              console.log('Status changed:', status);
+            }}
+            onCreateClick={() => {
+              navigate('/orders/create');
+            }}
+          />
+        </PermissionsProvider>
       )}
     </Box>
   );
