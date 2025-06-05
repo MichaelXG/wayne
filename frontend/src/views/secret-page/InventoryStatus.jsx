@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Box,
   Card,
@@ -13,24 +13,13 @@ import {
   LinearProgress,
   useTheme
 } from '@mui/material';
-import {
-  Inventory,
-  Speed,
-  Build,
-  LocalShipping,
-  Warning,
-  CheckCircle
-} from '@mui/icons-material';
+import { Inventory, Speed, Build, LocalShipping, Warning, CheckCircle } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  background: theme.palette.grey[600],
-  backdropFilter: 'blur(10px)',
-  borderRadius: '12px',
-  color: theme.palette.common.white,
-  padding: theme.spacing(3),
-  marginBottom: theme.spacing(2)
-}));
+import { useAuthGuard } from '../../hooks/useAuthGuard';
+import AddIcon from '@mui/icons-material/Add';
+import { BaseDir } from '../../App';
+import DefaultCardLayout from '../orders/card/DefaultCardLayout';
+import DefaultLayout from '../../layout/DefaultLayout';
 
 const ProgressBar = styled(LinearProgress)(({ theme }) => ({
   height: 8,
@@ -43,6 +32,7 @@ const ProgressBar = styled(LinearProgress)(({ theme }) => ({
 
 const InventoryStatus = () => {
   const theme = useTheme();
+  const checkingAuth = useAuthGuard();
 
   const inventoryItems = [
     {
@@ -75,93 +65,132 @@ const InventoryStatus = () => {
     }
   ];
 
-  return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h3" gutterBottom>
-        Inventory Status
-      </Typography>
+  const breadcrumbs = useMemo(
+    () => [
+      { label: 'Secret', href: `${BaseDir}/secret-page` },
+      { label: 'Inventory', href: `${BaseDir}/secret-page` },
+      { label: 'Status' }
+    ],
+    []
+  );
 
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <StyledCard>
-            <Typography variant="h4" gutterBottom>
-              Equipment Overview
-            </Typography>
-            <List>
-              {inventoryItems.map((item, index) => (
-                <ListItem
-                  key={index}
-                  sx={{
-                    borderBottom: index < inventoryItems.length - 1 ? `1px solid ${theme.palette.grey[300]}` : 'none',
-                    py: 2
-                  }}
-                >
-                  <ListItemIcon sx={{ color: theme.palette.grey[300] }}>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.name}
-                    secondary={`Last Maintenance: ${item.lastMaintenance}`}
-                    secondaryTypographyProps={{ sx: { color: theme.palette.grey[300] } }}
-                  />
-                  <Box sx={{ minWidth: 120, textAlign: 'right', mr: 2 }}>
-                    <Chip
-                      label={item.status}
-                      color={
-                        item.status === 'Optimal'
-                          ? 'success'
-                          : item.status === 'Good'
-                          ? 'info'
-                          : 'error'
-                      }
-                      size="small"
-                      sx={{
-                        backgroundColor: theme.palette.grey[300],
-                        color: theme.palette.grey[900],
-                        '&.MuiChip-colorSuccess': {
-                          backgroundColor: theme.palette.success.main,
-                          color: theme.palette.common.white
-                        },
-                        '&.MuiChip-colorError': {
-                          backgroundColor: theme.palette.error.main,
-                          color: theme.palette.common.white
-                        },
-                        '&.MuiChip-colorInfo': {
-                          backgroundColor: theme.palette.info.main,
-                          color: theme.palette.common.white
-                        }
-                      }}
+  const actionbutton = useMemo(
+    () => ({
+      label: '',
+      href: `#`,
+      icon: <AddIcon />,
+      disable: true
+    }),
+    []
+  );
+
+  // Previne renderização antes da validação
+  if (checkingAuth) return null;
+
+  return (
+    <DefaultLayout
+      mainCardTitle="Inventory"
+      subCardTitle="Status"
+      breadcrumbs={breadcrumbs}
+      backButton={{ type: 'link', link: `/secret-page` }}
+      actionbutton={actionbutton}
+      checkingAuth={!checkingAuth}
+    >
+      <Box
+        sx={(theme) => ({
+          px: 2,
+          py: 3,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          boxSizing: 'border-box',
+          maxWidth: '1500px',
+          width: '100%',
+          margin: '0 auto',
+          fontFamily: theme.typography.fontFamily,
+          fontSize: '0.875rem',
+          fontWeight: 400,
+          lineHeight: '1.334em',
+          color: theme.palette.text.primary,
+          WebkitFontSmoothing: 'antialiased',
+          WebkitTextSizeAdjust: '100%',
+          WebkitTapHighlightColor: 'transparent',
+          backgroundColor: theme.palette.background.default
+        })}
+      >
+        <Grid
+          container
+          spacing={1}
+          alignItems="stretch"
+          sx={{
+            height: '100%',
+            minHeight: 'calc(100vh - 200px)'
+          }}
+        >
+          <Grid item xs={12} md={12} sx={{ height: '100%' }}>
+            <DefaultCardLayout subCardTitle=" Equipment Overview" actionbutton={actionbutton}>
+              <List sx={{ flexGrow: 1, overflow: 'auto' }}>
+                {inventoryItems.map((item, index) => (
+                  <ListItem
+                    key={index}
+                    sx={{
+                      borderBottom: index < inventoryItems.length - 1 ? `1px solid ${theme.palette.grey[300]}` : 'none',
+                      py: 2
+                    }}
+                  >
+                    <ListItemIcon sx={{ color: theme.palette.grey[500] }}>{item.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={item.name}
+                      secondary={`Last Maintenance: ${item.lastMaintenance}`}
+                      secondaryTypographyProps={{ sx: { color: theme.palette.grey[500] } }}
                     />
-                  </Box>
-                  <Box sx={{ minWidth: 200 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Typography variant="body2" sx={{ flexGrow: 1, color: theme.palette.grey[300] }}>
-                        Stock Level
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
-                        {item.stock}%
-                      </Typography>
+                    <Box sx={{ minWidth: 120, textAlign: 'right', mr: 2 }}>
+                      <Chip
+                        label={item.status}
+                        color={item.status === 'Optimal' ? 'success' : item.status === 'Good' ? 'info' : 'error'}
+                        size="small"
+                        sx={{
+                          backgroundColor: theme.palette.grey[500],
+                          color: theme.palette.grey[900],
+                          '&.MuiChip-colorSuccess': {
+                            backgroundColor: theme.palette.success.main,
+                            color: theme.palette.common.white
+                          },
+                          '&.MuiChip-colorError': {
+                            backgroundColor: theme.palette.error.main,
+                            color: theme.palette.common.white
+                          },
+                          '&.MuiChip-colorInfo': {
+                            backgroundColor: theme.palette.info.main,
+                            color: theme.palette.common.white
+                          }
+                        }}
+                      />
                     </Box>
-                    <ProgressBar
-                      variant="determinate"
-                      value={item.stock}
-                      color={
-                        item.stock > 70
-                          ? 'success'
-                          : item.stock > 40
-                          ? 'warning'
-                          : 'error'
-                      }
-                    />
-                  </Box>
-                </ListItem>
-              ))}
-            </List>
-          </StyledCard>
+                    <Box sx={{ minWidth: 200 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <Typography variant="body2" sx={{ flexGrow: 1, color: theme.palette.grey[500] }}>
+                          Stock Level
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: theme.palette.grey[500] }}>
+                          {item.stock}%
+                        </Typography>
+                      </Box>
+                      <ProgressBar
+                        variant="determinate"
+                        value={item.stock}
+                        color={item.stock > 70 ? 'success' : item.stock > 40 ? 'warning' : 'error'}
+                      />
+                    </Box>
+                  </ListItem>
+                ))}
+              </List>
+            </DefaultCardLayout>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </DefaultLayout>
   );
 };
 
-export default InventoryStatus; 
+export default InventoryStatus;

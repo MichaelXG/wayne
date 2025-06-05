@@ -156,7 +156,7 @@ export default function OrderDetail() {
   const orderCode = order?.code || '0000';
   const orderStatus = order?.status || 'pending';
 
-  const authIcon = checkingAuth ? (
+  const authIcon = !checkingAuth ? (
     <Tooltip
       title="User authenticated"
       placement="top"
