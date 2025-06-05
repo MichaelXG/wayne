@@ -7,6 +7,7 @@ import { alpha } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -70,6 +71,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
         bgcolor: 'transparent',
         overflow: 'hidden',
         position: 'relative',
+        height: '100%',
         '& > div': {
           position: 'relative',
           zIndex: 5
@@ -96,10 +98,10 @@ export default function TotalOrderLineChartCard({ isLoading }) {
         }
       })}
     >
-      <Box sx={{ p: 2.25 }}>
+      <Box sx={{ p: 2 }}>
         <Grid container direction="column">
           <Grid>
-            <Grid container sx={{ justifyContent: 'space-between' }}>
+            <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
               <Grid>
                 <Avatar
                   variant="rounded"
@@ -107,44 +109,45 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                     ...theme.typography.commonAvatar,
                     ...theme.typography.largeAvatar,
                     bgcolor: theme.palette.warning.light,
-                    color: theme.palette.warning.dark,
-                    mt: 1
+                    color: theme.palette.warning.dark
                   })}
                 >
                   <LocalMallOutlinedIcon fontSize="inherit" />
                 </Avatar>
               </Grid>
               <Grid>
-                <Button
-                  disableElevation
-                  variant={timeValue ? 'contained' : 'text'}
-                  size="small"
-                  sx={(theme) => ({
-                    color: timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
-                    backgroundColor: timeValue ? theme.palette.warning.light : 'transparent',
-                    '&:hover': {
-                      backgroundColor: timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
-                    }
-                  })}
-                  onClick={(e) => handleChangeTime(e, true)}
-                >
-                  Month
-                </Button>
-                <Button
-                  disableElevation
-                  variant={!timeValue ? 'contained' : 'text'}
-                  size="small"
-                  sx={(theme) => ({
-                    color: !timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
-                    backgroundColor: !timeValue ? theme.palette.warning.light : 'transparent',
-                    '&:hover': {
-                      backgroundColor: !timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
-                    }
-                  })}
-                  onClick={(e) => handleChangeTime(e, false)}
-                >
-                  Year
-                </Button>
+                <ButtonGroup size="small" sx={{ backgroundColor: alpha(theme.palette.warning.light, 0.1), p: 0.5, borderRadius: 1 }}>
+                  <Button
+                    disableElevation
+                    variant={timeValue ? 'contained' : 'text'}
+                    size="small"
+                    sx={(theme) => ({
+                      color: timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                      backgroundColor: timeValue ? theme.palette.warning.light : 'transparent',
+                      '&:hover': {
+                        backgroundColor: timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                      }
+                    })}
+                    onClick={(e) => handleChangeTime(e, true)}
+                  >
+                    Month
+                  </Button>
+                  <Button
+                    disableElevation
+                    variant={!timeValue ? 'contained' : 'text'}
+                    size="small"
+                    sx={(theme) => ({
+                      color: !timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                      backgroundColor: !timeValue ? theme.palette.warning.light : 'transparent',
+                      '&:hover': {
+                        backgroundColor: !timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                      }
+                    })}
+                    onClick={(e) => handleChangeTime(e, false)}
+                  >
+                    Year
+                  </Button>
+                </ButtonGroup>
               </Grid>
             </Grid>
           </Grid>
@@ -157,7 +160,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                       fontSize: '2.125rem', 
                       fontWeight: 500, 
                       mr: 1, 
-                      mt: 1.75, 
+                      mt: 0.75, 
                       mb: 0.75,
                       color: theme.palette.grey[800]
                     }}>
@@ -194,7 +197,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
               </Grid>
               <Grid size={6}>
                 <Box sx={{ 
-                  height: '100%',
+                  height: 150,
                   width: '100%',
                   '& .apexcharts-canvas': {
                     '& .apexcharts-text': {
