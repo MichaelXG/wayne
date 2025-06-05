@@ -1,13 +1,8 @@
-import BatSignalScene from "../../ui-component/batmam/BatSignalScene";
-
+// import BatSignalScene from "../../ui-component/batmam/BatSignalScene";
+import HomeSecret from '../../ui-component/batmam/home-secret';
 
 function HomePage() {
-  return (
-    <div>
-      <h1>Minha Página</h1>
-      <BatSignalScene />
-    </div>
-  );
+  return <HomeSecret />;
 }
 
 export default HomePage;
