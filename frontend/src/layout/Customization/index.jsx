@@ -51,44 +51,38 @@ export default function Customization() {
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: theme.shadows[3],
-                  '& .MuiTooltip-arrow': {
-                    color: theme.palette.grey[700]
-                  }
+                  boxShadow: theme.shadows[2]
                 })
               }
             }}
             arrow
           >
             <Fab
-              component="div"
               onClick={handleToggle}
               size="medium"
               variant="circular"
               sx={{
                 position: 'fixed',
-                top: '15%',
+                top: '10%',
                 right: 10,
                 zIndex: 1200,
-                borderRadius: '50%',
-                bgcolor: theme.palette.grey[200],
-                color: theme.palette.grey[700],
+                borderRadius: 0,
+                borderTopLeftRadius: '50%',
+                borderBottomLeftRadius: '50%',
+                borderTopRightRadius: '50%',
+                borderBottomRightRadius: '4px',
+                bgcolor: theme.palette.grey[300],
+                color: theme.palette.text.secondary,
                 transition: 'all 0.3s ease-in-out',
                 '&:hover': {
-                  bgcolor: theme.palette.grey[700],
-                  color: theme.palette.common.white,
-                  transform: 'scale(1.1)'
+                  bgcolor: theme.palette.grey[600],
+                  color: theme.palette.common.white
                 },
-                boxShadow: theme.shadows[2]
+                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
               }}
             >
               <AnimateButton type="rotate">
-                <IconButton
-                  color="inherit"
-                  size="large"
-                  disableRipple
-                  aria-label="live customize"
-                >
+                <IconButton color="inherit" size="large" disableRipple aria-label="live customize">
                   <IconSettings />
                 </IconButton>
               </AnimateButton>
