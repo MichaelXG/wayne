@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Box, Grid, Card, CardContent, Typography, IconButton } from '@mui/material';
+import { Security, Inventory, Person, Warning } from '@mui/icons-material';
 
 // Import images
 import cloud1 from '../../assets/images/cloud/cloud1.png';
@@ -13,6 +15,7 @@ import forestBG from '../../assets/images/cloud/gothamCity.webp';
 const Container = styled.div`
   width: 100%;
   height: 100vh;
+  overflow-y: auto;
 `;
 
 const Container1 = styled.div`
@@ -63,21 +66,26 @@ const Cloud = styled.div`
 `;
 
 const Container2 = styled.div`
-  width: 50%;
+  width: 80%;
   margin: 20px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
   h4 {
     text-align: center;
-    color: gray;
-    font-size: 18px;
+    color: #1a237e;
+    font-size: 24px;
     padding-top: 20px;
+    margin-bottom: 30px;
   }
+`;
 
-  p {
-    color: rgb(151, 151, 151);
-    font-size: 14px;
-    line-height: 25px;
-    padding-top: 20px;
+const StyledCard = styled(Card)`
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: translateY(-5px);
   }
 `;
 
@@ -99,6 +107,33 @@ const HomeSecret = () => {
     { src: cloud5, i: 5 }
   ];
 
+  const quickStats = [
+    {
+      title: 'Security Alerts',
+      value: '12',
+      icon: <Security color="primary" />,
+      description: 'Active security protocols in place'
+    },
+    {
+      title: 'Inventory Status',
+      value: '89%',
+      icon: <Inventory color="success" />,
+      description: 'Current equipment availability'
+    },
+    {
+      title: 'Wanted List',
+      value: '8',
+      icon: <Person color="error" />,
+      description: 'High-priority targets in Gotham'
+    },
+    {
+      title: 'Threat Level',
+      value: 'High',
+      icon: <Warning color="warning" />,
+      description: 'Current city threat assessment'
+    }
+  ];
+
   return (
     <GlobalStyle>
       <Container>
@@ -109,19 +144,31 @@ const HomeSecret = () => {
             ))}
           </Cloud>
         </Container1>
-        {/* <Container2>
-          <h4>CSS Cloud Animation Effect</h4>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-            when an unknown printer took a galley of type and scrambled it to make a type 
-            specimen book. It has survived not only five centuries, but also the leap into 
-            electronic typesetting, remaining essentially unchanged. It was popularised in 
-            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-            and more recently with desktop publishing software like Aldus PageMaker including 
-            versions of Lorem Ipsum.
-          </p>
-        </Container2> */}
+        <Container2>
+          <h4>Command Center Overview</h4>
+          <Grid container spacing={3}>
+            {quickStats.map((stat, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
+                <StyledCard>
+                  <CardContent>
+                    <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                      <Typography variant="h6" color="textSecondary">
+                        {stat.title}
+                      </Typography>
+                      <IconButton size="small">{stat.icon}</IconButton>
+                    </Box>
+                    <Typography variant="h4" component="div" gutterBottom>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {stat.description}
+                    </Typography>
+                  </CardContent>
+                </StyledCard>
+              </Grid>
+            ))}
+          </Grid>
+        </Container2>
       </Container>
     </GlobalStyle>
   );
