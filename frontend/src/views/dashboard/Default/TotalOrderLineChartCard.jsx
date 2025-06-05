@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { alpha } from '@mui/material/styles';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -66,37 +67,32 @@ export default function TotalOrderLineChartCard({ isLoading }) {
       border={false}
       content={false}
       sx={(theme) => ({
-        bgcolor: theme.palette.grey[900],
-        color: theme.palette.common.white,
+        bgcolor: 'transparent',
         overflow: 'hidden',
         position: 'relative',
-
         '& > div': {
           position: 'relative',
           zIndex: 5
         },
-
         '&:after': {
           content: '""',
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.grey[900],
+          background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
           borderRadius: '50%',
-          top: { xs: -85 },
-          right: { xs: -95 }
+          top: -30,
+          right: -180
         },
-
         '&:before': {
           content: '""',
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.grey[900],
+          background: `linear-gradient(140.9deg, ${theme.palette.warning.dark} -14.02%, rgba(144, 202, 249, 0) 70.50%)`,
           borderRadius: '50%',
-          top: { xs: -125 },
-          right: { xs: -15 },
-          opacity: 0.5
+          top: -160,
+          right: -130
         }
       })}
     >
@@ -110,8 +106,8 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                   sx={(theme) => ({
                     ...theme.typography.commonAvatar,
                     ...theme.typography.largeAvatar,
-                    bgcolor: theme.palette.grey[900],
-                    color: theme.palette.common.white,
+                    bgcolor: theme.palette.warning.light,
+                    color: theme.palette.warning.dark,
                     mt: 1
                   })}
                 >
@@ -123,7 +119,13 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                   disableElevation
                   variant={timeValue ? 'contained' : 'text'}
                   size="small"
-                  sx={{ color: 'inherit' }}
+                  sx={(theme) => ({
+                    color: timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                    backgroundColor: timeValue ? theme.palette.warning.light : 'transparent',
+                    '&:hover': {
+                      backgroundColor: timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                    }
+                  })}
                   onClick={(e) => handleChangeTime(e, true)}
                 >
                   Month
@@ -132,7 +134,13 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                   disableElevation
                   variant={!timeValue ? 'contained' : 'text'}
                   size="small"
-                  sx={{ color: 'inherit' }}
+                  sx={(theme) => ({
+                    color: !timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                    backgroundColor: !timeValue ? theme.palette.warning.light : 'transparent',
+                    '&:hover': {
+                      backgroundColor: !timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                    }
+                  })}
                   onClick={(e) => handleChangeTime(e, false)}
                 >
                   Year
@@ -145,7 +153,14 @@ export default function TotalOrderLineChartCard({ isLoading }) {
               <Grid size={6}>
                 <Grid container sx={{ alignItems: 'center' }}>
                   <Grid>
-                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                    <Typography sx={{ 
+                      fontSize: '2.125rem', 
+                      fontWeight: 500, 
+                      mr: 1, 
+                      mt: 1.75, 
+                      mb: 0.75,
+                      color: theme.palette.grey[800]
+                    }}>
                       {Number(orderTotal || 0).toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD'
@@ -157,8 +172,8 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                       sx={(theme) => ({
                         ...theme.typography.smallAvatar,
                         cursor: 'pointer',
-                        bgcolor: theme.palette.grey[200],
-                        color: theme.palette.grey[900]
+                        bgcolor: theme.palette.warning.light,
+                        color: theme.palette.warning.dark
                       })}
                     >
                       <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
@@ -169,7 +184,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                       sx={(theme) => ({
                         fontSize: '1rem',
                         fontWeight: 500,
-                        color: theme.palette.grey[200]
+                        color: theme.palette.grey[500]
                       })}
                     >
                       Total Order
@@ -177,7 +192,22 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid size={6}>{timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}</Grid>
+              <Grid size={6}>
+                <Box sx={{ 
+                  height: '100%',
+                  width: '100%',
+                  '& .apexcharts-canvas': {
+                    '& .apexcharts-text': {
+                      fill: theme.palette.grey[800]
+                    },
+                    '& .apexcharts-series path': {
+                      stroke: theme.palette.warning.main
+                    }
+                  }
+                }}>
+                  {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

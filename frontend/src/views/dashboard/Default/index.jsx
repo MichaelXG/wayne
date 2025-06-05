@@ -189,21 +189,7 @@ export default function Dashboard() {
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
               <Grid container spacing={3}>
-                <Grid size={12}>
-                  <Box sx={{ 
-                    backgroundColor: theme.palette.background.paper,
-                    borderRadius: 2,
-                    boxShadow: theme.shadows[1],
-                    p: 2,
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: theme.shadows[4]
-                    }
-                  }}>
-                    <OrderStatusPieChart timeRange={timeRange} />
-                  </Box>
-                </Grid>
+                
                 <Grid size={12}>
                   <Box sx={{ 
                     backgroundColor: theme.palette.background.paper,
