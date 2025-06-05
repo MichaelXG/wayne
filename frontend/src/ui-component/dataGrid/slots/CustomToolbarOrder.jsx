@@ -6,6 +6,8 @@ import Clear from '@mui/icons-material/Clear';
 import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
 import GridToolbarColumnsButtonCustom from '../toolbar/GridToolbarColumnsButtonCustom';
 import ActiveFiltersBadge from '../ActiveFiltersBadge';
+import GridToolbarFilterButtonCustom from '../toolbar/GridToolbarFilterButtonCustom';
+import GridToolbarExportCustom from '../toolbar/GridToolbarExportCustom';
 
 const CustomToolbarOrder = ({
   selectionModel = [],
@@ -47,17 +49,8 @@ const CustomToolbarOrder = ({
         <Box display="flex" gap={1} flexWrap="wrap">
           <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName="order" />
           <GridToolbarColumnsButtonCustom />
-          <GridToolbarFilterButton 
-            sx={(theme) => ({
-              backgroundColor: theme.palette.grey[300],
-              color: theme.palette.grey[600],
-              '&:hover': {
-                backgroundColor: theme.palette.grey[600],
-                color: theme.palette.common.white
-              }
-            })}
-          />
-          {/* <GridToolbarExport /> */}
+          <GridToolbarFilterButtonCustom />
+          <GridToolbarExportCustom />
         </Box>
       </Box>
 

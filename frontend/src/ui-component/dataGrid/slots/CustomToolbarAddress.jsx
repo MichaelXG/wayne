@@ -7,6 +7,8 @@ import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
 import GridToolbarColumnsButtonCustom from '../toolbar/GridToolbarColumnsButtonCustom';
 import ActiveFiltersBadge from '../ActiveFiltersBadge';
 import { useTheme } from '@mui/material/styles';
+import GridToolbarFilterButtonCustom from '../toolbar/GridToolbarFilterButtonCustom';
+import GridToolbarExportCustom from '../toolbar/GridToolbarExportCustom';
 
 const CustomToolbarAddress = ({
   selectionModel = [],
@@ -47,8 +49,8 @@ const CustomToolbarAddress = ({
         <Box display="flex" gap={1} flexWrap="wrap">
           <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName='address' />
           <GridToolbarColumnsButtonCustom />
-          <GridToolbarFilterButton />
-          <GridToolbarExport />
+          <GridToolbarFilterButtonCustom />
+          <GridToolbarExportCustom />
         </Box>
       </Box>
 

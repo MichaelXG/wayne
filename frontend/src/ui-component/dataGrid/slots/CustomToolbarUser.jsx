@@ -11,6 +11,8 @@ import Clear from '@mui/icons-material/Clear';
 import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
 import GridToolbarColumnsButtonCustom from '../toolbar/GridToolbarColumnsButtonCustom';
 import ActiveFiltersBadge from '../ActiveFiltersBadge';
+import GridToolbarFilterButtonCustom from '../toolbar/GridToolbarFilterButtonCustom';
+import GridToolbarExportCustom from '../toolbar/GridToolbarExportCustom';
 
 const CustomToolbarUser = ({
   selectionModel = [],
@@ -49,8 +51,8 @@ const CustomToolbarUser = ({
         <Box display="flex" gap={1} flexWrap="wrap">
           <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName='users' />
           <GridToolbarColumnsButtonCustom />
-          <GridToolbarFilterButton />
-          <GridToolbarExport />
+          <GridToolbarFilterButtonCustom />
+          <GridToolbarExportCustom />
         </Box>
       </Box>
 

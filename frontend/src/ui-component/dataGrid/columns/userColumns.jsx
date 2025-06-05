@@ -191,7 +191,7 @@ const createUserColumns = (handleDelete, theme, locale = 'en-US') => {
           componentsProps={{
             tooltip: {
               sx: {
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.grey[500],
                 color: theme.palette.common.white,
                 fontSize: 12,
                 px: theme.spacing(1.5),

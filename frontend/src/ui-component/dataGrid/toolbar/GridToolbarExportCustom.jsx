@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
 import { useGridApiContext } from '@mui/x-data-grid';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn'; // ícone oficial
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
-const GridToolbarColumnsButtonCustom = () => {
+const GridToolbarExportCustom = () => {
   const apiRef = useGridApiContext();
 
   const handleClick = () => {
-    apiRef.current?.showPreferences?.('columns');
+    apiRef.current?.exportDataAsCsv?.();
   };
 
   return (
@@ -15,9 +15,9 @@ const GridToolbarColumnsButtonCustom = () => {
       size="small"
       color="secondary"
       disableElevation
-      startIcon={<ViewColumnIcon fontSize="small" />}
+      startIcon={<FileDownloadIcon fontSize="small" />}
       onClick={handleClick}
-      aria-label="Open Columns Panel"
+      aria-label="Export Data"
       aria-haspopup="true"
       sx={(theme) => ({
         backgroundColor: (theme) => theme.palette.grey[300],
@@ -29,9 +29,9 @@ const GridToolbarColumnsButtonCustom = () => {
         }
       })}
     >
-      Columns
+      Export
     </Button>
   );
 };
 
-export default GridToolbarColumnsButtonCustom;
+export default GridToolbarExportCustom; 

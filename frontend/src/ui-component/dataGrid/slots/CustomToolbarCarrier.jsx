@@ -6,6 +6,8 @@ import Clear from '@mui/icons-material/Clear';
 import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
 import GridToolbarColumnsButtonCustom from '../toolbar/GridToolbarColumnsButtonCustom';
 import ActiveFiltersBadge from '../ActiveFiltersBadge';
+import GridToolbarExportCustom from '../toolbar/GridToolbarExportCustom';
+import GridToolbarFilterButtonCustom from '../toolbar/GridToolbarFilterButtonCustom';
 
 const CustomToolbarCarrier = ({
   selectionModel = [],
@@ -44,8 +46,8 @@ const CustomToolbarCarrier = ({
         <Box display="flex" gap={1} flexWrap="wrap">
           <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName="carrier" />
           <GridToolbarColumnsButtonCustom />
-          <GridToolbarFilterButton />
-          <GridToolbarExport />
+          <GridToolbarFilterButtonCustom />
+          <GridToolbarExportCustom />
         </Box>
       </Box>
 

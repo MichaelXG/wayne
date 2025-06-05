@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {
   GridToolbarContainer,
   GridToolbarQuickFilter,
-  GridToolbarExport,
-  GridToolbarFilterButton
 } from '@mui/x-data-grid';
 import { Box, Button, Divider } from '@mui/material';
 import Clear from '@mui/icons-material/Clear';
 import GridToolbarDeleteSelected from '../toolbar/GridToolbarDeleteSelected';
 import GridToolbarColumnsButtonCustom from '../toolbar/GridToolbarColumnsButtonCustom';
+import GridToolbarFilterButtonCustom from '../toolbar/GridToolbarFilterButtonCustom';
+import GridToolbarExportCustom from '../toolbar/GridToolbarExportCustom';
 import ActiveFiltersBadge from '../ActiveFiltersBadge';
 
 const CustomToolbarProduct = ({
@@ -49,8 +49,8 @@ const CustomToolbarProduct = ({
         <Box display="flex" gap={1} flexWrap="wrap">
           <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName='products' />
           <GridToolbarColumnsButtonCustom />
-          <GridToolbarFilterButton />
-          <GridToolbarExport />
+          <GridToolbarFilterButtonCustom />
+          <GridToolbarExportCustom />
         </Box>
       </Box>
 

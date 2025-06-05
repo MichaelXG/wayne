@@ -1,12 +1,12 @@
 import { Button } from '@mui/material';
 import { useGridApiContext } from '@mui/x-data-grid';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn'; // ícone oficial
+import FilterListIcon from '@mui/icons-material/FilterList';
 
-const GridToolbarColumnsButtonCustom = () => {
+const GridToolbarFilterButtonCustom = () => {
   const apiRef = useGridApiContext();
 
   const handleClick = () => {
-    apiRef.current?.showPreferences?.('columns');
+    apiRef.current?.showFilterPanel?.();
   };
 
   return (
@@ -15,9 +15,9 @@ const GridToolbarColumnsButtonCustom = () => {
       size="small"
       color="secondary"
       disableElevation
-      startIcon={<ViewColumnIcon fontSize="small" />}
+      startIcon={<FilterListIcon fontSize="small" />}
       onClick={handleClick}
-      aria-label="Open Columns Panel"
+      aria-label="Show Filter Panel"
       aria-haspopup="true"
       sx={(theme) => ({
         backgroundColor: (theme) => theme.palette.grey[300],
@@ -29,9 +29,9 @@ const GridToolbarColumnsButtonCustom = () => {
         }
       })}
     >
-      Columns
+      Filter
     </Button>
   );
 };
 
-export default GridToolbarColumnsButtonCustom;
+export default GridToolbarFilterButtonCustom;

@@ -96,16 +96,14 @@ export default function MainLayout() {
 
       {/* ✅ Aparece automaticamente conforme ordem existir */}
       {hasOrder && (
-        <PermissionsProvider>
-          <OrderQuickActions
-            onFilterChange={(status) => {
-              console.log('Status changed:', status);
-            }}
-            onCreateClick={() => {
-              navigate('/orders/create');
-            }}
-          />
-        </PermissionsProvider>
+        <OrderQuickActions
+          onFilterChange={(status) => {
+            console.log('Status changed:', status);
+          }}
+          onCreateClick={() => {
+            navigate('/orders/create');
+          }}
+        />
       )}
     </Box>
   );
