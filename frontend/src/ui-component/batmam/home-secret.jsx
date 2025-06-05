@@ -33,7 +33,6 @@ const Container1 = styled('div')(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    background: `${theme.palette.grey[600]}99`, // 60% opacity
     zIndex: 1
   }
 }));
@@ -77,7 +76,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     ? theme.palette.grey[900]
     : theme.palette.grey[600],
   backdropFilter: 'blur(10px)',
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: '12px',
   color: theme.palette.common.white,
   transition: 'all 0.3s ease-in-out',
   border: `1px solid ${theme.palette.grey[600]}`,
@@ -88,6 +87,10 @@ const StyledCard = styled(Card)(({ theme }) => ({
       ? theme.palette.grey[900]
       : theme.palette.grey[500],
     borderColor: theme.palette.grey[300]
+  },
+  '& .MuiCardContent-root': {
+    borderRadius: '12px',
+    padding: '24px'
   }
 }));
 
@@ -99,26 +102,43 @@ const StatusChip = styled(Chip)(({ theme }) => ({
   background: theme.palette.grey[600],
   color: theme.palette.common.white,
   border: `1px solid ${theme.palette.grey[700]}`,
+  borderRadius: '12px',
   '& .MuiChip-label': {
     fontWeight: 500
-  }
+  },
+  zIndex: 2
 }));
 
 const StyledProgress = styled(LinearProgress)(({ theme }) => ({
   height: 6,
-  borderRadius: 3,
+  borderRadius: '4px',
   backgroundColor: theme.palette.grey[800],
   marginTop: theme.spacing(1),
   '& .MuiLinearProgress-bar': {
-    borderRadius: 3
+    borderRadius: '4px'
   }
 }));
 
 const IconWrapper = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.common.white,
+  color: theme.palette.grey[500],
   backgroundColor: theme.palette.grey[300],
+  borderRadius: '50%',
+  padding: theme.spacing(1),
+  width: 40,
+  height: 40,
+  minWidth: 40,
+  minHeight: 40,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '& svg': {
+    fontSize: '1.5rem'
+  },
   '&:hover': {
-    backgroundColor: theme.palette.grey[600]
+    backgroundColor: theme.palette.grey[600],
+    color: theme.palette.common.white,
+    transform: 'scale(1.1)',
+    transition: 'all 0.2s ease-in-out'
   }
 }));
 
@@ -198,8 +218,8 @@ const HomeSecret = () => {
                     }
                     size="small"
                   />
-                  <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-                    <Typography variant="h6" sx={{ color: 'common.white' }}>
+                  <Box display="flex" alignItems="center" justifyContent="space-between" mb={2} mt={2}>
+                    <Typography variant="h6" sx={{ color: 'common.white', maxWidth: 'calc(100% - 56px)' }}>
                       {stat.title}
                     </Typography>
                     <IconWrapper size="small">{stat.icon}</IconWrapper>
