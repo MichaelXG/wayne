@@ -56,7 +56,7 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
 
         return (
           <Chip
-            color="secondary" 
+            color={theme.palette.grey[900]} 
             sx={{
               height: '48px',
               alignItems: 'center',
