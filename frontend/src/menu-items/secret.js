@@ -1,5 +1,12 @@
 // assets
-import { IconLock, IconShield, IconBox, IconUserSearch, IconBuildingBank } from '@tabler/icons-react';
+import {
+  IconLock,
+  IconShield,
+  IconBox,
+  IconUserSearch,
+  IconBuildingBank,
+  IconCamera
+} from '@tabler/icons-react';
 
 // constants
 const icons = {
@@ -7,7 +14,8 @@ const icons = {
   shield: IconShield,
   inventory: IconBox,
   wanted: IconUserSearch,
-  city: IconBuildingBank
+  city: IconBuildingBank,
+  camera: IconCamera
 };
 
 // ==============================|| SECRET MENU ITEMS ||============================== //
@@ -61,6 +69,15 @@ const secret = {
       type: 'item',
       url: '/secret-page/city-security',
       icon: icons.city,
+      breadcrumbs: false,
+      permission: { menu: 'secret', action: 'can_read' }
+    },
+    {
+      id: 'city-monitoring',
+      title: 'Monitoring',
+      type: 'item',
+      url: '/secret-page/monitoring',
+      icon: icons.camera,
       breadcrumbs: false,
       permission: { menu: 'secret', action: 'can_read' }
     }
