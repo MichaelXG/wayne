@@ -11,7 +11,8 @@ import {
   ListItemText,
   Switch,
   Chip,
-  LinearProgress
+  LinearProgress,
+  useTheme
 } from '@mui/material';
 import {
   Security,
@@ -26,10 +27,10 @@ import {
 import { styled } from '@mui/material/styles';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  background: 'rgba(0, 30, 60, 0.9)',
+  background: theme.palette.grey[600],
   backdropFilter: 'blur(10px)',
   borderRadius: '12px',
-  color: '#fff',
+  color: theme.palette.common.white,
   padding: theme.spacing(3),
   marginBottom: theme.spacing(2)
 }));
@@ -37,12 +38,15 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const ProgressBar = styled(LinearProgress)(({ theme }) => ({
   height: 8,
   borderRadius: 4,
+  backgroundColor: theme.palette.grey[300],
   '& .MuiLinearProgress-bar': {
     borderRadius: 4
   }
 }));
 
 const SecurityProtocols = () => {
+  const theme = useTheme();
+
   const securitySystems = [
     {
       name: 'Perimeter Defense',
@@ -94,7 +98,7 @@ const SecurityProtocols = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 4, color: '#fff' }}>
+      <Typography variant="h4" sx={{ mb: 4, color: theme.palette.common.white }}>
         Security Protocols Dashboard
       </Typography>
 
@@ -111,11 +115,11 @@ const SecurityProtocols = () => {
                   key={index}
                   sx={{
                     mb: 2,
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    backgroundColor: theme.palette.grey[300],
                     borderRadius: 2
                   }}
                 >
-                  <ListItemIcon sx={{ color: '#fff' }}>
+                  <ListItemIcon sx={{ color: theme.palette.grey[900] }}>
                     {system.icon}
                   </ListItemIcon>
                   <ListItemText
@@ -127,7 +131,7 @@ const SecurityProtocols = () => {
                           value={system.level}
                           sx={{ mb: 1 }}
                         />
-                        <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                        <Typography variant="caption" sx={{ color: theme.palette.grey[900] }}>
                           Last check: {system.lastCheck}
                         </Typography>
                       </Box>
@@ -137,7 +141,15 @@ const SecurityProtocols = () => {
                     label={system.status}
                     color="success"
                     size="small"
-                    sx={{ ml: 2 }}
+                    sx={{
+                      ml: 2,
+                      backgroundColor: theme.palette.grey[300],
+                      color: theme.palette.grey[900],
+                      '&.MuiChip-colorSuccess': {
+                        backgroundColor: theme.palette.success.main,
+                        color: theme.palette.common.white
+                      }
+                    }}
                   />
                 </ListItem>
               ))}
@@ -152,7 +164,7 @@ const SecurityProtocols = () => {
               <Typography variant="h6">
                 Active Alerts
               </Typography>
-              <IconButton size="small" sx={{ color: '#fff' }}>
+              <IconButton size="small" sx={{ color: theme.palette.common.white }}>
                 <Warning />
               </IconButton>
             </Box>
@@ -162,14 +174,14 @@ const SecurityProtocols = () => {
                   key={index}
                   sx={{
                     mb: 2,
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    backgroundColor: theme.palette.grey[300],
                     borderRadius: 2
                   }}
                 >
                   <ListItemText
                     primary={alert.message}
                     secondary={
-                      <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                      <Typography variant="caption" sx={{ color: theme.palette.grey[900] }}>
                         {alert.time}
                       </Typography>
                     }
@@ -184,6 +196,22 @@ const SecurityProtocols = () => {
                         : 'info'
                     }
                     size="small"
+                    sx={{
+                      backgroundColor: theme.palette.grey[300],
+                      color: theme.palette.grey[900],
+                      '&.MuiChip-colorError': {
+                        backgroundColor: theme.palette.error.main,
+                        color: theme.palette.common.white
+                      },
+                      '&.MuiChip-colorWarning': {
+                        backgroundColor: theme.palette.warning.main,
+                        color: theme.palette.grey[900]
+                      },
+                      '&.MuiChip-colorInfo': {
+                        backgroundColor: theme.palette.info.main,
+                        color: theme.palette.common.white
+                      }
+                    }}
                   />
                 </ListItem>
               ))}

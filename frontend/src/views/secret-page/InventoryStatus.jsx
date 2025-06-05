@@ -10,7 +10,8 @@ import {
   ListItemIcon,
   ListItemText,
   Chip,
-  LinearProgress
+  LinearProgress,
+  useTheme
 } from '@mui/material';
 import {
   Inventory,
@@ -23,10 +24,10 @@ import {
 import { styled } from '@mui/material/styles';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  background: 'rgba(0, 30, 60, 0.9)',
+  background: theme.palette.grey[600],
   backdropFilter: 'blur(10px)',
   borderRadius: '12px',
-  color: '#fff',
+  color: theme.palette.common.white,
   padding: theme.spacing(3),
   marginBottom: theme.spacing(2)
 }));
@@ -34,12 +35,15 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const ProgressBar = styled(LinearProgress)(({ theme }) => ({
   height: 8,
   borderRadius: 4,
+  backgroundColor: theme.palette.grey[300],
   '& .MuiLinearProgress-bar': {
     borderRadius: 4
   }
 }));
 
 const InventoryStatus = () => {
+  const theme = useTheme();
+
   const inventoryItems = [
     {
       name: 'Combat Suits',
@@ -88,17 +92,17 @@ const InventoryStatus = () => {
                 <ListItem
                   key={index}
                   sx={{
-                    borderBottom: index < inventoryItems.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                    borderBottom: index < inventoryItems.length - 1 ? `1px solid ${theme.palette.grey[300]}` : 'none',
                     py: 2
                   }}
                 >
-                  <ListItemIcon sx={{ color: 'inherit' }}>
+                  <ListItemIcon sx={{ color: theme.palette.grey[300] }}>
                     {item.icon}
                   </ListItemIcon>
                   <ListItemText
                     primary={item.name}
                     secondary={`Last Maintenance: ${item.lastMaintenance}`}
-                    secondaryTypographyProps={{ sx: { color: 'rgba(255,255,255,0.7)' } }}
+                    secondaryTypographyProps={{ sx: { color: theme.palette.grey[300] } }}
                   />
                   <Box sx={{ minWidth: 120, textAlign: 'right', mr: 2 }}>
                     <Chip
@@ -111,14 +115,32 @@ const InventoryStatus = () => {
                           : 'error'
                       }
                       size="small"
+                      sx={{
+                        backgroundColor: theme.palette.grey[300],
+                        color: theme.palette.grey[900],
+                        '&.MuiChip-colorSuccess': {
+                          backgroundColor: theme.palette.success.main,
+                          color: theme.palette.common.white
+                        },
+                        '&.MuiChip-colorError': {
+                          backgroundColor: theme.palette.error.main,
+                          color: theme.palette.common.white
+                        },
+                        '&.MuiChip-colorInfo': {
+                          backgroundColor: theme.palette.info.main,
+                          color: theme.palette.common.white
+                        }
+                      }}
                     />
                   </Box>
                   <Box sx={{ minWidth: 200 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Typography variant="body2" sx={{ flexGrow: 1 }}>
+                      <Typography variant="body2" sx={{ flexGrow: 1, color: theme.palette.grey[300] }}>
                         Stock Level
                       </Typography>
-                      <Typography variant="body2">{item.stock}%</Typography>
+                      <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
+                        {item.stock}%
+                      </Typography>
                     </Box>
                     <ProgressBar
                       variant="determinate"

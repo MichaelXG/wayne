@@ -13,14 +13,42 @@ import {
 import {
   CameraAlt,
   Close,
-  Videocam,
   Warning,
   LocationOn,
   AccessTime
 } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { styled, keyframes } from '@mui/material/styles';
 import CCTVOfflineEffect from '../../ui-component/movie/CCTVOfflineEffect';
 
+const pulse = keyframes`
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const RecordingIndicator = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  '& .dot': {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    backgroundColor: theme.palette.error.main,
+    animation: `${pulse} 2s ease-in-out infinite`
+  },
+  '& .text': {
+    color: theme.palette.error.main,
+    fontSize: '0.75rem',
+    fontWeight: 'bold'
+  }
+}));
 
 const StyledCard = styled(Card)(({ theme }) => ({
   background: theme.palette.grey[600],
@@ -66,6 +94,18 @@ const CameraOverlay = styled(Box)(({ theme }) => ({
   opacity: 0.7,
   transition: 'opacity 0.3s ease-in-out',
   '&.camera-overlay': {}
+}));
+
+const CameraNumber = styled(Typography)(({ theme }) => ({
+  position: 'absolute',
+  top: theme.spacing(2),
+  left: theme.spacing(2),
+  color: theme.palette.common.white,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  padding: theme.spacing(0.5, 1),
+  borderRadius: theme.shape.borderRadius,
+  fontSize: '0.875rem',
+  fontWeight: 'bold'
 }));
 
 const FullScreenDialog = styled(Dialog)(({ theme }) => ({
@@ -151,9 +191,22 @@ const StatusChip = styled(Chip)(({ theme }) => ({
   }
 }));
 
+const BASE_VIDEO_URL = 'https://raw.githubusercontent.com/MichaelXG/assets/main/videos';
+
 const CityMonitoring = () => {
   const [selectedCamera, setSelectedCamera] = useState(null);
-  const [videoError, setVideoError] = useState({});
+  const [videoError, setVideoError] = useState({
+    5: false,
+    8: false,
+    11: false
+  });
+
+  const getVideoThumbnail = (cameraId) => {
+    if (videoError[cameraId]) {
+      return null;
+    }
+    return `${BASE_VIDEO_URL}/thumbnails/camera-${cameraId}.jpg`;
+  };
 
   const cameras = [
     {
@@ -161,7 +214,7 @@ const CityMonitoring = () => {
       name: 'Gotham Streets',
       location: 'Downtown',
       status: 'Live',
-      videoSrc: '/videos/gotham-streets.mp4',
+      videoSrc: `${BASE_VIDEO_URL}/gotham-streets.mp4`,
       lastUpdate: '2 min ago',
       activity: 'Normal'
     },
@@ -170,7 +223,7 @@ const CityMonitoring = () => {
       name: 'Gotham Harbor',
       location: 'Docks',
       status: 'Live',
-      videoSrc: '/videos/gotham-harbor.mp4',
+      videoSrc: `${BASE_VIDEO_URL}/gotham-harbor.mp4`,
       lastUpdate: '1 min ago',
       activity: 'Suspicious'
     },
@@ -179,7 +232,7 @@ const CityMonitoring = () => {
       name: 'Robinson Park',
       location: 'Central',
       status: 'Live',
-      videoSrc: '/videos/gotham-park.mp4',
+      videoSrc: `${BASE_VIDEO_URL}/gotham-park.mp4`,
       lastUpdate: 'Just now',
       activity: 'Normal'
     },
@@ -188,27 +241,81 @@ const CityMonitoring = () => {
       name: 'Gotham Square',
       location: 'City Center',
       status: 'Live',
-      videoSrc: '/videos/gotham-square.mp4',
+      videoSrc: `${BASE_VIDEO_URL}/gotham-square.mp4`,
       lastUpdate: '5 min ago',
       activity: 'High Alert'
     },
     {
       id: 5,
-      name: 'Arkham Gates',
+      name: 'Wayne Tower',
+      location: 'Financial District',
+      status: 'Offline',
+      videoSrc: `${BASE_VIDEO_URL}/wayne-tower.mp4`,
+      lastUpdate: '1 hour ago',
+      activity: 'Signal Lost'
+    },
+    {
+      id: 6,
+      name: 'Arkham East Wing',
       location: 'Arkham Island',
       status: 'Live',
-      videoSrc: '/videos/arkham-gates.mp4',
+      videoSrc: `${BASE_VIDEO_URL}/arkham-asylum.mp4`,
       lastUpdate: '3 min ago',
       activity: 'Warning'
     },
     {
-      id: 6,
+      id: 7,
       name: 'Iceberg Lounge',
       location: 'Diamond District',
       status: 'Live',
-      videoSrc: '/videos/ice-lounge-ext.mp4',
+      videoSrc: `${BASE_VIDEO_URL}/ice-lounge-ext.mp4`,
       lastUpdate: '1 min ago',
       activity: 'Suspicious'
+    },
+    {
+      id: 8,
+      name: 'Gotham University',
+      location: 'Education District',
+      status: 'Offline',
+      videoSrc: `${BASE_VIDEO_URL}/gotham-university.mp4`,
+      lastUpdate: '2 hours ago',
+      activity: 'Signal Lost'
+    },
+    {
+      id: 9,
+      name: 'Arkham West Wing',
+      location: 'Arkham Island',
+      status: 'Live',
+      videoSrc: `${BASE_VIDEO_URL}/city-police-vigilance.mp4`,
+      lastUpdate: '4 min ago',
+      activity: 'Warning'
+    },
+    {
+      id: 10,
+      name: 'Ace Chemical',
+      location: 'Industrial District',
+      status: 'Live',
+      videoSrc: `${BASE_VIDEO_URL}/ace-chemical.mp4`,
+      lastUpdate: '3 min ago',
+      activity: 'High Alert'
+    },
+    {
+      id: 11,
+      name: 'Blackgate Prison',
+      location: 'Blackgate Isle',
+      status: 'Offline',
+      videoSrc: `${BASE_VIDEO_URL}/blackgate.mp4`,
+      lastUpdate: '3 hours ago',
+      activity: 'Signal Lost'
+    },
+    {
+      id: 12,
+      name: 'Arkham Security Gate',
+      location: 'Arkham Island',
+      status: 'Live',
+      videoSrc: `${BASE_VIDEO_URL}/bank-gothan-city.mp4`,
+      lastUpdate: '1 min ago',
+      activity: 'Warning'
     }
   ];
 
@@ -221,6 +328,8 @@ const CityMonitoring = () => {
         return 'warning';
       case 'normal':
         return 'success';
+      case 'signal lost':
+        return 'error';
       default:
         return 'default';
     }
@@ -254,10 +363,14 @@ const CityMonitoring = () => {
                 <CCTVOfflineEffect />
               ) : (
                 <CameraImage
-                  component="img"
-                  src={`/camera-feeds/${camera.id}.jpg`}
+                  component="video"
+                  src={camera.videoSrc}
                   alt={camera.name}
                   onError={() => handleVideoError(camera.id)}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                 />
               )}
               <StatusChip
@@ -267,6 +380,7 @@ const CityMonitoring = () => {
               />
               <CameraOverlay className="camera-overlay">
                 <Box>
+                  <CameraNumber>Camera #{camera.id}</CameraNumber>
                   <Typography variant="h6">{camera.name}</Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
                     <LocationOn fontSize="small" />
@@ -277,7 +391,12 @@ const CityMonitoring = () => {
                   <AccessTime fontSize="small" />
                   <Typography variant="body2">{camera.lastUpdate}</Typography>
                   <Box sx={{ flexGrow: 1 }} />
-                  <Videocam />
+                  {!videoError[camera.id] && (
+                    <RecordingIndicator>
+                      <span className="dot" />
+                      <span className="text">REC</span>
+                    </RecordingIndicator>
+                  )}
                 </Box>
               </CameraOverlay>
             </CameraCard>

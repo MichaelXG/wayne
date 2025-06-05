@@ -10,7 +10,8 @@ import {
   ListItemAvatar,
   ListItemText,
   Chip,
-  IconButton
+  IconButton,
+  useTheme
 } from '@mui/material';
 import {
   Person,
@@ -22,21 +23,24 @@ import {
 import { styled } from '@mui/material/styles';
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  background: 'rgba(0, 30, 60, 0.9)',
+  background: theme.palette.grey[600],
   backdropFilter: 'blur(10px)',
   borderRadius: '12px',
-  color: '#fff',
+  color: theme.palette.common.white,
   padding: theme.spacing(3),
   marginBottom: theme.spacing(2)
 }));
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
-  backgroundColor: theme.palette.error.main,
+  backgroundColor: theme.palette.grey[300],
+  color: theme.palette.grey[900],
   width: 56,
   height: 56
 }));
 
 const WantedList = () => {
+  const theme = useTheme();
+
   const targets = [
     {
       name: 'The Riddler',
@@ -99,7 +103,7 @@ const WantedList = () => {
                 <ListItem
                   key={index}
                   sx={{
-                    borderBottom: index < targets.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                    borderBottom: index < targets.length - 1 ? `1px solid ${theme.palette.grey[300]}` : 'none',
                     py: 2
                   }}
                 >
@@ -116,24 +120,40 @@ const WantedList = () => {
                           label={target.threatLevel}
                           color={getThreatLevelColor(target.threatLevel)}
                           size="small"
+                          sx={{
+                            backgroundColor: theme.palette.grey[300],
+                            color: theme.palette.grey[900],
+                            '&.MuiChip-colorError': {
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white
+                            },
+                            '&.MuiChip-colorWarning': {
+                              backgroundColor: theme.palette.warning.main,
+                              color: theme.palette.grey[900]
+                            },
+                            '&.MuiChip-colorInfo': {
+                              backgroundColor: theme.palette.info.main,
+                              color: theme.palette.common.white
+                            }
+                          }}
                         />
                       </Box>
                     }
                     secondary={
                       <Box sx={{ mt: 1 }}>
-                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                        <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
                           Alias: {target.alias}
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <LocationOn fontSize="small" />
-                            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                            <LocationOn fontSize="small" sx={{ color: theme.palette.grey[300] }} />
+                            <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
                               {target.lastSeen}
                             </Typography>
                           </Box>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <AccessTime fontSize="small" />
-                            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                            <AccessTime fontSize="small" sx={{ color: theme.palette.grey[300] }} />
+                            <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
                               Active for {target.timeActive}
                             </Typography>
                           </Box>
