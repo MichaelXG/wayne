@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Grid, Card, CardContent, Typography, IconButton, Chip, LinearProgress } from '@mui/material';
 import { Security, Inventory, Person, Warning, Shield, LocationOn, Visibility, Speed } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 // Import images
 import cloud1 from '../../assets/images/cloud/cloud1.png';
@@ -142,7 +143,34 @@ const IconWrapper = styled(IconButton)(({ theme }) => ({
   }
 }));
 
+const StyledCardContent = styled(CardContent)(({ theme }) => ({
+  position: 'relative',
+  minHeight: '200px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease-in-out',
+  '&:hover': {
+    transform: 'scale(1.02)',
+    '& .hover-indicator': {
+      opacity: 1
+    }
+  }
+}));
+
+const HoverIndicator = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: 'rgba(255, 255, 255, 0.05)',
+  opacity: 0,
+  transition: 'opacity 0.3s ease-in-out',
+  borderRadius: '12px'
+}));
+
 const HomeSecret = () => {
+  const navigate = useNavigate();
+
   const clouds = [
     { src: cloud1, i: 1 },
     { src: cloud2, i: 2 },
@@ -160,7 +188,8 @@ const HomeSecret = () => {
       status: 'Active',
       progress: 92,
       secondaryIcon: <Shield />,
-      location: 'Batcave Main'
+      location: 'Batcave Main',
+      path: '/secret-page/security-protocols'
     },
     {
       title: 'Advanced Equipment',
@@ -170,7 +199,8 @@ const HomeSecret = () => {
       status: 'Optimal',
       progress: 89,
       secondaryIcon: <Speed />,
-      location: 'Arsenal Level 3'
+      location: 'Arsenal Level 3',
+      path: '/secret-page/inventory-status'
     },
     {
       title: 'High Priority Targets',
@@ -180,7 +210,8 @@ const HomeSecret = () => {
       status: 'Alert',
       progress: 67,
       secondaryIcon: <Visibility />,
-      location: 'City-wide'
+      location: 'City-wide',
+      path: '/secret-page/wanted-list'
     },
     {
       title: 'City Threat Level',
@@ -190,9 +221,14 @@ const HomeSecret = () => {
       status: 'Critical',
       progress: 78,
       secondaryIcon: <LocationOn />,
-      location: 'Gotham Central'
+      location: 'Gotham Central',
+      path: '/secret-page/city-security'
     }
   ];
+
+  const handleCardClick = (path) => {
+    navigate(path);
+  };
 
   return (
     <Container>
@@ -208,7 +244,8 @@ const HomeSecret = () => {
           {quickStats.map((stat, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <StyledCard>
-                <CardContent sx={{ position: 'relative', minHeight: '200px' }}>
+                <StyledCardContent onClick={() => handleCardClick(stat.path)}>
+                  <HoverIndicator className="hover-indicator" />
                   <StatusChip 
                     label={stat.status}
                     color={
@@ -247,7 +284,7 @@ const HomeSecret = () => {
                       }
                     />
                   </Box>
-                </CardContent>
+                </StyledCardContent>
               </StyledCard>
             </Grid>
           ))}
@@ -257,4 +294,4 @@ const HomeSecret = () => {
   );
 };
 
-export default HomeSecret;
+export default HomeSecret; 

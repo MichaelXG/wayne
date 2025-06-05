@@ -1,5 +1,5 @@
 // import BatSignalScene from "../../ui-component/batmam/BatSignalScene";
-import HomeSecret from '../../ui-component/batmam/home-secret';
+import HomeSecret from './home-secret';
 
 function HomePage() {
   return <HomeSecret />;

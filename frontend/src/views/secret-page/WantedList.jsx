@@ -5,20 +5,19 @@ import {
   Grid,
   Typography,
   Avatar,
-  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   Chip,
-  LinearProgress,
-  Divider
+  IconButton
 } from '@mui/material';
 import {
   Person,
   LocationOn,
   Warning,
-  Timer,
-  LocalPolice,
-  Psychology,
-  Dangerous,
-  Search
+  AccessTime,
+  ArrowForward
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
@@ -31,89 +30,55 @@ const StyledCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2)
 }));
 
-const CriminalCard = styled(Card)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.05)',
-  backdropFilter: 'blur(10px)',
-  borderRadius: '12px',
-  color: '#fff',
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  transition: 'transform 0.3s ease-in-out',
-  '&:hover': {
-    transform: 'translateY(-5px)',
-    background: 'rgba(255, 255, 255, 0.08)'
-  }
-}));
-
-const DangerLevel = styled(LinearProgress)(({ theme, value }) => ({
-  height: 8,
-  borderRadius: 4,
-  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  '& .MuiLinearProgress-bar': {
-    borderRadius: 4,
-    backgroundColor: 
-      value >= 80 ? '#f44336' :
-      value >= 60 ? '#ff9800' :
-      value >= 40 ? '#ffeb3b' :
-      '#4caf50'
-  }
+const StyledAvatar = styled(Avatar)(({ theme }) => ({
+  backgroundColor: theme.palette.error.main,
+  width: 56,
+  height: 56
 }));
 
 const WantedList = () => {
-  const criminals = [
+  const targets = [
     {
-      id: 1,
-      name: 'The Joker',
-      alias: 'Unknown',
-      dangerLevel: 95,
-      lastSeen: 'Amusement Mile',
-      status: 'At Large',
-      crimes: ['Mass Murder', 'Terrorism', 'Criminal Insanity'],
-      description: 'Extremely dangerous, psychopathic criminal mastermind',
-      avatar: '🃏'
-    },
-    {
-      id: 2,
-      name: 'Edward Nigma',
-      alias: 'The Riddler',
-      dangerLevel: 75,
-      lastSeen: 'Cyberspace',
+      name: 'The Riddler',
+      alias: 'Edward Nigma',
+      lastSeen: 'East End District',
+      threatLevel: 'High',
       status: 'Active',
-      crimes: ['Cybercrime', 'Murder', 'Psychological Warfare'],
-      description: 'Genius-level intellect, obsessed with riddles and puzzles',
-      avatar: '❓'
+      timeActive: '48 hours'
     },
     {
-      id: 3,
-      name: 'Oswald Chesterfield Cobblepot',
-      alias: 'The Penguin',
-      dangerLevel: 70,
+      name: 'Penguin',
+      alias: 'Oswald Chesterfield Cobblepot',
       lastSeen: 'Iceberg Lounge',
-      status: 'Under Surveillance',
-      crimes: ['Organized Crime', 'Arms Dealing', 'Racketeering'],
-      description: 'Criminal kingpin with vast underground network',
-      avatar: '🐧'
+      threatLevel: 'Medium',
+      status: 'Active',
+      timeActive: '24 hours'
     },
     {
-      id: 4,
-      name: 'Selina Kyle',
-      alias: 'Catwoman',
-      dangerLevel: 60,
-      lastSeen: 'Diamond District',
+      name: 'Two-Face',
+      alias: 'Harvey Dent',
+      lastSeen: 'Old Courthouse',
+      threatLevel: 'High',
       status: 'Active',
-      crimes: ['Grand Theft', 'Burglary', 'Escape Artist'],
-      description: 'Expert thief and martial artist',
-      avatar: '🐱'
+      timeActive: '12 hours'
+    },
+    {
+      name: 'Poison Ivy',
+      alias: 'Pamela Isley',
+      lastSeen: 'Robinson Park',
+      threatLevel: 'Medium',
+      status: 'Active',
+      timeActive: '36 hours'
     }
   ];
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'At Large':
+  const getThreatLevelColor = (level) => {
+    switch (level.toLowerCase()) {
+      case 'high':
         return 'error';
-      case 'Active':
+      case 'medium':
         return 'warning';
-      case 'Under Surveillance':
+      case 'low':
         return 'info';
       default:
         return 'default';
@@ -122,81 +87,68 @@ const WantedList = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 4, color: '#fff' }}>
-        Gotham's Most Wanted
+      <Typography variant="h3" gutterBottom>
+        High Priority Targets
       </Typography>
 
       <Grid container spacing={3}>
-        {criminals.map((criminal) => (
-          <Grid item xs={12} md={6} key={criminal.id}>
-            <CriminalCard>
-              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <Avatar
+        <Grid item xs={12}>
+          <StyledCard>
+            <List>
+              {targets.map((target, index) => (
+                <ListItem
+                  key={index}
                   sx={{
-                    width: 60,
-                    height: 60,
-                    fontSize: '2rem',
-                    bgcolor: 'rgba(255, 255, 255, 0.1)'
+                    borderBottom: index < targets.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                    py: 2
                   }}
                 >
-                  {criminal.avatar}
-                </Avatar>
-                <Box sx={{ flex: 1 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <Box>
-                      <Typography variant="h6">{criminal.name}</Typography>
-                      <Typography variant="body2" sx={{ opacity: 0.7 }}>
-                        {criminal.alias}
-                      </Typography>
-                    </Box>
-                    <Chip
-                      label={criminal.status}
-                      color={getStatusColor(criminal.status)}
-                      size="small"
-                    />
-                  </Box>
-                </Box>
-              </Box>
-
-              <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.1)' }} />
-
-              <Box sx={{ mb: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                  <Dangerous />
-                  <Typography variant="body2">Danger Level</Typography>
-                </Box>
-                <DangerLevel variant="determinate" value={criminal.dangerLevel} />
-              </Box>
-
-              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <LocationOn fontSize="small" />
-                  <Typography variant="body2">{criminal.lastSeen}</Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  {criminal.description}
-                </Typography>
-              </Box>
-
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                {criminal.crimes.map((crime, index) => (
-                  <Chip
-                    key={index}
-                    label={crime}
-                    size="small"
-                    sx={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      color: '#fff'
-                    }}
+                  <ListItemAvatar>
+                    <StyledAvatar>
+                      <Person />
+                    </StyledAvatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Typography variant="h6">{target.name}</Typography>
+                        <Chip
+                          label={target.threatLevel}
+                          color={getThreatLevelColor(target.threatLevel)}
+                          size="small"
+                        />
+                      </Box>
+                    }
+                    secondary={
+                      <Box sx={{ mt: 1 }}>
+                        <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                          Alias: {target.alias}
+                        </Typography>
+                        <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <LocationOn fontSize="small" />
+                            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                              {target.lastSeen}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <AccessTime fontSize="small" />
+                            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                              Active for {target.timeActive}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    }
                   />
-                ))}
-              </Box>
-            </CriminalCard>
-          </Grid>
-        ))}
+                  <IconButton sx={{ color: 'inherit' }}>
+                    <ArrowForward />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
+          </StyledCard>
+        </Grid>
       </Grid>
     </Box>
   );

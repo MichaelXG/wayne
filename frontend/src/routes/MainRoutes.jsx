@@ -46,8 +46,12 @@ const ForbiddenPage = Loadable(lazy(() => import('views/forbidden/ForbiddenPage'
 const NotFoundPage = Loadable(lazy(() => import('views/not-found/NotFoundPage')));
 const ServerErrorPage = Loadable(lazy(() => import('views/server-error/ServerErrorPage')));
 
-// Página secreta (se necessário)
-const SecretHomePage = Loadable(lazy(() => import('views/secret-page'))); // Página secreta, se necessário
+// Secret pages
+const SecretHomePage = Loadable(lazy(() => import('views/secret-page')));
+const SecurityProtocolsPage = Loadable(lazy(() => import('views/secret-page/SecurityProtocols')));
+const InventoryStatusPage = Loadable(lazy(() => import('views/secret-page/InventoryStatus')));
+const WantedListPage = Loadable(lazy(() => import('views/secret-page/WantedList')));
+const CitySecurityStatusPage = Loadable(lazy(() => import('views/secret-page/CitySecurityStatus')));
 
 const PermissionEditPage = Loadable(lazy(() => import('views/permissions/Edit')));
 
@@ -68,7 +72,7 @@ const MainRoutes = {
   path: '/',
   element: (
     <MainLayout>
-      <ProtectedRoutesWrapper /> {/* ?? Todas as rotas dentro do MainLayout est�o protegidas */}
+      <ProtectedRoutesWrapper /> {/* ?? Todas as rotas dentro do MainLayout estão protegidas */}
     </MainLayout>
   ),
   children: [
@@ -90,6 +94,16 @@ const MainRoutes = {
       children: [
         { index: true, element: <SecretHomePage /> },
         { path: 'Home', element: <SecretHomePage /> }
+      ]
+    },
+    {
+      path: 'secret-page',
+      children: [
+        { index: true, element: <SecretHomePage /> },
+        { path: 'security-protocols', element: <SecurityProtocolsPage /> },
+        { path: 'inventory-status', element: <InventoryStatusPage /> },
+        { path: 'wanted-list', element: <WantedListPage /> },
+        { path: 'city-security', element: <CitySecurityStatusPage /> }
       ]
     },
     {
