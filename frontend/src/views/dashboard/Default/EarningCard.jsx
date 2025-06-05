@@ -30,6 +30,7 @@ const DarkCard = styled(Card)(({ theme }) => ({
   overflow: 'hidden',
   position: 'relative',
   height: '100%',
+  maxHeight: '200px',
   '& .MuiBox-root': {
     height: '100%',
     position: 'relative',
@@ -109,8 +110,8 @@ export default function EarningCard({ isLoading }) {
                 <Avatar
                   variant="rounded"
                   sx={{
-                    width: 44,
-                    height: 44,
+                    width: 24,
+                    height: 24,
                     bgcolor: theme.palette.grey[900],
                     color: theme.palette.common.white,
                     '&:hover': {
@@ -125,8 +126,8 @@ export default function EarningCard({ isLoading }) {
                 <Avatar
                   variant="rounded"
                   sx={{
-                    width: 34,
-                    height: 34,
+                    width: 24,
+                    height: 24,
                     bgcolor: theme.palette.grey[900],
                     color: theme.palette.common.white,
                     '&:hover': {
@@ -187,7 +188,7 @@ export default function EarningCard({ isLoading }) {
               <Grid item>
                 <Typography 
                   sx={{ 
-                    fontSize: '2.125rem', 
+                    fontSize: '1.5rem', 
                     fontWeight: 500,
                     mr: 1,
                     mt: 1.75,

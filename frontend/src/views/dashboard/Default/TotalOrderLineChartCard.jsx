@@ -11,6 +11,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 // third party
 import Chart from 'react-apexcharts';
@@ -72,6 +74,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
         overflow: 'hidden',
         position: 'relative',
         height: '100%',
+        maxHeight: '200px',
         '& > div': {
           position: 'relative',
           zIndex: 5
@@ -98,120 +101,117 @@ export default function TotalOrderLineChartCard({ isLoading }) {
         }
       })}
     >
-      <Box sx={{ p: 2 }}>
-        <Grid container direction="column">
-          <Grid>
-            <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-              <Grid>
+      <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Grid item>
+            <Avatar
+              variant="rounded"
+              sx={(theme) => ({
+                ...theme.typography.commonAvatar,
+                ...theme.typography.largeAvatar,
+                bgcolor: theme.palette.warning.light,
+                color: theme.palette.warning.dark
+              })}
+            >
+              <LocalMallOutlinedIcon fontSize="inherit" />
+            </Avatar>
+          </Grid>
+          <Grid item>
+            <ButtonGroup size="small" sx={{ backgroundColor: alpha(theme.palette.warning.light, 0.1), p: 0.5, borderRadius: 1 }}>
+              <Button
+                disableElevation
+                variant={timeValue ? 'contained' : 'text'}
+                size="small"
+                sx={(theme) => ({
+                  minWidth: '30px',
+                  padding: '2px 8px',
+                  color: timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                  backgroundColor: timeValue ? theme.palette.warning.light : 'transparent',
+                  '&:hover': {
+                    backgroundColor: timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                  }
+                })}
+                onClick={(e) => handleChangeTime(e, true)}
+              >
+                M
+              </Button>
+              <Button
+                disableElevation
+                variant={!timeValue ? 'contained' : 'text'}
+                size="small"
+                sx={(theme) => ({
+                  minWidth: '30px',
+                  padding: '2px 8px',
+                  color: !timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                  backgroundColor: !timeValue ? theme.palette.warning.light : 'transparent',
+                  '&:hover': {
+                    backgroundColor: !timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                  }
+                })}
+                onClick={(e) => handleChangeTime(e, false)}
+              >
+                Y
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={1} sx={{ flexGrow: 1 }}>
+          <Grid item xs={6}>
+            <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Typography sx={{ 
+                fontSize: '1.5rem', 
+                fontWeight: 500,
+                color: theme.palette.grey[800],
+                lineHeight: 1.2,
+                mb: 0.5
+              }}>
+                {Number(orderTotal || 0).toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                })}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Avatar
-                  variant="rounded"
                   sx={(theme) => ({
-                    ...theme.typography.commonAvatar,
-                    ...theme.typography.largeAvatar,
+                    ...theme.typography.smallAvatar,
+                    width: 24,
+                    height: 24,
+                    cursor: 'pointer',
                     bgcolor: theme.palette.warning.light,
                     color: theme.palette.warning.dark
                   })}
                 >
-                  <LocalMallOutlinedIcon fontSize="inherit" />
+                  <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
                 </Avatar>
-              </Grid>
-              <Grid>
-                <ButtonGroup size="small" sx={{ backgroundColor: alpha(theme.palette.warning.light, 0.1), p: 0.5, borderRadius: 1 }}>
-                  <Button
-                    disableElevation
-                    variant={timeValue ? 'contained' : 'text'}
-                    size="small"
-                    sx={(theme) => ({
-                      color: timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
-                      backgroundColor: timeValue ? theme.palette.warning.light : 'transparent',
-                      '&:hover': {
-                        backgroundColor: timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
-                      }
-                    })}
-                    onClick={(e) => handleChangeTime(e, true)}
-                  >
-                    Month
-                  </Button>
-                  <Button
-                    disableElevation
-                    variant={!timeValue ? 'contained' : 'text'}
-                    size="small"
-                    sx={(theme) => ({
-                      color: !timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
-                      backgroundColor: !timeValue ? theme.palette.warning.light : 'transparent',
-                      '&:hover': {
-                        backgroundColor: !timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
-                      }
-                    })}
-                    onClick={(e) => handleChangeTime(e, false)}
-                  >
-                    Year
-                  </Button>
-                </ButtonGroup>
-              </Grid>
-            </Grid>
+                <Typography
+                  sx={(theme) => ({
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: theme.palette.grey[500]
+                  })}
+                >
+                  Total Order
+                </Typography>
+              </Box>
+            </Box>
           </Grid>
-          <Grid sx={{ mb: 0.75 }}>
-            <Grid container sx={{ alignItems: 'center' }}>
-              <Grid size={6}>
-                <Grid container sx={{ alignItems: 'center' }}>
-                  <Grid>
-                    <Typography sx={{ 
-                      fontSize: '2.125rem', 
-                      fontWeight: 500, 
-                      mr: 1, 
-                      mt: 0.75, 
-                      mb: 0.75,
-                      color: theme.palette.grey[800]
-                    }}>
-                      {Number(orderTotal || 0).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD'
-                      })}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <Avatar
-                      sx={(theme) => ({
-                        ...theme.typography.smallAvatar,
-                        cursor: 'pointer',
-                        bgcolor: theme.palette.warning.light,
-                        color: theme.palette.warning.dark
-                      })}
-                    >
-                      <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-                    </Avatar>
-                  </Grid>
-                  <Grid size={12}>
-                    <Typography
-                      sx={(theme) => ({
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                        color: theme.palette.grey[500]
-                      })}
-                    >
-                      Total Order
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid size={6}>
-                <Box sx={{ 
-                  height: 150,
-                  width: '100%',
-                  '& .apexcharts-canvas': {
-                    '& .apexcharts-text': {
-                      fill: theme.palette.grey[800]
-                    },
-                    '& .apexcharts-series path': {
-                      stroke: theme.palette.warning.main
-                    }
-                  }
-                }}>
-                  {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
-                </Box>
-              </Grid>
-            </Grid>
+          <Grid item xs={6}>
+            <Box sx={{ 
+              height: '100%',
+              minHeight: 80,
+              maxHeight: 100,
+              '& .apexcharts-canvas': {
+                '& .apexcharts-text': {
+                  fill: theme.palette.grey[800]
+                },
+                '& .apexcharts-series path': {
+                  stroke: theme.palette.warning.main
+                }
+              }
+            }}>
+              {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+            </Box>
           </Grid>
         </Grid>
       </Box>
