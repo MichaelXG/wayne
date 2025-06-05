@@ -75,7 +75,8 @@ export default function TotalOrderLineChartCard({ isLoading }) {
         position: 'relative',
         height: '100%',
         maxHeight: '200px',
-        '& > div': {
+        '& .MuiBox-root': {
+          height: '100%',
           position: 'relative',
           zIndex: 5
         },
@@ -159,13 +160,15 @@ export default function TotalOrderLineChartCard({ isLoading }) {
         <Grid container spacing={1} sx={{ flexGrow: 1 }}>
           <Grid item xs={6}>
             <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <Typography sx={{ 
-                fontSize: '1.5rem', 
-                fontWeight: 500,
-                color: theme.palette.grey[800],
-                lineHeight: 1.2,
-                mb: 0.5
-              }}>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  fontWeight: 500,
+                  color: theme.palette.grey[800],
+                  lineHeight: 1.2,
+                  mb: 0.5
+                }}
+              >
                 {Number(orderTotal || 0).toLocaleString('en-US', {
                   style: 'currency',
                   currency: 'USD'
@@ -184,32 +187,36 @@ export default function TotalOrderLineChartCard({ isLoading }) {
                 >
                   <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
                 </Avatar>
-                <Typography
-                  sx={(theme) => ({
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    color: theme.palette.grey[500]
-                  })}
-                >
-                  Total Order
-                </Typography>
+                <Grid item>
+                  <Typography
+                    sx={(theme) => ({
+                      fontSize: '1rem',
+                      fontWeight: 500,
+                      color: theme.palette.grey[500]
+                    })}
+                  >
+                    Total Order
+                  </Typography>
+                </Grid>
               </Box>
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Box sx={{ 
-              height: '100%',
-              minHeight: 80,
-              maxHeight: 100,
-              '& .apexcharts-canvas': {
-                '& .apexcharts-text': {
-                  fill: theme.palette.grey[800]
-                },
-                '& .apexcharts-series path': {
-                  stroke: theme.palette.warning.main
+            <Box
+              sx={{
+                height: '100%',
+                minHeight: 80,
+                maxHeight: 100,
+                '& .apexcharts-canvas': {
+                  '& .apexcharts-text': {
+                    fill: theme.palette.grey[800]
+                  },
+                  '& .apexcharts-series path': {
+                    stroke: theme.palette.warning.main
+                  }
                 }
-              }
-            }}>
+              }}
+            >
               {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
             </Box>
           </Grid>
