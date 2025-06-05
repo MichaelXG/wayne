@@ -150,6 +150,9 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
       field: 'status',
       headerName: 'Status',
       width: 130,
+      type: 'singleSelect',
+      valueOptions: ['pending', 'paid', 'processing', 'shipped', 'canceled'],
+      filterable: true,
       renderCell: (params) => {
         const status = params.row.status;
 

@@ -46,6 +46,39 @@ const ListPage = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!orders.length) return;
+
+    let filtered = [...orders];
+
+    if (filterModel.items.length > 0) {
+      filtered = filtered.filter(order => {
+        return filterModel.items.every(filter => {
+          const value = order[filter.field];
+          
+          switch (filter.operator) {
+            case 'equals':
+              return value === filter.value;
+            case 'contains':
+              return value?.toLowerCase().includes(filter.value.toLowerCase());
+            case 'startsWith':
+              return value?.toLowerCase().startsWith(filter.value.toLowerCase());
+            case 'endsWith':
+              return value?.toLowerCase().endsWith(filter.value.toLowerCase());
+            case 'isEmpty':
+              return !value;
+            case 'isNotEmpty':
+              return !!value;
+            default:
+              return true;
+          }
+        });
+      });
+    }
+
+    setFilteredOrders(filtered);
+  }, [orders, filterModel]);
+
   const onDeleteSelected = async () => {
     try {
       await Promise.all(
