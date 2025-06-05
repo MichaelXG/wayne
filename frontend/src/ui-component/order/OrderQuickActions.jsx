@@ -7,7 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import StoredOrder from './StoredOrder';
 
-export default function OrderQuickActions({}) {
+export default function OrderQuickActions() {
   const theme = useTheme();
   const nodeRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function OrderQuickActions({}) {
                   borderRadius: 1,
                   boxShadow: theme.shadows[2]
                 })
-              }
+                }
             }}
           >
             <Fab
@@ -46,37 +46,43 @@ export default function OrderQuickActions({}) {
               color="secondary"
               aria-label="Order Quick Actions"
               sx={{
+                position: 'fixed',
+                top: '30%',
+                right: 10,
+                zIndex: 1200,
                 borderRadius: 0,
                 borderTopLeftRadius: '50%',
                 borderBottomLeftRadius: '50%',
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
-                top: '30%',
-                position: 'fixed',
-                right: 10,
-                zIndex: 1200,
-                boxShadow: theme.customShadows.secondary
+                bgcolor: theme.palette.grey[300],
+                color: theme.palette.text.secondary,
+                '&:hover': {
+                  bgcolor: theme.palette.grey[600],
+                  color: theme.palette.common.white
+                },
+                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
               }}
             >
               <AnimateButton type="scale">
                 <Box>
-                  {totalItems > 0 ? (
-                    <Badge
-                      badgeContent={totalItems}
-                      sx={{
-                        '& .MuiBadge-badge': {
-                          bottom: 10,
-                          left: 15,
-                          backgroundColor: theme.palette.grey[900],
-                          color: theme.palette.common.white
-                        }
-                      }}
-                    >
-                      <IconShoppingCart />
-                    </Badge>
-                  ) : (
+                {totalItems > 0 ? (
+                  <Badge
+                    badgeContent={totalItems}
+                    sx={{
+                      '& .MuiBadge-badge': {
+                        bottom: 10,
+                        left: 15,
+                        backgroundColor: theme.palette.grey[900],
+                        color: theme.palette.common.white
+                      }
+                    }}
+                  >
                     <IconShoppingCart />
-                  )}
+                  </Badge>
+                ) : (
+                  <IconShoppingCart />
+                )}
                 </Box>
               </AnimateButton>
             </Fab>
@@ -86,7 +92,7 @@ export default function OrderQuickActions({}) {
 
       <Drawer anchor="right" onClose={handleToggle} open={open} PaperProps={{ sx: { width: 740 } }}>
         <PerfectScrollbar>
-          <StoredOrder />
+            <StoredOrder />
         </PerfectScrollbar>
       </Drawer>
     </>

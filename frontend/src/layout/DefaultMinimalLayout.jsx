@@ -39,7 +39,6 @@ export default function DefaultMinimalLayout({
 }) {
   const theme = useTheme();
   const downMD = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
   const { clearOrder } = useOrder();
 
   const authIcon = checkingAuth ? (
@@ -99,7 +98,6 @@ export default function DefaultMinimalLayout({
             <Box sx={{ width: '100%' }}>
               {/* Linha com Título e Botão */}
               <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
-                {/* <Box display="flex" alignItems="center" gap={1}> */}
                 <Typography
                   variant={downMD ? 'h5' : 'h4'}
                   sx={(theme) => ({
@@ -110,7 +108,6 @@ export default function DefaultMinimalLayout({
                   {subCardTitle}
                 </Typography>
 
-                {/* </Box> */}
                 <Box display="flex" alignItems="center" gap={1}>
                   {actionClose && (
                     <AnimateButton>
@@ -173,6 +170,7 @@ export default function DefaultMinimalLayout({
                         }}
                       >
                         <IconButton
+                          disabled={actionbutton.disabled ?? false}
                           color={actionbutton.color || theme.palette.grey[600]}
                           size="medium"
                           href={actionbutton.href}
@@ -182,7 +180,7 @@ export default function DefaultMinimalLayout({
                             backgroundColor: theme.palette.grey[300],
                             '&:hover': {
                               backgroundColor: theme.palette.grey[600],
-                              color: 'white'
+                              color: theme.palette.common.white
                             }
                           }}
                         >
@@ -204,13 +202,11 @@ export default function DefaultMinimalLayout({
                       if (isLast && item.type === 'status') {
                         const statusKey = item.label?.toLowerCase();
                         const color = statusColors[statusKey] || 'default';
-                        const icon = statusIcons[statusKey] || null;
-
                         return (
                           <Box
                             key={index}
                             sx={{
-                              display: 'inline-flex',
+                              display: 'flex',
                               alignItems: 'center',
                               px: 1.5,
                               py: 0.5,
@@ -222,7 +218,7 @@ export default function DefaultMinimalLayout({
                               textTransform: 'capitalize'
                             }}
                           >
-                            {icon}
+                            {statusIcons[statusKey]}
                             <Box ml={0.5}>{item.label}</Box>
                           </Box>
                         );
@@ -251,42 +247,45 @@ export default function DefaultMinimalLayout({
                     })}
                   </Breadcrumbs>
 
-                  <AnimateButton>
-                    <Tooltip
-                      title={'Clear Order'}
-                      placement="top"
-                      componentsProps={{
-                        tooltip: {
-                          sx: (theme) => ({
-                            backgroundColor: theme.palette.error.main,
-                            color: theme.palette.common.white,
-                            fontSize: 12,
-                            px: 1.5,
-                            py: 0.5,
-                            borderRadius: 1,
-                            boxShadow: theme.shadows[2]
-                          })
-                        }
-                      }}
-                    >
-                      <IconButton
-                        color={'error'}
-                        size="medium"
-                        onClick={clearOrder}
-                        type={'button'}
-                        sx={{
-                          backgroundColor: (theme) => theme.palette.error.light,
-                          color: (theme) => theme.palette.error.main,
-                          '&:hover': {
-                            backgroundColor: (theme) => theme.palette.error.main,
-                            color: (theme) => theme.palette.common.white
+                  {/* Botão de limpar ordem */}
+                  {clearOrder && (
+                    <AnimateButton>
+                      <Tooltip
+                        title={'Clear Order'}
+                        placement="top"
+                        componentsProps={{
+                          tooltip: {
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white,
+                              fontSize: 12,
+                              px: 1.5,
+                              py: 0.5,
+                              borderRadius: 1,
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
-                        <IconTrash size={18} />
-                      </IconButton>
-                    </Tooltip>
-                  </AnimateButton>
+                        <IconButton
+                          color={'error'}
+                          size="medium"
+                          onClick={clearOrder}
+                          type={'button'}
+                          sx={{
+                            backgroundColor: (theme) => theme.palette.error.light,
+                            color: (theme) => theme.palette.error.main,
+                            '&:hover': {
+                              backgroundColor: (theme) => theme.palette.error.main,
+                              color: (theme) => theme.palette.common.white
+                            }
+                          }}
+                        >
+                          <IconTrash size={18} />
+                        </IconButton>
+                      </Tooltip>
+                    </AnimateButton>
+                  )}
                 </Box>
               )}
             </Box>

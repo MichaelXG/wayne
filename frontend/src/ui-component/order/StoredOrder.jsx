@@ -1,32 +1,37 @@
-import React, { useMemo } from 'react';
-import axios from 'axios';
+import React, { useCallback, useMemo } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-// Internos: utilitários, hooks, layouts
-import { isDebug } from '../../App';
+import { BaseDir, isDebug } from '../../App';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import { getOrderFromLocalStorage } from '../../hooks/useLocalOrder';
 import StoredOrderPage from './StoredOrderPage';
 import DefaultMinimalLayout from '../../layout/DefaultMinimalLayout';
+import { getOrderFromLocalStorage } from '../../hooks/useLocalOrder';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import { useNavigate } from 'react-router-dom';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 
-export default function StoredOrder() {
+const StoredOrder = () => {
   isDebug && console.log('📄 StoredOrder renderizado');
-
   const navigate = useNavigate();
   const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
 
   const checkingAuth = useAuthGuard();
-
   const order = getOrderFromLocalStorage();
+
+  isDebug && console.log('📝 Ordem recuperada do localStorage:', order);
 
   const breadcrumbs = useMemo(() => {
     const orderDate = order?.created_at
-      ? new Date(order.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
-      : new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+      ? new Date(order.created_at).toLocaleString('en-US', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        })
+      : new Date().toLocaleString('en-US', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
 
     return [
       { label: 'Order' },
@@ -36,11 +41,12 @@ export default function StoredOrder() {
     ];
   }, [order]);
 
-  const actionbutton = useMemo(() => ({
-    label: 'Place Order',
-    icon: <AddIcon />,
-    onClick: async () => {
-      try {
+  const actionbutton = useMemo(
+    () => ({
+      label: 'Place Order',
+      icon: <AddIcon />,
+      onClick: async () => {
+        try {
         let storedOrder = null;
 
         try {
@@ -50,50 +56,58 @@ export default function StoredOrder() {
           return;
         }
 
-        if (!storedOrder || !storedOrder.items?.length) {
-          alert('No order to submit!');
-          return;
-        }
-
-        const payload = {
-          items: storedOrder.items.map((item) => ({
-            product_id: item.id,
-            quantity: item.quantity,
-            price: item.price
-          })),
-          status: 'pending',
-          discount: 0,
-          shippingFee: 0,
-          tax: 0
-        };
-
-        const response = await axios.post(API_ROUTES.ORDERS, payload, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+          if (!storedOrder || !storedOrder.items?.length) {
+            alert('No order to submit!');
+            return;
           }
-        });
 
-        localStorage.removeItem('order');
-        navigate(`/orders/detail/${response.data.id}`);
-      } catch (error) {
-        console.error('❌ Error placing order:', error);
-        alert('Error placing order. Try again.');
+          const payload = {
+            items: storedOrder.items.map((item) => ({
+              product_id: item.id,
+              quantity: item.quantity,
+              price: item.price
+            })),
+            status: 'pending',
+            discount: 0,
+            shippingFee: 0,
+            tax: 0
+          };
+
+          const response = await axios.post(API_ROUTES.ORDERS, payload, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          const data = response.data;
+
+          localStorage.removeItem('order');
+          navigate(`/orders/detail/${data.id}`);
+        } catch (error) {
+          console.error('❌ Error placing order:', error);
+          alert('Error placing order. Try again.');
+        }
       }
-    }
-  }), [token, navigate]);
+    }),
+    [token, navigate]
+  );
 
   if (checkingAuth) return null;
 
   return (
-    <DefaultMinimalLayout
-      mainCardTitle="Order's"
-      subCardTitle="Details"
-      breadcrumbs={breadcrumbs}
-      actionbutton={actionbutton}
-      checkingAuth={checkingAuth}
-    >
-      <StoredOrderPage />
-    </DefaultMinimalLayout>
+    <div style={{ height: '100%', overflow: 'auto' }}>
+      <DefaultMinimalLayout
+        mainCardTitle="Order's"
+        subCardTitle="Details"
+        breadcrumbs={breadcrumbs}
+        actionbutton={actionbutton}
+        checkingAuth={!checkingAuth}
+      >
+        <StoredOrderPage />
+      </DefaultMinimalLayout>
+    </div>
   );
-}
+};
+
+export default StoredOrder;

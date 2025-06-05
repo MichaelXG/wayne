@@ -47,7 +47,16 @@ const CustomToolbarOrder = ({
         <Box display="flex" gap={1} flexWrap="wrap">
           <GridToolbarDeleteSelected selectionModel={selectionModel} onDeleteSelected={onDeleteSelected} menuName="order" />
           <GridToolbarColumnsButtonCustom />
-          <GridToolbarFilterButton />
+          <GridToolbarFilterButton 
+            sx={(theme) => ({
+              backgroundColor: theme.palette.grey[300],
+              color: theme.palette.grey[600],
+              '&:hover': {
+                backgroundColor: theme.palette.grey[600],
+                color: theme.palette.common.white
+              }
+            })}
+          />
           {/* <GridToolbarExport /> */}
         </Box>
       </Box>

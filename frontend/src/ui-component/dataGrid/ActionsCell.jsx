@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { IconButton, Menu, MenuItem, ListItemIcon, Typography, Tooltip, Link } from '@mui/material';
+import { IconButton, Menu, MenuItem, ListItemIcon, Typography, Tooltip, Link, Box } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Icon } from '@iconify/react';
 import { BaseDir } from '../../App';
@@ -126,7 +126,7 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
               fontSize: 12,
               px: 1.5,
               py: 0.5,
-              borderRadius: 1,
+          borderRadius: 1,
               boxShadow: theme.shadows[2]
             }
           }
@@ -134,7 +134,7 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
       >
         <IconButton onClick={handleOpenMenu} size="small">
           <MoreVertIcon />
-        </IconButton>
+      </IconButton>
       </Tooltip>
 
       <Menu
@@ -151,7 +151,10 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
         }}
       >
         {canView && (
-          <MenuItem component={Link} href={config.view} sx={{ typography: 'body2', borderRadius: 1 }}>
+          <MenuItem 
+            onClick={() => window.location.href = config.view} 
+            sx={{ typography: 'body2', borderRadius: 1 }}
+          >
             <ListItemIcon sx={{ minWidth: 28 }}>
               <Icon icon="solar:eye-bold" width={20} height={20} />
             </ListItemIcon>
@@ -160,7 +163,10 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
         )}
 
         {canEdit && config.allowEdit && !config.customEdit && config.edit && (
-          <MenuItem component={Link} href={config.edit} sx={{ typography: 'body2', borderRadius: 1 }}>
+          <MenuItem 
+            onClick={() => window.location.href = config.edit}
+            sx={{ typography: 'body2', borderRadius: 1 }}
+          >
             <ListItemIcon sx={{ minWidth: 28 }}>
               <Icon icon="solar:pen-bold" width={20} height={20} />
             </ListItemIcon>
@@ -177,24 +183,26 @@ const ActionsCell = ({ params, onDelete, onDeleteItem, onEdit, variant = 'produc
           </MenuItem>
         )}
 
-        <MenuItem
-          onClick={handleDelete}
-          sx={{
-            typography: 'body2',
-            borderRadius: 1,
-            color: theme.palette.error.main,
-            '&:hover': {
-              bgcolor: theme.palette.error.light
-            }
-          }}
-        >
-          <ListItemIcon sx={{ minWidth: 28, color: theme.palette.error.main }}>
-            <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
-          </ListItemIcon>
-          <Typography variant="body2" sx={{ color: theme.palette.error.main }}>
-            Delete
-          </Typography>
-        </MenuItem>
+        {canDelete && (
+          <MenuItem
+            onClick={handleDelete}
+            sx={{
+              typography: 'body2',
+              borderRadius: 1,
+              color: theme.palette.error.main,
+              '&:hover': {
+                bgcolor: theme.palette.error.light
+              }
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 28, color: theme.palette.error.main }}>
+              <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
+            </ListItemIcon>
+            <Typography variant="body2" sx={{ color: theme.palette.error.main }}>
+              Delete
+            </Typography>
+          </MenuItem>
+        )}
       </Menu>
 
       <DynamicModal

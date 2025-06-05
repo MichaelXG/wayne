@@ -8,15 +8,16 @@ import MainRoutes from './MainRoutes';
 
 const basename = import.meta.env.VITE_APP_BASE_NAME || '/';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Navigate to={`/pages/login`} replace /> 
-  },
-  AuthenticationRoutes,
-  MainRoutes
-], {
-  basename
-});
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Navigate to={`/pages/login`} replace />
+    },
+    AuthenticationRoutes,
+    MainRoutes
+  ],
+  { basename }
+);
 
 export default router;
