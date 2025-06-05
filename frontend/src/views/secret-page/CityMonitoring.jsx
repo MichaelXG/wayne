@@ -19,19 +19,20 @@ import {
   AccessTime
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import CCTVOfflineEffect from 'ui-component/movie/CCTVOfflineEffect';
+import CCTVOfflineEffect from '../../ui-component/movie/CCTVOfflineEffect';
+
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  background: 'rgba(0, 30, 60, 0.9)',
+  background: theme.palette.grey[600],
   backdropFilter: 'blur(10px)',
   borderRadius: '12px',
-  color: '#fff',
+  color: theme.palette.common.white,
   height: '100%'
 }));
 
 const CameraCard = styled(Card)(({ theme }) => ({
   position: 'relative',
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  backgroundColor: theme.palette.grey[600],
   borderRadius: '8px',
   overflow: 'hidden',
   cursor: 'pointer',
@@ -69,10 +70,10 @@ const CameraOverlay = styled(Box)(({ theme }) => ({
 
 const FullScreenDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
-    backgroundColor: 'rgba(0, 30, 60, 0.95)',
+    backgroundColor: theme.palette.grey[600],
     backdropFilter: 'blur(10px)',
     borderRadius: '12px',
-    color: '#fff',
+    color: theme.palette.common.white,
     margin: '16px',
     maxWidth: '95vw',
     maxHeight: '95vh',
@@ -92,7 +93,7 @@ const VideoContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   flex: 1,
   minHeight: 0,
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.grey[600],
   borderRadius: '8px',
   overflow: 'hidden',
   marginBottom: theme.spacing(2)
@@ -114,16 +115,16 @@ const VideoPlayer = styled(Box)({
 
 const DialogHeader = styled(DialogTitle)(({ theme }) => ({
   padding: theme.spacing(2),
-  background: 'rgba(0, 0, 0, 0.3)',
+  background: theme.palette.grey[300],
   backdropFilter: 'blur(5px)',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+  borderBottom: `1px solid ${theme.palette.grey[500]}`
 }));
 
 const DialogFooter = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
-  background: 'rgba(0, 0, 0, 0.3)',
+  background: theme.palette.grey[300],
   backdropFilter: 'blur(5px)',
-  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+  borderTop: `1px solid ${theme.palette.grey[600]}`,
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2)
@@ -133,7 +134,21 @@ const StatusChip = styled(Chip)(({ theme }) => ({
   position: 'absolute',
   top: 16,
   right: 16,
-  zIndex: 1
+  zIndex: 1,
+  backgroundColor: theme.palette.grey[300],
+  color: theme.palette.grey[900],
+  '&.MuiChip-colorSuccess': {
+    backgroundColor: theme.palette.success.main,
+    color: theme.palette.common.white
+  },
+  '&.MuiChip-colorError': {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.common.white
+  },
+  '&.MuiChip-colorWarning': {
+    backgroundColor: theme.palette.warning.main,
+    color: theme.palette.grey[900]
+  }
 }));
 
 const CityMonitoring = () => {
