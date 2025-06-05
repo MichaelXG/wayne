@@ -8,6 +8,8 @@ import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 // third party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -15,12 +17,12 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import FontFamily from './FontFamily';
 import BorderRadius from './BorderRadius';
-
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
 import { IconSettings } from '@tabler/icons-react';
 import Draggable from 'react-draggable';
+
 // ==============================|| LIVE CUSTOMIZATION ||============================== //
 
 export default function Customization() {
@@ -43,56 +45,50 @@ export default function Customization() {
             componentsProps={{
               tooltip: {
                 sx: (theme) => ({
-                  backgroundColor: theme.palette.grey[600],
+                  backgroundColor: theme.palette.grey[700],
                   color: theme.palette.common.white,
                   fontSize: 12,
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: theme.shadows[2]
+                  boxShadow: theme.shadows[3],
+                  '& .MuiTooltip-arrow': {
+                    color: theme.palette.grey[700]
+                  }
                 })
               }
             }}
+            arrow
           >
             <Fab
               component="div"
               onClick={handleToggle}
               size="medium"
               variant="circular"
-              sx={(theme) => ({
+              sx={{
                 position: 'fixed',
                 top: '15%',
                 right: 10,
                 zIndex: 1200,
-                borderRadius: 0,
-                borderTopLeftRadius: '50%',
-                borderBottomLeftRadius: '50%',
-                borderTopRightRadius: '50%',
-                borderBottomRightRadius: '4px',
-                bgcolor: theme.palette.grey[300],
-                color: theme.palette.text.secondary,
-
+                borderRadius: '50%',
+                bgcolor: theme.palette.grey[200],
+                color: theme.palette.grey[700],
+                transition: 'all 0.3s ease-in-out',
                 '&:hover': {
-                  bgcolor: theme.palette.grey[600],
-                  color: theme.palette.common.white
+                  bgcolor: theme.palette.grey[700],
+                  color: theme.palette.common.white,
+                  transform: 'scale(1.1)'
                 },
-                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
-              })}
+                boxShadow: theme.shadows[2]
+              }}
             >
               <AnimateButton type="rotate">
                 <IconButton
+                  color="inherit"
                   size="large"
                   disableRipple
                   aria-label="live customize"
-                  sx={(theme) => ({
-                    color: theme.palette.text.secondary,
-                    '&:hover': {
-                      backgroundColor: theme.palette.action.hover,
-                      color: theme.palette.common.white
-                    }
-                  })}
                 >
-                  {' '}
                   <IconSettings />
                 </IconButton>
               </AnimateButton>
@@ -100,18 +96,45 @@ export default function Customization() {
           </Tooltip>
         </div>
       </Draggable>
-      <Drawer anchor="right" onClose={handleToggle} open={open} PaperProps={{ sx: { width: 280 } }}>
+
+      <Drawer
+        anchor="right"
+        onClose={handleToggle}
+        open={open}
+        PaperProps={{
+          sx: {
+            width: 320,
+            background: theme.palette.background.paper,
+            p: 2,
+            boxShadow: theme.shadows[8]
+          }
+        }}
+        variant="temporary"
+      >
         <PerfectScrollbar>
-          <Grid container spacing={2}>
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h4" color="grey.700" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <IconSettings size={24} />
+              Live Customize
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              Customize your interface with these options
+            </Typography>
+          </Box>
+
+          <Divider sx={{ mb: 3 }} />
+
+          <Grid container spacing={3}>
             <Grid size={12}>
-              {/* font family */}
               <FontFamily />
-              <Divider />
             </Grid>
+
             <Grid size={12}>
-              {/* border radius */}
+              <Divider sx={{ my: 2.5 }} />
+            </Grid>
+
+            <Grid size={12}>
               <BorderRadius />
-              <Divider />
             </Grid>
           </Grid>
         </PerfectScrollbar>
