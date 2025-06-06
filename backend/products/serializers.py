@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'description', 'category', 'code', 'sku', 'quantity',
             'price_regular', 'price_sale', 'tax', 'price',
-            'rating', 'images', 'is_active'
+            'rating', 'images', 'is_active', 'is_secret'
         ]
 
     def get_price(self, obj):
@@ -35,6 +35,21 @@ class ProductSerializer(serializers.ModelSerializer):
             "rate": obj.rating_rate,
             "count": obj.rating_count
         }
+
+    def to_representation(self, instance):
+        # Get the user from the request
+        request = self.context.get('request')
+        user = request.user if request and hasattr(request, 'user') else None
+
+        # Check if the product is secret and if the user has permission to view it
+        if instance.is_secret:
+            # If user is not authenticated or doesn't have the Secret group, exclude this product
+            if not user or not user.is_authenticated or not user.groups.filter(name='Secret').exists():
+                return None
+
+        # If not secret or user has permission, proceed with normal serialization
+        representation = super().to_representation(instance)
+        return representation
 
     def create(self, validated_data):
         request = self.context.get('request')
@@ -69,7 +84,7 @@ class ProductSerializer(serializers.ModelSerializer):
         # Atualizar campos do produto
         for field in [
             'title', 'description', 'category', 'code', 'sku', 'quantity',
-            'price_regular', 'price_sale', 'tax', 'is_active'
+            'price_regular', 'price_sale', 'tax', 'is_active', 'is_secret'
         ]:
             if field in validated_data:
                 setattr(instance, field, validated_data[field])

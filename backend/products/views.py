@@ -4,6 +4,7 @@ from rest_framework import viewsets, status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.db.models import Q
 from .models import Product
 from .serializers import ProductSerializer
 
@@ -14,7 +15,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     ViewSet for managing products.
     Applies permission based on user's group permissions.
     """
-    queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     
@@ -22,6 +22,24 @@ class ProductViewSet(viewsets.ModelViewSet):
         if self.request.method in ['GET']:
             return [AllowAny()]
         return [IsAuthenticated()]
+
+    def get_queryset(self):
+        """
+        Filter products based on user permissions:
+        - If user is not authenticated or doesn't have Secret group, exclude secret products
+        - If user has Secret group, show all products
+        """
+        queryset = Product.objects.all().order_by('id')
+        
+        # Check if user has Secret group permission
+        user = self.request.user
+        has_secret_permission = user.is_authenticated and user.groups.filter(name='Secret').exists()
+        
+        # If user doesn't have Secret permission, exclude secret products
+        if not has_secret_permission:
+            queryset = queryset.filter(Q(is_secret=False))
+            
+        return queryset
 
     def get_serializer_context(self):
         """Pass the request to the serializer context."""
@@ -66,8 +84,24 @@ class ProductDetailView(RetrieveAPIView):
     """
     Retrieve details of a single product by ID.
     """
-    queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
-    # menu_name = 'products'
     lookup_field = 'id'
+
+    def get_queryset(self):
+        """
+        Filter products based on user permissions:
+        - If user doesn't have Secret group, exclude secret products
+        - If user has Secret group, show all products
+        """
+        queryset = Product.objects.all()
+        
+        # Check if user has Secret group permission
+        user = self.request.user
+        has_secret_permission = user.is_authenticated and user.groups.filter(name='Secret').exists()
+        
+        # If user doesn't have Secret permission, exclude secret products
+        if not has_secret_permission:
+            queryset = queryset.filter(Q(is_secret=False))
+            
+        return queryset
