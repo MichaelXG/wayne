@@ -37,6 +37,7 @@ class Product(models.Model):
     rating_count = models.PositiveIntegerField(default=0)
 
     is_active = models.BooleanField(default=True)
+    is_secret = models.BooleanField(default=False)
     inserted_in = models.DateTimeField(auto_now_add=True)
     modified_in = models.DateTimeField(auto_now=True)
 

@@ -36,6 +36,7 @@ class Command(BaseCommand):
                         "rating_rate": item.get("rating_rate", 0),
                         "rating_count": item.get("rating_count", 0),
                         "is_active": item.get("is_active", True),
+                        "is_secret": item.get("is_secret", False),
                     }
                 )
 

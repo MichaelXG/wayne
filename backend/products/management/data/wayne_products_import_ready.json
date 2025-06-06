@@ -13,6 +13,7 @@
     "rating_rate": 4.1,
     "rating_count": 91,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/001.png?raw=true",
@@ -34,6 +35,7 @@
     "rating_rate": 4.5,
     "rating_count": 19,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/002.png?raw=true",
@@ -55,6 +57,7 @@
     "rating_rate": 4.5,
     "rating_count": 126,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/003.png?raw=true",
@@ -76,6 +79,7 @@
     "rating_rate": 3.9,
     "rating_count": 116,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/004.png?raw=true",
@@ -97,6 +101,7 @@
     "rating_rate": 3.5,
     "rating_count": 65,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/005.png?raw=true",
@@ -118,6 +123,7 @@
     "rating_rate": 4.1,
     "rating_count": 150,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/006.png?raw=true",
@@ -143,6 +149,7 @@
     "rating_rate": 5.0,
     "rating_count": 38,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/007.png?raw=true",
@@ -164,6 +171,7 @@
     "rating_rate": 4.6,
     "rating_count": 52,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/008.png?raw=true",
@@ -185,6 +193,7 @@
     "rating_rate": 3.5,
     "rating_count": 70,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/009.png?raw=true",
@@ -206,6 +215,7 @@
     "rating_rate": 4.8,
     "rating_count": 56,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/010.png?raw=true",
@@ -227,6 +237,7 @@
     "rating_rate": 4.2,
     "rating_count": 46,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/011.png?raw=true",
@@ -248,6 +259,7 @@
     "rating_rate": 4.2,
     "rating_count": 9,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/012.png?raw=true",
@@ -269,6 +281,7 @@
     "rating_rate": 5.0,
     "rating_count": 117,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/013.png?raw=true",
@@ -290,6 +303,7 @@
     "rating_rate": 4.3,
     "rating_count": 141,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/014.png?raw=true",
@@ -311,6 +325,7 @@
     "rating_rate": 3.7,
     "rating_count": 149,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/015.png?raw=true",
@@ -332,6 +347,7 @@
     "rating_rate": 4.4,
     "rating_count": 8,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/016.png?raw=true",
@@ -353,6 +369,7 @@
     "rating_rate": 4.5,
     "rating_count": 79,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/017.png?raw=true",
@@ -374,6 +391,7 @@
     "rating_rate": 4.0,
     "rating_count": 23,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/018.png?raw=true",
@@ -395,6 +413,7 @@
     "rating_rate": 4.3,
     "rating_count": 139,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/019.png?raw=true",
@@ -416,6 +435,7 @@
     "rating_rate": 3.8,
     "rating_count": 87,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/020.png?raw=true",
@@ -437,6 +457,7 @@
     "rating_rate": 3.8,
     "rating_count": 40,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/021.png?raw=true",
@@ -458,6 +479,7 @@
     "rating_rate": 4.8,
     "rating_count": 20,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/022.png?raw=true",
@@ -479,6 +501,7 @@
     "rating_rate": 3.9,
     "rating_count": 132,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/023.png?raw=true",
@@ -500,6 +523,7 @@
     "rating_rate": 4.1,
     "rating_count": 33,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/024.png?raw=true",
@@ -521,6 +545,7 @@
     "rating_rate": 3.5,
     "rating_count": 54,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/025.png?raw=true",
@@ -542,6 +567,7 @@
     "rating_rate": 3.6,
     "rating_count": 45,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/026.png?raw=true",
@@ -563,6 +589,7 @@
     "rating_rate": 4.4,
     "rating_count": 146,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/027.png?raw=true",
@@ -584,6 +611,7 @@
     "rating_rate": 4.8,
     "rating_count": 35,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/028.png?raw=true",
@@ -605,6 +633,7 @@
     "rating_rate": 4.1,
     "rating_count": 100,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/029.png?raw=true",
@@ -626,6 +655,7 @@
     "rating_rate": 3.9,
     "rating_count": 98,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/030.png?raw=true",
@@ -647,6 +677,7 @@
     "rating_rate": 4.7,
     "rating_count": 23,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/031.png?raw=true",
@@ -668,6 +699,7 @@
     "rating_rate": 4.0,
     "rating_count": 33,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/032.png?raw=true",
@@ -689,6 +721,7 @@
     "rating_rate": 4.2,
     "rating_count": 120,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/033.png?raw=true",
@@ -710,6 +743,7 @@
     "rating_rate": 4.0,
     "rating_count": 124,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/034.png?raw=true",
@@ -731,6 +765,7 @@
     "rating_rate": 4.5,
     "rating_count": 82,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/035.png?raw=true",
@@ -752,6 +787,7 @@
     "rating_rate": 4.0,
     "rating_count": 82,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/036.png?raw=true",
@@ -773,6 +809,7 @@
     "rating_rate": 4.1,
     "rating_count": 100,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/037.png?raw=true",
@@ -794,6 +831,7 @@
     "rating_rate": 4.5,
     "rating_count": 87,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/038.png?raw=true",
@@ -815,6 +853,7 @@
     "rating_rate": 4.1,
     "rating_count": 129,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/039.png?raw=true",
@@ -836,6 +875,7 @@
     "rating_rate": 4.0,
     "rating_count": 105,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/040.png?raw=true",
@@ -857,6 +897,7 @@
     "rating_rate": 4.5,
     "rating_count": 121,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/041.png?raw=true",
@@ -878,6 +919,7 @@
     "rating_rate": 4.9,
     "rating_count": 125,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/042.png?raw=true",
@@ -899,6 +941,7 @@
     "rating_rate": 5.0,
     "rating_count": 32,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/043.png?raw=true",
@@ -920,6 +963,7 @@
     "rating_rate": 3.5,
     "rating_count": 95,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/044.png?raw=true",
@@ -941,6 +985,7 @@
     "rating_rate": 5.0,
     "rating_count": 71,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/045.png?raw=true",
@@ -962,6 +1007,7 @@
     "rating_rate": 3.7,
     "rating_count": 130,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/046.png?raw=true",
@@ -983,6 +1029,7 @@
     "rating_rate": 4.0,
     "rating_count": 69,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/047.png?raw=true",
@@ -1004,6 +1051,7 @@
     "rating_rate": 4.2,
     "rating_count": 107,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/048.png?raw=true",
@@ -1029,9 +1077,520 @@
     "rating_rate": 4.3,
     "rating_count": 75,
     "is_active": true,
+    "is_secret": false,
     "images": [
       {
         "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/049.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "sku": "SKU-0050",
+    "title": "Classic Batsuit",
+    "description": "Tactical suit with cape, chest symbol and mask with sensors. Reinforced with Kevlar and lightweight bullet-resistant materials..",
+    "category": "Secret",
+    "code": "X9KL2M4N",
+    "quantity": 1,
+    "price_regular": 999999.99,
+    "price_sale": 1100000,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/050.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "sku": "SKU-0051",
+    "title": "Armored Batsuit (vs Superman)",
+    "description": "Heavy armor used against Superman. Reinforced with lead, protection against extreme impacts and amplified strength.",
+    "category": "Secret",
+    "code": "P7QR5S8T",
+    "quantity": 1,
+    "price_regular": 888888.88,
+    "price_sale": 977777.77,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/051.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "sku": "SKU-0052",
+    "title": "Tactical Batsuit",
+    "description": "Tactical version with special glasses and lightweight armor. Ideal for drone and night vision missions.",
+    "category": "Secret",
+    "code": "U3VW6X9Y",
+    "quantity": 1,
+    "price_regular": 777777.77,
+    "price_sale": 855555.55,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/052.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "sku": "SKU-0053",
+    "title": "Beyond Batsuit",
+    "description": "Futuristic suit with thrusters, invisibility and artificial intelligence. Advanced communication and HUD interface.",
+    "category": "Secret",
+    "code": "Z2AB4C7D",
+    "quantity": 1,
+    "price_regular": 666666.66,
+    "price_sale": 733333.33,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/053.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "sku": "SKU-0054",
+    "title": "Hellbat Armor",
+    "description": "Armor created by the Justice League. Extremely powerful, capable of facing cosmic-level threats. Uses the user's life force to operate.",
+    "category": "Secret",
+    "code": "E5FG8H1I",
+    "quantity": 1,
+    "price_regular": 555555.55,
+    "price_sale": 611111.11,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/054.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "sku": "SKU-0055",
+    "title": "Justice Buster",
+    "description": "Armor designed to combat members of the Justice League. Contains specific countermeasures for each hero.",
+    "category": "Secret",
+    "code": "J4KL7M0N",
+    "quantity": 1,
+    "price_regular": 444444.44,
+    "price_sale": 488888.88,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/055.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "sku": "SKU-0056",
+    "title": "Thrasher Suit (Sub-Zero Armor)",
+    "description": "Thermal armor for missions in ice or extreme environments. Full insulation and adapted thrusters.",
+    "category": "Secret",
+    "code": "P3QR6S9T",
+    "quantity": 1,
+    "price_regular": 333333.33,
+    "price_sale": 366666.66,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/056.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "sku": "SKU-0057",
+    "title": "Batarang",
+    "description": "Bat-shaped throwing weapon (cutting, explosive and tracking versions).",
+    "category": "Secret",
+    "code": "U2VW5X8Y",
+    "quantity": 1,
+    "price_regular": 222222.22,
+    "price_sale": 244444.44,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/057.png?raw=true",
+        "image": null
+      },
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/057_1.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "sku": "SKU-0058",
+    "title": "Samurai Armor",
+    "description": "Armor inspired by the samurai. Enhanced with Kevlar and bulletproof materials. Includes a katana and a shield. ",
+    "category": "Secret",
+    "code": "Z1AB4C7D",
+    "quantity": 1,
+    "price_regular": 111111.11,
+    "price_sale": 122222.22,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/058.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "sku": "SKU-0059",
+    "title": "Grapple Gun",
+    "description": "Grappling hook device for climbing buildings and moving around quickly.",
+    "category": "Secret",
+    "code": "E3FG6H9K",
+    "quantity": 1,
+    "price_regular": 999999.99,
+    "price_sale": 1100000,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/059.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "sku": "SKU-0060",
+    "title": "Explosive Gel",
+    "description": "Remote adhesive gel that explodes to open walls or disable structures.",
+    "category": "Secret",
+    "code": "J2KL5M8N",
+    "quantity": 1,
+    "price_regular": 888888.88,
+    "price_sale": 977777.77,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/060.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "sku": "SKU-0061",
+    "title": "Smoke Bombs",
+    "description": "Smoke bombs for escape and confusion in combat.",
+    "category": "Secret",
+    "code": "P1QR4S7T",
+    "quantity": 1,
+    "price_regular": 777777.77,
+    "price_sale": 855555.55,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/061.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 62,
+    "sku": "SKU-0062",
+    "title": "EMP Gun",
+    "description": "Electromagnetic pulse weapon to disable electronics.",
+    "category": "Secret",
+    "code": "U0VW3X7Y",
+    "quantity": 1,
+    "price_regular": 666666.66,
+    "price_sale": 733333.33,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/062.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "sku": "SKU-0063",
+    "title": "Sonic Bat Device",
+    "description": "High frequency sound emitter to attract or repel bats.",
+    "category": "Secret",
+    "code": "Z9AB2C5D",
+    "quantity": 1,
+    "price_regular": 555555.55,
+    "price_sale": 611111.11,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/063.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "sku": "SKU-0064",
+    "title": "Cryo Capsules",
+    "description": "Freezing capsules used to immobilize enemies or objects.",
+    "category": "Secret",
+    "code": "E8FG1H4I",
+    "quantity": 1,
+    "price_regular": 444444.44,
+    "price_sale": 488888.88,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/064.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "sku": "SKU-0065",
+    "title": "Batmobile",
+    "description": "Armored car, with tank mode, machine guns, shield and autopilot.",
+    "category": "Secret",
+    "code": "J7KL0M3N",
+    "quantity": 1,
+    "price_regular": 333333.33,
+    "price_sale": 366666.66,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/065.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "sku": "SKU-0066",
+    "title": "Batcycle",
+    "description": "Light, agile and fast motorcycle, with built-in gadgets.",
+    "category": "Secret",
+    "code": "P6QR9S2T",
+    "quantity": 1,
+    "price_regular": 222222.22,
+    "price_sale": 244444.44,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/066.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "sku": "SKU-0067",
+    "title": "Batwing",
+    "description": "High-tech aircraft used for air transport and air strikes.",
+    "category": "Secret",
+    "code": "U5VW8X1Y",
+    "quantity": 1,
+    "price_regular": 111111.11,
+    "price_sale": 122222.22,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/067.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "sku": "SKU-0068",
+    "title": "The Tumbler",
+    "description": "More robust version of the Batmobile (Nolan trilogy).",
+    "category": "Secret",
+    "code": "Z4AB7C0D",
+    "quantity": 1,
+    "price_regular": 999999.99,
+    "price_sale": 1100000,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/068.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "sku": "SKU-0069",
+    "title": "Orbital Bat-Satellite",
+    "description": "Global surveillance satellite with communication and tracking.",
+    "category": "Secret",
+    "code": "E3FG7H9I",
+    "quantity": 1,
+    "price_regular": 888888.88,
+    "price_sale": 977777.77,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/069.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "sku": "SKU-0070",
+    "title": "Batcomputer",
+    "description": "Supercomputer with criminal database, tracking and artificial intelligence.",
+    "category": "Secret",
+    "code": "J2KL6M8N",
+    "quantity": 1,
+    "price_regular": 777777.77,
+    "price_sale": 855555.55,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/070.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 71,
+    "sku": "SKU-0071",
+    "title": "Cryptographic Sequencer",
+    "description": "Portable system hacking and decryption device.",
+    "category": "Secret",
+    "code": "P1QR5S7T",
+    "quantity": 1,
+    "price_regular": 666666.66,
+    "price_sale": 733333.33,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/071.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "sku": "SKU-0072",
+    "title": "Fingerprint Replicator",
+    "description": "Generates copies of fingerprints for access to restricted areas.",
+    "category": "Secret",
+    "code": "U0VW4X6Y",
+    "quantity": 1,
+    "price_regular": 555555.55,
+    "price_sale": 611111.11,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/072.png?raw=true",
         "image": null
       }
     ]
