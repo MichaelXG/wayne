@@ -37,7 +37,7 @@ export default function Dashboard() {
 
   const checkingAuth = useAuthGuard();
 
-  const authIcon = checkingAuth ? (
+  const authIcon = !checkingAuth ? (
     <Tooltip
       title="User authenticated"
       placement="top"

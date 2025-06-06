@@ -133,7 +133,7 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
                 </FormControl>
 
                 <FormControlLabel
-                  control={<Switch name="is_primary" checked={!!card.is_primary} onChange={handleInputChange} color="secondary" />}
+                  control={<Switch name="is_primary" checked={!!card.is_primary} onChange={handleInputChange} color="grey[600]" />}
                   label="Primary Card"
                 />
               </Box>
