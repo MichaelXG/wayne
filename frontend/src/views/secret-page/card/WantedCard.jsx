@@ -1,173 +1,148 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Avatar } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Box,
+  Chip,
+  Rating
+} from '@mui/material';
+import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
-const WantedCard = ({ name, alias, avatar, reward, threat, description }) => {
-  const formattedReward = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(reward.replace(/,/g, ''));
+const WantedCard = ({ name, alias, avatar, reward, threat, captured, description }) => {
+  const formatReward = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
 
   return (
-    <Card sx={{
-      width: 320,
-      background: '#f4e4bc',
-      color: '#462f2f',
-      borderRadius: '8px',
-      position: 'relative',
-      overflow: 'hidden',
-      fontFamily: "'Western', serif",
-      boxShadow: '8px 8px 16px rgba(0,0,0,0.2)',
-      border: '2px solid #462f2f',
-      p: 2,
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'url("/textures/paper-texture.png")',
-        opacity: 0.1,
-        zIndex: 1,
-        pointerEvents: 'none'
-      }
-    }}>
-      {/* Stars at top */}
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: 1,
-        mb: 1
-      }}>
-        {[...Array(3)].map((_, i) => (
-          <StarIcon key={i} sx={{ color: '#8B4513', fontSize: 24 }} />
-        ))}
-      </Box>
-
-      {/* Decorative line */}
-      <Box sx={{ 
-        borderBottom: '2px solid #462f2f',
+    <Card 
+      sx={{ 
         width: '100%',
-        mb: 2,
-        position: 'relative',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          left: '10%',
-          right: '10%',
-          top: -8,
-          borderBottom: '2px solid #462f2f'
+        maxWidth: 345,
+        bgcolor: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+        '&:hover': {
+          transform: 'translateY(-5px)',
+          boxShadow: '0 8px 20px rgba(0,0,0,0.4)'
         }
-      }} />
-
-      <Typography variant="h3" sx={{ 
-        textAlign: 'center',
-        fontWeight: 900,
-        letterSpacing: '0.1em',
-        color: '#462f2f',
-        fontFamily: "'Western', serif",
-        fontSize: '2.5rem',
-        mb: 1,
-        textTransform: 'uppercase'
-      }}>
-        WANTED
-      </Typography>
-
-      <Typography variant="h6" sx={{
-        textAlign: 'center',
-        fontWeight: 700,
-        color: '#8B4513',
-        fontFamily: "'Western', serif",
-        fontSize: '1rem',
-        mb: 2,
-        textTransform: 'uppercase'
-      }}>
-        DEAD OR ALIVE
-      </Typography>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-        <Avatar
-          src={avatar}
-          alt={name}
+      }}
+    >
+      <Box sx={{ position: 'relative' }}>
+        <Box
           sx={{
-            width: 160,
-            height: 160,
-            border: '4px solid #462f2f',
-            filter: 'sepia(20%)',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+            position: 'relative',
+            width: '200px',
+            height: '200px',
+            margin: '20px auto',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            border: '4px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+            transition: 'transform 0.3s ease-in-out',
+            '&:hover': {
+              transform: 'scale(1.05)'
+            }
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={avatar}
+            alt={alias}
+            sx={{ 
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter: captured ? 'grayscale(100%)' : 'none'
+            }}
+          />
+        </Box>
+        {captured && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%) rotate(-45deg)',
+              bgcolor: 'error.main',
+              color: 'white',
+              py: 1,
+              px: 6,
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              zIndex: 1,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+            }}
+          >
+            Captured
+          </Box>
+        )}
+        <Chip
+          label={`Threat Level: ${threat}`}
+          icon={<LocalPoliceIcon />}
+          sx={{
+            position: 'absolute',
+            top: -20,
+            right: 0,
+            bgcolor: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            '& .MuiChip-icon': {
+              color: 'white'
+            }
           }}
         />
       </Box>
 
-      <Typography variant="h5" sx={{ 
-        textAlign: 'center',
-        fontWeight: 700,
-        mb: 0.5,
-        color: '#462f2f',
-        fontFamily: "'Western', serif",
-        textTransform: 'uppercase'
-      }}>
-        {name}
-      </Typography>
+      <CardContent sx={{ color: 'white' }}>
+        <Typography variant="h5" component="div" gutterBottom sx={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
+          {alias}
+        </Typography>
+        
+        <Typography variant="subtitle2" sx={{ color: 'rgba(255,255,255,0.7)', mb: 2, textAlign: 'center' }}>
+          {name}
+        </Typography>
 
-      <Typography variant="subtitle1" sx={{ 
-        textAlign: 'center',
-        fontWeight: 500,
-        mb: 2,
-        color: '#8B4513',
-        fontFamily: "'Western', serif",
-        fontSize: '0.9rem'
-      }}>
-        Known as: {alias}
-      </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, justifyContent: 'center' }}>
+          <AttachMoneyIcon sx={{ color: '#4caf50', mr: 1 }} />
+          <Typography variant="h6" sx={{ color: '#4caf50' }}>
+            {formatReward(reward)}
+          </Typography>
+        </Box>
 
-      <Typography variant="h4" sx={{ 
-        textAlign: 'center',
-        fontWeight: 900,
-        color: '#462f2f',
-        fontFamily: "'Western', serif",
-        mb: 1
-      }}>
-        {formattedReward}
-      </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+          <Rating
+            value={threat}
+            readOnly
+            max={5}
+            sx={{
+              '& .MuiRating-icon': {
+                color: 'warning.main'
+              }
+            }}
+          />
+        </Box>
 
-      <Typography variant="subtitle2" sx={{ 
-        textAlign: 'center',
-        fontWeight: 700,
-        color: '#8B4513',
-        fontFamily: "'Western', serif",
-        fontSize: '1rem',
-        mb: 2,
-        textTransform: 'uppercase'
-      }}>
-        CASH REWARD
-      </Typography>
-
-      <Typography variant="body2" sx={{ 
-        textAlign: 'center',
-        color: '#462f2f',
-        fontFamily: "'Western', serif",
-        fontSize: '0.8rem',
-        fontStyle: 'italic',
-        px: 2
-      }}>
-        {description}
-      </Typography>
-
-      {/* Bottom stars */}
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: 1,
-        mt: 2
-      }}>
-        {[...Array(3)].map((_, i) => (
-          <StarIcon key={i} sx={{ color: '#8B4513', fontSize: 24 }} />
-        ))}
-      </Box>
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            color: 'rgba(255,255,255,0.7)',
+            fontSize: '0.9rem',
+            lineHeight: 1.6,
+            textAlign: 'center'
+          }}
+        >
+          {description}
+        </Typography>
+      </CardContent>
     </Card>
   );
 };
