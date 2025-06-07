@@ -108,6 +108,7 @@ run_management_command() {
 run_management_command load_groups "Importing groups"
 run_management_command load_menus "Importing menus"
 run_management_command load_permissions "Importing permissions"
+run_management_command create_users "Creating initial users"
 run_management_command import_products "Importing products from local JSON"
 run_management_command import_carriers "Importing carriers from AfterShip API"
 log_success "All import tasks completed!"
