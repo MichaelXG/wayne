@@ -23,6 +23,7 @@ import NotificationList from '../../../layout/MainLayout/Header/NotificationSect
 import { useCsc } from '../../../contexts/CscContext';
 import useOrderReadyForPayment from '../../../hooks/useOrderReadyForPayment';
 import { useTheme } from '@mui/material/styles';
+import { isDebug } from '../../../App';
 
 export default function Payment() {
   const theme = useTheme();
@@ -172,6 +173,7 @@ export default function Payment() {
   const requestCSC = async () => {
     try {
       const card = wallet[selectedCardIndex];
+      isDebug && console.log('Requesting CSC for card:', card.id);
       const response = await axios.post(
         API_ROUTES.WALLETS_SEND_CSC_WHATSAPP(card.id),
         {},
@@ -180,6 +182,7 @@ export default function Payment() {
         }
       );
       const { csc, message } = response.data;
+      isDebug && console.log('CSC Response:', { csc: !!csc, message });
       if (csc) {
         setCscGenerated(csc);
         setCsc(csc);
@@ -187,7 +190,11 @@ export default function Payment() {
       setAlert({ open: true, severity: 'success', message: message || 'CSC sent via WhatsApp!' });
       setCscDialogOpen(true);
     } catch (error) {
-      console.error('Failed to request CSC via WhatsApp:', error);
+      isDebug && console.error('Failed to request CSC via WhatsApp:', {
+        error: error?.response?.data || error.message,
+        status: error?.response?.status,
+        statusText: error?.response?.statusText
+      });
       const errorMsg = error?.response?.data?.error || 'Failed to send CSC via WhatsApp';
       setAlert({ open: true, severity: 'error', message: errorMsg });
     }
