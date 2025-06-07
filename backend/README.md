@@ -46,6 +46,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000
 EMAIL_HOST_USER_B64=your-base64-encoded-email
 EMAIL_HOST_PASSWORD_B64=your-base64-encoded-password
 REDIS_PASSWORD=your-redis-password
+AFTERSHIP_API_KEY=your-aftership-api-key
 ```
 
 ### 🐳 Docker Setup
@@ -145,6 +146,53 @@ backend/
 - `POST /api/orders/` - Create order
 - `GET /api/orders/<id>/` - Get order details
 - `PUT /api/orders/<id>/` - Update order status
+
+## 💳 Payment Integration with AfterShip
+
+### AfterShip Setup
+
+1. **Create AfterShip Account**
+   - Sign up at [AfterShip](https://www.aftership.com)
+   - Get your API key from the dashboard
+   - Add to your `.env` file:
+```env
+AFTERSHIP_API_KEY=your-api-key-here
+```
+
+2. **Configure Webhook**
+   - Go to AfterShip Dashboard > Settings > Webhooks
+   - Add webhook URL: `https://your-domain.com/api/orders/webhook/aftership/`
+   - Select events: `payment.success`, `payment.failed`
+
+### Payment Flow
+
+1. **Create Payment**
+```python
+# Example API call
+POST /api/orders/payment/create/
+{
+    "order_id": "123",
+    "amount": 99.99,
+    "currency": "USD",
+    "customer_email": "customer@example.com"
+}
+```
+
+2. **Handle Webhook**
+   - AfterShip sends payment status to your webhook
+   - Order status updates automatically
+   - Payment details stored in order history
+
+### Payment Status Tracking
+
+- `GET /api/orders/<id>/payment/` - Get payment status
+- `GET /api/orders/<id>/payment/history/` - Get payment history
+
+### Error Handling
+
+- Payment failures trigger email notifications
+- Retry mechanism for failed payments
+- Automatic refund processing for cancelled orders
 
 ## ⚙️ Configuration
 
