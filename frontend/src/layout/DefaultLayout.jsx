@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useTheme } from '@mui/material/styles';
@@ -12,8 +12,10 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Tooltip from '@mui/material/Tooltip';
+import Fade from '@mui/material/Fade';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { IconShieldCheck, IconShieldX } from '@tabler/icons-react';
 
@@ -33,9 +35,27 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
   const navigate = useNavigate();
   const { hasPermission } = usePermissions();
   const [permissionModalOpen, setPermissionModalOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setShowScrollTop(scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const authIcon = checkingAuth ? (
     <Tooltip
@@ -263,6 +283,54 @@ export default function DefaultLayout({ mainCardTitle, subCardTitle, children, b
         type="error"
         mode="alert"
       />
+
+      <Fade in={showScrollTop}>
+        <Box
+          onClick={scrollToTop}
+          role="presentation"
+          sx={{
+            position: 'fixed',
+            bottom: 20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 2,
+            cursor: 'pointer'
+          }}
+        >
+          <Tooltip
+            title="Back to top"
+            placement="top"
+            componentsProps={{
+              tooltip: {
+                sx: (theme) => ({
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white,
+                  fontSize: 12,
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: 1,
+                  boxShadow: theme.shadows[2]
+                })
+              }
+            }}
+          >
+            <IconButton
+              sx={(theme) => ({
+                backgroundColor: theme.palette.grey[300],
+                color: theme.palette.grey[600],
+                '&:hover': {
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white
+                },
+                width: 40,
+                height: 40
+              })}
+            >
+              <KeyboardArrowUpIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Fade>
     </MainCard>
   );
 }

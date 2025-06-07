@@ -59,12 +59,15 @@ class WalletViewSet(viewsets.ModelViewSet):
             user = wallet.user
             raw_phone = (user.phone or '').strip()
 
+            logger.info(f"[CSC] Iniciando envio para usuário {user.id} (email: {user.email})")
+
             if not raw_phone:
                 logger.warning(f"[CSC] ❌ Usuário {user.id} não possui número de telefone.")
                 return Response({'error': 'Phone number not configured.'}, status=status.HTTP_400_BAD_REQUEST)
 
             # Normaliza número (assume +55 se não vier com +)
             phone_number = raw_phone if raw_phone.startswith('+') else f'+55{raw_phone}'
+            logger.info(f"[CSC] Número formatado: {phone_number}")
 
             # Gera CSC de 3 dígitos
             csc = str(random.randint(100, 999))
@@ -73,15 +76,21 @@ class WalletViewSet(viewsets.ModelViewSet):
 
             logger.info(f"[CSC] Gerado {csc} para carteira {wallet.id} (usuário: {user.email}) - telefone: {phone_number}")
 
-            # Envia WhatsApp via Twilio
-            client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-            message = client.messages.create(
-                from_=settings.TWILIO_WHATSAPP_FROM,
-                to=f'whatsapp:{phone_number}',
-                body=f'Seu código de segurança é: {csc}'
-            )
-
-            logger.info(f"[CSC] ✅ WhatsApp enviado para {phone_number} | SID: {message.sid}")
+            try:
+                # Envia WhatsApp via Twilio
+                client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+                message = client.messages.create(
+                    from_=settings.TWILIO_WHATSAPP_FROM,
+                    to=f'whatsapp:{phone_number}',
+                    body=f'Seu código de segurança é: {csc}'
+                )
+                logger.info(f"[CSC] ✅ WhatsApp enviado para {phone_number} | SID: {message.sid}")
+            except Exception as twilio_error:
+                logger.error(f"[CSC] ❌ Erro Twilio: {str(twilio_error)}")
+                return Response({
+                    'error': 'Failed to send WhatsApp message.',
+                    'detail': str(twilio_error)
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             # Retorno inclui o CSC para debug (remova em produção!)
             return Response({
@@ -92,7 +101,10 @@ class WalletViewSet(viewsets.ModelViewSet):
 
         except Exception as e:
             logger.exception(f"[CSC] ❌ Falha ao enviar CSC via WhatsApp para {user.email}")
-            return Response({'error': 'Failed to send WhatsApp message.', 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({
+                'error': 'Failed to send WhatsApp message.',
+                'detail': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=True, methods=['post'], url_path='verify-csc')
     def verify_csc(self, request, pk=None):

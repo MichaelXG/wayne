@@ -33,9 +33,6 @@ export default function PermissionsEdit() {
   const token = userData?.authToken || null;
   const { reloadPermissions } = usePermissions();
 
-  // Regra de acesso:
-  // - Se usuário tem grupos 'administrador' E 'secret': mostra todos os grupos/menus (incluindo secret)
-  // - Se não tem ambos os grupos: mostra todos os grupos/menus EXCETO os secret
   const hasAdminSecretAccess = useMemo(() => {
     let userGroups = [];
     try {
@@ -44,45 +41,43 @@ export default function PermissionsEdit() {
         try {
           userGroups = JSON.parse(decodedData);
         } catch (parseError) {
-          console.error('Erro ao fazer parse dos grupos:', parseError);
+          console.error('Failed to parse groups:', parseError);
           userGroups = [];
         }
       } else if (Array.isArray(userData?.groups)) {
         userGroups = userData.groups;
       }
     } catch (error) {
-      console.error('Erro ao decodificar grupos:', error);
+      console.error('Failed to decode groups:', error);
       userGroups = [];
     }
 
-    isDebug && console.log('=== Verificação de Acesso ===');
-    isDebug && console.log('Dados originais:', userData?.groups);
-    isDebug && console.log('Grupos decodificados:', userGroups);
+    isDebug && console.log('=== Access Verification ===');
+    isDebug && console.log('Original group data:', userData?.groups);
+    isDebug && console.log('Decoded groups:', userGroups);
 
     const groupNames = (Array.isArray(userGroups) ? userGroups : [])
       .map((group) => {
         try {
-          // Decodifica o nome do grupo que está em base64
           const name = group?.name ? safeAtob(group.name) : '';
           return name.toLowerCase();
         } catch (error) {
-          console.error('Erro ao decodificar nome do grupo:', error);
+          console.error('Failed to decode group name:', error);
           return '';
         }
       })
       .filter((name) => name);
 
-    isDebug && console.log('Nomes dos grupos decodificados:', groupNames);
+    isDebug && console.log('Decoded group names:', groupNames);
 
-    // Verifica se tem grupo admin (aceita administrator ou administrador) E secret
     const hasAdminGroup = groupNames.some((name) => name === 'administrator' || name === 'administrador');
     const hasSecretGroup = groupNames.includes('secret');
 
     const hasAccess = hasAdminGroup && hasSecretGroup;
-    isDebug && console.log('Tem grupo admin?', hasAdminGroup);
-    isDebug && console.log('Tem grupo secret?', hasSecretGroup);
-    isDebug && console.log('Tem acesso total (admin+secret)?', hasAccess ? 'SIM' : 'NÃO');
-    isDebug && console.log('=============================');
+    isDebug && console.log('Has admin group?', hasAdminGroup);
+    isDebug && console.log('Has secret group?', hasSecretGroup);
+    isDebug && console.log('Has full access (admin + secret)?', hasAccess ? 'YES' : 'NO');
+    isDebug && console.log('============================');
     return hasAccess;
   }, [userData?.groups]);
 
@@ -107,8 +102,8 @@ export default function PermissionsEdit() {
         const filteredGroups = hasAdminSecretAccess
           ? allGroups
           : allGroups.filter((group) => !(group.name || '').toLowerCase().includes('secret'));
-        console.log('All Groups:', allGroups);
-        console.log('Filtered Groups:', filteredGroups);
+        isDebug && console.log('All Groups:', allGroups);
+        isDebug && console.log('Filtered Groups:', filteredGroups);
         setGroups(filteredGroups);
       })
       .catch((err) => {
@@ -129,8 +124,8 @@ export default function PermissionsEdit() {
               ? groupNode.children || []
               : (groupNode.children || []).filter((menu) => !menu.label.toLowerCase().includes('secret'));
 
-            console.log('All Menus:', groupNode.children);
-            console.log('Filtered Menus:', filteredMenus);
+            isDebug && console.log('All Menus:', groupNode.children);
+            isDebug && console.log('Filtered Menus:', filteredMenus);
             setMenus(filteredMenus);
 
             const transformed = {};
@@ -172,10 +167,16 @@ export default function PermissionsEdit() {
       }))
     };
 
+    isDebug && console.log('=== Permissions Payload ===');
+    isDebug && console.log('Group ID:', selectedGroupId);
+    isDebug && console.log('Form Data:', form);
+    isDebug && console.log('Payload:', payload);
+    isDebug && console.log('========================');
+
     axios
       .post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
       .then(() => {
-        alert('Permissions successfully updated.');
+        alert('Permissions updated successfully.');
         setInitialForm(form);
         reloadPermissions();
       })
