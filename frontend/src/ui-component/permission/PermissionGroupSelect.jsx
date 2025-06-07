@@ -6,7 +6,7 @@ import { API_ROUTES } from '../../routes/ApiRoutes';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
-  { value = [], onChange, name = 'groups', label = 'Permission Groups', error, helperText, ...props },
+  { value = [], onChange, name = 'groups', label = 'Permission Groups', error, helperText, showSecretGroups = false, ...props },
   ref
 ) {
   const [groups, setGroups] = useState([]);
@@ -24,7 +24,12 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
         console.log('✅ Resposta da API GROUPS_ACTIVE:', response.data);
 
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
-        setGroups(data);
+        
+        const filteredGroups = showSecretGroups 
+          ? data 
+          : data.filter(group => !group.name.toLowerCase().includes('secret'));
+        
+        setGroups(filteredGroups);
       } catch (error) {
         console.error('Failed to fetch permission groups:', error);
       } finally {
@@ -33,7 +38,7 @@ const PermissionGroupSelect = forwardRef(function PermissionGroupSelect(
     };
 
     fetchGroups();
-  }, []);
+  }, [showSecretGroups]);
 
   const selectedGroups = groups.filter((group) => value.some((v) => (typeof v === 'object' ? v.id === group.id : v === group.id)));
 
