@@ -23,7 +23,8 @@ export default function ProductList() {
     () => ({
       label: 'Create',
       href: `/products/create`,
-      icon: <AddIcon />
+      icon: <AddIcon />,
+      permission: { menu: 'products', action: 'can_create'}
     }),
     []
   );

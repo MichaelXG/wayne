@@ -32,6 +32,7 @@ export default function AddressEdit() {
       label: 'Save',
       icon: <SaveIcon />,
       disabled: !isActive,
+      permission: { menu: 'address', action: 'can_create' },
       onClick: () => {
         addressEditRef.current?.submitForm();
       }

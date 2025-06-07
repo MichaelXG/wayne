@@ -31,6 +31,7 @@ export default function ProductEdit() {
       label: 'Save',
       icon: <SaveIcon />,
       disabled: !isActive,
+      permission: { menu: 'products', action: 'can_update' },
       onClick: () => {
         productEditRef.current?.submitForm();
       }

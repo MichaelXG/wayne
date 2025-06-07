@@ -23,7 +23,8 @@ export default function AddressList() {
     () => ({
       label: 'Create',
       href: `/address/create`,
-      icon: <AddIcon />
+      icon: <AddIcon />,
+      permission: { menu: 'address', action: 'can_create' }
     }),
     []
   );

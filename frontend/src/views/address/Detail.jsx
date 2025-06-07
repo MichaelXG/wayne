@@ -26,7 +26,8 @@ export default function AddressDetail() {
     () => ({
       label: 'Edit',
       href: `/address/edit/${addressId}`,
-      icon: customSvgEditIcon
+      icon: customSvgEditIcon,
+      permission: { menu: 'address', action: 'can_update' }
     }),
     [addressId]
   );

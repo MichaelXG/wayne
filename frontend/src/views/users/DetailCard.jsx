@@ -140,7 +140,14 @@ export default function DetailCard({ user }) {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <PermissionGroupSelect name="groups" value={groupValues} onChange={setGroupValues} label="Permission Groups" disabled />
+                  <PermissionGroupSelect
+                    name="groups"
+                    value={groupValues}
+                    onChange={setGroupValues}
+                    label="Permission Groups"
+                    disabled
+                    showSecretGroups={true}
+                  />
                 </Grid>
               </Grid>
             </AuthCardWrapper>

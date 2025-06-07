@@ -31,6 +31,7 @@ export default function UserEdit() {
       label: 'Save',
       icon: <SaveIcon />,
       disabled: !isActive,
+      permission: { menu: 'users', action: 'can_update' },
       onClick: () => {
         userEditRef.current?.submitForm();
       }

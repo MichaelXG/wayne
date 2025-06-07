@@ -24,12 +24,25 @@ import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
 import { usePermissions } from '../../contexts/PermissionsContext';
+import { safeAtob } from '../../utils/base64';
 
 export default function PermissionsEdit() {
   const checkingAuth = useAuthGuard();
   const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
-  const { reloadPermissions } = usePermissions(); 
+  const { reloadPermissions } = usePermissions();
+
+  const hasSecretGroup = useMemo(() => {
+    const userGroups = userData?.groups || [];
+    return userGroups.some((group) => safeAtob(group.name || '').toLowerCase() === 'secret');
+  }, [userData?.groups]);
+
+  const isUserAdminAndSecret = useMemo(() => {
+    const userGroups = userData?.groups || [];
+    const decodedGroups = userGroups.map((group) => safeAtob(group.name || '').toLowerCase());
+    const isAdmin = decodedGroups.some((name) => ['administrator', 'admin', 'administrador'].includes(name));
+    return isAdmin && hasSecretGroup;
+  }, [userData?.groups, hasSecretGroup]);
 
   const [groups, setGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState('');
@@ -40,34 +53,53 @@ export default function PermissionsEdit() {
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
   const [isLoadingGroupData, setIsLoadingGroupData] = useState(false);
+  const [accessDeniedModal, setAccessDeniedModal] = useState(false);
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
-    axios
-      .get(API_ROUTES.PERMISSIONS.GROUPS, headers)
+    axios.get(API_ROUTES.PERMISSIONS.GROUPS, headers)
       .then((res) => {
-        setGroups(Array.isArray(res.data) ? res.data : []);
+        const allGroups = Array.isArray(res.data) ? res.data : [];
+        const filteredGroups = allGroups.filter((group) => {
+          const decodedName = safeAtob(group.name || '').toLowerCase();
+          return decodedName === 'secret' ? hasSecretGroup : true;
+        });
+        setGroups(filteredGroups);
       })
       .catch((err) => {
         console.error('Failed to load groups', err);
         setGroups([]);
       });
-  }, [token]);
+  }, [token, hasSecretGroup]);
 
   useEffect(() => {
     if (selectedGroupId) {
+      const selectedGroup = groups.find((g) => g.id === selectedGroupId);
+      const decodedGroupName = safeAtob(selectedGroup?.name || '').toLowerCase();
+
+      if (decodedGroupName === 'secret' && !hasSecretGroup) {
+        setMenus([]);
+        setForm({});
+        setInitialForm({});
+        setAccessDeniedModal(true);
+        return;
+      }
+
       setIsLoadingGroupData(true);
-      axios
-        .get(API_ROUTES.PERMISSIONS.TREE, headers)
+      axios.get(API_ROUTES.PERMISSIONS.TREE, headers)
         .then((res) => {
           const groupNode = res.data.find((g) => g.id === `group-${selectedGroupId}`);
           if (groupNode) {
-            const newMenus = groupNode.children || [];
-            setMenus(newMenus);
+            const filteredMenus = (groupNode.children || []).filter((menu) => {
+              const isSecretMenu = menu.label.toLowerCase() === 'secret';
+              return isSecretMenu ? hasSecretGroup : true;
+            });
+            
+            setMenus(filteredMenus);
 
             const transformed = {};
-            newMenus.forEach((menu) => {
+            filteredMenus.forEach((menu) => {
               const permObj = {};
               menu.children.forEach((perm) => {
                 permObj[perm.permissionKey] = perm.checked;
@@ -82,7 +114,7 @@ export default function PermissionsEdit() {
           setIsLoadingGroupData(false);
         });
     }
-  }, [selectedGroupId]);
+  }, [selectedGroupId, hasSecretGroup, groups]);
 
   const deepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -105,14 +137,11 @@ export default function PermissionsEdit() {
       }))
     };
 
-    isDebug && console.log('[🔄 PAYLOAD ENVIADO]', payload);
-
-    axios
-      .post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
+    axios.post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
       .then(() => {
         alert('Permissions successfully updated.');
         setInitialForm(form);
-        reloadPermissions(); 
+        reloadPermissions();
       })
       .catch((err) => console.error('Error saving permissions', err))
       .finally(() => {
@@ -130,22 +159,20 @@ export default function PermissionsEdit() {
     }
   };
 
-  const breadcrumbs = useMemo(
-    () => [{ label: 'Dashboard', href: `${BaseDir}/dashboard/default` }, { label: 'Permissions', href: '#' }, { label: 'Edit' }],
-    []
-  );
+  const breadcrumbs = useMemo(() => [
+    { label: 'Dashboard', href: `${BaseDir}/dashboard/default` },
+    { label: 'Permissions', href: '#' },
+    { label: 'Edit' }
+  ], []);
 
-  const actionbutton = useMemo(
-    () => ({
-      type: 'submit',
-      label: 'Save',
-      icon: <SaveIcon />,
-      disabled: !selectedGroupId,
-      permission: { menu: 'permissions', action: 'can_update' },
-      onClick: handleSubmit
-    }),
-    [form, selectedGroupId]
-  );
+  const actionbutton = useMemo(() => ({
+    type: 'submit',
+    label: 'Save',
+    icon: <SaveIcon />,
+    disabled: !selectedGroupId,
+    permission: { menu: 'permissions', action: 'can_update' },
+    onClick: handleSubmit
+  }), [form, selectedGroupId]);
 
   if (checkingAuth) return null;
 
@@ -168,9 +195,7 @@ export default function PermissionsEdit() {
             onChange={(e) => setSelectedGroupId(e.target.value)}
           >
             {groups.map((g) => (
-              <MenuItem key={g.id} value={g.id}>
-                {g.name}
-              </MenuItem>
+              <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -212,7 +237,7 @@ export default function PermissionsEdit() {
         onClose={() => setNoChangesModal(false)}
         onSubmit={() => setNoChangesModal(false)}
         title="No Changes Detected"
-        description="You haven’t changed anything. There’s nothing to save."
+        description="You haven't changed anything. There's nothing to save."
         type="warning"
         mode="confirm"
         submitLabel="OK"
@@ -230,6 +255,23 @@ export default function PermissionsEdit() {
         type="success"
         mode="confirm"
         submitLabel="Save"
+      />
+
+      <DynamicModal
+        open={accessDeniedModal}
+        onClose={() => {
+          setAccessDeniedModal(false);
+          setSelectedGroupId('');
+        }}
+        onSubmit={() => {
+          setAccessDeniedModal(false);
+          setSelectedGroupId('');
+        }}
+        title="Access Denied"
+        description={'You do not have permission to view or edit the group "secret"'}
+        type="warning"
+        mode="confirm"
+        submitLabel="OK"
       />
     </DefaultLayout>
   );

@@ -25,7 +25,8 @@ export default function UserDetail() {
     () => ({
       label: 'Edit',
       href: `/users/edit/${userId}`,
-      icon: customSvgEditIcon
+      icon: customSvgEditIcon,
+      permission: { menu: 'users', action: 'can_update' }
     }),
     [userId]
   );

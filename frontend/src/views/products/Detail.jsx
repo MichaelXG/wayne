@@ -25,7 +25,8 @@ export default function ProductDetail() {
     () => ({
       label: 'Edit',
       href: `/products/edit/${productId}`,
-      icon: customSvgEditIcon
+      icon: customSvgEditIcon,
+      permission: { menu: 'products', action: 'can_update' }
     }),
     [productId]
   );

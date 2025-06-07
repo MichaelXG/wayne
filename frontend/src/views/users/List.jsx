@@ -23,7 +23,8 @@ export default function UsersList() {
     () => ({
       label: 'Create',
       href: `/pages/register`,
-      icon: <AddIcon />
+      icon: <AddIcon />,
+      permission: { menu: 'users', action: 'can_create' }
     }),
     []
   );
