@@ -15,6 +15,7 @@ import Popper from '@mui/material/Popper';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 
 // project imports
 import NavItem from '../NavItem';
@@ -167,6 +168,9 @@ export default function NavCollapse({ menu, level, parentId }) {
   return (
     <>
       <ListItemButton
+        disableRipple
+        selected={isSelected}
+        className={level > 1 ? 'submenu-items' : ''}
         sx={(theme) => ({
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
@@ -174,7 +178,8 @@ export default function NavCollapse({ menu, level, parentId }) {
 
           ...(drawerOpen &&
             level !== 1 && {
-              ml: `${level * 18}px`
+              ml: `${level * 16}px`,
+              pl: 2
             }),
 
           ...(!drawerOpen && {
@@ -183,6 +188,7 @@ export default function NavCollapse({ menu, level, parentId }) {
 
           ...(drawerOpen &&
             level === 1 && {
+              pl: 2,
               '&:hover': {
                 bgcolor: theme.palette.grey[300]
               },
@@ -199,31 +205,50 @@ export default function NavCollapse({ menu, level, parentId }) {
           ...((!drawerOpen || level !== 1) && {
             py: level === 1 ? 0 : 1,
             '&:hover': {
-              bgcolor: theme.palette.grey[300], // cor clara no hover fora do drawer aberto
-              color: theme.palette.text.primary, // muda cor do texto no hover
+              bgcolor: theme.palette.grey[300],
+              color: theme.palette.text.primary,
               fontWeight: theme.typography.fontWeightBold
             },
             '&.Mui-selected': {
-              bgcolor: 'transparent',
               '&:hover': {
                 bgcolor: 'transparent'
               }
             }
+          }),
+
+          ...(level > 1 && {
+            '&:before': drawerOpen && {
+              content: '""',
+              position: 'absolute',
+              left: `${(level - 1) * 16}px`,
+              top: '50%',
+              width: '16px',
+              height: '1px',
+              backgroundColor: theme.palette.grey[300],
+              transform: 'translateY(-50%)'
+            },
+            '&:after': drawerOpen && {
+              content: '""',
+              position: 'absolute',
+              left: `${(level - 1) * 16}px`,
+              top: 0,
+              width: '1px',
+              height: '100%',
+              backgroundColor: theme.palette.grey[300]
+            }
           })
         })}
-        selected={isSelected}
         {...(!drawerOpen && {
           onMouseEnter: handleClickMini,
           onMouseLeave: handleClosePopper
         })}
         onClick={handleClickMini}
       >
-        {menuIcon && (
+        <ButtonBase aria-label="theme-icon" sx={{ borderRadius: `${borderRadius}px` }} disableRipple={drawerOpen}>
           <ListItemIcon
             sx={(theme) => ({
               minWidth: level === 1 ? 36 : 18,
-              color: isSelected ? theme.palette.grey[600] : theme.palette.text.primary,
-
+              color: isSelected ? iconSelectedColor : theme.palette.text.primary,
               ...(!drawerOpen &&
                 level === 1 && {
                   borderRadius: `${borderRadius}px`,
@@ -236,7 +261,6 @@ export default function NavCollapse({ menu, level, parentId }) {
                     color: theme.palette.grey[600],
                     fontWeight: theme.typography.fontWeightBold
                   },
-
                   ...(isSelected && {
                     bgcolor: theme.palette.grey[300],
                     '&:hover': {
@@ -250,7 +274,8 @@ export default function NavCollapse({ menu, level, parentId }) {
           >
             {menuIcon}
           </ListItemIcon>
-        )}
+        </ButtonBase>
+
         {(drawerOpen || (!drawerOpen && level !== 1)) && (
           <Tooltip title={menu.title} disableHoverListener={!hoverStatus}>
             <ListItemText
@@ -263,7 +288,7 @@ export default function NavCollapse({ menu, level, parentId }) {
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    width: 120
+                    width: 102
                   }}
                 >
                   {menu.title}
@@ -301,6 +326,11 @@ export default function NavCollapse({ menu, level, parentId }) {
               minWidth: 180,
               '&:before': {
                 content: '""',
+                position: 'absolute',
+                left: '12px',
+                top: '50%',
+                width: '10px',
+                height: '10px',
                 bgcolor: theme.palette.background.paper,
                 transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 120,
@@ -316,6 +346,7 @@ export default function NavCollapse({ menu, level, parentId }) {
                   sx={{
                     overflow: 'hidden',
                     mt: 1.5,
+                    py: 0.5,
                     boxShadow: theme.shadows[8],
                     backgroundImage: 'none'
                   }}
@@ -331,26 +362,28 @@ export default function NavCollapse({ menu, level, parentId }) {
       </ListItemButton>
       {drawerOpen && (
         <Collapse in={open} timeout="auto" unmountOnExit>
-          {open && (
-            <List
-              disablePadding
-              sx={(theme) => ({
-                position: 'relative',
-                '&:after': {
-                  content: "''",
+          <List
+            component="div"
+            disablePadding
+            sx={(theme) => ({
+              position: 'relative',
+              '& .MuiListItemButton-root': {
+                pl: drawerOpen ? `${level * 16}px` : 2,
+                py: 1,
+                '&:before': drawerOpen && level > 1 && {
+                  content: '""',
                   position: 'absolute',
-                  left: '25px',
+                  left: `${(level - 1) * 16}px`,
                   top: 0,
-                  height: '100%',
                   width: '1px',
-                  opacity: 1,
-                  bgcolor: theme.palette.grey[300]
+                  height: '100%',
+                  backgroundColor: theme.palette.grey[300]
                 }
-              })}
-            >
-              {menus}
-            </List>
-          )}
+              }
+            })}
+          >
+            {menus}
+          </List>
         </Collapse>
       )}
     </>

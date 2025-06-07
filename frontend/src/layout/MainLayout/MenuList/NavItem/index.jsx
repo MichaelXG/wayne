@@ -69,120 +69,152 @@ export default function NavItem({ item, level, isParents = false, setSelectedID 
   const iconSelectedColor = theme.palette.grey[600];
 
   return (
-    <>
-      <ListItemButton
-        component={Link}
-        to={item.url}
-        target={itemTarget}
-        disabled={item.disabled}
-        disableRipple={!drawerOpen}
-        sx={(theme) => ({
-          zIndex: 1201,
-          borderRadius: `${borderRadius}px`,
-          mb: 0.5,
-          ...(drawerOpen && level !== 1 && { ml: `${level * 18}px` }),
-          ...(!drawerOpen && { pl: 1.25 }),
-          ...(drawerOpen &&
-            level === 1 && {
-              '&:hover': {
+    <ListItemButton
+      disableRipple
+      component={Link}
+      to={item.url}
+      target={itemTarget}
+      disabled={item.disabled}
+      selected={isSelected}
+      onClick={itemHandler}
+      className={level > 1 ? 'submenu-items' : ''}
+      sx={(theme) => ({
+        zIndex: 1201,
+        borderRadius: `${borderRadius}px`,
+        mb: 0.5,
+        position: 'relative',
+        ...(drawerOpen &&
+          level !== 1 && {
+            ml: `${level * 16}px`,
+            pl: 2
+          }),
+
+        ...(!drawerOpen && {
+          pl: 1.25
+        }),
+
+        ...(drawerOpen &&
+          level === 1 && {
+            pl: 2,
+            '&:hover': {
                 bgcolor: theme.palette.grey[300]
-              },
-              '&.Mui-selected': {
+            },
+            '&.Mui-selected': {
                 bgcolor: theme.palette.grey[300],
                 color: iconSelectedColor, // se iconSelectedColor for string do tema, tudo certo
-                '&:hover': {
+              '&:hover': {
                   color: iconSelectedColor,
                   bgcolor: theme.palette.grey[300]
-                }
               }
-            }),
-          ...((!drawerOpen || level !== 1) && {
-            py: level === 1 ? 0 : 1,
+            }
+          }),
+
+        ...((!drawerOpen || level !== 1) && {
+          py: level === 1 ? 0 : 1,
+          '&:hover': {
+              bgcolor: 'transparent'
+          },
+          '&.Mui-selected': {
             '&:hover': {
               bgcolor: 'transparent'
             },
-            '&.Mui-selected': {
-              '&:hover': {
-                bgcolor: 'transparent'
-              },
-              bgcolor: 'transparent'
-            }
-          })
-        })}
-        selected={isSelected}
-        onClick={() => itemHandler()}
-      >
-        <ButtonBase aria-label="theme-icon" sx={{ borderRadius: `${borderRadius}px` }} disableRipple={drawerOpen}>
-          <ListItemIcon
-            sx={(theme) => {
-              const iconSelectedColor = theme.palette.grey[600];
-              return {
-                minWidth: level === 1 ? 36 : 18,
-                color: isSelected ? iconSelectedColor : theme.palette.text.primary,
-                ...(!drawerOpen &&
-                  level === 1 && {
-                    borderRadius: `${borderRadius}px`,
-                    width: 46,
-                    height: 46,
-                    alignItems: 'center',
-                    justifyContent: 'center',
+            bgcolor: 'transparent',
+            color: theme.palette.grey[800]
+          }
+        }),
+        ...(level > 1 && {
+          '&:before': drawerOpen && {
+            content: '""',
+            position: 'absolute',
+            left: `${(level - 1) * 16}px`,
+            top: '50%',
+            width: '16px',
+            height: '1px',
+            backgroundColor: theme.palette.grey[300],
+            transform: 'translateY(-50%)'
+          },
+          '&:after': drawerOpen && {
+            content: '""',
+            position: 'absolute',
+            left: `${(level - 1) * 16}px`,
+            top: 0,
+            width: '1px',
+            height: '100%',
+            backgroundColor: theme.palette.grey[300]
+          }
+        })
+      })}
+    >
+      <ButtonBase aria-label="theme-icon" sx={{ borderRadius: `${borderRadius}px` }} disableRipple={drawerOpen}>
+        <ListItemIcon
+          sx={(theme) => {
+            const iconSelectedColor = theme.palette.grey[600];
+            return {
+              minWidth: level === 1 ? 36 : 18,
+              color: isSelected ? iconSelectedColor : theme.palette.text.primary,
+              ...(!drawerOpen &&
+                level === 1 && {
+                  borderRadius: `${borderRadius}px`,
+                  width: 46,
+                  height: 46,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  '&:hover': {
+                    bgcolor: theme.palette.grey[300]
+                  },
+                  ...(isSelected && {
+                    bgcolor: theme.palette.grey[300],
                     '&:hover': {
                       bgcolor: theme.palette.grey[300]
-                    },
-                    ...(isSelected && {
-                      bgcolor: theme.palette.grey[300],
-                      '&:hover': {
-                        bgcolor: theme.palette.grey[300]
-                      }
-                    })
+                    }
                   })
-              };
-            }}
-          >
-            {itemIcon}
-          </ListItemIcon>
-        </ButtonBase>
+                })
+            };
+          }}
+        >
+          {itemIcon}
+        </ListItemIcon>
+      </ButtonBase>
 
-        {(drawerOpen || (!drawerOpen && level !== 1)) && (
-          <Tooltip title={item.title} disableHoverListener={!hoverStatus}>
-            <ListItemText
-              primary={
-                <Typography
-                  ref={ref}
-                  noWrap
-                  variant={isSelected ? 'h5' : 'body1'}
-                  color="inherit"
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+      {(drawerOpen || (!drawerOpen && level !== 1)) && (
+        <Tooltip title={item.title} disableHoverListener={!hoverStatus}>
+          <ListItemText
+            primary={
+              <Typography
+                ref={ref}
+                noWrap
+                variant={isSelected ? 'h5' : 'body1'}
+                color="inherit"
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                     width: 102
-                  }}
-                >
-                  {item.title}
+                }}
+              >
+                {item.title}
+              </Typography>
+            }
+            secondary={
+              item.caption && (
+                <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.subMenuCaption }}>
+                  {item.caption}
                 </Typography>
-              }
-              secondary={
-                item.caption && (
-                  <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.subMenuCaption }}>
-                    {item.caption}
-                  </Typography>
-                )
-              }
-            />
-          </Tooltip>
-        )}
-
-        {drawerOpen && item.chip && (
-          <Chip
-            color={item.chip.color}
-            variant={item.chip.variant}
-            size={item.chip.size}
-            label={item.chip.label}
-            avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+              )
+            }
           />
-        )}
-      </ListItemButton>
-    </>
+        </Tooltip>
+      )}
+
+      {item.chip && (
+        <Chip
+          color={item.chip.color}
+          variant={item.chip.variant}
+          size={item.chip.size}
+          label={item.chip.label}
+          avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+        />
+      )}
+    </ListItemButton>
   );
 }
 

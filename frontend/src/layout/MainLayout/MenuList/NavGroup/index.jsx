@@ -111,16 +111,80 @@ export default function NavGroup({ item, lastItem, remItems, lastItemId, setSele
         subheader={
           currentItem.title &&
           drawerOpen && (
-            <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.menuCaption }}>
+            <Typography 
+              variant="caption" 
+              gutterBottom 
+              sx={(theme) => ({
+                display: 'block',
+                ...theme.typography.menuCaption,
+                textTransform: 'uppercase',
+                fontWeight: 700,
+                fontSize: '0.875rem',
+                letterSpacing: '0.5px',
+                color: theme.palette.grey[600],
+                padding: '5px 15px 5px',
+                marginBottom: '10px',
+                transition: 'all 0.2s ease-in-out',
+                position: 'relative',
+                '&:hover': {
+                  color: theme.palette.grey[800]
+                }
+              })}
+            >
               {currentItem.title}
               {currentItem.caption && (
-                <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.subMenuCaption }}>
+                <Typography 
+                  variant="caption" 
+                  gutterBottom 
+                  sx={(theme) => ({ 
+                    display: 'block',
+                    ...theme.typography.subMenuCaption,
+                    color: theme.palette.grey[500],
+                    fontSize: '0.75rem'
+                  })}
+                >
                   {currentItem.caption}
                 </Typography>
               )}
             </Typography>
           )
         }
+        sx={(theme) => ({
+          '& > .MuiListItemButton-root': {
+            pl: 2
+          },
+          '& .submenu-items': {
+            position: 'relative',
+            pl: 2,
+            '&:before': drawerOpen && {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: '50%',
+              width: '16px',
+              height: '1px',
+              backgroundColor: theme.palette.grey[300],
+              transform: 'translateY(-50%)'
+            },
+            '&:after': drawerOpen && {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: '1px',
+              height: 'calc(100% + 8px)',
+              backgroundColor: theme.palette.grey[300],
+              transform: 'translateY(-4px)'
+            },
+            '&:last-child:after': {
+              height: '50%'
+            },
+            '&:first-of-type:after': {
+              top: '50%',
+              height: 'calc(50% + 4px)'
+            }
+          }
+        })}
       >
         {items}
       </List>
