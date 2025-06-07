@@ -6,10 +6,21 @@ import UserAvatarUpload from '../../ui-component/image/UserAvatarUpload';
 import AuthCardWrapper from '../pages/authentication/AuthCardWrapper';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
 import PermissionGroupSelect from '../../ui-component/permission/PermissionGroupSelect';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import { safeAtob } from '../../utils/base64';
 
 const EditCard = forwardRef(({ user, onSubmit, canEditSuperUser }, ref) => {
   const theme = useTheme();
   const { id, first_name, last_name, email, cpf, phone, birth_date, groups = [], is_active, is_superuser, is_staff } = user || {};
+
+  // Obtém dados do usuário logado do localStorage
+  const [userData] = useLocalStorage('wayne-user-data', {});
+  
+  // Verifica se o usuário logado é administrador
+  const isUserAdmin = userData?.groups?.some(group => {
+    const decodedName = safeAtob(group.name || '');
+    return ['administrator', 'admin', 'administrador'].includes(decodedName.toLowerCase());
+  }) || false;
 
   const methods = useForm({
     defaultValues: {
@@ -274,6 +285,7 @@ const EditCard = forwardRef(({ user, onSubmit, canEditSuperUser }, ref) => {
                           onChange={field.onChange}
                           error={!!fieldState.error}
                           helperText={fieldState.error?.message}
+                          showSecretGroups={isUserAdmin}
                         />
                       )}
                     />
@@ -290,7 +302,7 @@ const EditCard = forwardRef(({ user, onSubmit, canEditSuperUser }, ref) => {
         onClose={() => setNoChangesModal(false)}
         onSubmit={() => setNoChangesModal(false)}
         title="No Changes Detected"
-        description="You haven’t changed anything. There’s nothing to save."
+        description="You haven't changed anything. There's nothing to save."
         type="warning"
         mode="confirm"
         submitLabel="OK"
