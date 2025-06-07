@@ -13,30 +13,13 @@ from django.db import transaction
 
 User = get_user_model()
 
-def create_groups():
-    """Cria os grupos de usuários se não existirem"""
-    groups = ['admin', 'manager', 'staff', 'customer']
-    created_groups = {}
-    
-    for group_name in groups:
-        group, created = Group.objects.get_or_create(name=group_name)
-        created_groups[group_name] = group
-        if created:
-            print(f"✅ Grupo '{group_name}' criado com sucesso!")
-        else:
-            print(f"ℹ️ Grupo '{group_name}' já existe.")
-    
-    return created_groups
-
 def create_user(username, email, password, first_name, last_name, groups=None, is_staff=False, is_superuser=False):
     """Cria um usuário com os grupos especificados"""
     try:
-        # Verifica se o usuário já existe
         if User.objects.filter(username=username).exists():
             print(f"⚠️ Usuário '{username}' já existe.")
             return None
-        
-        # Cria o usuário
+
         user = User.objects.create_user(
             username=username,
             email=email,
@@ -46,54 +29,53 @@ def create_user(username, email, password, first_name, last_name, groups=None, i
             is_staff=is_staff,
             is_superuser=is_superuser
         )
-        
-        # Adiciona aos grupos
+
         if groups:
             for group in groups:
                 user.groups.add(group)
-        
+
         print(f"✅ Usuário '{username}' criado com sucesso!")
         return user
-    
+
     except Exception as e:
         print(f"❌ Erro ao criar usuário '{username}': {str(e)}")
         return None
 
 def main():
-    """Função principal para criar usuários"""
+    """Cria os usuários usando grupos existentes"""
     with transaction.atomic():
-        # Cria os grupos
-        groups = create_groups()
-        
-        # Lista de usuários para criar
+        # Recupera os grupos existentes
+        groups = {g.name: g for g in Group.objects.all()}
+
         users_to_create = [
             {
-                'username': 'admin',
-                'email': 'admin@wayne.com',
-                'password': 'admin123',
-                'first_name': 'Admin',
+                'username': 'bruce_wayne',
+                'email': 'bruce-wayne@wayne.com',
+                'password': 'bruce123',
+                'first_name': 'Bruce',
                 'last_name': 'Wayne',
-                'groups': [groups['admin']],
+                'groups': [groups['Administrator'], groups['Secret']],
                 'is_staff': True,
                 'is_superuser': True
             },
             {
-                'username': 'manager',
-                'email': 'manager@wayne.com',
-                'password': 'manager123',
-                'first_name': 'Manager',
-                'last_name': 'Wayne',
-                'groups': [groups['manager']],
-                'is_staff': True
+                'username': 'alfred_pennyworth',
+                'email': 'alfred-pennyworth@wayne.com',
+                'password': 'alfred123',
+                'first_name': 'Alfred',
+                'last_name': 'Pennyworth',
+                'groups': [groups['Administrator'], groups['Secret']],
+                'is_staff': True,
+                'is_superuser': True
             },
             {
-                'username': 'staff',
-                'email': 'staff@wayne.com',
-                'password': 'staff123',
-                'first_name': 'Staff',
-                'last_name': 'Wayne',
-                'groups': [groups['staff']],
-                'is_staff': True
+                'username': 'beryl_worthington',
+                'email': 'beryl-worthington@wayne.com',
+                'password': 'beryl123',
+                'first_name': 'Beryl',
+                'last_name': 'Worthington',
+                'groups': [groups['Administrator']],
+                'is_staff': True,
             },
             {
                 'username': 'customer',
@@ -101,15 +83,60 @@ def main():
                 'password': 'customer123',
                 'first_name': 'Customer',
                 'last_name': 'Wayne',
-                'groups': [groups['customer']]
+                'groups': [groups['Customer']],
+                'is_staff': True,
+            },
+            {
+                'username': 'garrett_evans',
+                'email': 'garrett_evans@wayne.com',
+                'password': 'security123',
+                'first_name': 'Garrett',
+                'last_name': 'Evans',
+                'groups': [groups['Security']],
+                'is_staff': True,
+            },
+            {
+                'username': 'linda_park',
+                'email': 'linda_park@wayne.com',
+                'password': 'sales123',
+                'first_name': 'Linda',
+                'last_name': 'Park',
+                'groups': [groups['Sales']],
+                'is_staff': True,
+            },
+            {
+                'username': 'terry_mcginnis',
+                'email': 'terry_mcginnis@wayne.com',
+                'password': 'intern123',
+                'first_name': 'Terry',
+                'last_name': 'McGinnis',
+                'groups': [groups['Intern']],
+                'is_staff': False,
+            },
+            {
+                'username': 'harold_allnut',
+                'email': 'harold_allnut@wayne.com',
+                'password': 'support123',
+                'first_name': 'Harold',
+                'last_name': 'Allnut',
+                'groups': [groups['Support']],
+                'is_staff': True,
+            },
+            {
+                'username': 'jack_ryder',
+                'email': 'jack_ryder@wayne.com',
+                'password': 'seller123',
+                'first_name': 'Jack',
+                'last_name': 'Ryder',
+                'groups': [groups['Seller']],
+                'is_staff': True,
             }
         ]
-        
-        # Cria os usuários
+
         for user_data in users_to_create:
             create_user(**user_data)
 
 if __name__ == '__main__':
     print("🚀 Iniciando criação de usuários...")
     main()
-    print("✨ Processo finalizado!") 
+    print("✨ Processo finalizado!")
