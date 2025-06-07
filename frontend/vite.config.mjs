@@ -6,34 +6,27 @@ import { fileURLToPath, URL } from 'url';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const API_URL = env.VITE_APP_BASE_NAME || '/';
-  const PORT = Number(env.VITE_PORT) || 3000;
+  const PORT = env.VITE_PORT || 3000; // ✅ Agora acessa corretamente do `.env`
 
   return {
     server: {
-      open: false,
-      port: PORT,
-      host: '0.0.0.0',
-      strictPort: true, // Força erro se a porta estiver ocupada
-      fs: {
-        strict: true
-      }
+      open: false, // ✅ Evita erro no Docker ao tentar abrir o navegador automaticamente
+      port: Number(PORT), // ✅ Certifica que o valor seja um número
+      host: '0.0.0.0' // ✅ Permite acesso externo no Docker
     },
     build: {
-      chunkSizeWarningLimit: 1600,
-      commonjsOptions: {
-        include: [/node_modules/]
-      }
+      chunkSizeWarningLimit: 1600
     },
     preview: {
-      open: false,
+      open: false, // ✅ Desativado no modo preview
       host: '0.0.0.0'
     },
     define: {
-      global: 'window'
+      global: 'window' // ⚠️ Apenas necessário se bibliotecas externas precisarem
     },
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@': fileURLToPath(new URL('./src', import.meta.url)), // ✅ Melhor compatibilidade
         '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
         '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
         '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
@@ -41,23 +34,7 @@ export default defineConfig(({ mode }) => {
         '@utils': fileURLToPath(new URL('./src/utils', import.meta.url))
       }
     },
-    base: API_URL,
-    plugins: [react(), jsconfigPaths()],
-    optimizeDeps: {
-      include: [
-        '@mui/material',
-        '@mui/icons-material',
-        '@mui/system',
-        '@emotion/react',
-        '@emotion/styled'
-        // ✅ adicione outros pacotes necessários
-      ],
-      exclude: [
-        // ✅ adicione aqui as dependências problemáticas
-        'chunk-MNXAHIXX'
-      ]
-    },
-    cacheDir: 'node_modules/.vite', // define explicitamente o diretório de cache
-    clearScreen: false // para melhor visualização de logs em dev
+    base: API_URL, // ✅ Define corretamente a base da aplicação
+    plugins: [react(), jsconfigPaths()]
   };
 });
