@@ -32,7 +32,6 @@ export default function PermissionsEdit() {
   const token = userData?.authToken || null;
   const { reloadPermissions } = usePermissions();
 
-  // Verifica se o usuário é administrador E tem o grupo secret
   const hasAdminSecretAccess = useMemo(() => {
     const userGroups = userData?.groups || [];
     const groupNames = userGroups.map(group => (group.name || '').toLowerCase());
@@ -48,20 +47,17 @@ export default function PermissionsEdit() {
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
   const [isLoadingGroupData, setIsLoadingGroupData] = useState(false);
+  const [accessDeniedModal, setAccessDeniedModal] = useState(false);
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
-  // Carrega os grupos - só mostra todos se for admin + secret
   useEffect(() => {
     axios.get(API_ROUTES.PERMISSIONS.GROUPS, headers)
       .then((res) => {
         const allGroups = Array.isArray(res.data) ? res.data : [];
-        
-        // Se não for admin + secret, filtra os grupos secret
-        const filteredGroups = hasAdminSecretAccess 
-          ? allGroups 
+        const filteredGroups = hasAdminSecretAccess
+          ? allGroups
           : allGroups.filter(group => !(group.name || '').toLowerCase().includes('secret'));
-
         setGroups(filteredGroups);
       })
       .catch((err) => {
@@ -70,7 +66,6 @@ export default function PermissionsEdit() {
       });
   }, [token, hasAdminSecretAccess]);
 
-  // Carrega os menus do grupo selecionado
   useEffect(() => {
     if (selectedGroupId) {
       setIsLoadingGroupData(true);
@@ -78,11 +73,10 @@ export default function PermissionsEdit() {
         .then((res) => {
           const groupNode = res.data.find((g) => g.id === `group-${selectedGroupId}`);
           if (groupNode) {
-            // Filtra menus secret se não for admin + secret
-            const filteredMenus = hasAdminSecretAccess 
+            const filteredMenus = hasAdminSecretAccess
               ? groupNode.children || []
               : (groupNode.children || []).filter(menu => !menu.label.toLowerCase().includes('secret'));
-            
+
             setMenus(filteredMenus);
 
             const transformed = {};
@@ -156,10 +150,10 @@ export default function PermissionsEdit() {
     type: 'submit',
     label: 'Save',
     icon: <SaveIcon />,
-    disabled: !selectedGroupId,
+    disabled: !selectedGroupId || deepEqual(form, initialForm) || pendingSubmit,
     permission: { menu: 'permissions', action: 'can_update' },
     onClick: handleSubmit
-  }), [selectedGroupId]);
+  }), [selectedGroupId, form, initialForm, pendingSubmit]);
 
   if (checkingAuth) return null;
 
@@ -182,10 +176,7 @@ export default function PermissionsEdit() {
             onChange={(e) => setSelectedGroupId(e.target.value)}
           >
             {groups.map((g) => (
-              <MenuItem 
-                key={g.id} 
-                value={g.id}
-              >
+              <MenuItem key={g.id} value={g.id}>
                 {g.name}
               </MenuItem>
             ))}
