@@ -18,13 +18,14 @@ import {
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { BaseDir } from '../../App';
+import { BaseDir, isDebug } from '../../App';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
 import { usePermissions } from '../../contexts/PermissionsContext';
+import { safeBtoa, safeAtob } from '../../utils/base64';
 
 export default function PermissionsEdit() {
   const checkingAuth = useAuthGuard();
@@ -32,10 +33,57 @@ export default function PermissionsEdit() {
   const token = userData?.authToken || null;
   const { reloadPermissions } = usePermissions();
 
+  // Regra de acesso:
+  // - Se usuário tem grupos 'administrador' E 'secret': mostra todos os grupos/menus (incluindo secret)
+  // - Se não tem ambos os grupos: mostra todos os grupos/menus EXCETO os secret
   const hasAdminSecretAccess = useMemo(() => {
-    const userGroups = userData?.groups || [];
-    const groupNames = userGroups.map(group => (group.name || '').toLowerCase());
-    return groupNames.includes('administrador') && groupNames.includes('secret');
+    let userGroups = [];
+    try {
+      if (typeof userData?.groups === 'string') {
+        const decodedData = safeAtob(userData.groups);
+        try {
+          userGroups = JSON.parse(decodedData);
+        } catch (parseError) {
+          console.error('Erro ao fazer parse dos grupos:', parseError);
+          userGroups = [];
+        }
+      } else if (Array.isArray(userData?.groups)) {
+        userGroups = userData.groups;
+      }
+    } catch (error) {
+      console.error('Erro ao decodificar grupos:', error);
+      userGroups = [];
+    }
+
+    isDebug && console.log('=== Verificação de Acesso ===');
+    isDebug && console.log('Dados originais:', userData?.groups);
+    isDebug && console.log('Grupos decodificados:', userGroups);
+
+    const groupNames = (Array.isArray(userGroups) ? userGroups : [])
+      .map((group) => {
+        try {
+          // Decodifica o nome do grupo que está em base64
+          const name = group?.name ? safeAtob(group.name) : '';
+          return name.toLowerCase();
+        } catch (error) {
+          console.error('Erro ao decodificar nome do grupo:', error);
+          return '';
+        }
+      })
+      .filter((name) => name);
+
+    isDebug && console.log('Nomes dos grupos decodificados:', groupNames);
+
+    // Verifica se tem grupo admin (aceita administrator ou administrador) E secret
+    const hasAdminGroup = groupNames.some((name) => name === 'administrator' || name === 'administrador');
+    const hasSecretGroup = groupNames.includes('secret');
+
+    const hasAccess = hasAdminGroup && hasSecretGroup;
+    isDebug && console.log('Tem grupo admin?', hasAdminGroup);
+    isDebug && console.log('Tem grupo secret?', hasSecretGroup);
+    isDebug && console.log('Tem acesso total (admin+secret)?', hasAccess ? 'SIM' : 'NÃO');
+    isDebug && console.log('=============================');
+    return hasAccess;
   }, [userData?.groups]);
 
   const [groups, setGroups] = useState([]);
@@ -52,12 +100,15 @@ export default function PermissionsEdit() {
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
   useEffect(() => {
-    axios.get(API_ROUTES.PERMISSIONS.GROUPS, headers)
+    axios
+      .get(API_ROUTES.PERMISSIONS.GROUPS, headers)
       .then((res) => {
         const allGroups = Array.isArray(res.data) ? res.data : [];
         const filteredGroups = hasAdminSecretAccess
           ? allGroups
-          : allGroups.filter(group => !(group.name || '').toLowerCase().includes('secret'));
+          : allGroups.filter((group) => !(group.name || '').toLowerCase().includes('secret'));
+        console.log('All Groups:', allGroups);
+        console.log('Filtered Groups:', filteredGroups);
         setGroups(filteredGroups);
       })
       .catch((err) => {
@@ -69,14 +120,17 @@ export default function PermissionsEdit() {
   useEffect(() => {
     if (selectedGroupId) {
       setIsLoadingGroupData(true);
-      axios.get(API_ROUTES.PERMISSIONS.TREE, headers)
+      axios
+        .get(API_ROUTES.PERMISSIONS.TREE, headers)
         .then((res) => {
           const groupNode = res.data.find((g) => g.id === `group-${selectedGroupId}`);
           if (groupNode) {
             const filteredMenus = hasAdminSecretAccess
               ? groupNode.children || []
-              : (groupNode.children || []).filter(menu => !menu.label.toLowerCase().includes('secret'));
+              : (groupNode.children || []).filter((menu) => !menu.label.toLowerCase().includes('secret'));
 
+            console.log('All Menus:', groupNode.children);
+            console.log('Filtered Menus:', filteredMenus);
             setMenus(filteredMenus);
 
             const transformed = {};
@@ -118,7 +172,8 @@ export default function PermissionsEdit() {
       }))
     };
 
-    axios.post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
+    axios
+      .post(API_ROUTES.PERMISSIONS.SAVE, payload, headers)
       .then(() => {
         alert('Permissions successfully updated.');
         setInitialForm(form);
@@ -140,20 +195,22 @@ export default function PermissionsEdit() {
     }
   };
 
-  const breadcrumbs = useMemo(() => [
-    { label: 'Dashboard', href: `${BaseDir}/dashboard/default` },
-    { label: 'Permissions', href: '#' },
-    { label: 'Edit' }
-  ], []);
+  const breadcrumbs = useMemo(
+    () => [{ label: 'Dashboard', href: `${BaseDir}/dashboard/default` }, { label: 'Permissions', href: '#' }, { label: 'Edit' }],
+    []
+  );
 
-  const actionbutton = useMemo(() => ({
-    type: 'submit',
-    label: 'Save',
-    icon: <SaveIcon />,
-    disabled: !selectedGroupId || deepEqual(form, initialForm) || pendingSubmit,
-    permission: { menu: 'permissions', action: 'can_update' },
-    onClick: handleSubmit
-  }), [selectedGroupId, form, initialForm, pendingSubmit]);
+  const actionbutton = useMemo(
+    () => ({
+      type: 'submit',
+      label: 'Save',
+      icon: <SaveIcon />,
+      disabled: !selectedGroupId || deepEqual(form, initialForm) || pendingSubmit,
+      permission: { menu: 'permissions', action: 'can_update' },
+      onClick: handleSubmit
+    }),
+    [selectedGroupId, form, initialForm, pendingSubmit]
+  );
 
   if (checkingAuth) return null;
 
