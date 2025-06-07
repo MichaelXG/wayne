@@ -1,13 +1,27 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.core.files.base import ContentFile
 from permissions.models import PermissionGroup
 from accounts.models import UserAvatar
+import requests
+import os
 
 User = get_user_model()
 
 class Command(BaseCommand):
     help = 'Cria usuários iniciais do sistema'
+
+    def download_image(self, url):
+        """Download image from URL and return as ContentFile"""
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                return ContentFile(response.content)
+            return None
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"❌ Erro ao baixar imagem: {str(e)}"))
+            return None
 
     def create_user(self, username, email, password, first_name, last_name, birth_date, cpf, phone, avatar_data=None, groups=None, is_staff=False, is_superuser=False):
         """Cria um usuário com os grupos especificados"""
@@ -33,11 +47,16 @@ class Command(BaseCommand):
                 for group in groups:
                     user.groups.add(group)
 
-            if avatar_data:
-                UserAvatar.objects.create(
-                    user=user,
-                    image=avatar_data['image']
-                )
+            if avatar_data and 'image' in avatar_data:
+                # Download da imagem
+                image_content = self.download_image(avatar_data['image'])
+                if image_content:
+                    # Extrair o nome do arquivo da URL
+                    filename = os.path.basename(avatar_data['image'])
+                    # Criar o avatar
+                    avatar = UserAvatar.objects.create(user=user)
+                    avatar.image.save(filename, image_content, save=True)
+                    self.stdout.write(self.style.SUCCESS(f"✅ Avatar criado para '{username}'"))
 
             self.stdout.write(self.style.SUCCESS(f"✅ Usuário '{username}' criado com sucesso!"))
             return user
