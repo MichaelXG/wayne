@@ -4,7 +4,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -46,10 +46,10 @@ export default function UpgradePlanCard() {
     >
       <CardContent>
         <Grid container direction="column" spacing={2}>
-          <Grid>
+          <Grid item>
             <Typography variant="h4">Upgrade your plan</Typography>
           </Grid>
-          <Grid>
+          <Grid item>
             <Typography
               variant="subtitle2"
               sx={(theme) => ({
@@ -61,7 +61,7 @@ export default function UpgradePlanCard() {
               subscriptions.
             </Typography>
           </Grid>
-          <Grid>
+          <Grid item>
             <Stack direction="row">
               <Link sx={{ textDecoration: 'none' }} href="https://links.codedthemes.com/hsqll" target="_blank" rel="noopener">
                 <AnimateButton>

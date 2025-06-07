@@ -3,7 +3,7 @@ import React from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 // third party
@@ -43,7 +43,7 @@ export default function BajajAreaChartCard() {
           color: theme.palette.common.white
         })}
       >
-        <Grid size={12}>
+        <Grid item xs={12}>
           <Grid
             container
             sx={{
@@ -51,7 +51,7 @@ export default function BajajAreaChartCard() {
               justifyContent: 'space-between'
             }}
           >
-            <Grid>
+            <Grid item>
               <Typography
                 variant="subtitle1"
                 sx={(theme) => ({
@@ -61,7 +61,7 @@ export default function BajajAreaChartCard() {
                 Bajaj Finery
               </Typography>
             </Grid>
-            <Grid>
+            <Grid item>
               <Typography
                 variant="h4"
                 sx={(theme) => ({
@@ -73,7 +73,7 @@ export default function BajajAreaChartCard() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid size={12}>
+        <Grid item xs={12}>
           <Typography
             variant="subtitle2"
             sx={(theme) => ({

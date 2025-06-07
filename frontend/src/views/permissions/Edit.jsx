@@ -13,18 +13,18 @@ import {
   Card,
   CardHeader,
   Stack,
-  CircularProgress
+  CircularProgress,
+  Alert
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { BaseDir, isDebug } from '../../App';
+import { BaseDir } from '../../App';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import axios from 'axios';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 import DynamicModal from '../../ui-component/modal/DynamicModal';
 import { usePermissions } from '../../contexts/PermissionsContext';
-import { safeAtob } from '../../utils/base64';
 
 export default function PermissionsEdit() {
   const checkingAuth = useAuthGuard();
@@ -32,17 +32,12 @@ export default function PermissionsEdit() {
   const token = userData?.authToken || null;
   const { reloadPermissions } = usePermissions();
 
-  const hasSecretGroup = useMemo(() => {
+  // Verifica se o usuário é administrador E tem o grupo secret
+  const hasAdminSecretAccess = useMemo(() => {
     const userGroups = userData?.groups || [];
-    return userGroups.some((group) => safeAtob(group.name || '').toLowerCase() === 'secret');
+    const groupNames = userGroups.map(group => (group.name || '').toLowerCase());
+    return groupNames.includes('administrador') && groupNames.includes('secret');
   }, [userData?.groups]);
-
-  const isUserAdminAndSecret = useMemo(() => {
-    const userGroups = userData?.groups || [];
-    const decodedGroups = userGroups.map((group) => safeAtob(group.name || '').toLowerCase());
-    const isAdmin = decodedGroups.some((name) => ['administrator', 'admin', 'administrador'].includes(name));
-    return isAdmin && hasSecretGroup;
-  }, [userData?.groups, hasSecretGroup]);
 
   const [groups, setGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState('');
@@ -53,48 +48,40 @@ export default function PermissionsEdit() {
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
   const [isLoadingGroupData, setIsLoadingGroupData] = useState(false);
-  const [accessDeniedModal, setAccessDeniedModal] = useState(false);
 
   const headers = { headers: { Authorization: `Bearer ${token}` } };
 
+  // Carrega os grupos - só mostra todos se for admin + secret
   useEffect(() => {
     axios.get(API_ROUTES.PERMISSIONS.GROUPS, headers)
       .then((res) => {
         const allGroups = Array.isArray(res.data) ? res.data : [];
-        const filteredGroups = allGroups.filter((group) => {
-          const decodedName = safeAtob(group.name || '').toLowerCase();
-          return decodedName === 'secret' ? hasSecretGroup : true;
-        });
+        
+        // Se não for admin + secret, filtra os grupos secret
+        const filteredGroups = hasAdminSecretAccess 
+          ? allGroups 
+          : allGroups.filter(group => !(group.name || '').toLowerCase().includes('secret'));
+
         setGroups(filteredGroups);
       })
       .catch((err) => {
         console.error('Failed to load groups', err);
         setGroups([]);
       });
-  }, [token, hasSecretGroup]);
+  }, [token, hasAdminSecretAccess]);
 
+  // Carrega os menus do grupo selecionado
   useEffect(() => {
     if (selectedGroupId) {
-      const selectedGroup = groups.find((g) => g.id === selectedGroupId);
-      const decodedGroupName = safeAtob(selectedGroup?.name || '').toLowerCase();
-
-      if (decodedGroupName === 'secret' && !hasSecretGroup) {
-        setMenus([]);
-        setForm({});
-        setInitialForm({});
-        setAccessDeniedModal(true);
-        return;
-      }
-
       setIsLoadingGroupData(true);
       axios.get(API_ROUTES.PERMISSIONS.TREE, headers)
         .then((res) => {
           const groupNode = res.data.find((g) => g.id === `group-${selectedGroupId}`);
           if (groupNode) {
-            const filteredMenus = (groupNode.children || []).filter((menu) => {
-              const isSecretMenu = menu.label.toLowerCase() === 'secret';
-              return isSecretMenu ? hasSecretGroup : true;
-            });
+            // Filtra menus secret se não for admin + secret
+            const filteredMenus = hasAdminSecretAccess 
+              ? groupNode.children || []
+              : (groupNode.children || []).filter(menu => !menu.label.toLowerCase().includes('secret'));
             
             setMenus(filteredMenus);
 
@@ -114,7 +101,7 @@ export default function PermissionsEdit() {
           setIsLoadingGroupData(false);
         });
     }
-  }, [selectedGroupId, hasSecretGroup, groups]);
+  }, [selectedGroupId, hasAdminSecretAccess, groups]);
 
   const deepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -172,7 +159,7 @@ export default function PermissionsEdit() {
     disabled: !selectedGroupId,
     permission: { menu: 'permissions', action: 'can_update' },
     onClick: handleSubmit
-  }), [form, selectedGroupId]);
+  }), [selectedGroupId]);
 
   if (checkingAuth) return null;
 
@@ -195,7 +182,12 @@ export default function PermissionsEdit() {
             onChange={(e) => setSelectedGroupId(e.target.value)}
           >
             {groups.map((g) => (
-              <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>
+              <MenuItem 
+                key={g.id} 
+                value={g.id}
+              >
+                {g.name}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
