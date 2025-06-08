@@ -30,7 +30,7 @@ import { useGetMenuMaster } from 'api/menu';
 import { IconChevronDown, IconChevronRight, IconChevronUp } from '@tabler/icons-react';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
-export default function NavCollapse({ menu, level, parentId }) {
+export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuClick }) {
   const theme = useTheme();
   const ref = useRef(null);
 
@@ -38,38 +38,50 @@ export default function NavCollapse({ menu, level, parentId }) {
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
-  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickMini = (event) => {
-    setAnchorEl(null);
     if (drawerOpen) {
-      setOpen(!open);
-      setSelected(!selected ? menu.id : null);
+      if (openMenuId === menu.id) {
+        setSelected(null);
+      } else {
+        setSelected(menu.id);
+      }
+      onMenuClick(menu.id);
     } else {
-      setAnchorEl(event?.currentTarget);
+      if (anchorEl === event?.currentTarget) {
+        setAnchorEl(null);
+        setSelected(null);
+      } else {
+        setAnchorEl(event?.currentTarget);
+        setSelected(menu.id);
+      }
     }
   };
 
   const openMini = Boolean(anchorEl);
+  const isOpen = openMenuId === menu.id;
 
   const handleClosePopper = () => {
-    setOpen(false);
-    if (!openMini) {
-      if (!menu.url) {
-        setSelected(null);
-      }
-    }
     setAnchorEl(null);
+    if (!menu.url) {
+      setSelected(null);
+    }
   };
+
+  useEffect(() => {
+    if (openMenuId !== menu.id) {
+      setSelected(null);
+      setAnchorEl(null);
+    }
+  }, [openMenuId, menu.id]);
 
   const { pathname } = useLocation();
 
   const checkOpenForParent = (child, id) => {
     child.forEach((item) => {
       if (item.url === pathname) {
-        setOpen(true);
         setSelected(id);
       }
     });
@@ -77,8 +89,6 @@ export default function NavCollapse({ menu, level, parentId }) {
 
   // menu collapse for sub-levels
   useEffect(() => {
-    setOpen(false);
-    openMini ? setAnchorEl(null) : setSelected(null);
     if (menu.children) {
       menu.children.forEach((item) => {
         if (item.children?.length) {
@@ -86,11 +96,9 @@ export default function NavCollapse({ menu, level, parentId }) {
         }
         if (item.link && !!matchPath({ path: item?.link, end: false }, pathname)) {
           setSelected(menu.id);
-          setOpen(true);
         }
         if (item.url === pathname) {
           setSelected(menu.id);
-          setOpen(true);
         }
       });
     }
@@ -113,18 +121,26 @@ export default function NavCollapse({ menu, level, parentId }) {
   useEffect(() => {
     if (menu.url === pathname) {
       setSelected(menu.id);
-      setAnchorEl(null);
-      setOpen(true);
+      onMenuClick(menu.id);
     }
-  }, [pathname, menu]);
+  }, [pathname, menu, onMenuClick]);
 
   // menu collapse & item
   const menus = menu.children?.map((item) => {
     switch (item.type) {
       case 'collapse':
-        return <NavCollapse key={item.id} menu={item} level={level + 1} parentId={parentId} />;
+        return (
+          <NavCollapse 
+            key={item.id} 
+            menu={item} 
+            level={level + 1} 
+            parentId={menu.id}
+            openMenuId={openMenuId}
+            onMenuClick={onMenuClick}
+          />
+        );
       case 'item':
-        return <NavItem key={item.id} item={item} level={level + 1} />;
+        return <NavItem key={item.id} item={item} level={level + 1} parentId={menu.id} />;
       default:
         return (
           <Typography
@@ -143,6 +159,7 @@ export default function NavCollapse({ menu, level, parentId }) {
   });
 
   const isSelected = selected === menu.id;
+  const isParentSelected = parentId && openMenuId === parentId;
 
   const Icon = menu.icon;
   const menuIcon = menu.icon ? (
@@ -171,11 +188,16 @@ export default function NavCollapse({ menu, level, parentId }) {
         disableRipple
         selected={isSelected}
         className={level > 1 ? 'submenu-items' : ''}
+        onClick={handleClickMini}
+        {...(!drawerOpen && {
+          onMouseEnter: handleClickMini,
+          onMouseLeave: handleClosePopper
+        })}
         sx={(theme) => ({
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
           mb: 0.5,
-
+          alignItems: 'center',
           ...(drawerOpen &&
             level !== 1 && {
               ml: `${level * 16}px`,
@@ -186,69 +208,30 @@ export default function NavCollapse({ menu, level, parentId }) {
             pl: 1.25
           }),
 
-          ...(drawerOpen &&
-            level === 1 && {
-              pl: 2,
-              '&:hover': {
-                bgcolor: theme.palette.grey[300]
-              },
-              '&.Mui-selected': {
-                bgcolor: theme.palette.grey[300],
-                color: theme.palette.grey[600],
-                '&:hover': {
-                  color: theme.palette.grey[600],
-                  bgcolor: theme.palette.grey[300]
-                }
-              }
-            }),
-
-          ...((!drawerOpen || level !== 1) && {
-            py: level === 1 ? 0 : 1,
+          ...(drawerOpen && {
             '&:hover': {
               bgcolor: theme.palette.grey[300],
-              color: theme.palette.text.primary,
-              fontWeight: theme.typography.fontWeightBold
-            },
-            '&.Mui-selected': {
-              '&:hover': {
-                bgcolor: 'transparent'
+              color: theme.palette.grey[500],
+              '& .MuiListItemIcon-root': {
+                color: theme.palette.grey[500]
               }
-            }
-          }),
-
-          ...(level > 1 && {
-            '&:before': drawerOpen && {
-              content: '""',
-              position: 'absolute',
-              left: `${(level - 1) * 16}px`,
-              top: '50%',
-              width: '16px',
-              height: '1px',
-              backgroundColor: theme.palette.grey[300],
-              transform: 'translateY(-50%)'
             },
-            '&:after': drawerOpen && {
-              content: '""',
-              position: 'absolute',
-              left: `${(level - 1) * 16}px`,
-              top: 0,
-              width: '1px',
-              height: '100%',
-              backgroundColor: theme.palette.grey[300]
-            }
+            ...(isSelected && {
+              bgcolor: theme.palette.grey[300],
+              color: theme.palette.grey[500],
+              '& .MuiListItemIcon-root': {
+                color: theme.palette.grey[500]
+              }
+            })
           })
         })}
-        {...(!drawerOpen && {
-          onMouseEnter: handleClickMini,
-          onMouseLeave: handleClosePopper
-        })}
-        onClick={handleClickMini}
       >
         <ButtonBase aria-label="theme-icon" sx={{ borderRadius: `${borderRadius}px` }} disableRipple={drawerOpen}>
           <ListItemIcon
             sx={(theme) => ({
               minWidth: level === 1 ? 36 : 18,
-              color: isSelected ? iconSelectedColor : theme.palette.text.primary,
+              color: isSelected ? theme.palette.grey[500] : theme.palette.text.primary,
+              transition: 'color 0.2s ease-in-out',
               ...(!drawerOpen &&
                 level === 1 && {
                   borderRadius: `${borderRadius}px`,
@@ -258,15 +241,14 @@ export default function NavCollapse({ menu, level, parentId }) {
                   justifyContent: 'center',
                   '&:hover': {
                     bgcolor: theme.palette.grey[300],
-                    color: theme.palette.grey[600],
-                    fontWeight: theme.typography.fontWeightBold
+                    color: theme.palette.grey[500]
                   },
                   ...(isSelected && {
                     bgcolor: theme.palette.grey[300],
+                    color: theme.palette.grey[500],
                     '&:hover': {
                       bgcolor: theme.palette.grey[300],
-                      color: theme.palette.grey[600],
-                      fontWeight: theme.typography.fontWeightBold
+                      color: theme.palette.grey[500]
                     }
                   })
                 })
@@ -288,7 +270,11 @@ export default function NavCollapse({ menu, level, parentId }) {
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    width: 102
+                    width: 102,
+                    color: theme.palette.grey[900],
+                    fontWeight: isSelected ? 700 : 500,
+                    fontStyle: isSelected ? 'italic' : 'normal',
+                    transition: 'all 0.2s ease-in-out'
                   }}
                 >
                   {menu.title}
@@ -296,7 +282,18 @@ export default function NavCollapse({ menu, level, parentId }) {
               }
               secondary={
                 menu.caption && (
-                  <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.subMenuCaption }}>
+                  <Typography 
+                    variant="caption" 
+                    gutterBottom 
+                    sx={{ 
+                      display: 'block', 
+                      ...theme.typography.subMenuCaption,
+                      color: isSelected ? theme.palette.grey[900] : theme.palette.text.secondary,
+                      fontWeight: isSelected ? 600 : 400,
+                      fontStyle: isSelected ? 'italic' : 'normal',
+                      transition: 'all 0.2s ease-in-out'
+                    }}
+                  >
                     {menu.caption}
                   </Typography>
                 )
@@ -305,7 +302,29 @@ export default function NavCollapse({ menu, level, parentId }) {
           </Tooltip>
         )}
 
-        {openMini || open ? collapseIcon : <IconChevronDown stroke={1.5} size="16px" style={{ marginTop: 'auto', marginBottom: 'auto' }} />}
+        {openMini || isOpen ? (
+          <IconChevronUp 
+            stroke={1.5} 
+            size="16px" 
+            style={{ 
+              marginTop: 'auto', 
+              marginBottom: 'auto',
+              color: isSelected ? theme.palette.grey[500] : 'inherit',
+              transition: 'color 0.2s ease-in-out'
+            }} 
+          />
+        ) : (
+          <IconChevronDown 
+            stroke={1.5} 
+            size="16px" 
+            style={{ 
+              marginTop: 'auto', 
+              marginBottom: 'auto',
+              color: isSelected ? theme.palette.grey[500] : 'inherit',
+              transition: 'color 0.2s ease-in-out'
+            }} 
+          />
+        )}
 
         {!drawerOpen && (
           <Popper
@@ -320,25 +339,26 @@ export default function NavCollapse({ menu, level, parentId }) {
                 }
               }
             ]}
-            sx={(theme) => ({
+            sx={{
               overflow: 'visible',
               zIndex: 2001,
               minWidth: 180,
               '&:before': {
                 content: '""',
+                display: 'block',
                 position: 'absolute',
-                left: '12px',
-                top: '50%',
-                width: '10px',
-                height: '10px',
-                bgcolor: theme.palette.background.paper,
+                top: 12,
+                left: -5,
+                width: 12,
+                height: 12,
+                bgcolor: 'background.paper',
                 transform: 'translateY(-50%) rotate(45deg)',
                 zIndex: 120,
                 borderLeft: '1px solid',
                 borderBottom: '1px solid',
                 borderColor: theme.palette.divider
               }
-            })}
+            }}
           >
             {({ TransitionProps }) => (
               <Transitions in={openMini} {...TransitionProps}>
@@ -360,8 +380,9 @@ export default function NavCollapse({ menu, level, parentId }) {
           </Popper>
         )}
       </ListItemButton>
+
       {drawerOpen && (
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <List
             component="div"
             disablePadding
@@ -390,4 +411,4 @@ export default function NavCollapse({ menu, level, parentId }) {
   );
 }
 
-NavCollapse.propTypes = { menu: PropTypes.any, level: PropTypes.number, parentId: PropTypes.string };
+NavCollapse.propTypes = { menu: PropTypes.any, level: PropTypes.number, parentId: PropTypes.string, openMenuId: PropTypes.string, onMenuClick: PropTypes.func };

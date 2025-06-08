@@ -146,7 +146,7 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                 borderRadius: '16px',
                 fontWeight: 600,
                 backgroundColor: alpha(theme.palette.primary.light, 0.15),
-                color: theme.palette.primary.lighter || theme.palette.primary.light,
+                color: theme.palette.primary.light || theme.palette.primary.light,
                 borderColor: alpha(theme.palette.primary.main, 0.3),
                 backdropFilter: 'blur(4px)',
                 '& .MuiChip-label': {
@@ -361,8 +361,8 @@ export default function OrderStatusDonutChart({ timeRange = 'week' }) {
                                 ? alpha(theme.palette.success.light, 0.2) 
                                 : alpha(theme.palette.error.light, 0.2),
                               color: change >= 0 
-                                ? theme.palette.success.lighter || theme.palette.success.light
-                                : theme.palette.error.lighter || theme.palette.error.light,
+                                ? theme.palette.successlight || theme.palette.success.light
+                                : theme.palette.errorlight || theme.palette.error.light,
                               '& .MuiChip-label': {
                                 px: 1
                               }

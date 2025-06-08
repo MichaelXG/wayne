@@ -150,7 +150,7 @@ export default function ImageUpload({ initialImages = [], value, onChange, disab
               fontSize: '0.875rem',
               transition: 'all 0.2s ease',
               '&:hover': {
-                backgroundColor: 'error.lighter',
+                backgroundColor: 'errorlight',
                 borderColor: 'error.main',
                 color: 'error.main'
               }

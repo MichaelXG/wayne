@@ -17,7 +17,7 @@ import { useGetMenuMaster } from 'api/menu';
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
-export default function NavGroup({ item, lastItem, remItems, lastItemId, setSelectedID }) {
+export default function NavGroup({ item, lastItem, remItems, lastItemId, setSelectedID, openMenuId, onMenuClick }) {
   const theme = useTheme();
   const { pathname } = useLocation();
 
@@ -84,9 +84,18 @@ export default function NavGroup({ item, lastItem, remItems, lastItemId, setSele
   const items = currentItem.children?.map((menu) => {
     switch (menu?.type) {
       case 'collapse':
-        return <NavCollapse key={menu.id} menu={menu} level={1} parentId={currentItem.id} />;
+        return (
+          <NavCollapse 
+            key={menu.id} 
+            menu={menu} 
+            level={1} 
+            parentId={currentItem.id}
+            openMenuId={openMenuId}
+            onMenuClick={onMenuClick}
+          />
+        );
       case 'item':
-        return <NavItem key={menu.id} item={menu} level={1} />;
+        return <NavItem key={menu.id} item={menu} level={1} openMenuId={openMenuId} />;
       default:
         return (
           <Typography
@@ -201,5 +210,7 @@ NavGroup.propTypes = {
   remItems: PropTypes.array,
   lastItemId: PropTypes.string,
   selectedID: PropTypes.oneOfType([PropTypes.any, PropTypes.string]),
-  setSelectedID: PropTypes.oneOfType([PropTypes.any, PropTypes.func])
+  setSelectedID: PropTypes.oneOfType([PropTypes.any, PropTypes.func]),
+  openMenuId: PropTypes.string,
+  onMenuClick: PropTypes.func
 };

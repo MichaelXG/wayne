@@ -21,10 +21,14 @@ function MenuList() {
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
-
   const { permissions: userPermissions } = usePermissions();
 
   const [selectedID, setSelectedID] = useState('');
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const handleMenuClick = (menuId) => {
+    setOpenMenuId(menuId === openMenuId ? null : menuId);
+  };
 
   const lastItem = null;
 
@@ -54,7 +58,12 @@ function MenuList() {
         if (item.url && item.id !== lastItemId) {
           return (
             <List key={item.id}>
-              <NavItem item={item} level={1} isParents setSelectedID={() => setSelectedID('')} />
+              <NavItem 
+                item={item} 
+                level={1} 
+                isParents 
+                setSelectedID={() => setSelectedID('')} 
+              />
               {index !== 0 && <Divider sx={{ py: 0.5 }} />}
             </List>
           );
@@ -69,6 +78,8 @@ function MenuList() {
             lastItem={lastItem}
             remItems={remItems}
             lastItemId={lastItemId}
+            openMenuId={openMenuId}
+            onMenuClick={handleMenuClick}
           />
         );
       default:
