@@ -166,7 +166,7 @@ docker container prune -f
 # Remove images
 docker image prune -a -f
 
-# Remove volumes
+# Remove volumes (inclui banco de dados, se estiver em volume)
 docker volume prune -f
 
 # Remove build cache
@@ -193,6 +193,81 @@ docker-compose up --build
 5. HTTPS in production
 6. Proper CORS configuration
 7. API rate limiting
+
+## 👥 Test Users
+
+The following users are available for testing purposes:
+
+### Administrator Users
+```
+Username: bruce_wayne
+Email: bruce-wayne@wayne.com
+Password: bruce123
+Role: Administrator, Secret
+Full Name: Bruce Wayne
+```
+
+```
+Username: alfred_pennyworth
+Email: alfred-pennyworth@wayne.com
+Password: alfred123
+Role: Administrator, Secret
+Full Name: Alfred Pennyworth
+```
+
+```
+Username: beryl_worthington
+Email: beryl-worthington@wayne.com
+Password: beryl123
+Role: Administrator
+Full Name: Beryl Worthington
+```
+
+```
+Username: terry_mcginnis
+Email: terry_mcginnis@wayne.com
+Password: intern123
+Role: Administrator, Secret
+Full Name: Terry McGinnis
+```
+
+### Security Staff
+```
+Username: garrett_evans
+Email: garrett_evans@wayne.com
+Password: security123
+Role: Security
+Full Name: Garrett Evans
+```
+
+### Sales Team
+```
+Username: linda_park
+Email: linda_park@wayne.com
+Password: sales123
+Role: Sales
+Full Name: Linda Park
+```
+
+### Support Team
+```
+Username: harold_allnut
+Email: harold_allnut@wayne.com
+Password: support123
+Role: Support
+Full Name: Harold Allnut
+```
+
+### Seller
+```
+Username: jack_ryder
+Email: jack_ryder@wayne.com
+Password: seller123
+Role: Seller
+Full Name: Jack Ryder
+```
+
+> ⚠️ **Note**: These are test accounts only. For production, always use strong passwords and remove test accounts.
 
 ## 🤝 Contributing
 
@@ -241,58 +316,3 @@ docker system df
 
 # 8. Recriar
 docker-compose up --build -d
-
-
-
- docker network prune
- docker system prune -a --volumes
- docker-compose down -v  # Remove todos os containers e volumes
- docker-compose up --build  # Reconstrói e inicia o projeto
-
-fake.store.2025@gmail.com
-fake.store.2025@project.full.stack
-
-
-
-fake.store.2025@FS
-
-
-docker-compose down
-docker container prune -f
-docker image prune -a -f
-docker volume prune -f
-docker builder prune -a -f
-docker network prune -f
-docker system df
-docker-compose up --build -d
-
-
-
-Última aula JS!
-
-github: 
-git clone https://github.com/thiagooshiro/js-classes
-
-
-Consumir fakestore api
-
-pagina da API: https://fakestoreapi.com/docs
-
-Vocês devem construir uma aplicação para consumir a API da FakeStore simulando uma página de e-commerce. 
-É responsabilidade da dupla estruturar todo html e css, bem como o script em js com as seguintes funcionalidades: 
-
-1 - Ao entrar na página todos os produtos devem ser exibidos na tela.
-
-2 - Implementar um filtro de produtos por nome - esse filtro deve filtrar por carácter de forma parcial e seu comportamento é instantâneo - enquanto você digita ele filtra pelos caracteres existentes.
-
-3 - Implementar filtro de produtos por categoria
-
-4 - Implementar filtro de produtos por preço - esse filtro deve ser "flexível" 
-considerando que pode ser para valores acima do valor informado, abaixo do valor informado
-ou igual ao valor informado.
-
-Extras:
-
-Criar formulário  e página de cadastro de novos usuários
-
-Criar formulário e página de cadastro de novos produtos.

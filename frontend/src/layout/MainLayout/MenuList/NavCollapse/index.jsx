@@ -30,6 +30,16 @@ import { useGetMenuMaster } from 'api/menu';
 import { IconChevronDown, IconChevronRight, IconChevronUp } from '@tabler/icons-react';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
+/**
+ * NavCollapse - Componente de menu colapsável com suporte a múltiplos níveis
+ *
+ * Props:
+ * @param {Object} menu - Dados do menu (título, ícone, filhos, etc)
+ * @param {number} level - Nível de profundidade do menu
+ * @param {string} parentId - ID do menu pai
+ * @param {string} openMenuId - ID do menu atualmente aberto
+ * @param {Function} onMenuClick - Callback para clique no menu
+ */
 export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuClick }) {
   const theme = useTheme();
   const ref = useRef(null);
@@ -41,6 +51,11 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
   const [selected, setSelected] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
+  /**
+   * Manipula clique no menu em modo mini (recolhido)
+   * - No modo expandido: alterna seleção
+   * - No modo recolhido: controla Popper
+   */
   const handleClickMini = (event) => {
     if (drawerOpen) {
       if (openMenuId === menu.id) {
@@ -130,14 +145,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
     switch (item.type) {
       case 'collapse':
         return (
-          <NavCollapse 
-            key={item.id} 
-            menu={item} 
-            level={level + 1} 
-            parentId={menu.id}
-            openMenuId={openMenuId}
-            onMenuClick={onMenuClick}
-          />
+          <NavCollapse key={item.id} menu={item} level={level + 1} parentId={menu.id} openMenuId={openMenuId} onMenuClick={onMenuClick} />
         );
       case 'item':
         return <NavItem key={item.id} item={item} level={level + 1} parentId={menu.id} />;
@@ -161,10 +169,14 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
   const isSelected = selected === menu.id;
   const isParentSelected = parentId && openMenuId === parentId;
 
+  // Renderização do ícone do menu
+  // Dimensões: 24px (expandido) ou 22px (recolhido)
   const Icon = menu.icon;
   const menuIcon = menu.icon ? (
-    <Icon strokeWidth={1.5} size={drawerOpen ? '20px' : '24px'} />
+    <Icon strokeWidth={1.5} size={drawerOpen ? '24px' : '22px'} />
   ) : (
+    // Ícone de marcador circular
+    // Dimensões: 8px (selecionado) ou 6px (não selecionado)
     <FiberManualRecordIcon
       sx={{
         width: isSelected ? 8 : 6,
@@ -184,6 +196,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
 
   return (
     <>
+      {/* ListItemButton - Container principal do item de menu */}
       <ListItemButton
         disableRipple
         selected={isSelected}
@@ -194,37 +207,41 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
           onMouseLeave: handleClosePopper
         })}
         sx={(theme) => ({
+          // Espaçamentos e dimensões
+          padding: !drawerOpen && level === 1 ? 'null 8px 4px 6px' : '4px 8px 4px 12px', // Padding maior no modo recolhido nível 1
+          minHeight: !drawerOpen && level === 1 ? '58px' : '38px', // Altura maior no modo recolhido nível 1
+          gap: 1, // Espaçamento entre elementos
+
+          // Layout
           zIndex: 1201,
           borderRadius: `${borderRadius}px`,
-          mb: 0.5,
           alignItems: 'center',
           display: 'flex',
           flexDirection: 'row',
-          padding: !drawerOpen && level === 1 ? '12px 12px' : '8px 12px',
-          minHeight: !drawerOpen && level === 1 ? '80px' : '38px',
           justifyContent: 'space-between',
-          gap: 2,
           position: 'relative',
 
+          // Indentação de submenus no modo expandido
           ...(drawerOpen &&
             level !== 1 && {
-              ml: `${level * 16}px`,
+              ml: `${level * 16}px`, // 16px de indentação por nível
               pl: 2
             }),
 
+          // Estilos específicos para modo recolhido
           ...(!drawerOpen && {
             pl: level === 1 ? 0 : 1.25,
             '& .MuiListItemIcon-root': {
               minWidth: 'auto',
-              width: 46,
-              height: 46,
+              width: '100%', // Largura do container do ícone
+              height: '100%', // Altura do container do ícone
               borderRadius: `${borderRadius}px`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             },
             '& .menu-caption': {
-              marginTop: '8px'
+              marginTop: '8px' // Espaçamento entre ícone e texto
             },
             '& .menu-expand': {
               position: 'absolute',
@@ -234,6 +251,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
             }
           }),
 
+          // Estados visuais (hover e selecionado)
           ...(drawerOpen && {
             '&:hover': {
               bgcolor: theme.palette.grey[300],
@@ -252,28 +270,33 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
           })
         })}
       >
+        {/* Container do ícone e texto */}
         <Box
           sx={{
             display: 'flex',
+            // Layout em coluna no modo recolhido nível 1
             flexDirection: !drawerOpen && level === 1 ? 'column' : 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            minWidth: !drawerOpen && level === 1 ? 46 : 'auto'
+            minWidth: !drawerOpen && level === 1 ? '100%' : 'auto'
           }}
         >
-          <ButtonBase 
-            aria-label="theme-icon" 
-            sx={{ 
+          {/* ButtonBase - Container clicável do ícone */}
+          <ButtonBase
+            aria-label="theme-icon"
+            sx={{
               borderRadius: `${borderRadius}px`,
               width: !drawerOpen && level === 1 ? '100%' : 'auto'
-            }} 
+            }}
             disableRipple={drawerOpen}
           >
+            {/* ListItemIcon - Ícone do menu */}
             <ListItemIcon
               sx={(theme) => ({
                 minWidth: level === 1 ? 36 : 18,
                 color: isSelected ? theme.palette.grey[500] : theme.palette.text.primary,
                 transition: 'color 0.2s ease-in-out',
+                // Estilos específicos para modo recolhido nível 1
                 ...(!drawerOpen &&
                   level === 1 && {
                     borderRadius: `${borderRadius}px`,
@@ -298,6 +321,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
             </ListItemIcon>
           </ButtonBase>
 
+          {/* Texto do menu no modo recolhido nível 1 */}
           {!drawerOpen && level === 1 && (
             <Typography
               variant="caption"
@@ -319,6 +343,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
           )}
         </Box>
 
+        {/* Texto do menu no modo expandido */}
         {drawerOpen && (
           <Tooltip title={menu.title} disableHoverListener={!hoverStatus}>
             <ListItemText
@@ -331,7 +356,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    width: 102,
+                    width: 79, // Largura fixa do texto
                     color: theme.palette.grey[900],
                     fontWeight: isSelected ? 700 : 500,
                     fontStyle: isSelected ? 'italic' : 'normal',
@@ -343,11 +368,11 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
               }
               secondary={
                 menu.caption && (
-                  <Typography 
-                    variant="caption" 
-                    gutterBottom 
-                    sx={{ 
-                      display: 'block', 
+                  <Typography
+                    variant="caption"
+                    gutterBottom
+                    sx={{
+                      display: 'block',
                       ...theme.typography.subMenuCaption,
                       color: isSelected ? theme.palette.grey[900] : theme.palette.text.secondary,
                       fontWeight: isSelected ? 600 : 400,
@@ -363,28 +388,30 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
           </Tooltip>
         )}
 
+        {/* Ícone de expansão */}
         <Box className="menu-expand">
           {openMini || isOpen ? (
-            <IconChevronUp 
-              stroke={1.5} 
-              size="16px" 
-              style={{ 
+            <IconChevronUp
+              stroke={1.5}
+              size="16px" // Tamanho do ícone de seta
+              style={{
                 color: isSelected ? theme.palette.grey[500] : 'inherit',
                 transition: 'color 0.2s ease-in-out'
-              }} 
+              }}
             />
           ) : (
-            <IconChevronDown 
-              stroke={1.5} 
-              size="16px" 
-              style={{ 
+            <IconChevronDown
+              stroke={1.5}
+              size="16px" // Tamanho do ícone de seta
+              style={{
                 color: isSelected ? theme.palette.grey[500] : 'inherit',
                 transition: 'color 0.2s ease-in-out'
-              }} 
+              }}
             />
           )}
         </Box>
 
+        {/* Popper - Menu flutuante no modo recolhido */}
         {!drawerOpen && (
           <Popper
             open={openMini}
@@ -394,14 +421,15 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
               {
                 name: 'offset',
                 options: {
-                  offset: [-12, 0]
+                  offset: [-12, 0] // Deslocamento do Popper
                 }
               }
             ]}
             sx={{
               overflow: 'visible',
               zIndex: 2001,
-              minWidth: 180,
+              minWidth: 180, // Largura mínima do Popper
+              // Seta do Popper
               '&:before': {
                 content: '""',
                 display: 'block',
@@ -419,6 +447,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
               }
             }}
           >
+            {/* Animação do Popper */}
             {({ TransitionProps }) => (
               <Transitions in={openMini} {...TransitionProps}>
                 <Paper
@@ -440,6 +469,7 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
         )}
       </ListItemButton>
 
+      {/* Submenu colapsável no modo expandido */}
       {drawerOpen && (
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <List
@@ -448,17 +478,19 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
             sx={(theme) => ({
               position: 'relative',
               '& .MuiListItemButton-root': {
-                pl: drawerOpen ? `${level * 16}px` : 2,
+                pl: drawerOpen ? `${level * 16}px` : 2, // Indentação dos itens
                 py: 1,
-                '&:before': drawerOpen && level > 1 && {
-                  content: '""',
-                  position: 'absolute',
-                  left: `${(level - 1) * 16}px`,
-                  top: 0,
-                  width: '1px',
-                  height: '100%',
-                  backgroundColor: theme.palette.grey[300]
-                }
+                // Linha vertical para submenus
+                '&:before': drawerOpen &&
+                  level > 1 && {
+                    content: '""',
+                    position: 'absolute',
+                    left: `${(level - 1) * 16}px`,
+                    top: 0,
+                    width: '1px',
+                    height: '100%',
+                    backgroundColor: theme.palette.grey[300]
+                  }
               }
             })}
           >
@@ -470,5 +502,11 @@ export default function NavCollapse({ menu, level, parentId, openMenuId, onMenuC
   );
 }
 
-NavCollapse.propTypes = { menu: PropTypes.any, level: PropTypes.number, parentId: PropTypes.string, openMenuId: PropTypes.string, onMenuClick: PropTypes.func };
-
+// Validação de props
+NavCollapse.propTypes = {
+  menu: PropTypes.any, // Dados do menu
+  level: PropTypes.number, // Nível de profundidade
+  parentId: PropTypes.string, // ID do menu pai
+  openMenuId: PropTypes.string, // ID do menu aberto
+  onMenuClick: PropTypes.func // Callback de clique
+};
