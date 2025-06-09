@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: wayne-backend
+    env: python
+    branch: main
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn wayne_backend.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: wayne_backend.settings
+      - key: SECRET_KEY
+        value: your-secret-key-here
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      # Adicione outras envs como DB_URL, EMAIL_HOST, etc
