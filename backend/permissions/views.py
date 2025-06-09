@@ -155,33 +155,67 @@ def save_group_permissions(request):
 @permission_classes([IsAuthenticated])
 def my_permissions(request):
     """
-    Retorna os menus e permissões associadas aos grupos do usuário autenticado.
+    Retorna os menus e permissões mescladas de todos os grupos do usuário autenticado.
     """
-    user = request.user
-    groups = user.groups.prefetch_related('permissions__menu')
+    try:
+        user = request.user
+        groups = user.groups.prefetch_related('permissions__menu')
 
-    if not groups.exists():
-        return Response({"detail": "No permission groups associated with this user."}, status=status.HTTP_404_NOT_FOUND)
-
-    # Junta todas as permissões dos grupos do usuário
-    permissions = Permission.objects.filter(group__in=groups).select_related('menu').distinct()
-
-    # Organiza por menu
-    menu_permissions = {}
-    for perm in permissions:
-        menu_name = perm.menu.name
-        if menu_name not in menu_permissions:
-            menu_permissions[menu_name] = {
-                # "menu_id": perm.menu.id,
-                "menu_name": menu_name,
-                "permissions": {}
-            }
-        for field in [
-            "can_create", "can_read", "can_update", "can_delete", 
-            "can_secret", "can_export", "can_import", "can_download", "can_upload"
-        ]:
-            menu_permissions[menu_name]["permissions"][field] = (
-                menu_permissions[menu_name]["permissions"].get(field, False) or getattr(perm, field, False)
+        if not groups.exists():
+            return Response(
+                {"detail": "No permission groups associated with this user.", "user_id": user.id},
+                status=status.HTTP_404_NOT_FOUND
             )
 
-    return Response({"permissions": list(menu_permissions.values())}, status=status.HTTP_200_OK)
+        # Junta todas as permissões dos grupos do usuário (sem duplicatas)
+        permissions = Permission.objects.filter(group__in=groups).select_related('menu').distinct()
+
+        if not permissions.exists():
+            return Response(
+                {"detail": "No permissions found in the user's groups.", "user_id": user.id},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Merge das permissões por menu
+        merged_permissions = {}
+        for perm in permissions:
+            menu = perm.menu
+            menu_key = menu.name
+
+            if menu_key not in merged_permissions:
+                merged_permissions[menu_key] = {
+                    "menu_name": menu_key,
+                    "menu_id": menu.id,
+                    "permissions": {
+                        "can_create": False,
+                        "can_read": False,
+                        "can_update": False,
+                        "can_delete": False,
+                        "can_secret": False,
+                        "can_export": False,
+                        "can_import": False,
+                        "can_download": False,
+                        "can_upload": False,
+                    }
+                }
+
+            for field in merged_permissions[menu_key]["permissions"]:
+                merged_permissions[menu_key]["permissions"][field] |= getattr(perm, field, False)
+
+        return Response(
+            {
+                "permissions": list(merged_permissions.values()),
+                "user_id": user.id,
+                "group_count": groups.count()
+            },
+            status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response(
+            {
+                "detail": "An error occurred while fetching permissions.",
+                "error": str(e),
+                "user_id": request.user.id
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

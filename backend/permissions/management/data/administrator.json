@@ -1,25 +1,23 @@
 [
   {
     "id": "1",
-    "label": "Administrator",
+    "name": "Administrator",
     "menus": [
       {
-        "id": "1",
         "name": "dashboard",
         "permissions": {
-          "can_create": true,
+          "can_create": false,
           "can_read": true,
-          "can_update": true,
-          "can_delete": true,
+          "can_update": false,
+          "can_delete": false,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "2",
         "name": "secret",
         "permissions": {
           "can_create": false,
@@ -34,7 +32,6 @@
         }
       },
       {
-        "id": "3",
         "name": "products",
         "permissions": {
           "can_create": true,
@@ -42,14 +39,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "4",
         "name": "order",
         "permissions": {
           "can_create": true,
@@ -57,14 +53,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "5",
         "name": "carrier",
         "permissions": {
           "can_create": true,
@@ -72,14 +67,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "6",
         "name": "address",
         "permissions": {
           "can_create": true,
@@ -87,14 +81,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "7",
         "name": "pages",
         "permissions": {
           "can_create": true,
@@ -102,14 +95,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "8",
         "name": "utilities",
         "permissions": {
           "can_create": true,
@@ -117,14 +109,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "9",
         "name": "other",
         "permissions": {
           "can_create": true,
@@ -132,14 +123,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "10",
         "name": "settings",
         "permissions": {
           "can_create": true,
@@ -147,14 +137,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "11",
         "name": "profile",
         "permissions": {
           "can_create": true,
@@ -162,14 +151,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "12",
         "name": "register",
         "permissions": {
           "can_create": true,
@@ -177,14 +165,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "13",
         "name": "recover",
         "permissions": {
           "can_create": true,
@@ -192,14 +179,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "14",
         "name": "users",
         "permissions": {
           "can_create": true,
@@ -207,14 +193,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "15",
         "name": "permissions",
         "permissions": {
           "can_create": true,
@@ -222,14 +207,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "16",
         "name": "typography",
         "permissions": {
           "can_create": true,
@@ -237,14 +221,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "17",
         "name": "color",
         "permissions": {
           "can_create": true,
@@ -252,14 +235,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "18",
         "name": "shadow",
         "permissions": {
           "can_create": true,
@@ -267,14 +249,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "19",
         "name": "sample-page",
         "permissions": {
           "can_create": true,
@@ -282,14 +263,13 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       },
       {
-        "id": "20",
         "name": "about-page",
         "permissions": {
           "can_create": true,
@@ -297,10 +277,10 @@
           "can_update": true,
           "can_delete": true,
           "can_secret": false,
-          "can_export": true,
-          "can_import": true,
-          "can_download": true,
-          "can_upload": true
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
         }
       }
     ]
