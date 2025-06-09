@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Permission
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -29,11 +29,12 @@ class CustomUser(AbstractUser):
     modified_in = models.DateTimeField(auto_now=True, verbose_name=_("Modified At"))
 
     groups = models.ManyToManyField(
-        Group,
-        related_name="customuser_authservice_groups",
+        'permissions.PermissionGroup',
+        related_name="users",  # ✅ para poder usar group.users.all()
         blank=True,
         verbose_name=_("Groups")
     )
+
     user_permissions = models.ManyToManyField(
         Permission,
         related_name="customuser_authservice_permissions",

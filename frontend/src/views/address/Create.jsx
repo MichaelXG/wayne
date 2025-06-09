@@ -24,7 +24,7 @@ export default function AddressEdit() {
     [addressId]
   );
 
-  const isActive = addressEditRef.current?.isActive ?? true; // fallback true na primeira renderização
+  const isActive = addressEditRef.current?.isActive ?? true; 
 
   const actionbutton = useMemo(
     () => ({
@@ -32,6 +32,7 @@ export default function AddressEdit() {
       label: 'Save',
       icon: <SaveIcon />,
       disabled: !isActive,
+      permission: { menu: 'address', action: 'can_create' },
       onClick: () => {
         addressEditRef.current?.submitForm();
       }

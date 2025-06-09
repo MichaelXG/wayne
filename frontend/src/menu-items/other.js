@@ -9,6 +9,7 @@ const icons = { IconBrandChrome, IconHelp };
 const other = {
   id: 'sample-docs-roadmap',
   type: 'group',
+  permission: { menu: 'other', action: 'can_read' },
   children: [
     {
       id: 'sample-page',
@@ -16,16 +17,17 @@ const other = {
       type: 'item',
       url: '/sample-page',
       icon: icons.IconBrandChrome,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: { menu: 'sample-page', action: 'can_read' }
     },
     {
-      id: 'documentation',
-      title: 'Documentation',
+      id: 'about-page',
+      title: 'About',
       type: 'item',
-      url: 'https://codedthemes.gitbook.io/berry/',
+      url: '/about-page',
       icon: icons.IconHelp,
-      external: true,
-      target: true
+      breadcrumbs: false,
+      permission: { menu: 'about-page', action: 'can_read' }
     }
   ]
 };

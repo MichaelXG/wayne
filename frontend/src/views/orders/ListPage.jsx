@@ -12,14 +12,16 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 import createOrderColumns from '../../ui-component/dataGrid/columns/orderColumns';
 import ExpandItem from './ExpandItem';
+import { useTheme } from '@mui/material/styles';
 
 const ListPage = () => {
+  const theme = useTheme();
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
   const [filterModel, setFilterModel] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const [expandedRow, setExpandedRow] = useState(null);
 
   const token = userData?.authToken || null;
@@ -43,6 +45,39 @@ const ListPage = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!orders.length) return;
+
+    let filtered = [...orders];
+
+    if (filterModel.items.length > 0) {
+      filtered = filtered.filter(order => {
+        return filterModel.items.every(filter => {
+          const value = order[filter.field];
+          
+          switch (filter.operator) {
+            case 'equals':
+              return value === filter.value;
+            case 'contains':
+              return value?.toLowerCase().includes(filter.value.toLowerCase());
+            case 'startsWith':
+              return value?.toLowerCase().startsWith(filter.value.toLowerCase());
+            case 'endsWith':
+              return value?.toLowerCase().endsWith(filter.value.toLowerCase());
+            case 'isEmpty':
+              return !value;
+            case 'isNotEmpty':
+              return !!value;
+            default:
+              return true;
+          }
+        });
+      });
+    }
+
+    setFilteredOrders(filtered);
+  }, [orders, filterModel]);
 
   const onDeleteSelected = async () => {
     try {
@@ -124,19 +159,19 @@ const ListPage = () => {
       filterModel={filterModel}
       setFilterModel={setFilterModel}
       slots={slots}
-      sx={sxColumns}
+      sx={sxColumns(theme)}
       getRowId={(row) => row.id}
       getDetailPanelContent={({ row }) => (
         <Box
-          sx={{
+          sx={(theme) => ({
             mt: -1,
             p: 2,
             pl: 7,
-            borderLeft: '2px solid #e0e0e0',
-            bgcolor: '#fafafa',
+            borderLeft: `2px solid ${theme.palette.divider}`,
+            bgcolor: theme.palette.background.default,
             borderRadius: 1,
             overflow: 'hidden'
-          }}
+          })}
         >
           <ExpandItem items={row.items || []} />
         </Box>

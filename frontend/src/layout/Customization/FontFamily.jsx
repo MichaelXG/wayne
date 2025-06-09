@@ -1,117 +1,142 @@
 // material-ui
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid2';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Box, FormControlLabel, Grid, Radio, RadioGroup, Stack, Typography, Chip } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useEffect } from 'react';
+import { IconTypography, IconCheck } from '@tabler/icons-react';
 
 // project imports
 import useConfig from 'hooks/useConfig';
-import MainCard from 'ui-component/cards/MainCard';
 
 // ==============================|| CUSTOMIZATION - FONT FAMILY ||============================== //
 
+const fonts = [
+  {
+    id: 'inter',
+    value: `'Inter', sans-serif`,
+    label: 'Inter',
+    preview: 'The quick brown fox jumps over the lazy dog'
+  },
+  {
+    id: 'poppins',
+    value: `'Poppins', sans-serif`,
+    label: 'Poppins',
+    preview: 'The quick brown fox jumps over the lazy dog'
+  },
+  {
+    id: 'roboto',
+    value: `'Roboto', sans-serif`,
+    label: 'Roboto',
+    preview: 'The quick brown fox jumps over the lazy dog'
+  },
+  {
+    id: 'montserrat',
+    value: `'Montserrat', sans-serif`,
+    label: 'Montserrat',
+    preview: 'The quick brown fox jumps over the lazy dog'
+  },
+  {
+    id: 'open-sans',
+    value: `'Open Sans', sans-serif`,
+    label: 'Open Sans',
+    preview: 'The quick brown fox jumps over the lazy dog'
+  }
+];
+
 export default function FontFamilyPage() {
+  const theme = useTheme();
   const { fontFamily, onChangeFontFamily } = useConfig();
 
   const handleFontChange = (event) => {
     onChangeFontFamily(event.target.value);
   };
 
-  const fonts = [
-    {
-      id: 'inter',
-      value: `'Inter', sans-serif`,
-      label: 'Inter'
-    },
-    {
-      id: 'poppins',
-      value: `'Poppins', sans-serif`,
-      label: 'Poppins'
-    },
-    {
-      id: 'roboto',
-      value: `'Roboto', sans-serif`,
-      label: 'Roboto'
-    },
-    {
-      id: 'montserrat',
-      value: `'Montserrat', sans-serif`,
-      label: 'Montserrat'
-    },
-    {
-      id: 'lato',
-      value: `'Lato', sans-serif`,
-      label: 'Lato'
-    },
-    {
-      id: 'open-sans',
-      value: `'Open Sans', sans-serif`,
-      label: 'Open Sans'
-    },
-    {
-      id: 'raleway',
-      value: `'Raleway', sans-serif`,
-      label: 'Raleway'
-    },
-    {
-      id: 'ubuntu',
-      value: `'Ubuntu', sans-serif`,
-      label: 'Ubuntu'
-    },
-    {
-      id: 'nunito',
-      value: `'Nunito', sans-serif`,
-      label: 'Nunito'
-    },
-    {
-      id: 'merriweather',
-      value: `'Merriweather', serif`,
-      label: 'Merriweather'
-    },
-    {
-      id: 'playfair',
-      value: `'Playfair Display', serif`,
-      label: 'Playfair Display'
-    }
-  ];
-
-  const bgColor = 'grey.50';
-  const bgActiveColor = 'primary.light';
+  // Aplica a fonte globalmente ao <body>
+  useEffect(() => {
+    document.body.style.fontFamily = fontFamily;
+  }, [fontFamily]);
 
   return (
-    <Stack spacing={2.5} sx={{ p: 2, width: '100%' }}>
-      <Typography variant="h5">FONT STYLE</Typography>
-      <RadioGroup aria-label="payment-card" name="payment-card" value={fontFamily} onChange={handleFontChange}>
-        <Grid container spacing={1.25}>
-          {fonts.map((item, index) => (
-            <Grid key={index} size={12}>
-              <MainCard content={false} sx={{ p: 0.75, bgcolor: fontFamily === item.value ? bgActiveColor : bgColor }}>
-                <MainCard
-                  content={false}
-                  border
+    <Stack spacing={3} sx={{ px: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <IconTypography size={20} />
+        <Typography variant="h5">Font Family</Typography>
+      </Box>
+
+      <RadioGroup name="font-family" value={fontFamily} onChange={handleFontChange}>
+        <Grid container spacing={2}>
+          {fonts.map((item) => {
+            const isSelected = fontFamily === item.value;
+
+            return (
+              <Grid key={item.id} item xs={12}>
+                <Box
                   sx={{
-                    p: 1.75,
-                    borderWidth: 1,
-                    ...(fontFamily === item.value && { borderColor: 'primary.main' })
+                    position: 'relative',
+                    p: 2,
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    backgroundColor: isSelected ? `${theme.palette.grey[500]}10` : 'transparent',
+                    border: `1px solid ${isSelected ? theme.palette.grey[900] : theme.palette.divider}`,
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      borderColor: theme.palette.grey[500],
+                      backgroundColor: `${theme.palette.grey[500]}08`
+                    }
                   }}
                 >
                   <FormControlLabel
-                    sx={{ width: 1 }}
-                    control={<Radio value={item.value} sx={{ display: 'none' }} />}
+                    value={item.value}
+                    control={<Radio sx={{ display: 'none' }} />}
                     label={
-                      <Typography variant="h5" sx={{ pl: 2, fontFamily: item.value }}>
-                        {item.label}
-                      </Typography>
+                      <Stack spacing={1} sx={{ width: '100%' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <Typography variant="h6" sx={{ fontFamily: item.value }}>
+                            {item.label}
+                          </Typography>
+                          {isSelected && (
+                            <Chip
+                              icon={<IconCheck size={16} />}
+                              label="Selected"
+                              size="small"
+                              sx={{
+                                height: 24,
+                                backgroundColor: theme.palette.grey[900],
+                                color: theme.palette.common.white
+                              }}
+                            />
+                          )}
+                        </Box>
+                        <Typography
+                          variant="body2"
+                          color={theme.palette.grey[900]}
+                          sx={{
+                            fontFamily: item.value,
+                            fontSize: '0.875rem',
+                            opacity: 0.7
+                          }}
+                        >
+                          {item.preview}
+                        </Typography>
+                      </Stack>
                     }
+                    sx={{
+                      m: 0,
+                      width: '100%',
+                      '& .MuiFormControlLabel-label': {
+                        width: '100%'
+                      }
+                    }}
                   />
-                </MainCard>
-              </MainCard>
-            </Grid>
-          ))}
+                </Box>
+              </Grid>
+            );
+          })}
         </Grid>
       </RadioGroup>
+
+      <Typography variant="caption" color="text.secondary">
+        Select a font family to change the typography of your interface.
+      </Typography>
     </Stack>
   );
 }

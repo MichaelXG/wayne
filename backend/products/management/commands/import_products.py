@@ -1,50 +1,53 @@
 from django.core.management.base import BaseCommand, CommandError
-import requests
+from products.models import Product, ProductImage
 import random
 import string
-from products.models import Product, ProductImage
+import json
+import os
+
 
 class Command(BaseCommand):
-    help = 'Imports products from FakeStore API into the local database'
+    help = 'Imports products from local JSON into the database'
 
     def handle(self, *args, **kwargs):
         try:
-            response = requests.get("https://fakestoreapi.com/products")
-            response.raise_for_status()
-            products = response.json()
+            # Caminho correto para ../data/wayne_products_import_ready.json
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            json_path = os.path.normpath(os.path.join(base_dir, '..', 'data', 'wayne_products_import_ready.json'))
+
+            if not os.path.exists(json_path):
+                raise FileNotFoundError(f"❌ File not found: {json_path}")
+
+            with open(json_path, "r", encoding="utf-8") as file:
+                products = json.load(file)
 
             for item in products:
-                # Prepare prices and fields
-                price_sale = item.get("price")
-                price_regular = round(price_sale / 1.10, 2)
-                tax = 10
-
-                # Create or update product
                 product, created = Product.objects.update_or_create(
-                    sku=f"SKU-{item['id']:04d}",
+                    sku=item.get("sku"),
                     defaults={
                         "title": item.get("title"),
                         "description": item.get("description"),
                         "category": item.get("category"),
-                        "code": ''.join(random.choices(string.ascii_uppercase + string.digits, k=8)),
-                        "quantity": random.randint(0, 100),
-                        "gender": random.choice(["men", "women", "kids", "unisex", "others"]),
-                        "price_regular": price_regular,
-                        "price_sale": price_sale,
-                        "tax": tax,
-                        "rating_rate": item.get("rating", {}).get("rate", 0),
-                        "rating_count": item.get("rating", {}).get("count", 0),
-                        "is_active": True,   
+                        "code": item.get("code") or ''.join(random.choices(string.ascii_uppercase + string.digits, k=8)),
+                        "quantity": item.get("quantity", 0),
+                        "price_regular": item.get("price_regular"),
+                        "price_sale": item.get("price_sale"),
+                        "tax": item.get("tax", 10),
+                        "rating_rate": item.get("rating_rate", 0),
+                        "rating_count": item.get("rating_count", 0),
+                        "is_active": item.get("is_active", True),
+                        "is_secret": item.get("is_secret", False),
                     }
                 )
 
-                # Clear existing images
+                # Sincronização de imagens
                 product.images.all().delete()
 
-                # Add image(s)
-                images = [item.get("image")] if isinstance(item.get("image"), str) else item.get("images", [])
-                for img_url in images:
-                    ProductImage.objects.create(product=product, url=img_url)
+                images = item.get("images", [])
+                for img_data in images:
+                    url = img_data.get("url")
+                    if url:
+                        ProductImage.objects.create(product=product, url=url)
 
                 status_msg = "🆕 Created" if created else "♻️ Updated"
                 self.stdout.write(f"{status_msg}: {product.title}")

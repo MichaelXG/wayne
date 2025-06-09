@@ -6,15 +6,17 @@ import { API_ROUTES } from '../../routes/ApiRoutes';
 import { useOrderIDContext } from '../../contexts/OrderIDContext';
 import DataLoaderWrapper from '../../ui-component/dataGrid/DataLoaderWrapper';
 import IllustrationMessage from '../../ui-component/message/IllustrationMessage';
-import { BaseDir, isDebug } from '../../App';
+import { isDebug } from '../../App';
 import DetailItem from './detail/DetailItem';
 import DetailCustomer from './detail/Customer';
 import Payment from './detail/Payment';
 import Delivery from './detail/Delivery';
 import Shipping from './detail/Shipping';
 import History from './detail/History';
+import { useTheme } from '@mui/material/styles';
 
 export default function DetailPage() {
+  const theme = useTheme();
   const { id } = useParams();
   const orderId = id ? Number(id) : 1;
 
@@ -57,7 +59,7 @@ export default function DetailPage() {
           <IllustrationMessage type={emptyMessage.type} customTitle={emptyMessage.title} customDescription={emptyMessage.description} />
         ) : (
           <Box
-            sx={{
+            sx={(theme) => ({
               px: 2,
               py: 3,
               height: '100%',
@@ -66,19 +68,19 @@ export default function DetailPage() {
               flexDirection: 'row',
               flexWrap: 'wrap',
               boxSizing: 'border-box',
-              maxWidth: '1500px', // ✅ largura máxima
+              maxWidth: '1500px',
               width: '100%',
-              margin: '0 auto', // ✅ centralizado
-              fontFamily: '"Roboto", sans-serif', // ✅ fonte correta
-              fontSize: '0.875rem', // ✅ tamanho da fonte
+              margin: '0 auto',
+              fontFamily: theme.typography.fontFamily, // usa a fonte padrão do tema (ex: Roboto)
+              fontSize: '0.875rem',
               fontWeight: 400,
               lineHeight: '1.334em',
-              color: '#364152', // ✅ cor do texto
+              color: theme.palette.text.primary, // substitui '#364152'
               WebkitFontSmoothing: 'antialiased',
               WebkitTextSizeAdjust: '100%',
               WebkitTapHighlightColor: 'transparent',
-              backgroundColor: 'background.default' // opcional para ficar mais bonito
-            }}
+              backgroundColor: theme.palette.background.default // modo claro/escuro compatível
+            })}
           >
             <Grid container spacing={2} alignItems="flex-start" justifyContent="space-between">
               {/* Coluna 1 - Itens do pedido */}
@@ -105,7 +107,6 @@ export default function DetailPage() {
                 <Grid item>
                   <Payment />
                 </Grid>
-
               </Grid>
             </Grid>
           </Box>

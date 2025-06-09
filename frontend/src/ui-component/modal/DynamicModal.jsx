@@ -91,11 +91,11 @@ const DynamicModal = ({
             position: 'absolute',
             right: 8,
             top: 8,
-            color: theme.palette[type]?.main || theme.palette.grey[500],
+            color: theme.palette[type]?.main || theme.palette.grey[300],
             border: 'none',
             '&:hover': {
               backgroundColor: theme.palette[type]?.light || theme.palette.error.light,
-              color: theme.palette[type]?.main || theme.palette.grey[500]
+              color: theme.palette[type]?.main || theme.palette.grey[300]
             }
           })}
         >
@@ -126,12 +126,12 @@ const DynamicModal = ({
           onClick={onClose}
           variant="outlined"
           sx={(theme) => ({
-            backgroundColor: theme.palette.secondary.light,
-            color: theme.palette.secondary.main,
+            backgroundColor: theme.palette.grey[300],
+            color: theme.palette.grey[600],
             border: 'none',
             '&:hover': {
-              backgroundColor: theme.palette.secondary.main,
-              color: theme.palette.secondary.light
+              backgroundColor: theme.palette.grey[600],
+              color: theme.palette.grey[300]
             }
           })}
         >

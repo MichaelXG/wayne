@@ -12,7 +12,7 @@ export default function CreatePage({ carrierEditRef }) {
   const [pendingFormData, setPendingFormData] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [carriers, setCarriers] = useState([]);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const navigate = useNavigate();
 
   const token = userData?.authToken || null;

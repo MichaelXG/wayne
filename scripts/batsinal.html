@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bat-Sinal com Relâmpago Realista e Nuvens Procedurais</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+      }
+      canvas {
+        display: block;
+      }
+      #startMsg {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: white;
+        font-family: sans-serif;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="startMsg">Clique para iniciar o som!</div>
+    <canvas id="batCanvas"></canvas>
+    <audio
+      id="batSound"
+      src="https://cdn.pixabay.com/download/audio/2022/02/14/audio_4da8681768.mp3?filename=strong-wind-blowing-ambient-120911.mp3"
+      loop
+    ></audio>
+    <audio
+      id="thunderSound"
+      src="https://cdn.pixabay.com/download/audio/2022/03/28/audio_2d82e77f82.mp3?filename=thunder-and-rain-109197.mp3"
+    ></audio>
+
+    <script>
+      const canvas = document.getElementById("batCanvas");
+      const ctx = canvas.getContext("2d");
+      const startMsg = document.getElementById("startMsg");
+
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      window.addEventListener("resize", () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      });
+
+      const bgImage = new Image();
+      bgImage.src =
+        "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1500&q=80";
+
+      let mouseX = width / 2;
+      let mouseY = height / 2;
+
+      document.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      const baseX = width * 0.2;
+      const baseY = height * 0.8;
+
+      let lightningTimer = 0;
+      let activeLightning = null;
+
+      class SimplexNoise {
+        constructor(seed) {
+          this.p = new Uint8Array(256);
+          for (let i = 0; i < 256; i++) this.p[i] = i;
+          for (let i = 255; i > 0; i--) {
+            const n = Math.floor((seed = (seed * 16807) % 2147483647) / 2147483647 * (i + 1));
+            const q = this.p[i];
+            this.p[i] = this.p[n];
+            this.p[n] = q;
+          }
+        }
+        noise2D(x, y) {
+          const i = Math.floor(x) & 255, j = Math.floor(y) & 255;
+          return ((this.p[i + this.p[j]] / 255) * 2 - 1);
+        }
+      }
+
+      const simplex = new SimplexNoise(Date.now());
+      let cloudOffset = 0;
+
+      function drawNoiseClouds() {
+        const resolution = 5;
+        for (let x = 0; x < width; x += resolution) {
+          for (let y = 0; y < height; y += resolution) {
+            const nx = (x + cloudOffset) * 0.005;
+            const ny = (y + cloudOffset) * 0.005;
+            const noiseVal = simplex.noise2D(nx, ny);
+            const alpha = Math.max(0, noiseVal) * 0.15;
+            if (alpha > 0.01) {
+              ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+              ctx.fillRect(x, y, resolution, resolution);
+            }
+          }
+        }
+      }
+
+      function generateLightning(startX, startY, endX, endY, segments = 50, spread = 50) {
+        const points = [{ x: startX, y: startY }];
+        for (let i = 1; i < segments; i++) {
+          const t = i / segments;
+          const x = startX + (endX - startX) * t + (Math.random() - 0.5) * spread;
+          const y = startY + (endY - startY) * t + (Math.random() - 0.5) * spread;
+          points.push({ x, y });
+        }
+        points.push({ x: endX, y: endY });
+        return points;
+      }
+
+      function drawLightning(points) {
+        ctx.save();
+        ctx.strokeStyle = "rgba(255,255,255,0.8)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let p of points) {
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function triggerLightning() {
+        const startX = Math.random() * width;
+        const startY = 0;
+        const endX = startX + (Math.random() - 0.5) * width * 0.5;
+        const endY = height * 0.5 + Math.random() * height * 0.5;
+
+        activeLightning = {
+          points: generateLightning(startX, startY, endX, endY, 50),
+          life: 3
+        };
+
+        const thunder = document.getElementById("thunderSound");
+        thunder.currentTime = 0;
+        thunder.play();
+
+        lightningTimer = Date.now() + 1000 + Math.random() * 3000;
+      }
+
+      function drawBackground() {
+        const parallaxFactor = 0.02;
+        const offsetX = (mouseX - width / 2) * parallaxFactor;
+        const offsetY = (mouseY - height / 2) * parallaxFactor;
+
+        ctx.drawImage(bgImage, offsetX, offsetY, width, height);
+      }
+
+      function drawLightCone(x, y, angle, spread, length) {
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, length);
+        gradient.addColorStop(0, "rgba(255, 255, 255, 0.6)");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+        ctx.fillStyle = gradient;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(
+          x + length * Math.cos(angle - spread / 2),
+          y + length * Math.sin(angle - spread / 2)
+        );
+        ctx.lineTo(
+          x + length * Math.cos(angle + spread / 2),
+          y + length * Math.sin(angle + spread / 2)
+        );
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function drawBatSymbol(x, y, size, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.fillStyle = "white";
+
+        ctx.beginPath();
+        ctx.moveTo(-size / 2, 0);
+        ctx.quadraticCurveTo(-size / 4, -size / 4, 0, -size / 2);
+        ctx.quadraticCurveTo(size / 4, -size / 4, size / 2, 0);
+        ctx.quadraticCurveTo(size / 4, size / 4, 0, size / 2);
+        ctx.quadraticCurveTo(-size / 4, size / 4, -size / 2, 0);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        if (bgImage.complete) {
+          drawBackground();
+        }
+
+        drawNoiseClouds();
+        cloudOffset += 0.5;
+
+        const dx = mouseX - baseX;
+        const dy = mouseY - baseY;
+        const angle = Math.atan2(dy, dx);
+
+        const spread = Math.PI / 8;
+        const length = Math.min(width, height) * 1.2;
+
+        drawLightCone(baseX, baseY, angle, spread, length);
+
+        const batX = baseX + length * 0.7 * Math.cos(angle);
+        const batY = baseY + length * 0.7 * Math.sin(angle);
+
+        drawBatSymbol(batX, batY, 100, angle);
+
+        if (activeLightning) {
+          drawLightning(activeLightning.points);
+          activeLightning.life--;
+          if (activeLightning.life <= 0) {
+            activeLightning = null;
+          }
+        }
+
+        if (Date.now() > lightningTimer) {
+          triggerLightning();
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      bgImage.onload = animate;
+
+      const batSound = document.getElementById("batSound");
+      document.body.addEventListener(
+        "click",
+        () => {
+          batSound.play();
+          startMsg.style.display = "none";
+        },
+        { once: true }
+      );
+    </script>
+  </body>
+</html>

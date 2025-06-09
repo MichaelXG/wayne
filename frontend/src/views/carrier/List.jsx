@@ -22,8 +22,9 @@ export default function CarrierList() {
   const actionbutton = useMemo(
     () => ({
       label: 'Create',
-      href: `${BaseDir}/carrier/create`,
-      icon: <AddIcon />
+      href: `/carrier/create`,
+      icon: <AddIcon />,
+      permission: { menu: 'carrier', action: 'can_create' }
     }),
     []
   );

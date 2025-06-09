@@ -24,8 +24,9 @@ export default function CarrierDetail() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/carrier/edit/${carrierId}`,
-      icon: customSvgEditIcon
+      href: `/carrier/edit/${carrierId}`,
+      icon: customSvgEditIcon,
+      permission: { menu: 'carrier', action: 'can_update' },
     }),
     [carrierId]
   );

@@ -27,7 +27,12 @@ function LinearProgressWithLabel({ value, ...others }) {
       <Grid>
         <Grid container sx={{ justifyContent: 'space-between' }}>
           <Grid>
-            <Typography variant="h6" sx={{ color: 'primary.800' }}>
+            <Typography
+              variant="h6"
+              sx={(theme) => ({
+                color: theme.palette.text.primary
+              })}
+            >
               Progress
             </Typography>
           </Grid>
@@ -42,17 +47,17 @@ function LinearProgressWithLabel({ value, ...others }) {
           variant="determinate"
           value={value}
           {...others}
-          sx={{
+          sx={(theme) => ({
             height: 10,
             borderRadius: 30,
             [`&.${linearProgressClasses.colorPrimary}`]: {
-              bgcolor: 'background.paper'
+              bgcolor: theme.palette.background.paper
             },
             [`& .${linearProgressClasses.bar}`]: {
               borderRadius: 5,
-              bgcolor: 'primary.dark'
+              bgcolor: theme.palette.grey[600]
             }
-          }}
+          })}
         />
       </Grid>
     </Grid>
@@ -67,7 +72,7 @@ function MenuCard() {
   return (
     <Card
       sx={{
-        bgcolor: 'primary.light',
+        bgcolor: theme.palette.grey[300],
         mb: 2.75,
         overflow: 'hidden',
         position: 'relative',
@@ -76,7 +81,7 @@ function MenuCard() {
           position: 'absolute',
           width: 157,
           height: 157,
-          bgcolor: 'primary.200',
+          bgcolor: theme.palette.grey[200],
           borderRadius: '50%',
           top: -105,
           right: -96
@@ -92,10 +97,9 @@ function MenuCard() {
                 sx={{
                   ...theme.typography.commonAvatar,
                   ...theme.typography.largeAvatar,
-                  color: 'primary.main',
+                  color: theme.palette.grey[600],
                   border: 'none',
-                  borderColor: 'primary.main',
-                  bgcolor: 'background.paper'
+                  bgcolor: theme.palette.background.paper
                 }}
               >
                 <TableChartOutlinedIcon fontSize="inherit" />
@@ -104,11 +108,11 @@ function MenuCard() {
             <ListItemText
               sx={{ mt: 0 }}
               primary={
-                <Typography variant="subtitle1" sx={{ color: 'primary.800' }}>
+                <Typography variant="subtitle1" sx={{ color: theme.palette.grey[900] }}>
                   Get Extra Space
                 </Typography>
               }
-              secondary={<Typography variant="caption"> 28/23 GB</Typography>}
+              secondary={<Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>28/23 GB</Typography>}
             />
           </ListItem>
         </List>

@@ -1,4 +1,3 @@
-// src/routes/MainRoutes.jsx
 import { lazy } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import Loadable from 'ui-component/Loadable';
@@ -21,7 +20,7 @@ const OrderDetailPage = Loadable(lazy(() => import('views/orders/Detail')));
 // Rotas de carrier
 const CarrierListPage = Loadable(lazy(() => import('views/carrier/List')));
 const CarrierDetailPage = Loadable(lazy(() => import('views/carrier/Detail')));
-const CreatePage = Loadable(lazy(() => import('views/carrier/Create')));
+const CarrierCreatePage = Loadable(lazy(() => import('views/carrier/Create')));
 const CarrierEditPage = Loadable(lazy(() => import('views/carrier/Edit')));
 
 // Rotas de Address
@@ -38,6 +37,28 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 // Página de exemplo
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
+// About page
+const AboutPage = Loadable(lazy(() => import('views/about-page')));
+
+// Página de erro
+const ForbiddenPage = Loadable(lazy(() => import('views/forbidden/ForbiddenPage')));
+
+const NotFoundPage = Loadable(lazy(() => import('views/not-found/NotFoundPage')));
+const ServerErrorPage = Loadable(lazy(() => import('views/server-error/ServerErrorPage')));
+
+// Secret pages
+const SecretHomePage = Loadable(lazy(() => import('views/secret-page')));
+const SecurityProtocolsPage = Loadable(lazy(() => import('views/secret-page/SecurityProtocols')));
+const InventoryStatusPage = Loadable(lazy(() => import('views/secret-page/InventoryStatus')));
+const WantedListPage = Loadable(lazy(() => import('views/secret-page/WantedList')));
+const CitySecurityStatusPage = Loadable(lazy(() => import('views/secret-page/CitySecurityStatus')));
+const CityMonitoringPage = Loadable(lazy(() => import('views/secret-page/CityMonitoring')));
+
+const PermissionEditPage = Loadable(lazy(() => import('views/permissions/Edit')));
+
+const UserListPage = Loadable(lazy(() => import('views/users/List')));
+const UserDetailPage = Loadable(lazy(() => import('views/users/Detail')));
+const UserEditPage = Loadable(lazy(() => import('views/users/Edit')));
 // Wrapper para proteger todas as rotas
 
 function ProtectedRoutesWrapper() {
@@ -52,7 +73,7 @@ const MainRoutes = {
   path: '/',
   element: (
     <MainLayout>
-      <ProtectedRoutesWrapper /> {/* ?? Todas as rotas dentro do MainLayout est�o protegidas */}
+      <ProtectedRoutesWrapper /> {/* ?? Todas as rotas dentro do MainLayout estão protegidas */}
     </MainLayout>
   ),
   children: [
@@ -67,6 +88,24 @@ const MainRoutes = {
           path: 'default',
           element: <DashboardDefault />
         }
+      ]
+    },
+    {
+      path: 'secret',
+      children: [
+        { index: true, element: <SecretHomePage /> },
+        { path: 'Home', element: <SecretHomePage /> }
+      ]
+    },
+    {
+      path: 'secret-page',
+      children: [
+        { index: true, element: <SecretHomePage /> },
+        { path: 'security-protocols', element: <SecurityProtocolsPage /> },
+        { path: 'inventory-status', element: <InventoryStatusPage /> },
+        { path: 'wanted-list', element: <WantedListPage /> },
+        { path: 'city-security', element: <CitySecurityStatusPage /> },
+        { path: 'monitoring', element: <CityMonitoringPage /> }
       ]
     },
     {
@@ -97,7 +136,7 @@ const MainRoutes = {
         { path: 'list', element: <CarrierListPage /> },
         { path: 'detail', element: <Navigate to="1" replace /> },
         { path: 'detail/:id', element: <CarrierDetailPage /> },
-        { path: 'create', element: <CreatePage /> },
+        { path: 'create', element: <CarrierCreatePage /> },
         { path: 'edit', element: <Navigate to="1" replace /> },
         { path: 'edit/:id', element: <CarrierEditPage /> }
       ]
@@ -115,6 +154,25 @@ const MainRoutes = {
       ]
     },
     {
+      path: 'users',
+      children: [
+        { index: true, element: <UserListPage /> },
+        { path: 'list', element: <UserListPage /> },
+        { path: 'detail', element: <Navigate to="1" replace /> },
+        { path: 'detail/:id', element: <UserDetailPage /> },
+        { path: 'edit', element: <Navigate to="1" replace /> },
+        { path: 'edit/:id', element: <UserEditPage /> }
+      ]
+    },
+    {
+      path: 'permissions',
+      children: [
+        { index: true, element: <PermissionEditPage /> },
+        // { path: 'edit', element: <Navigate to="1" replace /> },
+        { path: 'edit/', element: <PermissionEditPage /> }
+      ]
+    },
+    {
       path: 'typography',
       element: <UtilsTypography />
     },
@@ -129,6 +187,22 @@ const MainRoutes = {
     {
       path: 'sample-page',
       element: <SamplePage />
+    },
+    {
+      path: 'about-page',
+      element: <AboutPage />
+    },
+    {
+      path: 'forbidden',
+      element: <ForbiddenPage />
+    },
+    {
+      path: 'not-found',
+      element: <NotFoundPage />
+    },
+    {
+      path: 'server-error',
+      element: <ServerErrorPage />
     }
   ]
 };

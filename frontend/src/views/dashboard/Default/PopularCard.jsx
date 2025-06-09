@@ -24,8 +24,10 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import { useTheme } from '@mui/material/styles';
 
 export default function PopularCard({ isLoading }) {
+  const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -97,14 +99,14 @@ export default function PopularCard({ isLoading }) {
                           <Grid>
                             <Avatar
                               variant="rounded"
-                              sx={{
+                              sx={(theme) => ({
                                 width: 16,
                                 height: 16,
                                 borderRadius: '5px',
-                                bgcolor: 'success.light',
-                                color: 'success.dark',
+                                bgcolor: theme.palette.success.light,
+                                color: theme.palette.success.dark,
                                 ml: 2
-                              }}
+                              })}
                             >
                               <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
                             </Avatar>
@@ -138,14 +140,14 @@ export default function PopularCard({ isLoading }) {
                           <Grid>
                             <Avatar
                               variant="rounded"
-                              sx={{
+                              sx={(theme) => ({
                                 width: 16,
                                 height: 16,
                                 borderRadius: '5px',
-                                bgcolor: 'orange.light',
-                                color: 'orange.dark',
-                                marginLeft: 1.875
-                              }}
+                                bgcolor: theme.palette.orange.light,
+                                color: theme.palette.orange.dark,
+                                marginLeft: theme.spacing(1.875) // equivalente a 15px
+                              })}
                             >
                               <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
                             </Avatar>
@@ -155,7 +157,12 @@ export default function PopularCard({ isLoading }) {
                     </Grid>
                   </Grid>
                   <Grid>
-                    <Typography variant="subtitle2" sx={{ color: 'orange.dark' }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={(theme) => ({
+                        color: theme.palette.orange.dark
+                      })}
+                    >
                       10% loss
                     </Typography>
                   </Grid>
@@ -179,14 +186,14 @@ export default function PopularCard({ isLoading }) {
                           <Grid>
                             <Avatar
                               variant="rounded"
-                              sx={{
+                              sx={(theme) => ({
                                 width: 16,
                                 height: 16,
                                 borderRadius: '5px',
-                                bgcolor: 'success.light',
-                                color: 'success.dark',
-                                ml: 2
-                              }}
+                                bgcolor: theme.palette.success.light,
+                                color: theme.palette.success.dark,
+                                ml: 2 // usa spacing padrão do MUI (2 * 8 = 16px)
+                              })}
                             >
                               <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
                             </Avatar>
@@ -196,7 +203,12 @@ export default function PopularCard({ isLoading }) {
                     </Grid>
                   </Grid>
                   <Grid>
-                    <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={(theme) => ({
+                        color: theme.palette.success.dark
+                      })}
+                    >
                       10% Profit
                     </Typography>
                   </Grid>
@@ -220,14 +232,14 @@ export default function PopularCard({ isLoading }) {
                           <Grid>
                             <Avatar
                               variant="rounded"
-                              sx={{
+                              sx={(theme) => ({
                                 width: 16,
                                 height: 16,
                                 borderRadius: '5px',
-                                bgcolor: 'orange.light',
-                                color: 'orange.dark',
+                                bgcolor: theme.palette.orange.light,
+                                color: theme.palette.orange.dark,
                                 ml: 2
-                              }}
+                              })}
                             >
                               <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
                             </Avatar>
@@ -237,7 +249,13 @@ export default function PopularCard({ isLoading }) {
                     </Grid>
                   </Grid>
                   <Grid>
-                    <Typography variant="subtitle2" sx={{ color: 'orange.dark' }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={(theme) => ({
+                        color: theme.palette.orange.dark
+                      })}
+                    >
+                      {' '}
                       10% loss
                     </Typography>
                   </Grid>
@@ -261,14 +279,14 @@ export default function PopularCard({ isLoading }) {
                           <Grid>
                             <Avatar
                               variant="rounded"
-                              sx={{
+                              sx={(theme) => ({
                                 width: 16,
                                 height: 16,
                                 borderRadius: '5px',
-                                bgcolor: 'orange.light',
-                                color: 'orange.dark',
+                                bgcolor: theme.palette.orange.light,
+                                color: theme.palette.orange.dark,
                                 ml: 2
-                              }}
+                              })}
                             >
                               <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
                             </Avatar>
@@ -278,7 +296,12 @@ export default function PopularCard({ isLoading }) {
                     </Grid>
                   </Grid>
                   <Grid>
-                    <Typography variant="subtitle2" sx={{ color: 'orange.dark' }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={(theme) => ({
+                        color: theme.palette.orange.dark
+                      })}
+                    >
                       10% loss
                     </Typography>
                   </Grid>

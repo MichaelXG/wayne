@@ -1,0 +1,288 @@
+[
+  {
+    "id": "1",
+    "name": "Seller",
+    "menus": [
+      {
+        "name": "dashboard",
+        "permissions": {
+          "can_create": false,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "secret",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "products",
+        "permissions": {
+          "can_create": false,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "order",
+        "permissions": {
+          "can_create": true,
+          "can_read": true,
+          "can_update": true,
+          "can_delete": true,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "carrier",
+        "permissions": {
+          "can_create": true,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "address",
+        "permissions": {
+          "can_create": true,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "pages",
+        "permissions": {
+          "can_create": false,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "utilities",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "other",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "settings",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "profile",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "register",
+        "permissions": {
+          "can_create": false,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "recover",
+        "permissions": {
+          "can_create": false,
+          "can_read": true,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "users",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "permissions",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "typography",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "color",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "shadow",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "sample-page",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      },
+      {
+        "name": "about-page",
+        "permissions": {
+          "can_create": false,
+          "can_read": false,
+          "can_update": false,
+          "can_delete": false,
+          "can_secret": false,
+          "can_export": false,
+          "can_import": false,
+          "can_download": false,
+          "can_upload": false
+        }
+      }
+    ]
+  }
+] 

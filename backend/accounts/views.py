@@ -16,7 +16,6 @@ from .serializers import CustomUserSerializer, UserAvatarSerializer
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
-
 # 🔐 Utility: create JWT token pair for a user
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -25,15 +24,14 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
     }
 
-
 class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
+    queryset = CustomUser.objects.all().order_by('-id')
     serializer_class = CustomUserSerializer
 
     def get_permissions(self):
         if self.action == 'create':
-            return [permission() for permission in [AllowAny]]
-        return [permission() for permission in [IsAdminUser]]
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -47,7 +45,25 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             "user": serializer.data,
             **tokens
         }, status=status.HTTP_201_CREATED)
+        
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        partial = kwargs.pop('partial', False)
 
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        # ✅ Salvar avatar se enviado
+        avatar_file = request.FILES.get("avatar")
+        if avatar_file:
+            if hasattr(instance, "avatar"):
+                instance.avatar.image = avatar_file
+                instance.avatar.save()
+            else:
+                UserAvatar.objects.create(user=instance, image=avatar_file)
+
+        return Response(serializer.data)
 
 class CustomLoginView(APIView):
     permission_classes = [AllowAny]
@@ -75,22 +91,25 @@ class CustomLoginView(APIView):
         tokens = get_tokens_for_user(user)
         logger.info(f"✅ User {email} successfully authenticated.")
 
-        return Response({
-            **tokens,
-            "id": user.id,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-            "birth_date": user.birth_date,
-            "cpf": user.cpf,
-            "phone": user.phone,
-            "avatar": user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None
-        }, status=status.HTTP_200_OK)
+        groups = [{"id": g.id, "name": g.name} for g in user.groups.all()]
 
+        response_data = {
+            'id': user.id,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'birth_date': user.birth_date,
+            'cpf': user.cpf,
+            'phone': user.phone,
+            'avatar': user.avatar.image.url if hasattr(user, 'avatar') and user.avatar.image else None,
+            'groups': groups,
+            **tokens
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 class CustomTokenRefreshView(TokenRefreshView):
     pass
-
 
 class UserAvatarViewSet(viewsets.ModelViewSet):
     queryset = UserAvatar.objects.all()
@@ -99,8 +118,8 @@ class UserAvatarViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['retrieve', 'list', 'get_my_avatar']:
-            return [permission() for permission in [AllowAny]]
-        return [permission() for permission in [IsAuthenticated]]
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         if self.request.user.is_authenticated:

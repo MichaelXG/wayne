@@ -1,19 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Rating,
-  Stack,
-  Tooltip,
-  Typography,
-  Divider,
-  Button,
-  Link,
-  InputBase,
-  IconButton
-} from '@mui/material';
-import { Icon } from '@iconify/react';
+import { Box, Card, CardContent, Chip, Rating, Stack, Tooltip, Typography, Divider, Button, InputBase, IconButton } from '@mui/material';
 import { useState, useMemo } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,6 +7,8 @@ import ImageCarousel from '../../ui-component/carousel/ImageCarousel';
 import { useNavigate } from 'react-router-dom';
 import { saveOrderToLocalStorage } from '../../hooks/useLocalOrder';
 import { isDebug } from '../../App';
+import { useTheme } from '@mui/material/styles';
+import { API_BASE_URL } from '../../routes/ApiRoutes';
 
 export default function DetailCard({
   id,
@@ -33,12 +20,12 @@ export default function DetailCard({
   description,
   code,
   sku,
-  gender,
   quantity,
   price,
   rating,
   is_active = false
 }) {
+  const theme = useTheme();
   const initialAvailable = useMemo(() => quantity || 0, [quantity]);
   const [available, setAvailable] = useState(initialAvailable);
   const [selectedQuantity, setSelectedQuantity] = useState(0);
@@ -81,7 +68,7 @@ export default function DetailCard({
 
     // ✅ Construção segura do item
     let rawImage = images?.[0]?.url || images?.image || '';
-    const image = rawImage?.startsWith('http') ? rawImage : `${BASE_URL}${rawImage}`;
+    const image = rawImage?.startsWith('http') ? rawImage : `${API_BASE_URL}${rawImage}`;
 
     const item = {
       id: id,
@@ -112,14 +99,14 @@ export default function DetailCard({
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
         px: { xs: 2, md: 4 },
         py: { xs: 4, md: 6 },
-        backgroundColor: 'background.default'
-      }}
+        backgroundColor: theme.palette.background.default
+      })}
     >
       <Box sx={{ width: '100%', maxWidth: 1000 }}>
         {id && (
@@ -127,13 +114,13 @@ export default function DetailCard({
             <Chip
               label={`ID: ${id}`}
               size="small"
-              sx={{
+              sx={(theme) => ({
                 fontWeight: 600,
                 fontSize: '0.75rem',
-                color: '#FFFFFF',
-                backgroundColor: '#8E33FF',
+                color: theme.palette.common.white,
+                backgroundColor: theme.palette.grey[600],
                 width: 'fit-content'
-              }}
+              })}
             />
           </Box>
         )}
@@ -167,15 +154,34 @@ export default function DetailCard({
                 <Stack spacing={2}>
                   <Stack spacing={1} alignItems="flex-start" width="100%">
                     <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
-                      {isNew && <Chip label="NEW" size="small" color="primary" sx={{ fontWeight: 'bold' }} />}
+                      {isNew && (
+                        <Chip
+                          label="NEW"
+                          size="small"
+                          color="primary"
+                          sx={(theme) => ({
+                            fontWeight: theme.typography.fontWeightBold,
+                            bgcolor: theme.palette.primary.main,
+                            color: theme.palette.common.white
+                          })}
+                        />
+                      )}
                       <Chip
                         label={is_active ? 'Active' : 'Inactive'}
                         size="small"
-                        color={is_active ? 'success' : 'error'}
-                        sx={{ fontWeight: 'bold' }}
+                        sx={(theme) => ({
+                          fontWeight: theme.typography.fontWeightBold,
+                          bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                          color: theme.palette.common.white
+                        })}
                       />
                     </Box>
-                    <Typography variant="body2" color="success.main">
+                    <Typography
+                      variant="body2"
+                      sx={(theme) => ({
+                        color: theme.palette.success.main
+                      })}
+                    >
                       {status}
                     </Typography>
                   </Stack>
@@ -190,12 +196,23 @@ export default function DetailCard({
                         <Rating value={rating?.rate} precision={0.1} readOnly size="medium" />
                       </Box>
                     </Tooltip>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography
+                      variant="caption"
+                      sx={(theme) => ({
+                        color: theme.palette.text.secondary
+                      })}
+                    >
                       ({rating?.count} reviews)
                     </Typography>
                   </Box>
 
-                  <Typography variant="h3" fontWeight="bold" color="primary.main">
+                  <Typography
+                    variant="h3"
+                    sx={(theme) => ({
+                      color: theme.palette.primary.main,
+                      fontWeight: theme.typography.fontWeightBold
+                    })}
+                  >
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD',
@@ -205,7 +222,13 @@ export default function DetailCard({
 
                   <Box display="flex" alignItems="center">
                     <Tooltip title="Category" placement="top" arrow>
-                      <Typography variant="subtitle1" color="text.secondary">
+                      <Typography
+                        variant="subtitle1"
+                        sx={(theme) => ({
+                          color: theme.palette.text.secondary
+                        })}
+                      >
+                        {' '}
                         {category}
                       </Typography>
                     </Tooltip>
@@ -213,21 +236,16 @@ export default function DetailCard({
 
                   <Box display="flex" alignItems="center">
                     <Tooltip title="Description" placement="top" arrow>
-                      <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
+                      <Typography
+                        variant="body1"
+                        sx={(theme) => ({
+                          color: theme.palette.text.secondary,
+                          whiteSpace: 'pre-line'
+                        })}
+                      >
+                        {' '}
                         {description}
                       </Typography>
-                    </Tooltip>
-                  </Box>
-
-                  <Box display="flex" alignItems="center">
-                    <Tooltip title="Gender" placement="top" arrow>
-                      <Chip
-                        label={gender}
-                        color="secondary"
-                        variant="outlined"
-                        size="small"
-                        sx={{ fontWeight: 500, textTransform: 'capitalize' }}
-                      />
                     </Tooltip>
                   </Box>
                 </Stack>
@@ -243,16 +261,17 @@ export default function DetailCard({
                     <Box
                       display="flex"
                       alignItems="center"
-                      sx={{
-                        border: '1px solid rgba(145, 158, 171, 0.2)',
+                      sx={(theme) => ({
+                        border: `1px solid ${theme.palette.divider}`,
                         borderRadius: '8px',
                         px: 1,
                         py: 0.5,
                         boxShadow:
+                          theme.customShadows?.z1 ||
                           '0px 2px 1px -1px rgba(145, 158, 171, 0.2), 0px 1px 1px 0px rgba(145, 158, 171, 0.14), 0px 1px 3px 0px rgba(145, 158, 171, 0.12)',
-                        backgroundColor: '#FFFFFF',
-                        color: '#1C252E'
-                      }}
+                        backgroundColor: theme.palette.background.paper,
+                        color: theme.palette.text.primary
+                      })}
                     >
                       <IconButton onClick={handleDecrease} size="small" disabled={!isAvailable || selectedQuantity === 0}>
                         <RemoveIcon fontSize="small" />
@@ -268,16 +287,15 @@ export default function DetailCard({
                           setAvailable((prev) => prev + selectedQuantity - val);
                           setSelectedQuantity(val);
                         }}
-                        sx={{
+                        sx={(theme) => ({
                           width: 40,
                           textAlign: 'center',
                           px: 1,
                           fontWeight: 600,
                           fontSize: '0.875rem',
-                          lineHeight: '1.5',
-                          fontFamily:
-                            'Public Sans Variable, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                        }}
+                          lineHeight: 1.5,
+                          fontFamily: theme.typography.fontFamily
+                        })}
                         disabled={!isAvailable}
                       />
 
@@ -288,7 +306,14 @@ export default function DetailCard({
                   </Stack>
 
                   <Box width="100%">
-                    <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'right', display: 'block' }}>
+                    <Typography
+                      variant="caption"
+                      sx={(theme) => ({
+                        color: theme.palette.text.secondary,
+                        textAlign: 'right',
+                        display: 'block'
+                      })}
+                    >
                       Available: {available} of {originalStock}
                     </Typography>
                   </Box>
@@ -304,12 +329,14 @@ export default function DetailCard({
                   color="secondary"
                   size="medium"
                   startIcon={<ShoppingCartIcon />}
-                  sx={{
+                  sx={(theme) => ({
                     flex: 1
-                    // backgroundColor: 'secondary.light',
-                    // color: 'common.white',
-                    // '&:hover': { backgroundColor: 'secondary.main' }
-                  }}
+                    // backgroundColor: theme.palette.grey[300],
+                    // color: theme.palette.common.white,
+                    // '&:hover': {
+                    //   backgroundColor: theme.palette.grey[600]
+                    // }
+                  })}
                   onClick={() => handleAddOrBuy(false)}
                   disabled={!isAvailable || selectedQuantity === 0}
                 >
@@ -321,7 +348,13 @@ export default function DetailCard({
                   color="secondary"
                   size="medium"
                   type="submit"
-                  sx={{ flex: 1 }}
+                  sx={(theme) => ({
+                    flex: 1,
+                    '&.Mui-disabled': {
+                      backgroundColor: theme.palette.action.disabledBackground,
+                      color: theme.palette.action.disabled
+                    }
+                  })}
                   disabled={true} // {!isAvailable || selectedQuantity === 0}
                   onClick={() => handleAddOrBuy(true)}
                 >

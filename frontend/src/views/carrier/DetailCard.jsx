@@ -22,22 +22,40 @@ export default function DetailCard({ id, name, prefix, slug, is_default = false,
       }}
     >
       <Box sx={{ width: '100%', maxWidth: 1000 }}>
-        <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box
+          sx={{
+            mb: 2,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
           {/* ID à esquerda */}
           <Chip
             label={`ID: ${id}`}
             size="small"
-            sx={{
+            sx={(theme) => ({
               fontWeight: 600,
               fontSize: '0.75rem',
-              color: '#FFFFFF',
-              backgroundColor: '#8E33FF',
+              color: theme.palette.common.white,
+              backgroundColor: theme.palette.grey[600],
               width: 'fit-content'
-            }}
+            })}
           />
+
           {/* Chips à direita */}
           <Stack direction="row" spacing={1}>
-            {is_default && <Chip label="Default" size="small" color="primary" sx={{ fontWeight: 600, fontSize: '0.75rem' }} />}
+            {is_default && (
+              <Chip
+                label="Default"
+                size="small"
+                sx={(theme) => ({
+                  fontWeight: theme.typography.fontWeightBold,
+                  bgcolor: theme.palette.primary.main,
+                  color: theme.palette.common.white
+                })}
+              />
+            )}
           </Stack>
         </Box>
 
@@ -67,8 +85,11 @@ export default function DetailCard({ id, name, prefix, slug, is_default = false,
                   <Chip
                     label={is_active ? 'Active' : 'Inactive'}
                     size="small"
-                    color={is_active ? 'success' : 'error'}
-                    sx={{ fontWeight: 'bold' }}
+                    sx={(theme) => ({
+                      fontWeight: theme.typography.fontWeightBold,
+                      bgcolor: theme.palette[is_active ? 'success' : 'error'].dark,
+                      color: theme.palette.common.white
+                    })}
                   />
                 </Box>
 
@@ -78,31 +99,43 @@ export default function DetailCard({ id, name, prefix, slug, is_default = false,
                     value={name}
                     fullWidth
                     InputProps={{ readOnly: true }}
-                    sx={{
-                      '& label.Mui-focused': { color: 'secondary.main' },
+                    sx={(theme) => ({
+                      '& label.Mui-focused': {
+                        color: theme.palette.grey[600]
+                      },
                       '& .MuiOutlinedInput-root': {
-                        '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.grey[600]
+                        }
                       }
-                    }}
+                    })}
                   />
-                  
+
                   <TextField
                     label="Slug"
                     value={(slug || '').toLowerCase()}
                     InputProps={{ readOnly: true }}
                     variant="outlined"
-                    sx={{
+                    sx={(theme) => ({
                       width: 140,
                       '& .MuiInputBase-input.Mui-disabled': {
-                        WebkitTextFillColor: '#000'
+                        WebkitTextFillColor: theme.palette.text.primary
                       },
-                      '& label.Mui-focused': { color: 'secondary.main' },
+                      '& label.Mui-focused': {
+                        color: theme.palette.grey[600]
+                      },
                       '& .MuiOutlinedInput-root': {
-                        '& fieldset': { transition: 'border-color 0.3s ease' },
-                        '&:hover fieldset': { borderColor: 'secondary.light' },
-                        '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                        '& fieldset': {
+                          transition: 'border-color 0.3s ease'
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.grey[300]
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.grey[600]
+                        }
                       }
-                    }}
+                    })}
                   />
 
                   <TextField
@@ -110,18 +143,26 @@ export default function DetailCard({ id, name, prefix, slug, is_default = false,
                     value={(prefix || '').toUpperCase()}
                     InputProps={{ readOnly: true }}
                     variant="outlined"
-                    sx={{
+                    sx={(theme) => ({
                       width: 140,
                       '& .MuiInputBase-input.Mui-disabled': {
-                        WebkitTextFillColor: '#000'
+                        WebkitTextFillColor: theme.palette.text.primary
                       },
-                      '& label.Mui-focused': { color: 'secondary.main' },
+                      '& label.Mui-focused': {
+                        color: theme.palette.grey[600]
+                      },
                       '& .MuiOutlinedInput-root': {
-                        '& fieldset': { transition: 'border-color 0.3s ease' },
-                        '&:hover fieldset': { borderColor: 'secondary.light' },
-                        '&.Mui-focused fieldset': { borderColor: 'secondary.main' }
+                        '& fieldset': {
+                          transition: 'border-color 0.3s ease'
+                        },
+                        '&:hover fieldset': {
+                          borderColor: theme.palette.grey[300]
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: theme.palette.grey[600]
+                        }
                       }
-                    }}
+                    })}
                   />
                 </Stack>
 

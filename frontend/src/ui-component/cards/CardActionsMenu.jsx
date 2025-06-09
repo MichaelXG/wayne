@@ -27,29 +27,29 @@ export default function CardActionsMenu({ onEdit, onDelete }) {
         placement="top"
         componentsProps={{
           tooltip: {
-            sx: {
-              backgroundColor: '#8E33FF',
-              color: '#fff',
+            sx: (theme) => ({
+              backgroundColor: theme.palette.grey[600],
+              color: theme.palette.common.white,
               fontSize: 12,
               px: 1.5,
               py: 0.5,
               borderRadius: 1,
-              boxShadow: 2
-            }
+              boxShadow: theme.shadows[2]
+            })
           }
         }}
       >
         <IconButton
           onClick={handleOpenMenu}
           size="small"
-          sx={{
-            bgcolor: 'secondary.light',
-            color: 'secondary.main',
+          sx={(theme) => ({
+            bgcolor: theme.palette.grey[300],
+            color: theme.palette.grey[600],
             '&:hover': {
-              bgcolor: 'secondary.main',
-              color: 'common.white'
+              bgcolor: theme.palette.grey[600],
+              color: theme.palette.common.white
             }
-          }}
+          })}
         >
           <MoreVertIcon />
         </IconButton>
@@ -77,14 +77,22 @@ export default function CardActionsMenu({ onEdit, onDelete }) {
 
         <MenuItem
           onClick={handleDeleteClick}
-          sx={{
-            typography: 'body2',
-            borderRadius: 1,
-            color: 'error.main',
-            '&:hover': { bgcolor: 'error.lighter' }
-          }}
+          sx={(theme) => ({
+            typography: theme.typography.body2,
+            borderRadius: theme.shape.borderRadius,
+            color: theme.palette.error.main,
+            '&:hover': {
+              bgcolor: theme.palette.error.light,
+              color: theme.palette.common.white
+            }
+          })}
         >
-          <ListItemIcon sx={{ minWidth: 28, color: 'error.main' }}>
+          <ListItemIcon
+            sx={(theme) => ({
+              minWidth: 28,
+              color: theme.palette.error.main
+            })}
+          >
             <Icon icon="solar:trash-bin-trash-bold" width={20} height={20} />
           </ListItemIcon>
           Delete

@@ -12,7 +12,7 @@ export default function useOrderLockStatus(orderId) {
   const [canceledPayment, setCanceledPayment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   useEffect(() => {
     const checkOrderStatus = async () => {

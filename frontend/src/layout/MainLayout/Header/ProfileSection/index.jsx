@@ -37,6 +37,11 @@ import Greeting from '../../../../ui-component/Greeting';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import DynamicModal from '../../../../ui-component/modal/DynamicModal';
 import { API_ROUTES } from '../../../../routes/ApiRoutes';
+import { safeAtob } from '../../../../utils/base64';
+import { isDebug } from '../../../../App';
+import { Tooltip } from '@mui/material';
+import AnimateButton from '../../../../ui-component/extended/AnimateButton';
+import { usePermissions } from '../../../../contexts/PermissionsContext';
 
 export default function ProfileSection() {
   const [isLogout, setIsLogout] = useState(false);
@@ -47,24 +52,26 @@ export default function ProfileSection() {
   const [notification, setNotification] = useState(false);
   const [selectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  const [userData, setUserData] = useLocalStorage('fake-store-user-data', {});
+  const [userData, setUserData] = useLocalStorage('wayne-user-data', {});
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { logout } = usePermissions();
 
   const token = userData?.authToken || null;
   const anchorRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (atob(userData.id)) {
+    if (safeAtob(userData.id)) {
       getAvatar();
     }
-  }, [atob(userData.id)]);
+  }, [safeAtob(userData.id)]);
 
   const handleLogout = () => {
     if (userData.keeploggedin) {
       setLogoutModalOpen(true);
     } else {
       setUserData({});
+      logout(); // → limpa permissões e userData
       navigate('/pages/login');
     }
   };
@@ -97,7 +104,7 @@ export default function ProfileSection() {
 
   const getAvatar = async () => {
     try {
-      const response = await axios.get(`${API_ROUTES.AVATARS}me/?id=${atob(userData.id)}`);
+      const response = await axios.get(`${API_ROUTES.AVATARS}me/?id=${safeAtob(userData.id)}`);
       // Check if the response is successful (status code 200)
       if (response.status === 200) {
         const data = response.data;
@@ -113,22 +120,28 @@ export default function ProfileSection() {
   return (
     <>
       <Chip
-        sx={{
+        sx={(theme) => ({
           ml: 2,
-          height: '48px',
+          height: 48,
           alignItems: 'center',
           borderRadius: '27px',
-          '& .MuiChip-label': { lineHeight: 0 }
-        }}
+          backgroundColor: theme.palette.grey[300],
+          '& .MuiChip-label': { lineHeight: 0 },
+          cursor: 'pointer',
+          '&:hover': {
+            backgroundColor: theme.palette.grey[600],
+            color: theme.palette.common.white
+          }
+        })}
         icon={
           <Avatar
             src={userData.avatar || User1}
             alt="user-images"
-            sx={{
+            sx={(theme) => ({
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
               cursor: 'pointer'
-            }}
+            })}
             ref={anchorRef}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
@@ -140,9 +153,10 @@ export default function ProfileSection() {
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        color="primary"
+        color={theme.palette.grey[600]}
         aria-label="user-account"
       />
+
       <Popper
         placement="bottom"
         open={open}
@@ -159,17 +173,72 @@ export default function ProfileSection() {
                 {open && (
                   <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                     <Box sx={{ p: 2, pb: 0 }}>
-                      <Stack>
+                      <Stack spacing={0.5}>
+                        {' '}
                         <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
                           <Greeting />
                           <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
                             {userData.first_name && userData.last_name
-                              ? `${atob(userData.first_name)} ${atob(userData.last_name)}`
+                              ? `${safeAtob(userData.first_name)} ${safeAtob(userData.last_name)}`
                               : 'Guest'}
                           </Typography>
                         </Stack>
-                        <Typography variant="subtitle2">Project Admin</Typography>
+                        <AnimateButton>
+                          <Tooltip
+                            title="Groups"
+                            placement="top"
+                            componentsProps={{
+                              tooltip: {
+                                sx: (theme) => ({
+                                  backgroundColor: theme.palette.grey[600],
+                                  color: theme.palette.common.white,
+                                  fontSize: 12,
+                                  px: 1.5,
+                                  py: 0.5,
+                                  borderRadius: 1,
+                                  boxShadow: theme.shadows[2]
+                                })
+                              }
+                            }}
+                          >
+                            <Box sx={{ display: 'flex', gap: 0.5, ml: 1 }}>
+                              {Array.isArray(userData?.groups) && userData.groups.length > 0 ? (
+                                userData.groups.map((group, index) => (
+                                  <Chip
+                                    key={index}
+                                    label={safeAtob(group.name)}
+                                    variant="outlined"
+                                    size="small"
+                                    sx={(theme) => ({
+                                      borderColor: theme.palette.grey[600],
+                                      backgroundColor: theme.palette.grey[600],
+                                      color: theme.palette.common.white,
+                                      '& .MuiChip-label': {
+                                        fontWeight: theme.typography.fontWeightMedium
+                                      }
+                                    })}
+                                  />
+                                ))
+                              ) : (
+                                <Chip
+                                  label="No Group"
+                                  variant="outlined"
+                                  size="small"
+                                  sx={(theme) => ({
+                                    borderColor: theme.palette.grey[600],
+                                    backgroundColor: theme.palette.grey[600],
+                                    color: theme.palette.common.white,
+                                    '& .MuiChip-label': {
+                                      fontWeight: theme.typography.fontWeightMedium
+                                    }
+                                  })}
+                                />
+                              )}
+                            </Box>
+                          </Tooltip>
+                        </AnimateButton>
                       </Stack>
+
                       <OutlinedInput
                         sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
                         id="input-search-profile"
@@ -197,7 +266,12 @@ export default function ProfileSection() {
                       }}
                     >
                       <Divider />
-                      <Card sx={{ bgcolor: 'secondary.light', my: 2 }}>
+                      <Card
+                        sx={(theme) => ({
+                          bgcolor: theme.palette.grey[300],
+                          my: 2
+                        })}
+                      >
                         <CardContent>
                           <Grid container spacing={3} direction="column">
                             <Grid>
@@ -207,11 +281,18 @@ export default function ProfileSection() {
                                 </Grid>
                                 <Grid>
                                   <Switch
-                                    color="secondary"
                                     checked={sdm}
                                     onChange={(e) => setSdm(e.target.checked)}
                                     name="sdm"
                                     size="small"
+                                    sx={(theme) => ({
+                                      '& .MuiSwitch-switchBase.Mui-checked': {
+                                        color: theme.palette.grey[600],
+                                        '& + .MuiSwitch-track': {
+                                          backgroundColor: theme.palette.grey[600]
+                                        }
+                                      }
+                                    })}
                                   />
                                 </Grid>
                               </Grid>
@@ -227,6 +308,14 @@ export default function ProfileSection() {
                                     onChange={(e) => setNotification(e.target.checked)}
                                     name="sdm"
                                     size="small"
+                                    sx={(theme) => ({
+                                      '& .MuiSwitch-switchBase.Mui-checked': {
+                                        color: theme.palette.grey[600],
+                                        '& + .MuiSwitch-track': {
+                                          backgroundColor: theme.palette.grey[600]
+                                        }
+                                      }
+                                    })}
                                   />
                                 </Grid>
                               </Grid>
@@ -266,8 +355,13 @@ export default function ProfileSection() {
                                     label="02"
                                     variant="filled"
                                     size="small"
-                                    color="warning"
-                                    sx={{ '& .MuiChip-label': { mt: 0.25 } }}
+                                    sx={(theme) => ({
+                                      backgroundColor: theme.palette.grey[900],
+                                      color: theme.palette.common.white,
+                                      '& .MuiChip-label': {
+                                        marginTop: theme.spacing(0.25)
+                                      }
+                                    })}
                                   />
                                 </Grid>
                               </Grid>

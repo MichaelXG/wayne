@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useImperativeHandle, 
-  useEffect,
-  useState
-} from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useState } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { Box, Card, CardContent, CardHeader, FormControlLabel, Grid, Stack, Switch, TextField, Divider, Typography } from '@mui/material';
 
@@ -101,32 +96,68 @@ const EditCard = forwardRef(({ address, onSubmit }, ref) => {
 
   return (
     <FormProvider {...methods}>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', px: 4, py: 6, backgroundColor: 'background.default' }}>
+      <Box
+        sx={(theme) => ({
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          px: 4,
+          py: 6,
+          backgroundColor: theme.palette.background.default
+        })}
+      >
         <Box sx={{ width: '100%', maxWidth: 1000 }}>
           <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             {id && (
               <Chip
                 label={`ID: ${id}`}
                 size="small"
-                sx={{
+                sx={(theme) => ({
                   fontWeight: 600,
                   fontSize: '0.75rem',
-                  color: '#FFFFFF',
-                  backgroundColor: '#8E33FF'
-                }}
+                  color: theme.palette.common.white,
+                  backgroundColor: theme.palette.grey[600]
+                })}
               />
             )}
+
             <Stack direction="row" gap={2}>
+              {/* Switch is_default */}
               <Controller
                 name="is_default"
                 control={control}
                 render={({ field }) => (
                   <FormControlLabel
-                    control={<Switch {...field} checked={field.value} onChange={(e) => field.onChange(e.target.checked)} color="primary" />}
-                    label={<Typography fontWeight="bold">{field.value ? 'Default' : 'Not Default'}</Typography>}
+                    control={
+                      <Switch
+                        {...field}
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        sx={(theme) => ({
+                          '& .MuiSwitch-thumb': {
+                            color: field.value ? theme.palette.primary.main : theme.palette.grey[300]
+                          },
+                          '& .MuiSwitch-track': {
+                            backgroundColor: field.value ? theme.palette.primary.light : theme.palette.grey[300]
+                          }
+                        })}
+                      />
+                    }
+                    label={
+                      <Typography
+                        fontWeight="bold"
+                        sx={(theme) => ({
+                          color: field.value ? theme.palette.primary.main : theme.palette.text.secondary
+                        })}
+                      >
+                        {field.value ? 'Default' : 'Not Default'}
+                      </Typography>
+                    }
                   />
                 )}
               />
+
+              {/* Switch is_active */}
               <Controller
                 name="is_active"
                 control={control}
@@ -137,14 +168,23 @@ const EditCard = forwardRef(({ address, onSubmit }, ref) => {
                         {...field}
                         checked={field.value}
                         onChange={(e) => field.onChange(e.target.checked)}
-                        sx={{
-                          '& .MuiSwitch-thumb': { color: field.value ? 'success.main' : 'error.main' },
-                          '& .MuiSwitch-track': { backgroundColor: field.value ? 'success.light' : 'error.light' }
-                        }}
+                        sx={(theme) => ({
+                          '& .MuiSwitch-thumb': {
+                            color: field.value ? theme.palette.success.main : theme.palette.error.main
+                          },
+                          '& .MuiSwitch-track': {
+                            backgroundColor: field.value ? theme.palette.success.light : theme.palette.error.light
+                          }
+                        })}
                       />
                     }
                     label={
-                      <Typography fontWeight="bold" color={field.value ? 'success.main' : 'error.main'}>
+                      <Typography
+                        fontWeight="bold"
+                        sx={(theme) => ({
+                          color: field.value ? theme.palette.success.main : theme.palette.error.main
+                        })}
+                      >
                         {field.value ? 'Active' : 'Inactive'}
                       </Typography>
                     }
@@ -156,7 +196,14 @@ const EditCard = forwardRef(({ address, onSubmit }, ref) => {
 
           <Card
             elevation={0}
-            sx={{ mt: 3, borderRadius: 2, boxShadow: 'rgba(145, 158, 171, 0.2)', bgcolor: '#FFFFFF', border: '1px solid #DFE3E8', p: 3 }}
+            sx={(theme) => ({
+              mt: 3,
+              borderRadius: 2,
+              boxShadow: theme.customShadows?.z1 || '0px 2px 4px rgba(145, 158, 171, 0.2)',
+              bgcolor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
+              p: 3
+            })}
           >
             {' '}
             <CardHeader title="Details" subheader="Update the address info" titleTypographyProps={{ variant: 'h6' }} sx={{ px: 0 }} />

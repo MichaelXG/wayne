@@ -69,7 +69,7 @@ const createOrderItemColumns = (onDelete, onDeleteItem, onEdit, showStock = fals
                 }}
               >
                 <Link
-                  href={`/f-store/products/detail/${productId}`}
+                  href={`/wayne/products/detail/${productId}`}
                   style={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}
                 >
                   {title}

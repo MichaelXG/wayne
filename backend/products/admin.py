@@ -21,21 +21,21 @@ class ProductImageInline(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         "title", "category", "code", "sku", "price_regular", "price_sale", "quantity",
-        "gender", "rating_rate", "rating_count", "is_active", "inserted_in", "modified_in"
+        "rating_rate", "rating_count", "is_active", "is_secret", "inserted_in", "modified_in"
     )
     readonly_fields = ("inserted_in", "modified_in")
     inlines = [ProductImageInline]
 
     fieldsets = (
-        (None, {'fields': ('title', 'description', 'category', 'code', 'sku', 'is_active')}),
-        ('Pricing', {'fields': ('price_regular', 'price_sale', 'tax')}),
-        ('Inventory', {'fields': ('quantity', 'gender')}),
-        ('Rating', {'fields': ('rating_rate', 'rating_count')}),
-        ('Timestamps', {'fields': ('inserted_in', 'modified_in')}),
+        (None, {'fields': ['title', 'description', 'category', 'code', 'sku', 'is_active', 'is_secret']}),
+        ('Pricing', {'fields': ['price_regular', 'price_sale', 'tax']}),
+        ('Inventory', {'fields': ['quantity']}),
+        ('Rating', {'fields': ['rating_rate', 'rating_count']}),
+        ('Timestamps', {'fields': ['inserted_in', 'modified_in']}),
     )
 
     search_fields = ['title', 'code', 'sku']
-    list_filter = ['category', 'gender', 'is_active']
+    list_filter = ['category', 'is_active', 'is_secret']
     ordering = ['-inserted_in']
 
 

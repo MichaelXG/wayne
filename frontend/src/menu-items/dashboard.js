@@ -10,6 +10,7 @@ const dashboard = {
   id: 'dashboard',
   title: 'Dashboard',
   type: 'group',
+  permission: { menu: 'dashboard', action: 'can_read' }, 
   children: [
     {
       id: 'default',
@@ -17,7 +18,8 @@ const dashboard = {
       type: 'item',
       url: '/dashboard/default',
       icon: icons.IconDashboard,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: { menu: 'dashboard', action: 'can_read' } 
     }
   ]
 };

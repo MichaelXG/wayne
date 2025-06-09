@@ -10,14 +10,17 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 import CustomToolbarAddress from '../../ui-component/dataGrid/slots/CustomToolbarAddress';
 import createAddressColumns from '../../ui-component/dataGrid/columns/addressColumns';
+import { useTheme } from '@mui/material/styles';
+
 
 const ListPage = () => {
-  const [addresses, setAddresses] = useState([]); 
+  const theme = useTheme();
+  const [addresses, setAddresses] = useState([]);
   const [filteredAddresses, setFilteredAddresses] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
   const [filterModel, setFilterModel] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   const token = userData?.authToken || null;
   const hasFilters = filterModel.items.length > 0;
@@ -143,7 +146,7 @@ const ListPage = () => {
       filterModel={filterModel}
       setFilterModel={setFilterModel}
       slots={slots}
-      sx={sxColumns}
+      sx={sxColumns(theme)}
     />
   );
 };

@@ -80,7 +80,7 @@ DynamicDataGrid.propTypes = {
   setSelectionModel: PropTypes.func,
   filterModel: PropTypes.object,
   setFilterModel: PropTypes.func,
-  summaryFooter: PropTypes.node
+  summaryFooter: PropTypes.bool
 };
 
 export default DynamicDataGrid;

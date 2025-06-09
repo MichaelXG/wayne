@@ -27,16 +27,16 @@ function HeaderAvatarComponent({ children, ...others }, ref) {
     <Avatar
       ref={ref}
       variant="rounded"
-      sx={{
+      sx={(theme) => ({
         ...theme.typography.commonAvatar,
         ...theme.typography.mediumAvatar,
-        bgcolor: 'secondary.light',
-        color: 'secondary.dark',
+        bgcolor: theme.palette.grey[300],
+        color: theme.palette.grey[900],
         '&:hover': {
-          bgcolor: 'secondary.dark',
-          color: 'secondary.light'
+          bgcolor: theme.palette.grey[900],
+          color: theme.palette.grey[300]
         }
-      }}
+      })}
       {...others}
     >
       {children}
@@ -70,16 +70,16 @@ function MobileSearch({ value, setValue, popupState }) {
           <Box sx={{ ml: 2 }}>
             <Avatar
               variant="rounded"
-              sx={{
+              sx={(theme) => ({
                 ...theme.typography.commonAvatar,
                 ...theme.typography.mediumAvatar,
-                bgcolor: 'orange.light',
-                color: 'orange.dark',
+                bgcolor: theme.palette.orange?.light || '#FFA726', 
+                color: theme.palette.orange?.dark || '#EF6C00',
                 '&:hover': {
-                  bgcolor: 'orange.dark',
-                  color: 'orange.light'
+                  bgcolor: theme.palette.orange?.dark || '#EF6C00',
+                  color: theme.palette.orange?.light || '#FFA726'
                 }
-              }}
+              })}
               {...bindToggle(popupState)}
             >
               <IconX stroke={1.5} size="20px" />

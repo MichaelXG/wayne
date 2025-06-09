@@ -6,10 +6,10 @@ import MuiAvatar from '@mui/material/Avatar';
 export default function Avatar({ className, color, outline, size, sx, ...others }) {
   const colorSX = color && !outline && { color: 'background.paper', bgcolor: `${color}.main` };
   const outlineSX = outline && {
-    color: color ? `${color}.main` : `primary.main`,
+    color: color ? `${color}.main` : `grey[600]`,
     bgcolor: 'background.paper',
     border: '2px solid',
-    borderColor: color ? `${color}.main` : `primary.main`
+    borderColor: color ? `${color}.main` : `grey[600]`
   };
   let sizeSX = {};
 

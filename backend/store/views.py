@@ -21,7 +21,6 @@ def enrich_product(product):
     product["code"] = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
     product["sku"] = f"SKU-{product['id']:04d}"
     product["quantity"] = random.randint(1, 100)
-    product["gender"] = random.choice(["men", "women", "kids", "unisex"])
     product["price"] = {
         "regular": price_regular,
         "sale": price_sale,

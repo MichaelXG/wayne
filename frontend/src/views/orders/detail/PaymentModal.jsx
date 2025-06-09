@@ -18,10 +18,12 @@ import { useAuthGuard } from '../../../hooks/useAuthGuard';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DynamicModal from '../../../ui-component/modal/DynamicModal';
+import { useTheme } from '@mui/material/styles';
 
 const STATUS_OPTIONS = ['active', 'inactive', 'expired'];
 
 export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
+  const theme = useTheme();
   const [expiryError, setExpiryError] = useState(false);
   const checkingAuth = useAuthGuard();
   const [originalCard, setOriginalCard] = useState(null);
@@ -111,14 +113,14 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <FormControl
-                  sx={{
+                  sx={(theme) => ({
                     flex: 1,
                     mr: 2,
-                    '& label.Mui-focused': { color: 'secondary.main' },
+                    '& label.Mui-focused': { color: theme.palette.grey[600] },
                     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'secondary.main'
+                      borderColor: theme.palette.grey[600]
                     }
-                  }}
+                  })}
                 >
                   <InputLabel id="status-label">Status</InputLabel>
                   <Select labelId="status-label" name="status" value={card.status || 'active'} onChange={handleInputChange} label="Status">
@@ -131,7 +133,26 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
                 </FormControl>
 
                 <FormControlLabel
-                  control={<Switch name="is_primary" checked={!!card.is_primary} onChange={handleInputChange} color="secondary" />}
+                  control={
+                    <Switch
+                      name="is_primary"
+                      checked={!!card.is_primary}
+                      onChange={handleInputChange}
+                      sx={{
+                        '& .MuiSwitch-switchBase': {
+                          '&.Mui-checked': {
+                            color: 'success.dark',
+                            '& + .MuiSwitch-track': {
+                              backgroundColor: 'success.dark'
+                            }
+                          },
+                          '&:not(.Mui-checked)': {
+                            color: 'grey.600'
+                          }
+                        }
+                      }}
+                    />
+                  }
                   label="Primary Card"
                 />
               </Box>
@@ -146,15 +167,15 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
                     name="number"
                     fullWidth
                     required
-                    sx={{
-                      '& label.Mui-focused': { color: 'secondary.main' },
-                      '& .MuiInput-underline:after': { borderBottomColor: 'secondary.main' },
+                    sx={(theme) => ({
+                      '& label.Mui-focused': { color: theme.palette.grey[600] },
+                      '& .MuiInput-underline:after': { borderBottomColor: theme.palette.grey[600] },
                       '& .MuiOutlinedInput-root': {
                         '&.Mui-focused fieldset': {
-                          borderColor: 'secondary.main'
+                          borderColor: theme.palette.grey[600]
                         }
                       }
-                    }}
+                    })}
                   />
                 )}
               </InputMask>
@@ -169,12 +190,12 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
                 onFocus={handleInputFocus}
                 fullWidth
                 required
-                sx={{
-                  '& label.Mui-focused': { color: 'secondary.main' },
+                sx={(theme) => ({
+                  '& label.Mui-focused': { color: theme.palette.grey[600] },
                   '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                    borderColor: 'secondary.main'
+                    borderColor: theme.palette.grey[600]
                   }
-                }}
+                })}
               />
             </Grid>
 
@@ -189,12 +210,12 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
                     required
                     error={expiryError}
                     helperText={expiryError ? 'Invalid expiry (month/year).' : ''}
-                    sx={{
-                      '& label.Mui-focused': { color: 'secondary.main' },
+                    sx={(theme) => ({
+                      '& label.Mui-focused': { color: theme.palette.grey[600] },
                       '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                        borderColor: 'secondary.main'
+                        borderColor: theme.palette.grey[600]
                       }
-                    }}
+                    })}
                   />
                 )}
               </InputMask>
@@ -209,12 +230,12 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
                     name="cvc"
                     fullWidth
                     required
-                    sx={{
-                      '& label.Mui-focused': { color: 'secondary.main' },
+                    sx={(theme) => ({
+                      '& label.Mui-focused': { color: theme.palette.grey[600] },
                       '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                        borderColor: 'secondary.main'
+                        borderColor: theme.palette.grey[600]
                       }
-                    }}
+                    })}
                   />
                 )}
               </InputMask>
@@ -226,6 +247,7 @@ export default function PaymentModal({ open, onClose, card, setCard, onSave }) {
       <DynamicModal
         open={showWarning}
         onClose={() => setShowWarning(false)}
+        type="warning"
         mode="alert"
         title="No changes detected"
         description="You must modify some value to enable saving."

@@ -1,29 +1,40 @@
 import React, { useMemo, useState } from 'react';
-import { BaseDir, customSvgEditIcon, isDebug } from '../../App';
-import { IconShieldX, IconShieldCheck, IconCheck, IconBan } from '@tabler/icons-react';
-import { useAuthGuard } from '../../hooks/useAuthGuard';
-import DetailPage from './DetailPage';
-import { useOrderIDContext } from '../../contexts/OrderIDContext';
-import useFetchData from '../../hooks/useFetchData';
-import { API_ROUTES } from '../../routes/ApiRoutes';
 import { useNavigate } from 'react-router-dom';
-import Breadcrumbs from '../../ui-component/extended/Breadcrumbs';
-import AnimateButton from '../../ui-component/extended/AnimateButton';
-import { Stack, Box, Grid, IconButton, Tooltip, useMediaQuery, Typography, Chip } from '@mui/material';
-import { useTheme } from '@emotion/react';
-import MainCard from '../../ui-component/cards/MainCard';
-import SubCard from '../../ui-component/cards/SubCard';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-import { IconClockHour4, IconPackage, IconTruckDelivery } from '@tabler/icons-react';
 import axios from 'axios';
+
+// Constants and utils
+import { BaseDir, customSvgEditIcon, isDebug } from '../../App';
+import { API_ROUTES } from '../../routes/ApiRoutes';
+import { statusColors, statusIcons } from '../../utils/statusUtils';
+
+// Hooks
+import { useAuthGuard } from '../../hooks/useAuthGuard';
+import useFetchData from '../../hooks/useFetchData';
 import useCancelOrderAndDependencies from '../../hooks/useCancelOrderAndDependencies';
-import DynamicModal from '../../ui-component/modal/DynamicModal';
 import useOrderLockStatus from '../../hooks/useOrderLockStatus';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { useOrderIDContext } from '../../contexts/OrderIDContext';
+
+// Material-UI components and hooks
+import { useTheme } from '@mui/material/styles';
+import { Stack, Box, Grid, IconButton, Tooltip, useMediaQuery, Typography, Chip } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+// Custom components
+import MainCard from '../../ui-component/cards/MainCard';
+import SubCard from '../../ui-component/cards/SubCard';
+import Breadcrumbs from '../../ui-component/extended/Breadcrumbs';
+import AnimateButton from '../../ui-component/extended/AnimateButton';
+import DynamicModal from '../../ui-component/modal/DynamicModal';
+
+// Icons
+import { IconShieldX, IconShieldCheck, IconCheck, IconBan } from '@tabler/icons-react';
+
+// Local component
+import DetailPage from './DetailPage';
 
 export default function OrderDetail() {
-  const [userData] = useLocalStorage('fake-store-user-data', {}); // Adicione isso
+  const [userData] = useLocalStorage('wayne-user-data', {}); // Adicione isso
 
   isDebug && console.log('OrderDetail renderizado');
 
@@ -34,22 +45,12 @@ export default function OrderDetail() {
   const checkingAuth = useAuthGuard();
   const { orderId } = useOrderIDContext();
 
-  const { data: order, loading, error, setData: setOrder } = useFetchData(`${API_ROUTES.ORDERS}${orderId}/`);
+  const { data: order, setData: setOrder } = useFetchData(`${API_ROUTES.ORDERS}${orderId}/`);
 
   const mainCardTitle = 'Order';
   const backButton = { type: 'link', link: `/orders/list` };
 
-  const {
-    hasPayment,
-    hasShipping,
-    hasDelivery,
-    isCanceled,
-    isCompleted,
-    canEdit,
-    canPay,
-    canceledPayment,
-    loading: lockLoading
-  } = useOrderLockStatus(orderId);
+  const { hasPayment, hasShipping, hasDelivery, isCanceled, isCompleted, canEdit } = useOrderLockStatus(orderId);
 
   const { cancelOrderAndDependencies } = useCancelOrderAndDependencies();
   const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
@@ -128,7 +129,8 @@ export default function OrderDetail() {
       return {
         label: 'Cancel Order',
         icon: <IconBan size={20} />,
-        onClick: () => setShowCancelOrderModal(true)
+        onClick: () => setShowCancelOrderModal(true),
+        permission: { menu: 'orders', action: 'can_delete' }
       };
     }
     return null;
@@ -151,24 +153,6 @@ export default function OrderDetail() {
       })
     : null;
 
-  const statusColors = {
-    pending: 'warning',
-    paid: 'success',
-    processing: 'info',
-    shipped: 'primary',
-    canceled: 'error',
-    completed: 'success'
-  };
-
-  const statusIcons = {
-    pending: <IconClockHour4 size={16} />,
-    paid: <IconCheck size={16} />,
-    processing: <IconPackage size={16} />,
-    shipped: <IconTruckDelivery size={16} />,
-    canceled: <IconBan size={16} />,
-    completed: <IconCheck size={16} />
-  };
-
   const orderCode = order?.code || '0000';
   const orderStatus = order?.status || 'pending';
 
@@ -177,37 +161,58 @@ export default function OrderDetail() {
       title="User authenticated"
       placement="top"
       componentsProps={{
-        tooltip: { sx: { backgroundColor: 'green', color: '#fff', fontSize: 12, px: 1.5, py: 0.5, borderRadius: 1, boxShadow: 2 } }
+        tooltip: {
+          sx: (theme) => ({
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.common.white,
+            fontSize: 12,
+            px: 1.5,
+            py: 0.5,
+            borderRadius: 1,
+            boxShadow: theme.shadows[2]
+          })
+        }
       }}
     >
-      <IconShieldCheck color="green" size={20} />
+      <IconShieldCheck color={theme.palette.success.main} size={20} />{' '}
     </Tooltip>
   ) : (
     <Tooltip
       title="Authentication failed"
       placement="top"
       componentsProps={{
-        tooltip: { sx: { backgroundColor: 'red', color: '#fff', fontSize: 12, px: 1.5, py: 0.5, borderRadius: 1, boxShadow: 2 } }
+        tooltip: {
+          sx: (theme) => ({
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.common.white,
+            fontSize: 12,
+            px: 1.5,
+            py: 0.5,
+            borderRadius: 1,
+            boxShadow: theme.shadows[2]
+          })
+        }
       }}
     >
-      <IconShieldX color="red" size={20} />
+      <IconShieldX color={theme.palette.error.main} size={20} />
     </Tooltip>
   );
 
   const renderBackButton = () => {
-    const iconButtonStyles = {
+    const iconButtonStyles = (theme) => ({
       mt: 1,
       mb: 2,
       width: 24,
       height: 24,
       padding: '3px',
-      backgroundColor: 'secondary.light',
-      color: 'secondary.contrastText',
+      backgroundColor: theme.palette.grey[300],
+      color: theme.palette.grey[600],
       borderRadius: '50%',
       '&:hover': {
-        backgroundColor: 'secondary.main'
+        backgroundColor: theme.palette.grey[600],
+        color: theme.palette.common.white
       }
-    };
+    });
 
     const handleBackClick = () => {
       if (backButton?.type === 'link' && backButton.link) {
@@ -222,7 +227,17 @@ export default function OrderDetail() {
         title="Go Back"
         placement="top"
         componentsProps={{
-          tooltip: { sx: { backgroundColor: '#8E33FF', color: '#fff', fontSize: 12, px: 1.5, py: 0.5, borderRadius: 1, boxShadow: 2 } }
+          tooltip: {
+            sx: {
+              backgroundColor: theme.palette.grey[600],
+              color: theme.palette.common.white,
+              fontSize: 12,
+              px: 1.5,
+              py: 0.5,
+              borderRadius: 1,
+              boxShadow: theme.shadows[2]
+            }
+          }
         }}
       >
         <IconButton onClick={handleBackClick} sx={iconButtonStyles}>
@@ -251,7 +266,13 @@ export default function OrderDetail() {
                 <Stack spacing={0.5} direction="column">
                   <Box display="flex" alignItems="center" gap={1}>
                     {renderBackButton()}
-                    <Typography variant={downMD ? 'h4' : 'h3'} sx={{ color: 'secondary.main', fontWeight: 600 }}>
+                    <Typography
+                      variant={downMD ? 'h4' : 'h3'}
+                      sx={(theme) => ({
+                        color: theme.palette.grey[600],
+                        fontWeight: 600
+                      })}
+                    >
                       #{orderCode}
                     </Typography>
                     <Chip
@@ -263,7 +284,14 @@ export default function OrderDetail() {
                     />
                   </Box>
                   {orderDate && (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      sx={(theme) => ({
+                        color: theme.palette.text.secondary,
+                        fontSize: theme.typography.body2.fontSize,
+                        lineHeight: theme.typography.body2.lineHeight
+                      })}
+                    >
                       {orderDate}
                     </Typography>
                   )}
@@ -277,25 +305,28 @@ export default function OrderDetail() {
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: 'success.main',
-                              color: '#fff',
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.success.main,
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
                         <IconButton
                           onClick={actionCompleted.onClick}
-                          sx={{
-                            color: 'success.main',
-                            backgroundColor: 'success.light',
-                            '&:hover': { backgroundColor: 'success.main', color: 'white' }
-                          }}
+                          sx={(theme) => ({
+                            color: theme.palette.success.main,
+                            backgroundColor: theme.palette.success.light,
+                            '&:hover': {
+                              backgroundColor: theme.palette.success.main,
+                              color: theme.palette.common.white
+                            }
+                          })}
                         >
                           {actionCompleted.icon}
                         </IconButton>
@@ -310,25 +341,28 @@ export default function OrderDetail() {
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: 'error.main',
-                              color: '#fff',
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
                         <IconButton
                           onClick={actionCanceled.onClick}
-                          sx={{
-                            color: 'error.main',
-                            backgroundColor: 'error.light',
-                            '&:hover': { backgroundColor: 'error.main', color: 'white' }
-                          }}
+                          sx={(theme) => ({
+                            color: theme.palette.error.main,
+                            backgroundColor: theme.palette.error.light,
+                            '&:hover': {
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white
+                            }
+                          })}
                         >
                           {actionCanceled.icon}
                         </IconButton>
@@ -343,26 +377,32 @@ export default function OrderDetail() {
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: 'secondary.main',
-                              color: '#fff',
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.grey[600],
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
                         <IconButton
                           disabled={actionbutton.disabled ?? false}
-                          color={actionbutton.color || 'secondary'}
+                          color={actionbutton.color || theme.palette.grey[600]}
                           size="medium"
                           href={actionbutton.href}
                           onClick={actionbutton.onClick}
                           type={actionbutton.type || 'button'}
-                          sx={{ backgroundColor: 'secondary.light', '&:hover': { backgroundColor: 'secondary.main', color: 'white' } }}
+                          sx={(theme) => ({
+                            backgroundColor: theme.palette.grey[300],
+                            '&:hover': {
+                              backgroundColor: theme.palette.grey[600],
+                              color: theme.palette.common.white
+                            }
+                          })}
                         >
                           {actionbutton.icon}
                         </IconButton>
@@ -383,12 +423,25 @@ export default function OrderDetail() {
                           href={item.href}
                           variant="body2"
                           fontWeight={500}
-                          sx={{ color: 'secondary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                          sx={(theme) => ({
+                            color: theme.palette.grey[600],
+                            textDecoration: 'none',
+                            '&:hover': {
+                              textDecoration: 'underline'
+                            }
+                          })}
                         >
                           {item.label}
                         </Typography>
                       ) : (
-                        <Typography key={index} variant="body2" fontWeight={500} color="text.primary">
+                        <Typography
+                          key={index}
+                          variant="body2"
+                          fontWeight={500}
+                          sx={(theme) => ({
+                            color: theme.palette.text.primary
+                          })}
+                        >
                           {item.label}
                         </Typography>
                       )

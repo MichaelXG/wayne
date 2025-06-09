@@ -20,7 +20,7 @@ const AvatarUploadBox = styled(Box)(({ theme }) => ({
   width: 128,
   height: 128,
   borderRadius: '50%',
-  border: `2px dashed ${alpha(theme.palette.secondary.main, 0.4)}`,
+  border: `2px dashed ${alpha(theme.palette.grey[600], 0.4)}`,
   backgroundColor: theme.palette.grey[100],
   display: 'flex',
   alignItems: 'center',

@@ -22,8 +22,9 @@ export default function AddressList() {
   const actionbutton = useMemo(
     () => ({
       label: 'Create',
-      href: `${BaseDir}/address/create`,
-      icon: <AddIcon />
+      href: `/address/create`,
+      icon: <AddIcon />,
+      permission: { menu: 'address', action: 'can_create' }
     }),
     []
   );

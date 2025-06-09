@@ -1,29 +1,32 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+// MUI - Hooks
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-import SubCard from 'ui-component/cards/SubCard';
-import MainCard from 'ui-component/cards/MainCard';
+// MUI - Componentes
+import { Box, Breadcrumbs, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+
+// MUI - Constantes
 import { gridSpacing } from 'store/constant';
-import { Box, IconButton, Breadcrumbs, Tooltip } from '@mui/material';
-import {
-  IconBan,
-  IconCheck,
-  IconClockHour4,
-  IconPackage,
-  IconShieldCheck,
-  IconShieldX,
-  IconTrash,
-  IconTruckDelivery
-} from '@tabler/icons-react';
 
-import React from 'react';
+// MUI - Cartões personalizados
+import MainCard from 'ui-component/cards/MainCard';
+import SubCard from 'ui-component/cards/SubCard';
+
+// Ícones
+import { IconShieldCheck, IconShieldX, IconTrash } from '@tabler/icons-react';
+
+// Componentes internos
 import AnimateButton from '../ui-component/extended/AnimateButton';
+
+// Contexto
 import { useOrder } from '../contexts/StoredOrderIDContext';
+
+// Utils
+import { statusColors, statusIcons } from '../utils/statusUtils';
 
 export default function DefaultMinimalLayout({
   mainCardTitle,
@@ -36,24 +39,7 @@ export default function DefaultMinimalLayout({
 }) {
   const theme = useTheme();
   const downMD = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
   const { clearOrder } = useOrder();
-
-  const statusColors = {
-    pending: 'warning',
-    paid: 'success',
-    processing: 'info',
-    shipped: 'primary',
-    canceled: 'error'
-  };
-
-  const statusIcons = {
-    pending: <IconClockHour4 size={16} />,
-    paid: <IconCheck size={16} />,
-    processing: <IconPackage size={16} />,
-    shipped: <IconTruckDelivery size={16} />,
-    canceled: <IconBan size={16} />
-  };
 
   const authIcon = checkingAuth ? (
     <Tooltip
@@ -61,19 +47,19 @@ export default function DefaultMinimalLayout({
       placement="top"
       componentsProps={{
         tooltip: {
-          sx: {
-            backgroundColor: 'green',
-            color: '#fff',
+          sx: (theme) => ({
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.common.white,
             fontSize: 12,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            boxShadow: 2
-          }
+            boxShadow: theme.shadows[2]
+          })
         }
       }}
     >
-      <IconShieldCheck color="green" size={20} />
+      <IconShieldCheck color={theme.palette.success.main} size={20} />{' '}
     </Tooltip>
   ) : (
     <Tooltip
@@ -81,19 +67,19 @@ export default function DefaultMinimalLayout({
       placement="top"
       componentsProps={{
         tooltip: {
-          sx: {
-            backgroundColor: 'red',
-            color: '#fff',
+          sx: (theme) => ({
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.common.white,
             fontSize: 12,
             px: 1.5,
             py: 0.5,
             borderRadius: 1,
-            boxShadow: 2
-          }
+            boxShadow: theme.shadows[2]
+          })
         }
       }}
     >
-      <IconShieldX color="red" size={20} />
+      <IconShieldX color={theme.palette.error.main} size={20} />
     </Tooltip>
   );
 
@@ -112,11 +98,16 @@ export default function DefaultMinimalLayout({
             <Box sx={{ width: '100%' }}>
               {/* Linha com Título e Botão */}
               <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
-                {/* <Box display="flex" alignItems="center" gap={1}> */}
-                <Typography variant={downMD ? 'h5' : 'h4'} sx={{ color: 'secondary.main', fontWeight: 600 }}>
+                <Typography
+                  variant={downMD ? 'h5' : 'h4'}
+                  sx={(theme) => ({
+                    color: theme.palette.grey[600],
+                    fontWeight: 600
+                  })}
+                >
                   {subCardTitle}
                 </Typography>
-                {/* </Box> */}
+
                 <Box display="flex" alignItems="center" gap={1}>
                   {actionClose && (
                     <AnimateButton>
@@ -125,15 +116,15 @@ export default function DefaultMinimalLayout({
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: (theme) => theme.palette.error.main,
-                              color: (theme) => theme.palette.common.white,
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
@@ -166,29 +157,30 @@ export default function DefaultMinimalLayout({
                         placement="top"
                         componentsProps={{
                           tooltip: {
-                            sx: {
-                              backgroundColor: '#8E33FF',
-                              color: '#fff',
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.grey[600],
+                              color: theme.palette.common.white,
                               fontSize: 12,
                               px: 1.5,
                               py: 0.5,
                               borderRadius: 1,
-                              boxShadow: 2
-                            }
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
                         <IconButton
-                          color={actionbutton.color || 'secondary'}
+                          disabled={actionbutton.disabled ?? false}
+                          color={actionbutton.color || theme.palette.grey[600]}
                           size="medium"
                           href={actionbutton.href}
                           onClick={actionbutton.onClick}
                           type={actionbutton.type || 'button'}
                           sx={{
-                            backgroundColor: 'secondary.light',
+                            backgroundColor: theme.palette.grey[300],
                             '&:hover': {
-                              backgroundColor: 'secondary.main',
-                              color: 'white'
+                              backgroundColor: theme.palette.grey[600],
+                              color: theme.palette.common.white
                             }
                           }}
                         >
@@ -210,13 +202,11 @@ export default function DefaultMinimalLayout({
                       if (isLast && item.type === 'status') {
                         const statusKey = item.label?.toLowerCase();
                         const color = statusColors[statusKey] || 'default';
-                        const icon = statusIcons[statusKey] || null;
-
                         return (
                           <Box
                             key={index}
                             sx={{
-                              display: 'inline-flex',
+                              display: 'flex',
                               alignItems: 'center',
                               px: 1.5,
                               py: 0.5,
@@ -228,7 +218,7 @@ export default function DefaultMinimalLayout({
                               textTransform: 'capitalize'
                             }}
                           >
-                            {icon}
+                            {statusIcons[statusKey]}
                             <Box ml={0.5}>{item.label}</Box>
                           </Box>
                         );
@@ -242,7 +232,7 @@ export default function DefaultMinimalLayout({
                           variant="body2"
                           fontWeight={500}
                           sx={{
-                            color: 'secondary.main',
+                            color: theme.palette.grey[600],
                             textDecoration: 'none',
                             '&:hover': { textDecoration: 'underline' }
                           }}
@@ -257,42 +247,45 @@ export default function DefaultMinimalLayout({
                     })}
                   </Breadcrumbs>
 
-                  <AnimateButton>
-                    <Tooltip
-                      title={'Clear Order'}
-                      placement="top"
-                      componentsProps={{
-                        tooltip: {
-                          sx: {
-                            backgroundColor: (theme) => theme.palette.error.main,
-                            color: (theme) => theme.palette.common.white,
-                            fontSize: 12,
-                            px: 1.5,
-                            py: 0.5,
-                            borderRadius: 1,
-                            boxShadow: 2
-                          }
-                        }
-                      }}
-                    >
-                      <IconButton
-                        color={'error'}
-                        size="medium"
-                        onClick={clearOrder}
-                        type={'button'}
-                        sx={{
-                          backgroundColor: (theme) => theme.palette.error.light,
-                          color: (theme) => theme.palette.error.main,
-                          '&:hover': {
-                            backgroundColor: (theme) => theme.palette.error.main,
-                            color: (theme) => theme.palette.common.white
+                  {/* Botão de limpar ordem */}
+                  {clearOrder && (
+                    <AnimateButton>
+                      <Tooltip
+                        title={'Clear Order'}
+                        placement="top"
+                        componentsProps={{
+                          tooltip: {
+                            sx: (theme) => ({
+                              backgroundColor: theme.palette.error.main,
+                              color: theme.palette.common.white,
+                              fontSize: 12,
+                              px: 1.5,
+                              py: 0.5,
+                              borderRadius: 1,
+                              boxShadow: theme.shadows[2]
+                            })
                           }
                         }}
                       >
-                        <IconTrash size={18} />
-                      </IconButton>
-                    </Tooltip>
-                  </AnimateButton>
+                        <IconButton
+                          color={'error'}
+                          size="medium"
+                          onClick={clearOrder}
+                          type={'button'}
+                          sx={{
+                            backgroundColor: (theme) => theme.palette.error.light,
+                            color: (theme) => theme.palette.error.main,
+                            '&:hover': {
+                              backgroundColor: (theme) => theme.palette.error.main,
+                              color: (theme) => theme.palette.common.white
+                            }
+                          }}
+                        >
+                          <IconTrash size={18} />
+                        </IconButton>
+                      </Tooltip>
+                    </AnimateButton>
+                  )}
                 </Box>
               )}
             </Box>
@@ -310,5 +303,29 @@ export default function DefaultMinimalLayout({
 DefaultMinimalLayout.propTypes = {
   mainCardTitle: PropTypes.string.isRequired,
   subCardTitle: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  breadcrumbs: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      href: PropTypes.string,
+      type: PropTypes.string
+    })
+  ),
+  actionbutton: PropTypes.shape({
+    label: PropTypes.string,
+    icon: PropTypes.node,
+    href: PropTypes.string,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
+    color: PropTypes.string
+  }),
+  actionClose: PropTypes.shape({
+    label: PropTypes.string,
+    icon: PropTypes.node,
+    href: PropTypes.string,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
+    color: PropTypes.string
+  }),
+  checkingAuth: PropTypes.bool
 };

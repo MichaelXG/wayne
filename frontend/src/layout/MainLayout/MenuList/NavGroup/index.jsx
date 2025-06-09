@@ -17,7 +17,7 @@ import { useGetMenuMaster } from 'api/menu';
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
-export default function NavGroup({ item, lastItem, remItems, lastItemId, setSelectedID }) {
+export default function NavGroup({ item, lastItem, remItems, lastItemId, setSelectedID, openMenuId, onMenuClick }) {
   const theme = useTheme();
   const { pathname } = useLocation();
 
@@ -84,12 +84,29 @@ export default function NavGroup({ item, lastItem, remItems, lastItemId, setSele
   const items = currentItem.children?.map((menu) => {
     switch (menu?.type) {
       case 'collapse':
-        return <NavCollapse key={menu.id} menu={menu} level={1} parentId={currentItem.id} />;
+        return (
+          <NavCollapse 
+            key={menu.id} 
+            menu={menu} 
+            level={1} 
+            parentId={currentItem.id}
+            openMenuId={openMenuId}
+            onMenuClick={onMenuClick}
+          />
+        );
       case 'item':
-        return <NavItem key={menu.id} item={menu} level={1} />;
+        return <NavItem key={menu.id} item={menu} level={1} openMenuId={openMenuId} />;
       default:
         return (
-          <Typography key={menu?.id} variant="h6" color="error" align="center">
+          <Typography
+            key={menu?.id}
+            variant="h6"
+            align="center"
+            sx={(theme) => ({
+              color: theme.palette.error.main
+            })}
+          >
+            {' '}
             Menu Items Error
           </Typography>
         );
@@ -103,16 +120,80 @@ export default function NavGroup({ item, lastItem, remItems, lastItemId, setSele
         subheader={
           currentItem.title &&
           drawerOpen && (
-            <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.menuCaption }}>
+            <Typography 
+              variant="caption" 
+              gutterBottom 
+              sx={(theme) => ({
+                display: 'block',
+                ...theme.typography.menuCaption,
+                textTransform: 'uppercase',
+                fontWeight: 700,
+                fontSize: '0.875rem',
+                letterSpacing: '0.5px',
+                color: theme.palette.grey[600],
+                padding: '5px 15px 5px',
+                marginBottom: '10px',
+                transition: 'all 0.2s ease-in-out',
+                position: 'relative',
+                '&:hover': {
+                  color: theme.palette.grey[800]
+                }
+              })}
+            >
               {currentItem.title}
               {currentItem.caption && (
-                <Typography variant="caption" gutterBottom sx={{ display: 'block', ...theme.typography.subMenuCaption }}>
+                <Typography 
+                  variant="caption" 
+                  gutterBottom 
+                  sx={(theme) => ({ 
+                    display: 'block',
+                    ...theme.typography.subMenuCaption,
+                    color: theme.palette.grey[500],
+                    fontSize: '0.75rem'
+                  })}
+                >
                   {currentItem.caption}
                 </Typography>
               )}
             </Typography>
           )
         }
+        sx={(theme) => ({
+          '& > .MuiListItemButton-root': {
+            pl: 2
+          },
+          '& .submenu-items': {
+            position: 'relative',
+            pl: 2,
+            '&:before': drawerOpen && {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: '50%',
+              width: '16px',
+              height: '1px',
+              backgroundColor: theme.palette.grey[300],
+              transform: 'translateY(-50%)'
+            },
+            '&:after': drawerOpen && {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: '1px',
+              height: 'calc(100% + 8px)',
+              backgroundColor: theme.palette.grey[300],
+              transform: 'translateY(-4px)'
+            },
+            '&:last-child:after': {
+              height: '50%'
+            },
+            '&:first-of-type:after': {
+              top: '50%',
+              height: 'calc(50% + 4px)'
+            }
+          }
+        })}
       >
         {items}
       </List>
@@ -129,5 +210,7 @@ NavGroup.propTypes = {
   remItems: PropTypes.array,
   lastItemId: PropTypes.string,
   selectedID: PropTypes.oneOfType([PropTypes.any, PropTypes.string]),
-  setSelectedID: PropTypes.oneOfType([PropTypes.any, PropTypes.func])
+  setSelectedID: PropTypes.oneOfType([PropTypes.any, PropTypes.func]),
+  openMenuId: PropTypes.string,
+  onMenuClick: PropTypes.func
 };

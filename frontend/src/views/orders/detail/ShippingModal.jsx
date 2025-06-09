@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Dialog, Typography, Chip, useTheme, Grid, FormControl, Stack } from '@mui/material';
+import { Box, Dialog, Typography, Chip, Grid, FormControl, Stack } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
@@ -8,6 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DefaultMinimalLayout from '../../../layout/DefaultMinimalLayout';
 import AddressBlock from '../../address/AddressBlock';
+import { useTheme } from '@mui/material/styles';
 
 export default function ShippingModal({ open, onClose, addresses = [], selectedAddressId, onSelect, onConfirm }) {
   const theme = useTheme();
@@ -71,30 +72,45 @@ export default function ShippingModal({ open, onClose, addresses = [], selectedA
                         <SwiperSlide key={address.id}>
                           <Box
                             onClick={() => handleSelect(address)}
-                            sx={{
-                              border: localSelectedId === address.id ? `2px solid ${theme.palette.secondary.main}` : '1px solid',
-                              borderColor: localSelectedId === address.id ? 'secondary.main' : 'divider',
+                            sx={(theme) => ({
+                              border: localSelectedId === address.id ? `2px solid ${theme.palette.grey[600]}` : '1px solid',
+                              borderColor: localSelectedId === address.id ? theme.palette.grey[600] : theme.palette.divider,
                               borderRadius: 2,
                               boxShadow: localSelectedId === address.id ? 4 : 1,
                               p: 2,
                               cursor: 'pointer',
                               transition: 'all 0.2s ease-in-out',
                               '&:hover': {
-                                borderColor: 'secondary.main',
+                                borderColor: theme.palette.grey[600],
                                 boxShadow: 4
                               },
                               m: 2,
                               mr: 3,
                               ml: 3
-                            }}
+                            })}
                           >
                             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                               <Stack direction="row" spacing={1}>
-                                {address.is_default && <Chip label="Default" size="small" color="primary" />}
+                                {address.is_default && (
+                                  <Chip
+                                    label="Default"
+                                    size="small"
+                                    color="primary"
+                                    sx={(theme) => ({
+                                      fontWeight: theme.typography.fontWeightBold,
+                                      bgcolor: theme.palette.primary.main,
+                                      color: theme.palette.common.white
+                                    })}
+                                  />
+                                )}
                                 <Chip
                                   label={address.is_active ? 'Active' : 'Inactive'}
                                   size="small"
-                                  color={address.is_active ? 'success' : 'error'}
+                                  sx={(theme) => ({
+                                    fontWeight: theme.typography.fontWeightBold,
+                                    bgcolor: theme.palette[address.is_active ? 'success' : 'error'].dark,
+                                    color: theme.palette.common.white
+                                  })}
                                 />
                               </Stack>
                             </Box>

@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "brazil-correios",
+    "name": "Brazil Correios"
+  },
+  {
+    "slug": "fedex",
+    "name": "FedEx"
+  },
+  {
+    "slug": "dhl-express",
+    "name": "DHL Express"
+  },
+  {
+    "slug": "ups",
+    "name": "UPS"
+  },
+  {
+    "slug": "usps",
+    "name": "US Postal Service"
+  },
+  {
+    "slug": "laposte-fr",
+    "name": "La Poste France"
+  }
+]

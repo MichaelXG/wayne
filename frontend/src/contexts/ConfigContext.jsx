@@ -18,7 +18,7 @@ const initialState = {
 const ConfigContext = createContext(initialState);
 
 function ConfigProvider({ children }) {
-  const [config, setConfig] = useLocalStorage('fake-store-config-vite-ts', {
+  const [config, setConfig] = useLocalStorage('wayne-config-vite-ts', {
     fontFamily: initialState.fontFamily,
     borderRadius: initialState.borderRadius
   });

@@ -12,8 +12,10 @@ import sxColumns from '../../../ui-component/dataGrid/styles/sxColumns';
 import createOrderItemColumns from '../../../ui-component/dataGrid/columns/OrderItemColumns';
 import DefaultCardLayout from '../card/DefaultCardLayout';
 import useOrderLockStatus from '../../../hooks/useOrderLockStatus';
+import { useTheme } from '@mui/material/styles';
 
 export default function DetailItem() {
+  const theme = useTheme();
   isDebug && console.log('DetailItem renderizado');
 
   const checkingAuth = useAuthGuard();
@@ -31,9 +33,10 @@ export default function DetailItem() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/orders/edit/${orderId}`,
+      href: `/orders/edit/${orderId}`,
       icon: customSvgEditIcon,
-      disabled: !canEdit
+      disabled: !canEdit,
+      permission: { menu: 'orders', action: 'can_update' }
     }),
     [canEdit, orderId]
   );
@@ -112,7 +115,7 @@ export default function DetailItem() {
         filterModel={filterModel}
         setFilterModel={setFilterModel}
         slots={slots}
-        sx={sxColumns}
+        sx={sxColumns(theme)}
         getRowId={(row) => row.id}
         summaryFooter={true}
       />

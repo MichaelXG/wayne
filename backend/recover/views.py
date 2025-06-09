@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 from datetime import datetime
-from fake_store_backend.core.tokens import expiring_token_generator
+from wayne_backend.core.tokens import expiring_token_generator
 import logging
 from dotenv import load_dotenv
 from utils import is_password_reset_limit_reached, increment_password_reset_attempts
@@ -18,7 +18,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
-FRONTEND_URL = getattr(settings, 'FRONTEND_URL', "http://localhost:3000/f-store")
+FRONTEND_URL = getattr(settings, 'FRONTEND_URL', "http://localhost:3000/wayne")
 
 
 class PasswordResetView(APIView):
@@ -51,11 +51,11 @@ class PasswordResetView(APIView):
             reset_link = f"{FRONTEND_URL}/pages/reset/{uidb64}/{token}/{timestamp}/"
 
             # Render email
-            subject = "Fake Store E-commerce - Reset Your Password"
+            subject = "Wayne Industries - Reset Your Password"
             html_message = render_to_string('recover/password_reset_email.html', {
                 'reset_link': reset_link,
                 'user': user,
-                'company_name': "Fake Store",
+                'company_name': "Wayne Industries",
                 'current_year': datetime.now().year,
             })
 

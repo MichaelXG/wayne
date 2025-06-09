@@ -15,6 +15,7 @@ const utilities = {
   id: 'utilities',
   title: 'Utilities',
   type: 'group',
+  permission: { menu: 'utilities', action: 'can_read' },  
   children: [
     {
       id: 'util-typography',
@@ -22,7 +23,8 @@ const utilities = {
       type: 'item',
       url: '/typography',
       icon: icons.IconTypography,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: { menu: 'typography', action: 'can_read' }  
     },
     {
       id: 'util-color',
@@ -30,7 +32,8 @@ const utilities = {
       type: 'item',
       url: '/color',
       icon: icons.IconPalette,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: { menu: 'color', action: 'can_read' }  
     },
     {
       id: 'util-shadow',
@@ -38,7 +41,8 @@ const utilities = {
       type: 'item',
       url: '/shadow',
       icon: icons.IconShadow,
-      breadcrumbs: false
+      breadcrumbs: false,
+      permission: { menu: 'shadow', action: 'can_read' }  
     }
   ]
 };

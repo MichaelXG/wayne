@@ -23,8 +23,9 @@ export default function OrderList() {
   const actionbutton = useMemo(
     () => ({
       label: 'Create',
-      href: `${BaseDir}/orders/create`,
-      icon: <AddIcon />
+      href: `/products/list`,
+      icon: <AddIcon />,
+      permission: { menu: 'products', action: 'can_read' }
     }),
     []
   );

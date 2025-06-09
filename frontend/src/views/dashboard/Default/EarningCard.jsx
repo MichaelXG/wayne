@@ -3,14 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import Avatar from '@mui/material/Avatar';
-import CardMedia from '@mui/material/CardMedia';
-import Grid from '@mui/material/Grid2';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { styled, useTheme } from '@mui/material/styles';
+import { Avatar, Box, Grid, Menu, MenuItem, Typography, Card } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -29,6 +23,43 @@ import { API_ROUTES } from '../../../routes/ApiRoutes';
 import { useAuthGuard } from '../../../hooks/useAuthGuard';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
+// styles
+const DarkCard = styled(Card)(({ theme }) => ({
+  backgroundColor: theme.palette.grey[600],
+  color: theme.palette.grey[300],
+  overflow: 'hidden',
+  position: 'relative',
+  height: '100%',
+  maxHeight: '200px',
+  '& .MuiBox-root': {
+    height: '100%',
+    position: 'relative',
+    zIndex: 1
+  },
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    width: 210,
+    height: 210,
+    background: `linear-gradient(210.04deg, ${theme.palette.grey[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    borderRadius: '50%',
+    top: -30,
+    right: -180,
+    zIndex: 0
+  },
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    width: 210,
+    height: 210,
+    background: `linear-gradient(140.9deg, ${theme.palette.grey[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
+    borderRadius: '50%',
+    top: -160,
+    right: -130,
+    zIndex: 0
+  }
+}));
+
 export default function EarningCard({ isLoading }) {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,8 +67,8 @@ export default function EarningCard({ isLoading }) {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-  
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const checkingAuth = useAuthGuard();
   const token = userData?.authToken || null;
 
@@ -65,64 +96,43 @@ export default function EarningCard({ isLoading }) {
   return isLoading ? (
     <SkeletonEarningCard />
   ) : (
-    <MainCard
-      border={false}
-      content={false}
-      aria-hidden={Boolean(anchorEl)}
-      sx={{
-        bgcolor: 'secondary.dark',
-        color: '#fff',
-        overflow: 'hidden',
-        position: 'relative',
-        '&:after': {
-          content: '""',
-          position: 'absolute',
-          width: 210,
-          height: 210,
-          background: theme.palette.secondary[800],
-          borderRadius: '50%',
-          top: { xs: -85 },
-          right: { xs: -95 }
-        },
-        '&:before': {
-          content: '""',
-          position: 'absolute',
-          width: 210,
-          height: 210,
-          background: theme.palette.secondary[800],
-          borderRadius: '50%',
-          top: { xs: -125 },
-          right: { xs: -15 },
-          opacity: 0.5
-        }
-      }}
-    >
-      <Box sx={{ p: 2.25 }}>
-        <Grid container direction="column">
-          <Grid>
-            <Grid container sx={{ justifyContent: 'space-between' }}>
-              <Grid>
+    <DarkCard>
+      <Box sx={{ 
+        p: 2.25,
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'transparent'
+      }}>
+        <Grid container direction="column" spacing={2}>
+          <Grid item>
+            <Grid container justifyContent="space-between">
+              <Grid item>
                 <Avatar
                   variant="rounded"
                   sx={{
-                    ...theme.typography.commonAvatar,
-                    ...theme.typography.largeAvatar,
-                    bgcolor: 'secondary.800',
-                    mt: 1
+                    width: 24,
+                    height: 24,
+                    bgcolor: theme.palette.grey[900],
+                    color: theme.palette.common.white,
+                    '&:hover': {
+                      bgcolor: theme.palette.grey[800]
+                    }
                   }}
                 >
-                  <CardMedia sx={{ width: 24, height: 24 }} component="img" src={EarningIcon} alt="Earning" />
+                  <img src={EarningIcon} alt="Notification" />
                 </Avatar>
               </Grid>
-              <Grid>
+              <Grid item>
                 <Avatar
                   variant="rounded"
                   sx={{
-                    ...theme.typography.commonAvatar,
-                    ...theme.typography.mediumAvatar,
-                    bgcolor: 'secondary.dark',
-                    color: 'secondary.200',
-                    zIndex: 1
+                    width: 24,
+                    height: 24,
+                    bgcolor: theme.palette.grey[900],
+                    color: theme.palette.common.white,
+                    '&:hover': {
+                      bgcolor: theme.palette.grey[800]
+                    }
                   }}
                   aria-controls="menu-earning-card"
                   aria-haspopup="true"
@@ -136,65 +146,93 @@ export default function EarningCard({ isLoading }) {
                   keepMounted
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  variant="selectedMenu"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                  }}
+                  PaperProps={{
+                    sx: {
+                      bgcolor: theme.palette.grey[700],
+                      '& .MuiMenuItem-root': {
+                        color: theme.palette.common.white,
+                        '&:hover': {
+                          bgcolor: theme.palette.grey[600]
+                        }
+                      }
+                    }
+                  }}
                 >
                   <MenuItem onClick={handleClose}>
-                    <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Import Card
+                    <GetAppTwoToneIcon sx={{ mr: 1.75, color: theme.palette.grey[300] }} /> Import Card
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copy Data
+                    <FileCopyTwoToneIcon sx={{ mr: 1.75, color: theme.palette.grey[300] }} /> Copy Data
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Export
+                    <PictureAsPdfTwoToneIcon sx={{ mr: 1.75, color: theme.palette.grey[300] }} /> Export
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File
+                    <ArchiveTwoToneIcon sx={{ mr: 1.75, color: theme.palette.grey[300] }} /> Archive File
                   </MenuItem>
                 </Menu>
               </Grid>
             </Grid>
           </Grid>
-
-          <Grid>
-            <Grid container sx={{ alignItems: 'center' }}>
-              <Grid>
-                <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+          <Grid item >
+            <Grid container alignItems="center">
+              <Grid item>
+                <Typography 
+                  sx={{ 
+                    fontSize: '1.5rem', 
+                    fontWeight: 500,
+                    mr: 1,
+                    mt: 1.75,
+                    mb: 0.75,
+                    color: theme.palette.common.white
+                  }}
+                >
                   {Number(earning || 0).toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'USD'
                   })}
                 </Typography>
               </Grid>
-              <Grid>
+              <Grid item>
                 <Avatar
                   sx={{
                     cursor: 'pointer',
                     ...theme.typography.smallAvatar,
-                    bgcolor: 'secondary.200',
-                    color: 'secondary.dark'
+                    backgroundColor: theme.palette.success.dark,
+                    color: theme.palette.success.light
                   }}
                 >
                   <ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
                 </Avatar>
               </Grid>
+              <Grid item>
+                <Typography variant="subtitle2" sx={{ color: theme.palette.success.light }}>42%</Typography>
+              </Grid>
             </Grid>
           </Grid>
-
-          <Grid sx={{ mb: 1.25 }}>
-            <Typography
-              sx={{
+          <Grid item>
+            <Typography 
+              sx={(theme) => ({
                 fontSize: '1rem',
                 fontWeight: 500,
-                color: 'secondary.200'
-              }}
+                color: theme.palette.grey[200]
+              })}
             >
               Total Earning
             </Typography>
           </Grid>
         </Grid>
       </Box>
-    </MainCard>
+    </DarkCard>
   );
 }
 

@@ -11,14 +11,16 @@ import useLocalStorage from '../../hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
 import { API_ROUTES } from '../../routes/ApiRoutes';
 
-export default function StoredOrder() {
+const StoredOrder = () => {
   isDebug && console.log('📄 StoredOrder renderizado');
   const navigate = useNavigate();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const token = userData?.authToken || null;
 
   const checkingAuth = useAuthGuard();
   const order = getOrderFromLocalStorage();
+
+  isDebug && console.log('📝 Ordem recuperada do localStorage:', order);
 
   const breadcrumbs = useMemo(() => {
     const orderDate = order?.created_at
@@ -45,7 +47,15 @@ export default function StoredOrder() {
       icon: <AddIcon />,
       onClick: async () => {
         try {
-          const storedOrder = JSON.parse(localStorage.getItem('order'));
+        let storedOrder = null;
+
+        try {
+          storedOrder = JSON.parse(localStorage.getItem('order'));
+        } catch {
+          alert('Invalid order data');
+          return;
+        }
+
           if (!storedOrder || !storedOrder.items?.length) {
             alert('No order to submit!');
             return;
@@ -86,14 +96,18 @@ export default function StoredOrder() {
   if (checkingAuth) return null;
 
   return (
-    <DefaultMinimalLayout
-      mainCardTitle="Order's"
-      subCardTitle="Details"
-      breadcrumbs={breadcrumbs}
-      actionbutton={actionbutton}
-      checkingAuth={!checkingAuth}
-    >
-      <StoredOrderPage />
-    </DefaultMinimalLayout>
+    <div style={{ height: '100%', overflow: 'auto' }}>
+      <DefaultMinimalLayout
+        mainCardTitle="Order's"
+        subCardTitle="Details"
+        breadcrumbs={breadcrumbs}
+        actionbutton={actionbutton}
+        checkingAuth={!checkingAuth}
+      >
+        <StoredOrderPage />
+      </DefaultMinimalLayout>
+    </div>
   );
-}
+};
+
+export default StoredOrder;

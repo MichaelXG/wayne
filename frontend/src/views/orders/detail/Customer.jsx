@@ -34,9 +34,10 @@ export default function DetailCustomer() {
   const actionbutton = useMemo(
     () => ({
       label: 'Edit',
-      href: `${BaseDir}/customer/edit/${user_id}`,
+      href: `/customer/edit/${user_id}`,
       icon: customSvgEditIcon,
-      disabled: !canEdit
+      disabled: !canEdit,
+      permission: { menu: 'orders', action: 'can_update' },
     }),
     [canEdit, user_id]
   );

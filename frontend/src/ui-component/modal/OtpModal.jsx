@@ -4,8 +4,10 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DefaultMinimalLayout from '../../layout/DefaultMinimalLayout';
 import { useAuthGuard } from '../../hooks/useAuthGuard';
+import { useTheme } from '@mui/material/styles';
 
 export default function OtpModal({ open, onClose, onConfirm, code = '', setCode }) {
+  const theme = useTheme();
   const inputs = [useRef(), useRef(), useRef()];
   const checkingAuth = useAuthGuard();
 
@@ -86,22 +88,22 @@ export default function OtpModal({ open, onClose, onConfirm, code = '', setCode 
                       }
                     }}
                     variant="outlined"
-                    sx={{
+                    sx={(theme) => ({
                       '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                          borderColor: 'secondary.light'
+                          borderColor: theme.palette.grey[300]
                         },
                         '&:hover fieldset': {
-                          borderColor: 'secondary.main'
+                          borderColor: theme.palette.grey[600]
                         },
                         '&.Mui-focused fieldset': {
-                          borderColor: 'secondary.main'
+                          borderColor: theme.palette.grey[600]
                         }
                       },
                       '& .MuiInputBase-input': {
-                        color: 'secondary.main'
+                        color: theme.palette.grey[600]
                       }
-                    }}
+                    })}
                   />
                 ))}
               </Box>

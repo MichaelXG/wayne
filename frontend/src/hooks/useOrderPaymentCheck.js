@@ -7,7 +7,7 @@ export default function useOrderPaymentCheck(orderId) {
   const [hasPayment, setHasPayment] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   useEffect(() => {
     const fetchOrderPayment = async () => {

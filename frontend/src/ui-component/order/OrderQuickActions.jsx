@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Drawer, Fab, Grid, Button, Tooltip, IconButton, Badge, useTheme } from '@mui/material';
+import { Drawer, Fab, Grid, Tooltip, Badge, useTheme, Box } from '@mui/material';
 import { IconShoppingCart } from '@tabler/icons-react';
 import Draggable from 'react-draggable';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -7,7 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import StoredOrder from './StoredOrder';
 
-export default function OrderQuickActions({}) {
+export default function OrderQuickActions() {
   const theme = useTheme();
   const nodeRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -28,16 +28,16 @@ export default function OrderQuickActions({}) {
             placement="top"
             componentsProps={{
               tooltip: {
-                sx: {
-                  backgroundColor: '#8E33FF',
-                  color: '#fff',
+                sx: (theme) => ({
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white,
                   fontSize: 12,
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: 2
+                  boxShadow: theme.shadows[2]
+                })
                 }
-              }
             }}
           >
             <Fab
@@ -46,36 +46,44 @@ export default function OrderQuickActions({}) {
               color="secondary"
               aria-label="Order Quick Actions"
               sx={{
+                position: 'fixed',
+                top: '18%',
+                right: 10,
+                zIndex: 1200,
                 borderRadius: 0,
                 borderTopLeftRadius: '50%',
                 borderBottomLeftRadius: '50%',
                 borderTopRightRadius: '50%',
                 borderBottomRightRadius: '4px',
-                top: '30%',
-                position: 'fixed',
-                right: 10,
-                zIndex: 1200,
-                boxShadow: theme.customShadows.secondary
+                bgcolor: theme.palette.grey[300],
+                color: theme.palette.text.secondary,
+                '&:hover': {
+                  bgcolor: theme.palette.grey[600],
+                  color: theme.palette.common.white
+                },
+                boxShadow: theme.customShadows?.secondary || theme.shadows[6]
               }}
             >
               <AnimateButton type="scale">
-                <IconButton color="inherit" size="large" disableRipple>
-                  {totalItems > 0 && (
-                    <Badge
-                      badgeContent={totalItems}
-                      sx={{
-                        '& .MuiBadge-badge': {
-                          bottom: 10,
-                          left: 15,
-                          backgroundColor: theme.palette.orange.dark,
-                          color: '#fff'
-                        }
-                      }}
-                    >
-                      <IconShoppingCart />
-                    </Badge>
-                  )}
-                </IconButton>
+                <Box>
+                {totalItems > 0 ? (
+                  <Badge
+                    badgeContent={totalItems}
+                    sx={{
+                      '& .MuiBadge-badge': {
+                        bottom: 10,
+                        left: 15,
+                        backgroundColor: theme.palette.grey[900],
+                        color: theme.palette.common.white
+                      }
+                    }}
+                  >
+                    <IconShoppingCart />
+                  </Badge>
+                ) : (
+                  <IconShoppingCart />
+                )}
+                </Box>
               </AnimateButton>
             </Fab>
           </Tooltip>
@@ -84,7 +92,7 @@ export default function OrderQuickActions({}) {
 
       <Drawer anchor="right" onClose={handleToggle} open={open} PaperProps={{ sx: { width: 740 } }}>
         <PerfectScrollbar>
-          <StoredOrder />
+            <StoredOrder />
         </PerfectScrollbar>
       </Drawer>
     </>

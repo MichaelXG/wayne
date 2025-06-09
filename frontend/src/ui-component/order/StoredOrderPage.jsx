@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 import DynamicDataGrid from '../dataGrid/DynamicDataGrid';
 import createDataGridSlots from '../dataGrid/slots/createDataGridSlots';
@@ -20,11 +21,12 @@ const StoredOrderPage = () => {
 
   const orderRef = useRef(null);
   const hasFilters = filterModel.items.length > 0;
+  const theme = useTheme();
 
   const updateOrder = (updatedItems) => {
     const enrichedItems = updatedItems.map((item) => ({
       ...item,
-      image: item.image || '' // garante que todos os itens tenham uma imagem
+      image: item.image || ''
     }));
 
     const updatedOrder = {
@@ -43,50 +45,53 @@ const StoredOrderPage = () => {
       localStorage.setItem('order', JSON.stringify(updatedOrder));
     }
 
-    if (isDebug) console.log('📝 Ordem atualizada:', updatedOrder);
+    isDebug && console.log('📝 Ordem atualizada:', updatedOrder);
   };
 
   const onDeleteSelected = useCallback(() => {
+    isDebug && console.log('🗑️ IDs dos itens selecionados para exclusão:', selectionModel);
     const updatedItems = orders.filter((item) => !selectionModel.includes(item.id));
     setSelectionModel([]);
     updateOrder(updatedItems);
   }, [orders, selectionModel]);
 
-  const onDeleteItem = useCallback((id) => {
-    const updatedItems = orders.filter((item) => item.id !== id);
-    updateOrder(updatedItems);
-  }, [orders]);
-  
+  const onDeleteItem = useCallback(
+    (id) => {
+      isDebug && console.log('🗑️ ID do item excluído:', id);
+      const updatedItems = orders.filter((item) => item.id !== id);
+      updateOrder(updatedItems);
+    },
+    [orders]
+  );
+
   const onEditQuantity = useCallback((item) => {
+    isDebug && console.log('✏️ Iniciando edição do item:', item);
     setEditItem(item);
   }, []);
 
   const handleSaveEdit = (updatedItem) => {
     if (!editItem) return;
 
+    isDebug && console.log('✏️ Item antes da edição:', editItem);
+    isDebug && console.log('✏️ Item após a edição:', updatedItem);
+
     if (!updatedItem) {
       const remaining = orders.filter((i) => i.id !== editItem.id);
       updateOrder(remaining);
     } else {
-      const updatedItems = orders.map((i) =>
-        i.id === updatedItem.id ? { ...i, quantity: updatedItem.quantity } : i
-      );
+      const updatedItems = orders.map((i) => (i.id === updatedItem.id ? { ...i, quantity: updatedItem.quantity } : i));
       updateOrder(updatedItems);
     }
 
     setEditItem(null);
   };
 
-  const columns = createStoredOrderColumns(
-    onDeleteSelected,
-    onDeleteItem,
-    onEditQuantity,
-    false
-  );
+  const columns = createStoredOrderColumns(onDeleteSelected, onDeleteItem, onEditQuantity, false);
 
   useEffect(() => {
     const loadOrderFromStorage = () => {
       const order = getOrderFromLocalStorage();
+      isDebug && console.log('📦 Pedido carregado do localStorage:', order);
       if (order && Array.isArray(order.items)) {
         orderRef.current = order;
         const items = order.items.map((item) => ({
@@ -106,6 +111,7 @@ const StoredOrderPage = () => {
   }, []);
 
   const onClearFilters = useCallback(() => {
+    isDebug && console.log('🔍 Limpando filtros');
     setFilteredOrders(orders);
     setFilterModel({ items: [] });
   }, [orders]);
@@ -119,22 +125,31 @@ const StoredOrderPage = () => {
     []
   );
 
-  const noRowsOverlay = useCallback(() => <IllustrationMessage {...emptyMessage} />, [emptyMessage]);
+  const NoRowsOverlay = React.useMemo(() => {
+    const NoRowsComponent = (props) => <IllustrationMessage {...emptyMessage} {...props} />;
+    NoRowsComponent.displayName = 'NoRowsOverlay';
+    return NoRowsComponent;
+  }, [emptyMessage]);
 
-  const toolbar = useCallback(
-    () => (
+  const Toolbar = React.useMemo(() => {
+    const ToolbarComponent = (props) => (
       <CustomToolbarOrder
+        {...props}
         selectionModel={selectionModel}
         onDeleteSelected={onDeleteSelected}
         hasFilters={hasFilters}
         filterModel={filterModel}
         onClearFilters={onClearFilters}
       />
-    ),
-    [selectionModel, onDeleteSelected, hasFilters, filterModel, onClearFilters]
-  );
+    );
+    ToolbarComponent.displayName = 'Toolbar';
+    return ToolbarComponent;
+  }, [selectionModel, onDeleteSelected, hasFilters, filterModel, onClearFilters]);
 
-  const slots = useMemo(() => createDataGridSlots({ toolbar, noRowsOverlay }), [toolbar, noRowsOverlay]);
+  const slots = {
+    toolbar: Toolbar,
+    noRowsOverlay: NoRowsOverlay
+  };
 
   return (
     <>
@@ -147,17 +162,12 @@ const StoredOrderPage = () => {
         filterModel={filterModel}
         setFilterModel={setFilterModel}
         slots={slots}
-        sx={sxColumns}
+        sx={sxColumns(theme)}
         getRowId={(row) => row.id}
         summaryFooter={true}
       />
 
-      <StoredOrderEditModal
-        open={!!editItem}
-        item={editItem}
-        onClose={() => setEditItem(null)}
-        onSave={handleSaveEdit}
-      />
+      <StoredOrderEditModal open={!!editItem} item={editItem} onClose={() => setEditItem(null)} onSave={handleSaveEdit} />
     </>
   );
 };

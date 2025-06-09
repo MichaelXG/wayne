@@ -2,7 +2,6 @@ import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
 
 import { API_ROUTES } from '../../routes/ApiRoutes';
-import productColumns from '../../ui-component/dataGrid/columns/productColumns';
 import DynamicDataGrid from '../../ui-component/dataGrid/DynamicDataGrid';
 import createDataGridSlots from '../../ui-component/dataGrid/slots/createDataGridSlots';
 import CustomToolbarProduct from '../../ui-component/dataGrid/slots/CustomToolbarProduct';
@@ -11,14 +10,16 @@ import { isDebug } from '../../App';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import sxColumns from '../../ui-component/dataGrid/styles/sxColumns';
 import createProductColumns from '../../ui-component/dataGrid/columns/productColumns';
+import { useTheme } from '@mui/material/styles';
 
 const ListPage = () => {
+  const theme = useTheme();
   const [products, setProducts] = useState([]); // armazena o array real
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]);
   const [filterModel, setFilterModel] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   const hasFilters = filterModel.items.length > 0;
 
@@ -27,7 +28,11 @@ const ListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(API_ROUTES.PRODUCTS);
+        const response = await axios.get(API_ROUTES.PRODUCTS, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         const productList = response.data?.results || response.data || [];
 
         if (!Array.isArray(productList)) {
@@ -134,7 +139,7 @@ const ListPage = () => {
       filterModel={filterModel}
       setFilterModel={setFilterModel}
       slots={slots}
-      sx={sxColumns}
+      sx={sxColumns(theme)}
     />
   );
 };

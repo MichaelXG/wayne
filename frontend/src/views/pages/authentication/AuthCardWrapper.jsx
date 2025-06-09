@@ -11,9 +11,9 @@ export default function AuthCardWrapper({ children, ...other }) {
   return (
     <MainCard
       sx={{
-        maxWidth: { xs: '90%', sm: 400, lg: 475 }, // ✅ Melhor responsividade
+        maxWidth: { xs: '90%', sm: 400, lg: 475 }, 
         margin: { xs: 2.5, md: 3 },
-        display: 'flex', // ✅ Adiciona flexbox
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',

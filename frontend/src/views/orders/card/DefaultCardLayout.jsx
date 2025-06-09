@@ -24,7 +24,14 @@ export default function DefaultCardLayout({ subCardTitle, actionbutton, children
             {/* Linha com Título e Botão */}
             <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
               <Box display="flex" alignItems="center" gap={1}>
-                <Typography variant={downMD ? 'h5' : 'h4'} sx={{ color: 'secondary.main', fontWeight: 600 }}>
+                <Typography
+                  variant={downMD ? 'h5' : 'h4'}
+                  sx={(theme) => ({
+                    color: theme.palette.grey[600],
+                    fontWeight: 600
+                  })}
+                >
+                  {' '}
                   {subCardTitle}
                 </Typography>
               </Box>
@@ -37,32 +44,32 @@ export default function DefaultCardLayout({ subCardTitle, actionbutton, children
                     placement="top"
                     componentsProps={{
                       tooltip: {
-                        sx: {
-                          backgroundColor: '#8E33FF',
-                          color: '#fff',
+                        sx: (theme) => ({
+                          backgroundColor: theme.palette.grey[600],
+                          color: theme.palette.common.white,
                           fontSize: 12,
                           px: 1.5,
                           py: 0.5,
                           borderRadius: 1,
-                          boxShadow: 2
-                        }
+                          boxShadow: theme.shadows[2]
+                        })
                       }
                     }}
                   >
-                    <IconButton 
+                    <IconButton
                       disabled={actionbutton.disabled ?? false}
-                      color={actionbutton.color || 'secondary'}
+                      color={actionbutton.color || theme.palette.grey[600]}
                       size="medium"
                       href={actionbutton.href}
                       onClick={actionbutton.onClick}
                       type={actionbutton.type || 'button'}
-                      sx={{
-                        backgroundColor: 'secondary.light',
+                      sx={(theme) => ({
+                        backgroundColor: theme.palette.grey[300],
                         '&:hover': {
-                          backgroundColor: 'secondary.main',
-                          color: 'white'
+                          backgroundColor: theme.palette.grey[600],
+                          color: theme.palette.common.white
                         }
-                      }}
+                      })}
                     >
                       {actionbutton.icon}
                     </IconButton>

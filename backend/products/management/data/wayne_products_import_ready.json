@@ -1,0 +1,1598 @@
+[
+  {
+    "id": 1,
+    "sku": "SKU-0001",
+    "title": "Batsuit Mark IX",
+    "description": "Armor with light armor, environmental sensors, and active camouflage capabilities for stealth operations.",
+    "category": "Safety Equipment",
+    "code": "YNJ0IFMN",
+    "quantity": 3,
+    "price_regular": 1545454.55,
+    "price_sale": 1700000,
+    "tax": 10,
+    "rating_rate": 4.1,
+    "rating_count": 91,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/001.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "sku": "SKU-0002",
+    "title": "NVX-Pro Night Vision Mask",
+    "description": "Thermal, UV, infrared vision and integrated HUD with 6x optical zoom.",
+    "category": "Safety Equipment",
+    "code": "VAXUA77C",
+    "quantity": 25,
+    "price_regular": 27272.73,
+    "price_sale": 30000,
+    "tax": 10,
+    "rating_rate": 4.5,
+    "rating_count": 19,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/002.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "sku": "SKU-0003",
+    "title": "Batman Tumbler",
+    "description": "Multipurpose armored vehicle with non-lethal weapons and camouflage modes.",
+    "category": "Vehicles",
+    "code": "Q9HJXZXB",
+    "quantity": 2,
+    "price_regular": 2272727.27,
+    "price_sale": 2500000,
+    "tax": 10,
+    "rating_rate": 4.5,
+    "rating_count": 126,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/003.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "sku": "SKU-0004",
+    "title": "Batcycle V4",
+    "description": "Fast-response motorcycle with articulated wheels and anti-lock system.",
+    "category": "Vehicles",
+    "code": "3EGIBJOJ",
+    "quantity": 5,
+    "price_regular": 381818.18,
+    "price_sale": 420000,
+    "tax": 10,
+    "rating_rate": 3.9,
+    "rating_count": 116,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/004.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "sku": "SKU-0005",
+    "title": "Batwing Stealth-X",
+    "description": "VTOL aircraft with silent propulsion, reflective shields and navigation AI.",
+    "category": "Air Vehicles",
+    "code": "F8LNKGXE",
+    "quantity": 1,
+    "price_regular": 5454545.45,
+    "price_sale": 6000000,
+    "tax": 10,
+    "rating_rate": 3.5,
+    "rating_count": 65,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/005.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "sku": "SKU-0006",
+    "title": "Automatic Ascension Claw",
+    "description": "Climbing thruster with retractable steel cable and high-precision magnetic anchor.",
+    "category": "Tactical Tools",
+    "code": "SOCFJD19",
+    "quantity": 15,
+    "price_regular": 40909.09,
+    "price_sale": 45000,
+    "tax": 10,
+    "rating_rate": 4.1,
+    "rating_count": 150,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/006.png?raw=true",
+        "image": null
+      },
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/006_1.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "sku": "SKU-0007",
+    "title": "Batarang with GPS",
+    "description": "Boomerang equipped with tracking chip and automatic return mode.",
+    "category": "Tactical Tools",
+    "code": "A53UHPJ4",
+    "quantity": 60,
+    "price_regular": 6363.64,
+    "price_sale": 7000,
+    "tax": 10,
+    "rating_rate": 5.0,
+    "rating_count": 38,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/007.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "sku": "SKU-0008",
+    "title": "WayneAid Pro Medical Kit",
+    "description": "Portable unit with automatic defibrillator, anesthetic and regenerative biofoam.",
+    "category": "Health",
+    "code": "N2B0NE43",
+    "quantity": 30,
+    "price_regular": 11363.64,
+    "price_sale": 12500,
+    "tax": 10,
+    "rating_rate": 4.6,
+    "rating_count": 52,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/008.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "sku": "SKU-0009",
+    "title": "Nanobots Regenerativos Alpha-R",
+    "description": "Cellular repair nanotechnology for military and field use. Promotes rapid tissue regeneration.",
+    "category": "Health",
+    "code": "LKWN6KRK",
+    "quantity": 40,
+    "price_regular": 17727.27,
+    "price_sale": 19500,
+    "tax": 10,
+    "rating_rate": 3.5,
+    "rating_count": 70,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/009.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "sku": "SKU-0010",
+    "title": "WayneTech V2 Surveillance Drone",
+    "description": "Compact drone with onboard AI, facial recognition and high-precision thermal sensors.",
+    "category": "HealthSecurity and Monitoring",
+    "code": "0X36W6GN",
+    "quantity": 18,
+    "price_regular": 89090.91,
+    "price_sale": 98000,
+    "tax": 10,
+    "rating_rate": 4.8,
+    "rating_count": 56,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/010.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "sku": "SKU-0011",
+    "title": "Wayne Shield (Monitoring Center)",
+    "description": "Integrated system of cameras, microphones and AI for real-time urban control.",
+    "category": "HealthSecurity and Monitoring",
+    "code": "PVSFK2ZH",
+    "quantity": 3,
+    "price_regular": 290909.09,
+    "price_sale": 320000,
+    "tax": 10,
+    "rating_rate": 4.2,
+    "rating_count": 46,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/011.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "sku": "SKU-0012",
+    "title": "Wayne Neural Core AI",
+    "description": "Neural AI core for defense operations control, threat analysis, and tactical support.",
+    "category": "Information Technology",
+    "code": "34OUY0F4",
+    "quantity": 8,
+    "price_regular": 250000.0,
+    "price_sale": 275000,
+    "tax": 10,
+    "rating_rate": 4.2,
+    "rating_count": 9,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/012.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "sku": "SKU-0013",
+    "title": "WayneTrace (Tracking Software)",
+    "description": "Advanced tracking system with encryption and predictive AI. Used by special forces.",
+    "category": "Information Technology",
+    "code": "3K35TYPE",
+    "quantity": 25,
+    "price_regular": 136363.64,
+    "price_sale": 150000,
+    "tax": 10,
+    "rating_rate": 5.0,
+    "rating_count": 117,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/013.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "sku": "SKU-0014",
+    "title": "FusionCell Z Portable Reactor",
+    "description": "Portable source of clean energy with controlled fusion. Ideal for field devices and elite vehicles.",
+    "category": "Energy and Sustainability",
+    "code": "9GUWG38U",
+    "quantity": 4,
+    "price_regular": 809090.91,
+    "price_sale": 890000,
+    "tax": 10,
+    "rating_rate": 4.3,
+    "rating_count": 141,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/014.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "sku": "SKU-0015",
+    "title": "HoloRoom XR Simulation Room",
+    "description": "Augmented reality environment for immersive combat, tactics and urban rescue training.",
+    "category": "Simulation and Training",
+    "code": "XJJCWBVK",
+    "quantity": 1,
+    "price_regular": 1090909.09,
+    "price_sale": 1200000,
+    "tax": 10,
+    "rating_rate": 3.7,
+    "rating_count": 149,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/015.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "sku": "SKU-0016",
+    "title": "FightIQ Combat Analysis System",
+    "description": "AI that monitors body movements in combat and provides biomechanical improvements.",
+    "category": "Simulation and Training",
+    "code": "HV4BLKBW",
+    "quantity": 10,
+    "price_regular": 83636.36,
+    "price_sale": 92000,
+    "tax": 10,
+    "rating_rate": 4.4,
+    "rating_count": 8,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/016.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "sku": "SKU-0017",
+    "title": "EMP Portable Wayne EMPulse",
+    "description": "Portable electromagnetic pulse device capable of neutralizing electronic equipment within a 10 meter radius.",
+    "category": "Tactical Tools",
+    "code": "TWE8NVFJ",
+    "quantity": 7,
+    "price_regular": 67272.73,
+    "price_sale": 74000,
+    "tax": 10,
+    "rating_rate": 4.5,
+    "rating_count": 79,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/017.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "sku": "SKU-0018",
+    "title": "WayneProtect Anti-Acid Spray",
+    "description": "Emergency chemical spray capable of neutralizing corrosive substances and protecting the skin in chemical combat.",
+    "category": "Health",
+    "code": "QZ09EOT7",
+    "quantity": 20,
+    "price_regular": 4727.27,
+    "price_sale": 5200,
+    "tax": 10,
+    "rating_rate": 4.0,
+    "rating_count": 23,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/018.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "sku": "SKU-0019",
+    "title": "WayneScan Bug Detector",
+    "description": "Compact device that detects hidden eavesdropping and transmitters in rooms or vehicles.",
+    "category": "HealthSecurity and Monitoring",
+    "code": "MB6LG28Z",
+    "quantity": 12,
+    "price_regular": 17727.27,
+    "price_sale": 19500,
+    "tax": 10,
+    "rating_rate": 4.3,
+    "rating_count": 139,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/019.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "sku": "SKU-0020",
+    "title": "Smart Containment Bracelet",
+    "description": "Wrist device worn by officers to restrain individuals, with biometric sensors and remote control.",
+    "category": "Safety Equipment",
+    "code": "94Z5E6I8",
+    "quantity": 18,
+    "price_regular": 30454.55,
+    "price_sale": 33500,
+    "tax": 10,
+    "rating_rate": 3.8,
+    "rating_count": 87,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/020.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "sku": "SKU-0021",
+    "title": "High Density Smoke Grenade",
+    "description": "Non-lethal grenade with military density black smoke for escape or disorientation in closed environments.",
+    "category": "Tactical Tools",
+    "code": "2VS8EN9L",
+    "quantity": 35,
+    "price_regular": 7090.91,
+    "price_sale": 7800,
+    "tax": 10,
+    "rating_rate": 3.8,
+    "rating_count": 40,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/021.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "sku": "SKU-0022",
+    "title": "Retractable Ballistic Shield",
+    "description": "Retractable shield made of lightweight titanium alloy, with high-velocity impact resistance and Wayne suit compatibility.",
+    "category": "Safety Equipment",
+    "code": "OOU3CUNA",
+    "quantity": 6,
+    "price_regular": 49090.91,
+    "price_sale": 54000,
+    "tax": 10,
+    "rating_rate": 4.8,
+    "rating_count": 20,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/022.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "sku": "SKU-0023",
+    "title": "WayneBlock Portable Jammer System",
+    "description": "Signal blocking device for controlled environments, preventing data transmission and external communications.",
+    "category": "Information Technology",
+    "code": "ZUSZ17WC",
+    "quantity": 8,
+    "price_regular": 80000.0,
+    "price_sale": 88000,
+    "tax": 10,
+    "rating_rate": 3.9,
+    "rating_count": 132,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/023.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "sku": "SKU-0024",
+    "title": "Instant hemostatic spray",
+    "description": "Spray that quickly stops external bleeding in combat situations. Approved for use in the field.",
+    "category": "Health",
+    "code": "ECYLXHHE",
+    "quantity": 42,
+    "price_regular": 4181.82,
+    "price_sale": 4600,
+    "tax": 10,
+    "rating_rate": 4.1,
+    "rating_count": 33,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/024.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "sku": "SKU-0025",
+    "title": "Rapid Rescue Jetpack",
+    "description": "Individual flight device for emergency extraction with stabilized control and 2 km range.",
+    "category": "Air Vehicles",
+    "code": "V0S8P322",
+    "quantity": 2,
+    "price_regular": 900000.0,
+    "price_sale": 990000,
+    "tax": 10,
+    "rating_rate": 3.5,
+    "rating_count": 54,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/025.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "sku": "SKU-0026",
+    "title": "WayneSound Sonic Non-Lethal Weapon",
+    "description": "Portable sound emission device for crowd containment and disorientation of targets without physical damage.",
+    "category": "Safety Equipment",
+    "code": "HENZAH0Q",
+    "quantity": 9,
+    "price_regular": 111818.18,
+    "price_sale": 123000,
+    "tax": 10,
+    "rating_rate": 3.6,
+    "rating_count": 45,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/026.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "sku": "SKU-0027",
+    "title": "Wayne ReGen Chamber",
+    "description": "Recovery chamber with cellular stimulation by magnetic pulses. Reduces muscle recovery time by 60%.",
+    "category": "Health",
+    "code": "KS8X4FQX",
+    "quantity": 3,
+    "price_regular": 134545.45,
+    "price_sale": 148000,
+    "tax": 10,
+    "rating_rate": 4.4,
+    "rating_count": 146,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/027.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "sku": "SKU-0028",
+    "title": "WayneBio Tracker",
+    "description": "Smart bracelet with heart rate, temperature, saturation monitoring and AI tactical risk alert.",
+    "category": "Information Technology",
+    "code": "CSCX5PAS",
+    "quantity": 50,
+    "price_regular": 20909.09,
+    "price_sale": 23000,
+    "tax": 10,
+    "rating_rate": 4.8,
+    "rating_count": 35,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/028.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "sku": "SKU-0029",
+    "title": "WayneHeal-X Rapid Healing Injector",
+    "description": "Portable device that delivers regenerative substances with integrated biometric reading.",
+    "category": "Health",
+    "code": "LWMP8NG7",
+    "quantity": 24,
+    "price_regular": 10181.82,
+    "price_sale": 11200,
+    "tax": 10,
+    "rating_rate": 4.1,
+    "rating_count": 100,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/029.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "sku": "SKU-0030",
+    "title": "Nanoscanner BioField",
+    "description": "Portable field scanner with bone, muscle and vascular reading. Used in instant diagnostics.",
+    "category": "Health",
+    "code": "EBQ3NLLQ",
+    "quantity": 9,
+    "price_regular": 31363.64,
+    "price_sale": 34500,
+    "tax": 10,
+    "rating_rate": 3.9,
+    "rating_count": 98,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/030.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "sku": "SKU-0031",
+    "title": "Wayne Stealth Glider",
+    "description": "Hang glider with silent electric motor, automatic stabilizer and anti-detection coating.",
+    "category": "Air Vehicles",
+    "code": "T6ETBYY4",
+    "quantity": 2,
+    "price_regular": 236363.64,
+    "price_sale": 260000,
+    "tax": 10,
+    "rating_rate": 4.7,
+    "rating_count": 23,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/031.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "sku": "SKU-0032",
+    "title": "Wayne Submersible Tactical",
+    "description": "Underwater infiltration vehicle with reinforced hull, non-lethal missiles and encrypted sonar.",
+    "category": "Vehicles",
+    "code": "SR7854SA",
+    "quantity": 1,
+    "price_regular": 1436363.64,
+    "price_sale": 1580000,
+    "tax": 10,
+    "rating_rate": 4.0,
+    "rating_count": 33,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/032.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "sku": "SKU-0033",
+    "title": "Wayne Sky Pod",
+    "description": "Vertical extraction capsule for emergency evacuation. Supports AI tracking.",
+    "category": "Air Vehicles",
+    "code": "0G4T7ZOY",
+    "quantity": 2,
+    "price_regular": 440909.09,
+    "price_sale": 485000,
+    "tax": 10,
+    "rating_rate": 4.2,
+    "rating_count": 120,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/033.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "sku": "SKU-0034",
+    "title": "Urban Camouflage Module",
+    "description": "Thermal cloak that distorts thermal and visual signatures. Ideal for stealth operations in urban areas.",
+    "category": "Safety Equipment",
+    "code": "JLKRQJM2",
+    "quantity": 6,
+    "price_regular": 67272.73,
+    "price_sale": 74000,
+    "tax": 10,
+    "rating_rate": 4.0,
+    "rating_count": 124,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/034.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "sku": "SKU-0035",
+    "title": "WayneNet Net Trap",
+    "description": "Portable net throwing device with sensors that automatically lock onto multiple targets.",
+    "category": "Tactical Tools",
+    "code": "LMBTKRQV",
+    "quantity": 22,
+    "price_regular": 14090.91,
+    "price_sale": 15500,
+    "tax": 10,
+    "rating_rate": 4.5,
+    "rating_count": 82,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/035.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "sku": "SKU-0036",
+    "title": "ShockGlove High Voltage Gloves",
+    "description": "Electrically charged gloves for non-lethal immobilization. Powered by rechargeable micro-battery.",
+    "category": "Safety Equipment",
+    "code": "NZ7EPM0N",
+    "quantity": 16,
+    "price_regular": 28181.82,
+    "price_sale": 31000,
+    "tax": 10,
+    "rating_rate": 4.0,
+    "rating_count": 82,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/036.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "sku": "SKU-0037",
+    "title": "Wayne Quantum OS",
+    "description": "Quantum operating system designed for predictive analysis and real-time threat simulation.",
+    "category": "Information Technology",
+    "code": "AT5K2HKT",
+    "quantity": 3,
+    "price_regular": 654545.45,
+    "price_sale": 720000,
+    "tax": 10,
+    "rating_rate": 4.1,
+    "rating_count": 100,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/037.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "sku": "SKU-0038",
+    "title": "Wayne HUD Lens",
+    "description": "Contact lens with augmented reality projection, environment mapping and biometric information.",
+    "category": "Information Technology",
+    "code": "R5OPMC8X",
+    "quantity": 12,
+    "price_regular": 41363.64,
+    "price_sale": 45500,
+    "tax": 10,
+    "rating_rate": 4.5,
+    "rating_count": 87,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/038.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "sku": "SKU-0039",
+    "title": "WayneMap Portable Dashboard",
+    "description": "Ultra-rugged tactical tablet with real-time map synchronization, telemetry and field commands.",
+    "category": "Information Technology",
+    "code": "S49CW459",
+    "quantity": 20,
+    "price_regular": 35454.55,
+    "price_sale": 39000,
+    "tax": 10,
+    "rating_rate": 4.1,
+    "rating_count": 129,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/039.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "sku": "SKU-0040",
+    "title": "WaynePack Modular Tactical Backpack",
+    "description": "Multifunctional backpack with removable modules, flame retardant coating and intelligent weight distribution system.",
+    "category": "Safety Equipment",
+    "code": "53DAI8Z0",
+    "quantity": 30,
+    "price_regular": 13181.82,
+    "price_sale": 14500,
+    "tax": 10,
+    "rating_rate": 4.0,
+    "rating_count": 105,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/040.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "sku": "SKU-0041",
+    "title": "W-Ground Underground Motion Sensor",
+    "description": "Geolocated underground vibration and intrusion sensor, with AI seismic pattern analysis.",
+    "category": "HealthSecurity and Monitoring",
+    "code": "33JDKSYJ",
+    "quantity": 7,
+    "price_regular": 82727.27,
+    "price_sale": 91000,
+    "tax": 10,
+    "rating_rate": 4.5,
+    "rating_count": 121,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/041.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "sku": "SKU-0042",
+    "title": "Wayne Tactical Boots V3",
+    "description": "Impact-absorbing infiltration boots with adaptive magnetic base and integrated RFID.",
+    "category": "Safety Equipment",
+    "code": "AGMKRSA4",
+    "quantity": 22,
+    "price_regular": 16818.18,
+    "price_sale": 18500,
+    "tax": 10,
+    "rating_rate": 4.9,
+    "rating_count": 125,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/042.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "sku": "SKU-0043",
+    "title": "Wayne UltraNoise Canceller",
+    "description": "Portable device for active cancellation of high frequency noise in sound surveillance zones.",
+    "category": "Information Technology",
+    "code": "027V5LBK",
+    "quantity": 10,
+    "price_regular": 39090.91,
+    "price_sale": 43000,
+    "tax": 10,
+    "rating_rate": 5.0,
+    "rating_count": 32,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/043.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "sku": "SKU-0044",
+    "title": "Wayne Tactical Helmet HUD X2",
+    "description": "Armored helmet with augmented reality display, real-time telemetry and side threat sensor.",
+    "category": "Safety Equipment",
+    "code": "W0IA6R2W",
+    "quantity": 6,
+    "price_regular": 89090.91,
+    "price_sale": 98000,
+    "tax": 10,
+    "rating_rate": 3.5,
+    "rating_count": 95,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/044.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "sku": "SKU-0045",
+    "title": "WayneAir Self-Contained Breathing Unit",
+    "description": "Portable breathing system for toxic environments, with carbon filter, emergency oxygen and integrated display.",
+    "category": "Health",
+    "code": "6BCLF8OU",
+    "quantity": 12,
+    "price_regular": 60909.09,
+    "price_sale": 67000,
+    "tax": 10,
+    "rating_rate": 5.0,
+    "rating_count": 71,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/045.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "sku": "SKU-0046",
+    "title": "Wayne Tactical Shield Dome",
+    "description": "Field shield with semi-automatic expansion, total coverage and kinetic impact absorption.",
+    "category": "Safety Equipment",
+    "code": "GPBNETAP",
+    "quantity": 3,
+    "price_regular": 113636.36,
+    "price_sale": 125000,
+    "tax": 10,
+    "rating_rate": 3.7,
+    "rating_count": 130,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/046.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "sku": "SKU-0047",
+    "title": "WayneTrack Thermal Tracking System",
+    "description": "Thermal signature tracking device with up to 3 km range and HUD integration.",
+    "category": "HealthSecurity and Monitoring",
+    "code": "QDFXW3X2",
+    "quantity": 15,
+    "price_regular": 50909.09,
+    "price_sale": 56000,
+    "tax": 10,
+    "rating_rate": 4.0,
+    "rating_count": 69,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/047.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "sku": "SKU-0048",
+    "title": "WayneFlash Non-Lethal Pulse Mine",
+    "description": "Proximity-activated device that emits pulses of light and sound for temporary disorientation.",
+    "category": "Tactical Tools",
+    "code": "1F4K1LY5",
+    "quantity": 38,
+    "price_regular": 7909.09,
+    "price_sale": 8700,
+    "tax": 10,
+    "rating_rate": 4.2,
+    "rating_count": 107,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/048.png?raw=true",
+        "image": null
+      },
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/048_1.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "sku": "SKU-0049",
+    "title": "Wayne Tactical Belt XR",
+    "description": "Tactical belt with retractable compartments, RFID, biometric monitor and quick release system.",
+    "category": "Tactical Tools",
+    "code": "7RP6JJY3",
+    "quantity": 17,
+    "price_regular": 19090.91,
+    "price_sale": 21000,
+    "tax": 10,
+    "rating_rate": 4.3,
+    "rating_count": 75,
+    "is_active": true,
+    "is_secret": false,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/049.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "sku": "SKU-0050",
+    "title": "Classic Batsuit",
+    "description": "Tactical suit with cape, chest symbol and mask with sensors. Reinforced with Kevlar and lightweight bullet-resistant materials..",
+    "category": "Secret",
+    "code": "X9KL2M4N",
+    "quantity": 1,
+    "price_regular": 999999.99,
+    "price_sale": 1100000,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/050.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "sku": "SKU-0051",
+    "title": "Armored Batsuit (vs Superman)",
+    "description": "Heavy armor used against Superman. Reinforced with lead, protection against extreme impacts and amplified strength.",
+    "category": "Secret",
+    "code": "P7QR5S8T",
+    "quantity": 1,
+    "price_regular": 888888.88,
+    "price_sale": 977777.77,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/051.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "sku": "SKU-0052",
+    "title": "Tactical Batsuit",
+    "description": "Tactical version with special glasses and lightweight armor. Ideal for drone and night vision missions.",
+    "category": "Secret",
+    "code": "U3VW6X9Y",
+    "quantity": 1,
+    "price_regular": 777777.77,
+    "price_sale": 855555.55,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/052.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "sku": "SKU-0053",
+    "title": "Beyond Batsuit",
+    "description": "Futuristic suit with thrusters, invisibility and artificial intelligence. Advanced communication and HUD interface.",
+    "category": "Secret",
+    "code": "Z2AB4C7D",
+    "quantity": 1,
+    "price_regular": 666666.66,
+    "price_sale": 733333.33,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/053.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "sku": "SKU-0054",
+    "title": "Hellbat Armor",
+    "description": "Armor created by the Justice League. Extremely powerful, capable of facing cosmic-level threats. Uses the user's life force to operate.",
+    "category": "Secret",
+    "code": "E5FG8H1I",
+    "quantity": 1,
+    "price_regular": 555555.55,
+    "price_sale": 611111.11,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/054.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "sku": "SKU-0055",
+    "title": "Justice Buster",
+    "description": "Armor designed to combat members of the Justice League. Contains specific countermeasures for each hero.",
+    "category": "Secret",
+    "code": "J4KL7M0N",
+    "quantity": 1,
+    "price_regular": 444444.44,
+    "price_sale": 488888.88,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/055.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "sku": "SKU-0056",
+    "title": "Thrasher Suit (Sub-Zero Armor)",
+    "description": "Thermal armor for missions in ice or extreme environments. Full insulation and adapted thrusters.",
+    "category": "Secret",
+    "code": "P3QR6S9T",
+    "quantity": 1,
+    "price_regular": 333333.33,
+    "price_sale": 366666.66,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/056.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "sku": "SKU-0057",
+    "title": "Batarang",
+    "description": "Bat-shaped throwing weapon (cutting, explosive and tracking versions).",
+    "category": "Secret",
+    "code": "U2VW5X8Y",
+    "quantity": 1,
+    "price_regular": 222222.22,
+    "price_sale": 244444.44,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/057.png?raw=true",
+        "image": null
+      },
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/057_1.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "sku": "SKU-0058",
+    "title": "Samurai Armor",
+    "description": "Armor inspired by the samurai. Enhanced with Kevlar and bulletproof materials. Includes a katana and a shield. ",
+    "category": "Secret",
+    "code": "Z1AB4C7D",
+    "quantity": 1,
+    "price_regular": 111111.11,
+    "price_sale": 122222.22,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/058.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "sku": "SKU-0059",
+    "title": "Grapple Gun",
+    "description": "Grappling hook device for climbing buildings and moving around quickly.",
+    "category": "Secret",
+    "code": "E3FG6H9K",
+    "quantity": 1,
+    "price_regular": 999999.99,
+    "price_sale": 1100000,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/059.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "sku": "SKU-0060",
+    "title": "Explosive Gel",
+    "description": "Remote adhesive gel that explodes to open walls or disable structures.",
+    "category": "Secret",
+    "code": "J2KL5M8N",
+    "quantity": 1,
+    "price_regular": 888888.88,
+    "price_sale": 977777.77,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/060.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 61,
+    "sku": "SKU-0061",
+    "title": "Smoke Bombs",
+    "description": "Smoke bombs for escape and confusion in combat.",
+    "category": "Secret",
+    "code": "P1QR4S7T",
+    "quantity": 1,
+    "price_regular": 777777.77,
+    "price_sale": 855555.55,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/061.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 62,
+    "sku": "SKU-0062",
+    "title": "EMP Gun",
+    "description": "Electromagnetic pulse weapon to disable electronics.",
+    "category": "Secret",
+    "code": "U0VW3X7Y",
+    "quantity": 1,
+    "price_regular": 666666.66,
+    "price_sale": 733333.33,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/062.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 63,
+    "sku": "SKU-0063",
+    "title": "Sonic Bat Device",
+    "description": "High frequency sound emitter to attract or repel bats.",
+    "category": "Secret",
+    "code": "Z9AB2C5D",
+    "quantity": 1,
+    "price_regular": 555555.55,
+    "price_sale": 611111.11,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/063.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 64,
+    "sku": "SKU-0064",
+    "title": "Cryo Capsules",
+    "description": "Freezing capsules used to immobilize enemies or objects.",
+    "category": "Secret",
+    "code": "E8FG1H4I",
+    "quantity": 1,
+    "price_regular": 444444.44,
+    "price_sale": 488888.88,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/064.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 65,
+    "sku": "SKU-0065",
+    "title": "Batmobile",
+    "description": "Armored car, with tank mode, machine guns, shield and autopilot.",
+    "category": "Secret",
+    "code": "J7KL0M3N",
+    "quantity": 1,
+    "price_regular": 333333.33,
+    "price_sale": 366666.66,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/065.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 66,
+    "sku": "SKU-0066",
+    "title": "Batcycle",
+    "description": "Light, agile and fast motorcycle, with built-in gadgets.",
+    "category": "Secret",
+    "code": "P6QR9S2T",
+    "quantity": 1,
+    "price_regular": 222222.22,
+    "price_sale": 244444.44,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/066.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 67,
+    "sku": "SKU-0067",
+    "title": "Batwing",
+    "description": "High-tech aircraft used for air transport and air strikes.",
+    "category": "Secret",
+    "code": "U5VW8X1Y",
+    "quantity": 1,
+    "price_regular": 111111.11,
+    "price_sale": 122222.22,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/067.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 68,
+    "sku": "SKU-0068",
+    "title": "The Tumbler",
+    "description": "More robust version of the Batmobile (Nolan trilogy).",
+    "category": "Secret",
+    "code": "Z4AB7C0D",
+    "quantity": 1,
+    "price_regular": 999999.99,
+    "price_sale": 1100000,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/068.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "sku": "SKU-0069",
+    "title": "Orbital Bat-Satellite",
+    "description": "Global surveillance satellite with communication and tracking.",
+    "category": "Secret",
+    "code": "E3FG7H9I",
+    "quantity": 1,
+    "price_regular": 888888.88,
+    "price_sale": 977777.77,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/069.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 70,
+    "sku": "SKU-0070",
+    "title": "Batcomputer",
+    "description": "Supercomputer with criminal database, tracking and artificial intelligence.",
+    "category": "Secret",
+    "code": "J2KL6M8N",
+    "quantity": 1,
+    "price_regular": 777777.77,
+    "price_sale": 855555.55,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/070.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 71,
+    "sku": "SKU-0071",
+    "title": "Cryptographic Sequencer",
+    "description": "Portable system hacking and decryption device.",
+    "category": "Secret",
+    "code": "P1QR5S7T",
+    "quantity": 1,
+    "price_regular": 666666.66,
+    "price_sale": 733333.33,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/071.png?raw=true",
+        "image": null
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "sku": "SKU-0072",
+    "title": "Fingerprint Replicator",
+    "description": "Generates copies of fingerprints for access to restricted areas.",
+    "category": "Secret",
+    "code": "U0VW4X6Y",
+    "quantity": 1,
+    "price_regular": 555555.55,
+    "price_sale": 611111.11,
+    "tax": 10,
+    "rating_rate": 0.0,
+    "rating_count": 0,
+    "is_active": true,
+    "is_secret": true,
+    "images": [
+      {
+        "url": "https://github.com/MichaelXG/assets/blob/main/images/wayne/produscts/072.png?raw=true",
+        "image": null
+      }
+    ]
+  }
+]

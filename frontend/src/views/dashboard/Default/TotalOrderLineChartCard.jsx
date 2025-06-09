@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { alpha } from '@mui/material/styles';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 // third party
 import Chart from 'react-apexcharts';
@@ -31,7 +35,7 @@ export default function TotalOrderLineChartCard({ isLoading }) {
   const [timeValue, setTimeValue] = useState(false); // false = year, true = month
   const [orderTotal, setOrderTotal] = useState(0);
 
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
 
   const checkingAuth = useAuthGuard();
   const token = userData?.authToken || null;
@@ -65,12 +69,14 @@ export default function TotalOrderLineChartCard({ isLoading }) {
     <MainCard
       border={false}
       content={false}
-      sx={{
-        bgcolor: 'primary.dark',
-        color: '#fff',
+      sx={(theme) => ({
+        bgcolor: 'transparent',
         overflow: 'hidden',
         position: 'relative',
-        '&>div': {
+        height: '100%',
+        maxHeight: '200px',
+        '& .MuiBox-root': {
+          height: '100%',
           position: 'relative',
           zIndex: 5
         },
@@ -79,95 +85,140 @@ export default function TotalOrderLineChartCard({ isLoading }) {
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.primary[800],
+          background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
           borderRadius: '50%',
-          top: { xs: -85 },
-          right: { xs: -95 }
+          top: -30,
+          right: -180
         },
         '&:before': {
           content: '""',
           position: 'absolute',
           width: 210,
           height: 210,
-          background: theme.palette.primary[800],
+          background: `linear-gradient(140.9deg, ${theme.palette.warning.dark} -14.02%, rgba(144, 202, 249, 0) 70.50%)`,
           borderRadius: '50%',
-          top: { xs: -125 },
-          right: { xs: -15 },
-          opacity: 0.5
+          top: -160,
+          right: -130
         }
-      }}
+      })}
     >
-      <Box sx={{ p: 2.25 }}>
-        <Grid container direction="column">
-          <Grid>
-            <Grid container sx={{ justifyContent: 'space-between' }}>
-              <Grid>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    ...theme.typography.commonAvatar,
-                    ...theme.typography.largeAvatar,
-                    bgcolor: 'primary.800',
-                    color: '#fff',
-                    mt: 1
-                  }}
-                >
-                  <LocalMallOutlinedIcon fontSize="inherit" />
-                </Avatar>
-              </Grid>
-              <Grid>
-                <Button
-                  disableElevation
-                  variant={timeValue ? 'contained' : 'text'}
-                  size="small"
-                  sx={{ color: 'inherit' }}
-                  onClick={(e) => handleChangeTime(e, true)}
-                >
-                  Month
-                </Button>
-                <Button
-                  disableElevation
-                  variant={!timeValue ? 'contained' : 'text'}
-                  size="small"
-                  sx={{ color: 'inherit' }}
-                  onClick={(e) => handleChangeTime(e, false)}
-                >
-                  Year
-                </Button>
-              </Grid>
-            </Grid>
+      <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Grid item>
+            <Avatar
+              variant="rounded"
+              sx={(theme) => ({
+                ...theme.typography.commonAvatar,
+                ...theme.typography.largeAvatar,
+                bgcolor: theme.palette.warning.light,
+                color: theme.palette.warning.dark
+              })}
+            >
+              <LocalMallOutlinedIcon fontSize="inherit" />
+            </Avatar>
           </Grid>
-          <Grid sx={{ mb: 0.75 }}>
-            <Grid container sx={{ alignItems: 'center' }}>
-              <Grid size={6}>
-                <Grid container sx={{ alignItems: 'center' }}>
-                  <Grid>
-                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                      {Number(orderTotal || 0).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD'
-                      })}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <Avatar
-                      sx={{
-                        ...theme.typography.smallAvatar,
-                        cursor: 'pointer',
-                        bgcolor: 'primary.200',
-                        color: 'primary.dark'
-                      }}
-                    >
-                      <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-                    </Avatar>
-                  </Grid>
-                  <Grid size={12}>
-                    <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: 'primary.200' }}>Total Order</Typography>
-                  </Grid>
+          <Grid item>
+            <ButtonGroup size="small" sx={{ backgroundColor: alpha(theme.palette.warning.light, 0.1), p: 0.5, borderRadius: 1 }}>
+              <Button
+                disableElevation
+                variant={timeValue ? 'contained' : 'text'}
+                size="small"
+                sx={(theme) => ({
+                  minWidth: '30px',
+                  padding: '2px 8px',
+                  color: timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                  backgroundColor: timeValue ? theme.palette.warning.light : 'transparent',
+                  '&:hover': {
+                    backgroundColor: timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                  }
+                })}
+                onClick={(e) => handleChangeTime(e, true)}
+              >
+                M
+              </Button>
+              <Button
+                disableElevation
+                variant={!timeValue ? 'contained' : 'text'}
+                size="small"
+                sx={(theme) => ({
+                  minWidth: '30px',
+                  padding: '2px 8px',
+                  color: !timeValue ? theme.palette.warning.dark : theme.palette.grey[800],
+                  backgroundColor: !timeValue ? theme.palette.warning.light : 'transparent',
+                  '&:hover': {
+                    backgroundColor: !timeValue ? alpha(theme.palette.warning.light, 0.9) : alpha(theme.palette.warning.light, 0.1)
+                  }
+                })}
+                onClick={(e) => handleChangeTime(e, false)}
+              >
+                Y
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={1} sx={{ flexGrow: 1 }}>
+          <Grid item xs={6}>
+            <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  fontWeight: 500,
+                  color: theme.palette.grey[800],
+                  lineHeight: 1.2,
+                  mb: 0.5
+                }}
+              >
+                {Number(orderTotal || 0).toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                })}
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Avatar
+                  sx={(theme) => ({
+                    ...theme.typography.smallAvatar,
+                    width: 24,
+                    height: 24,
+                    cursor: 'pointer',
+                    bgcolor: theme.palette.warning.light,
+                    color: theme.palette.warning.dark
+                  })}
+                >
+                  <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+                </Avatar>
+                <Grid item>
+                  <Typography
+                    sx={(theme) => ({
+                      fontSize: '1rem',
+                      fontWeight: 500,
+                      color: theme.palette.grey[500]
+                    })}
+                  >
+                    Total Order
+                  </Typography>
                 </Grid>
-              </Grid>
-              <Grid size={6}>{timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}</Grid>
-            </Grid>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                height: '100%',
+                minHeight: 80,
+                maxHeight: 100,
+                '& .apexcharts-canvas': {
+                  '& .apexcharts-text': {
+                    fill: theme.palette.grey[800]
+                  },
+                  '& .apexcharts-series path': {
+                    stroke: theme.palette.warning.main
+                  }
+                }
+              }}
+            >
+              {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+            </Box>
           </Grid>
         </Grid>
       </Box>

@@ -17,12 +17,14 @@ const address = {
   title: 'Addresses',
   icon: icons.IconMapPin,
   type: 'group',
+  permission: { menu: 'address', action: 'can_read' },
   children: [
     {
       id: 'address-menu',
       title: 'Addresses',
       type: 'collapse',
       icon: icons.IconMapPin,
+      permission: { menu: 'address', action: 'can_read' },
       children: [
         {
           id: 'address-list',
@@ -30,7 +32,8 @@ const address = {
           type: 'item',
           url: '/address/list',
           icon: icons.IconList,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'address', action: 'can_read' }
         },
         {
           id: 'address-detail',
@@ -38,7 +41,8 @@ const address = {
           type: 'item',
           url: '/address/detail',
           icon: icons.IconDetails,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'address', action: 'can_read' }
         },
         {
           id: 'address-create',
@@ -46,7 +50,8 @@ const address = {
           type: 'item',
           url: '/address/create',
           icon: icons.IconPlus,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'address', action: 'can_create' }
         },
         {
           id: 'address-edit',
@@ -54,7 +59,8 @@ const address = {
           type: 'item',
           url: '/address/edit',
           icon: icons.IconEdit,
-          breadcrumbs: false
+          breadcrumbs: false,
+          permission: { menu: 'address', action: 'can_update' }
         }
       ]
     }

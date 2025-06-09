@@ -21,7 +21,7 @@ import { isDebug } from '../../../App';
 
 export default function History() {
   const checkingAuth = useAuthGuard();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { orderId } = useOrderIDContext();
 
   const [historyItems, setHistoryItems] = useState([]);

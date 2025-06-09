@@ -8,7 +8,7 @@ export default function useUserData(userId) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [userDataToken] = useLocalStorage('fake-store-user-data', {});
+  const [userDataToken] = useLocalStorage('wayne-user-data', {});
   const token = userDataToken.authToken || null;
 
   useEffect(() => {

@@ -15,8 +15,10 @@ import {
 } from '@mui/icons-material';
 import AnimateButton from '../../ui-component/extended/AnimateButton';
 import Decimal from 'decimal.js';
+import { useTheme } from '@mui/material/styles';
 
 export default function SummaryFooter({ data = [] }) {
+  const theme = useTheme();
   const [showSummary, setShowSummary] = useState(true);
 
   const summary = useMemo(() => {
@@ -58,7 +60,7 @@ export default function SummaryFooter({ data = [] }) {
         <Typography variant="h6" fontWeight={600} color="text.primary">
           Order Summary
         </Typography>
-        {/* Botão para mostrar/ocultar resumo */}
+        {/* Bot�o para mostrar/ocultar resumo */}
 
         <AnimateButton>
           <Tooltip
@@ -67,13 +69,13 @@ export default function SummaryFooter({ data = [] }) {
             componentsProps={{
               tooltip: {
                 sx: {
-                  backgroundColor: '#8E33FF',
-                  color: '#fff',
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white,
                   fontSize: 12,
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  boxShadow: 2
+                  boxShadow: theme.shadows[2]
                 }
               }
             }}
@@ -83,10 +85,10 @@ export default function SummaryFooter({ data = [] }) {
               size="medium"
               onClick={() => setShowSummary((prev) => !prev)}
               sx={{
-                backgroundColor: 'secondary.light',
+                backgroundColor: theme.palette.grey[300],
                 '&:hover': {
-                  backgroundColor: 'secondary.main',
-                  color: 'white'
+                  backgroundColor: theme.palette.grey[600],
+                  color: theme.palette.common.white
                 }
               }}
             >
@@ -135,7 +137,6 @@ export default function SummaryFooter({ data = [] }) {
             <Typography variant="body2">
               <DiscountIcon fontSize="small" color="secondary" /> Discount: <strong>${summary.estimatedDiscount.toFixed(2)}</strong>
             </Typography>
-
             <Typography variant="body2">
               <ShippingIcon fontSize="small" color="primary" /> ShippingFee: <strong>${summary.shippingFee.toFixed(2)}</strong>
             </Typography>
@@ -148,11 +149,10 @@ export default function SummaryFooter({ data = [] }) {
 
       <Divider sx={{ my: 2 }} />
 
-      {/* Total Final (sempre visível) */}
       <Box display="flex" justifyContent="flex-end" alignItems="center">
         <Typography variant="h4" fontWeight={600}>
-          Total:{' '}
-          <Box component="span" color="primary.main">
+          Total:&nbsp;
+          <Box component="span" color="primary.main" display="inline">
             ${summary.grandTotal.toFixed(2)}
           </Box>
         </Typography>

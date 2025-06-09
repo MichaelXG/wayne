@@ -15,7 +15,7 @@ import useOrderLockStatus from '../../../hooks/useOrderLockStatus';
 
 export default function Delivery({ onSelectCarrier }) {
   const checkingAuth = useAuthGuard();
-  const [userData] = useLocalStorage('fake-store-user-data', {});
+  const [userData] = useLocalStorage('wayne-user-data', {});
   const { orderId } = useOrderIDContext();
 
   const [carriers, setCarriers] = useState([]);
@@ -181,7 +181,8 @@ export default function Delivery({ onSelectCarrier }) {
         label: 'Edit Carrier',
         icon: customSvgEditIcon,
         onClick: openEditModal,
-        disabled: !canEdit
+        disabled: !canEdit,
+        permission: { menu: 'orders', action: 'can_update' }
       };
     }
     return {

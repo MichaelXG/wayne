@@ -18,18 +18,34 @@ export default function Footer() {
     >
       <Typography variant="caption">
         &copy; All rights reserved{' '}
-        <Typography component={Link} href="/" underline="hover" target="_blank" color="secondary.main">
-          M-Tech
+        <Typography
+          component={Link}
+          href="/"
+          target="_blank"
+          sx={(theme) => ({
+            color: theme.palette.grey[600],
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline'
+            }
+          })}
+        >
+          Wayne Industries
         </Typography>
       </Typography>
       <Stack direction="row" sx={{ gap: 1.5, alignItems: 'center', justifyContent: 'space-between' }}>
         <Link
           component={RouterLink}
           to="https://discord.gg/TVHHuKvc65"
-          underline="hover"
           target="_blank"
           variant="caption"
-          color="text.primary"
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline'
+            }
+          })}
         >
           Discord
         </Link>

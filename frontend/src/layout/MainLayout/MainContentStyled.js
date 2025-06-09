@@ -26,7 +26,7 @@ const MainContentStyled = styled('main', {
       duration: theme.transitions.duration.shorter + 200
     }),
     [theme.breakpoints.up('md')]: {
-      marginLeft: -(drawerWidth - 72),
+      marginLeft: -(drawerWidth - 92),
       width: `calc(100% - ${drawerWidth}px)`,
       marginTop: 88
     }

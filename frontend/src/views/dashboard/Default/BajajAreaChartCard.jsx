@@ -3,7 +3,7 @@ import React from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 // third party
@@ -18,7 +18,7 @@ import chartData from './chart-data/bajaj-area-chart';
 export default function BajajAreaChartCard() {
   const theme = useTheme();
 
-  const orangeDark = theme.palette.secondary[800];
+  const orangeDark = theme.palette.orange.dark;
 
   React.useEffect(() => {
     const newSupportChart = {
@@ -26,28 +26,60 @@ export default function BajajAreaChartCard() {
       colors: [orangeDark],
       tooltip: { theme: 'light' }
     };
-    ApexCharts.exec(`support-chart`, 'updateOptions', newSupportChart);
+    ApexCharts.exec('support-chart', 'updateOptions', newSupportChart);
   }, [orangeDark]);
 
   return (
-    <Card sx={{ bgcolor: 'secondary.light' }}>
-      <Grid container sx={{ p: 2, pb: 0, color: '#fff' }}>
-        <Grid size={12}>
-          <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-            <Grid>
-              <Typography variant="subtitle1" sx={{ color: 'secondary.dark' }}>
+    <Card
+      sx={(theme) => ({
+        bgcolor: theme.palette.grey[300]
+      })}
+    >
+      <Grid
+        container
+        sx={(theme) => ({
+          p: 2,
+          pb: 0,
+          color: theme.palette.common.white
+        })}
+      >
+        <Grid item xs={12}>
+          <Grid
+            container
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <Grid item>
+              <Typography
+                variant="subtitle1"
+                sx={(theme) => ({
+                  color: theme.palette.grey[900]
+                })}
+              >
                 Bajaj Finery
               </Typography>
             </Grid>
-            <Grid>
-              <Typography variant="h4" sx={{ color: 'grey.800' }}>
+            <Grid item>
+              <Typography
+                variant="h4"
+                sx={(theme) => ({
+                  color: theme.palette.grey[800]
+                })}
+              >
                 $1839.00
               </Typography>
             </Grid>
           </Grid>
         </Grid>
-        <Grid size={12}>
-          <Typography variant="subtitle2" sx={{ color: 'grey.800' }}>
+        <Grid item xs={12}>
+          <Typography
+            variant="subtitle2"
+            sx={(theme) => ({
+              color: theme.palette.grey[800]
+            })}
+          >
             10% Profit
           </Typography>
         </Grid>

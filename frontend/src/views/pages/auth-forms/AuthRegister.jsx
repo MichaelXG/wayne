@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 
@@ -28,19 +28,18 @@ import { API_ROUTES } from '../../../routes/ApiRoutes';
 import { isDebug } from '../../../App';
 import DynamicModal from '../../../ui-component/modal/DynamicModal';
 import UserAvatarUpload from '../../../ui-component/image/UserAvatarUpload';
+import PermissionGroupSelect from '../../../ui-component/permission/PermissionGroupSelect';
 
 export default function AuthRegister() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(null);
-
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [avatarImage, setAvatarImage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -49,18 +48,14 @@ export default function AuthRegister() {
     password: '',
     cpf: '',
     phone: '',
-    birth_date: ''
+    birth_date: '',
+    groups: []
   });
 
-  const [avatarImage, setAvatarImage] = useState(null);
-
   const handleImageChange = (file) => {
-    console.log('📥 Imagem recebida:', file);
-    setAvatarImage(file); // ✅ salvar a imagem recebida
+    isDebug && console.log('📥 Imagem recebida:', file);
+    setAvatarImage(file);
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,10 +67,10 @@ export default function AuthRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessMessage(null);
 
     const payload = {
       ...formData,
+      groups: formData.groups.map((g) => (typeof g === 'object' ? g.id : g)),
       cpf: formData.cpf.replace(/\D/g, ''),
       phone: formData.phone.replace(/\D/g, '')
     };
@@ -85,11 +80,9 @@ export default function AuthRegister() {
     try {
       const response = await axios.post(API_ROUTES.USERS, payload);
 
-      if (response.status === 200 || response.status === 201) {
-        const userId = response.data?.user?.id;
+      if ([200, 201].includes(response.status)) {
         const token = response.data?.access;
 
-        // ✅ Envia o avatar separado após o registro
         if (avatarImage && token) {
           const avatarFormData = new FormData();
           avatarFormData.append('image', avatarImage);
@@ -131,11 +124,11 @@ export default function AuthRegister() {
           </Grid>
         </Grid>
 
-        <Grid container spacing={{ xs: 0, sm: 2 }}>
-          <Grid item xs={12} sm={12}>
-            {' '}
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
             <UserAvatarUpload initialImage="" onChange={handleImageChange} />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -144,11 +137,22 @@ export default function AuthRegister() {
               name="first_name"
               type="text"
               value={formData.first_name}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                // ✅ Capitaliza só a primeira letra da string
+                const capitalized = value.charAt(0).toUpperCase() + value.slice(1);
+                handleChange({
+                  target: { name: 'first_name', value: capitalized }
+                });
+              }}
               required
               sx={{ ...theme.typography.customInput }}
+              InputProps={{
+                sx: { textTransform: 'capitalize' } // ✅ Mantém aparência (opcional)
+              }}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -157,16 +161,26 @@ export default function AuthRegister() {
               name="last_name"
               type="text"
               value={formData.last_name}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                // ✅ Capitaliza só a primeira letra da string
+                const capitalized = value.charAt(0).toUpperCase() + value.slice(1);
+                handleChange({
+                  target: { name: 'last_name', value: capitalized }
+                });
+              }}
               required
               sx={{ ...theme.typography.customInput }}
+              InputProps={{
+                sx: { textTransform: 'capitalize' } // ✅ mantém aparência coerente
+              }}
             />
           </Grid>
         </Grid>
 
-        <Grid container spacing={{ xs: 0, sm: 2 }}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange} required>
+            <InputMask mask="999.999.999-99" value={formData.cpf} onChange={handleChange}>
               {(inputProps) => (
                 <TextField {...inputProps} fullWidth label="CPF" margin="normal" name="cpf" sx={{ ...theme.typography.customInput }} />
               )}
@@ -189,14 +203,14 @@ export default function AuthRegister() {
           </Grid>
         </Grid>
 
-        <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange} required>
+        <InputMask mask="(99) 99999-9999" value={formData.phone} onChange={handleChange}>
           {(inputProps) => (
             <TextField {...inputProps} fullWidth label="Phone" margin="normal" name="phone" sx={{ ...theme.typography.customInput }} />
           )}
         </InputMask>
 
         <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel htmlFor="email">Email Address</InputLabel>
+          <InputLabel>Email Address</InputLabel>
           <OutlinedInput
             id="email"
             type="email"
@@ -209,7 +223,7 @@ export default function AuthRegister() {
         </FormControl>
 
         <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-          <InputLabel htmlFor="password">Password</InputLabel>
+          <InputLabel>Password</InputLabel>
           <OutlinedInput
             id="password"
             type={showPassword ? 'text' : 'password'}
@@ -228,18 +242,16 @@ export default function AuthRegister() {
           />
         </FormControl>
 
-        <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Grid>
-            <FormControlLabel
-              control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} name="checked" color="primary" />}
-              label={
-                <Typography variant="subtitle2" component="span">
-                  <Link to="#">Terms & Conditions</Link>
-                </Typography>
-              }
-            />
-          </Grid>
-        </Grid>
+        <PermissionGroupSelect value={formData.groups} onChange={(newGroups) => setFormData((prev) => ({ ...prev, groups: newGroups }))} />
+
+        <FormControlLabel
+          control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} name="checked" color="primary" />}
+          label={
+            <Typography variant="subtitle2" component="span">
+              <Link to="#">Terms & Conditions</Link>
+            </Typography>
+          }
+        />
 
         <Box sx={{ mt: 2 }}>
           <AnimateButton>
@@ -250,7 +262,6 @@ export default function AuthRegister() {
         </Box>
       </form>
 
-      {/* Success Modal */}
       <DynamicModal
         open={successModalOpen}
         onClose={() => setSuccessModalOpen(false)}
@@ -266,7 +277,6 @@ export default function AuthRegister() {
         }}
       />
 
-      {/* Error Modal */}
       <DynamicModal
         open={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}

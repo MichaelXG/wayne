@@ -14,6 +14,7 @@ import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 
 // assets
 import { IconMenu2 } from '@tabler/icons-react';
+import LanguageSection from './LanguageSection';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -33,18 +34,18 @@ export default function Header() {
         </Box>
         <Avatar
           variant="rounded"
-          sx={{
+          sx={(theme) => ({
             ...theme.typography.commonAvatar,
             ...theme.typography.mediumAvatar,
             overflow: 'hidden',
             transition: 'all .2s ease-in-out',
-            bgcolor: 'secondary.light',
-            color: 'secondary.dark',
+            bgcolor: theme.palette.grey[300],
+            color: theme.palette.grey[900],
             '&:hover': {
-              bgcolor: 'secondary.dark',
-              color: 'secondary.light'
+              bgcolor: theme.palette.grey[900],
+              color: theme.palette.grey[300]
             }
-          }}
+          })}
           onClick={() => handlerDrawerOpen(!drawerOpen)}
           color="inherit"
         >
@@ -57,6 +58,9 @@ export default function Header() {
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ flexGrow: 1 }} />
 
+      {/* language */}
+      <LanguageSection />
+      
       {/* notification */}
       <NotificationSection />
 

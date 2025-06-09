@@ -1,5 +1,3 @@
-// validator.js (corrigido)
-
 // ✅ Valida senha com requisitos mínimos
 export function validatePassword(password) {
   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&\-_.])[^\s]{12,}$/;
@@ -104,4 +102,10 @@ export function isTokenTimestampValid(timestamp) {
   const now = Date.now();
   const diff = Math.abs(now - Number(timestamp));
   return diff <= 30 * 60 * 1000; // 30 minutes
+}
+
+export function formatDate(date, locale = 'us') {
+  if (!date) return 'dd/mm/yyyy';
+  const d = new Date(date);
+  return isNaN(d) ? 'dd/mm/yyyy' : d.toLocaleDateString(locale);
 }

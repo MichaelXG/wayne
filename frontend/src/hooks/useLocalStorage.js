@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Custom Hook para armazenar e recuperar dados do localStorage com segurança
- * @param {string} key - Chave do localStorage
- * @param {any} defaultValue - Valor inicial caso não haja nada armazenado
- * @returns {[any, Function, Function]} - Retorna o valor armazenado, uma função para atualizar e outra para remover
+ * Custom Hook para armazenar e recuperar dados do localStorage com segurança.
+ * 
+ * @param {string} key - Chave do localStorage.
+ * @param {any} defaultValue - Valor inicial caso não haja nada armazenado.
+ * @returns {[any, Function, Function]} - Retorna: [valor, setValor, removeValor].
  */
 export default function useLocalStorage(key, defaultValue) {
-  // 🔹 Verifica se estamos no ambiente do navegador (evita erro em SSR)
   const isBrowser = typeof window !== 'undefined';
 
   const [value, setValue] = useState(() => {
@@ -15,9 +15,11 @@ export default function useLocalStorage(key, defaultValue) {
 
     try {
       const storedValue = localStorage.getItem(key);
-      return storedValue !== null ? JSON.parse(storedValue) : defaultValue;
+      if (storedValue === null) return defaultValue;
+
+      return JSON.parse(storedValue);
     } catch (error) {
-      console.error("❌ Error reading from localStorage:", error);
+      console.error(`❌ Error reading from localStorage [${key}]:`, error);
       return defaultValue;
     }
   });
@@ -28,37 +30,40 @@ export default function useLocalStorage(key, defaultValue) {
     const listener = (e) => {
       if (e.storageArea === localStorage && e.key === key) {
         try {
-          setValue(e.newValue ? JSON.parse(e.newValue) : e.newValue);
+          const newValue = e.newValue ? JSON.parse(e.newValue) : null;
+          setValue(newValue !== null ? newValue : defaultValue);
         } catch (error) {
-          console.error("❌ Error parsing localStorage value:", error);
+          console.error(`❌ Error parsing localStorage event for [${key}]:`, error);
         }
       }
     };
 
     window.addEventListener('storage', listener);
     return () => window.removeEventListener('storage', listener);
-  }, [key]);
+  }, [key, defaultValue]);
 
-  // 🔹 Função para atualizar o localStorage
+  // ✅ Função segura para atualizar o localStorage
   const setValueInLocalStorage = (newValue) => {
+    if (!isBrowser) return;
+
     try {
-      setValue((currentValue) => {
-        const result = typeof newValue === 'function' ? newValue(currentValue) : newValue;
-        localStorage.setItem(key, JSON.stringify(result));
-        return result;
-      });
+      const result = typeof newValue === 'function' ? newValue(value) : newValue;
+      localStorage.setItem(key, JSON.stringify(result));
+      setValue(result);
     } catch (error) {
-      console.error("❌ Error setting localStorage:", error);
+      console.error(`❌ Error setting localStorage [${key}]:`, error);
     }
   };
 
-  // 🔹 Função para remover o item do localStorage
+  // ✅ Função segura para remover o valor
   const removeValue = () => {
+    if (!isBrowser) return;
+
     try {
       localStorage.removeItem(key);
       setValue(defaultValue);
     } catch (error) {
-      console.error("❌ Error removing localStorage key:", error);
+      console.error(`❌ Error removing localStorage [${key}]:`, error);
     }
   };
 

@@ -8,6 +8,10 @@ RUN echo "✅ Starting Vite.js container setup..."
 WORKDIR /app
 RUN echo "📂 Working directory set to /app"
 
+# Dependências necessárias para build de canvas
+RUN apk add --no-cache python3 make g++ pkgconfig cairo-dev pango-dev jpeg-dev giflib-dev && \
+    ln -sf /usr/bin/python3 /usr/bin/python
+
 # 📦 Copy essential files first to optimize Docker cache
 RUN echo "📦 Copying essential files to optimize Docker cache..."
 COPY package.json yarn.lock ./

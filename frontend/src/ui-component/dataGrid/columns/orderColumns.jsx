@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconButton, Typography, Avatar, Tooltip, Chip, Stack } from '@mui/material';
+import { useTheme, alpha } from '@mui/material/styles';
 import { IconClockHour4, IconCheck, IconPackage, IconTruckDelivery, IconBan } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -8,6 +9,18 @@ import useFetchData from '../../../hooks/useFetchData';
 import { API_ROUTES } from '../../../routes/ApiRoutes';
 
 const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
+  const theme = useTheme();
+
+  const tooltipStyle = {
+    backgroundColor: theme.palette.grey[500],
+    color: theme.palette.primary.contrastText,
+    fontSize: 12,
+    px: 1.5,
+    py: 0.5,
+    borderRadius: 1,
+    boxShadow: theme.shadows[2]
+  };
+
   const baseColumns = [
     {
       field: 'code',
@@ -19,19 +32,11 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
           placement="top"
           componentsProps={{
             tooltip: {
-              sx: {
-                backgroundColor: '#8E33FF',
-                color: '#fff',
-                fontSize: 12,
-                px: 1.5,
-                py: 0.5,
-                borderRadius: 1,
-                boxShadow: 2
-              }
+              sx: tooltipStyle
             }
           }}
         >
-          <Link to={`/orders/detail/${params.row.id}`} underline="always" style={{ fontWeight: 600, color: '#8E33FF' }}>
+          <Link to={`/orders/detail/${params.row.id}`} underline="always" style={{ fontWeight: 600, color: theme.palette.primary.main }}>
             #{params.row.code || '----'}
           </Link>
         </Tooltip>
@@ -51,15 +56,15 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
 
         return (
           <Chip
-            color="secondary" 
+            color={theme.palette.grey[900]} 
             sx={{
               height: '48px',
               alignItems: 'center',
               borderRadius: '27px',
               pl: 0.5,
               pr: 1.5,
-              backgroundColor: 'background.paper',
-              boxShadow: 1,
+              backgroundColor: theme.palette.background.paper,
+              boxShadow: theme.shadows[1],
               '& .MuiChip-label': { display: 'flex', alignItems: 'center', gap: 1 }
             }}
             avatar={
@@ -150,15 +155,18 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
       field: 'status',
       headerName: 'Status',
       width: 130,
+      type: 'singleSelect',
+      valueOptions: ['pending', 'paid', 'processing', 'shipped', 'canceled'],
+      filterable: true,
       renderCell: (params) => {
         const status = params.row.status;
 
         const statusColors = {
-          pending: 'warning',
-          paid: 'success',
-          processing: 'info',
-          shipped: 'primary',
-          canceled: 'error'
+          pending: theme.palette.warning.main,
+          paid: theme.palette.success.main,
+          processing: theme.palette.info.main,
+          shipped: theme.palette.primary.main,
+          canceled: theme.palette.error.main
         };
 
         const statusIcons = {
@@ -173,8 +181,15 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
           <Chip
             icon={statusIcons[status] || <IconClockHour4 size={16} />}
             label={status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending'}
-            color={statusColors[status] || 'default'}
-            variant="soft"
+            sx={{
+              backgroundColor: alpha(statusColors[status] || theme.palette.grey[500], 0.1),
+              color: statusColors[status] || theme.palette.grey[700],
+              borderColor: alpha(statusColors[status] || theme.palette.grey[500], 0.2),
+              '& .MuiChip-icon': {
+                color: 'inherit'
+              }
+            }}
+            variant="outlined"
             size="small"
           />
         );
@@ -195,15 +210,7 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
             placement="top"
             componentsProps={{
               tooltip: {
-                sx: {
-                  backgroundColor: '#8E33FF',
-                  color: '#fff',
-                  fontSize: 12,
-                  px: 1.5,
-                  py: 0.5,
-                  borderRadius: 1,
-                  boxShadow: 2
-                }
+                sx: tooltipStyle
               }
             }}
           >
@@ -232,15 +239,7 @@ const createOrderColumns = (handleExpandRow, handleDeleteItem, expandedRow) => {
           placement="top"
           componentsProps={{
             tooltip: {
-              sx: {
-                backgroundColor: '#8E33FF',
-                color: '#fff',
-                fontSize: 12,
-                px: 1.5,
-                py: 0.5,
-                borderRadius: 1,
-                boxShadow: 2
-              }
+              sx: tooltipStyle
             }
           }}
         >
