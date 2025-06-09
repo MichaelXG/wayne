@@ -213,18 +213,31 @@ export default function NavItem({ item, level, isParents = false, setSelectedID,
             left: `${(level - 1) * 16}px`,
             top: '50%',
             width: '16px',
-            height: '1px',
-            backgroundColor: theme.palette.grey[300],
-            transform: 'translateY(-50%)'
+            height: '2px',
+            backgroundColor: theme.palette.grey[600],
+            transform: 'translateY(-50%)',
+            opacity: 0.5,
+            transition: 'all 0.2s ease-in-out',
+            borderRadius: '1px',
           },
           '&:after': drawerOpen && {
             content: '""',
             position: 'absolute',
             left: `${(level - 1) * 16}px`,
             top: 0,
-            width: '1px',
+            width: '2px',
             height: '100%',
-            backgroundColor: theme.palette.grey[300]
+            backgroundColor: theme.palette.grey[900],
+            opacity: 0.5,
+            transition: 'all 0.2s ease-in-out',
+            borderRadius: '1px',
+          },
+          '&:hover': {
+            '&:before, &:after': {
+              opacity: 1,
+              backgroundColor: theme.palette.grey[900],
+              boxShadow: `0 0 4px ${theme.palette.grey[900]}`,
+            }
           }
         }),
 

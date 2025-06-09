@@ -67,7 +67,6 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-    command: ["/app/entrypoint.sh"]
     networks:
       - wayne_network
 

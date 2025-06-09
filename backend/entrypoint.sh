@@ -122,6 +122,6 @@ log_info "Running Django system checks..."
 python3 manage.py check
 log_success "Django system checks passed!"
 
-log_info "Starting Django dev server with watchmedo..."
-exec watchmedo auto-restart --recursive --pattern='*.py' --ignore-patterns='*/migrations/*.pyc' -- python manage.py runserver 0.0.0.0:8000
+log_info "Starting Django dev server..."
+exec python3 manage.py runserver 0.0.0.0:8000
 log_success "Django dev server started successfully!"

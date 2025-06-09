@@ -55,8 +55,7 @@ RUN echo "🌐 Porta 8000 exposta para o backend!"
 RUN echo "🚀 Docker container configurado com sucesso e pronto para execução!"
 
 # ✅ Define o comando padrão de execução
-# Para ambiente de desenvolvimento, descomente a linha abaixo:
-# CMD ["/bin/bash", "/app/entrypoint.sh"]
+CMD ["/bin/bash", "/app/entrypoint.sh"]
 
 # Para ambiente de produção, com Gunicorn:
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "wayne_backend.wsgi:application", "--workers=3", "--timeout=120"]
+# CMD ["gunicorn", "-b", "0.0.0.0:8000", "wayne_backend.wsgi:application", "--workers=3", "--timeout=120"]
